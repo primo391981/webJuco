@@ -79,7 +79,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel
+                    Laravel por Martin Ghiglia
                 </div>
 
                 <div class="links">
