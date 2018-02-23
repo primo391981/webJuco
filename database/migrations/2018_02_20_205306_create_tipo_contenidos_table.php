@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateContenedorsTable extends Migration
+class CreateTipoContenidosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,15 @@ class CreateContenedorsTable extends Migration
      */
     public function up()
     {
-        Schema::create('contenedors', function (Blueprint $table) {
+        Schema::create('tipo_contenidos', function (Blueprint $table) {
             $table->increments('id');
-			$table->string('titulo');
-			$table->integer('tipo');
-			$table->integer('orden_menu');
+			$table->string('nombre');
+			$table->string('inicio_estructura');
+			$table->string('fin_estructura');
+			$table->string('inicio_titulo');
+			$table->string('fin_titulo');
+			$table->string('inicio_contenido');
+			$table->string('fin_contenido');
             $table->timestamps();
         });
     }
@@ -29,6 +33,6 @@ class CreateContenedorsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('contenedors');
+        Schema::dropIfExists('tipo_contenidos');
     }
 }
