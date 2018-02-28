@@ -16,9 +16,10 @@ class CreateContenidosTable extends Migration
         Schema::create('contenidos', function (Blueprint $table) {
             $table->increments('id');
 			$table->string('titulo');
-			$table->string('texto');
+			$table->text('texto');
 			$table->string('filepath');
 			$table->string('imagen');
+			$table->string('alt_imagen');
 			$table->integer('tipo');
             $table->timestamps();
         });

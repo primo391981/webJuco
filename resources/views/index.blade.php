@@ -64,8 +64,8 @@
 <div id="nuestrafirma" class="container-fluid contpadding">
 	<div class="row">			
 		<div class="col-xs-12 col-sm-4 col-sm-offset-2">
-			<h1 class="titulo">{{ $tituloFirma }}</h1>
-			<p>{{ $textoFirma }}</p>
+			<h1 class="titulo">TituloFirma</h1>
+			<p>TextoFirma</p>
 		</div>	
 		<div class="col-xs-12 col-sm-4">
 			<img src="img/reloj.jpg" class="img-responsive pull-right" alt="ESTUDIO FEOLA CASELLA & GONZALEZ FEOLA"/>
@@ -73,11 +73,25 @@
 	</div>  
 </div>
 
+@foreach($contenedores as $contenedor)
+	{!! $contenedor->tipoContenedor->inicio_estructura !!}
+	
+	@foreach($contenedor->contenidos as $contenido)
+	
+		{!! $contenido->titulo !!}
+		{!! $contenido->texto !!}
+	
+		{!! $contenido->imagen !!}
+	@endforeach
+	
+	{!! $contenedor->tipoContenedor->fin_estructura !!}
+@endforeach
+
 <div id="misionvision" class="container-fluid contpadding imgfondo darken">
 	<div class="row">			
 		<div class="col-xs-12 col-sm-4 col-sm-offset-2">
 			<h1 class="titulo slideanim">Misión</h1>
-			<p style="color:white;" class="slideanim">Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.</strong></p>
+			<p style="color:white;" class="slideanim">Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.</p>
 		</div>	
 		<div class="col-xs-12 col-sm-4">
 			<h1 class="titulo slideanim">Visión</h1>

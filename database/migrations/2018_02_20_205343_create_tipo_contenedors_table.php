@@ -18,11 +18,11 @@ class CreateTipoContenedorsTable extends Migration
 			$table->string('nombre');
 			$table->string('inicio_estructura');
 			$table->string('fin_estructura');
-			$table->string('inicio_titulo');
-			$table->string('fin_titulo');
-			$table->string('inicio_contenido');
-			$table->string('fin_contenido');
-            $table->timestamps();
+			$table->string('titulo_contenido');
+			$table->string('texto_contenido');
+			$table->string('imagen_contenido');
+			$table->string('archivo_contenido');
+			$table->timestamps();
         });
     }
 
