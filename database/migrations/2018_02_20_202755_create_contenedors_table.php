@@ -18,6 +18,7 @@ class CreateContenedorsTable extends Migration
 			$table->string('titulo');
 			$table->integer('tipo');
 			$table->integer('orden_menu');
+			$table->integer('id_padre'); //si es cero, va en el menú principal, sino, va en el submenu en el orden que indica orden_menu
             $table->timestamps();
         });
     }
