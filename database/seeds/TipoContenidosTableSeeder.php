@@ -11,6 +11,6 @@ class TipoContenidosTableSeeder extends Seeder
      */
     public function run()
     {
-        //
+        //test
     }
 }

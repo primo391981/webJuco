@@ -16,8 +16,9 @@
 });
 */
 
-Route::get('/', 'WebController@show');
+Route::get('/', 'WebController@index')->name('home');
 
+//rutas para el funcionamiento del sistema de autenticación
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+

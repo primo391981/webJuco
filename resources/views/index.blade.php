@@ -1,59 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>FEOLA CASELLA & GONZALEZ FEOLA</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  
-  <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
-  <link rel="stylesheet" href="{{ asset('css/general.css') }}"> 
-  
-  
-  <link href="https://fonts.googleapis.com/css?family=Slabo+27px" rel="stylesheet">
-</head>
-<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
 
-<nav class="navbar navbar-default navbar-fixed-top">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span> 
-      </button>
-      <a class="navbar-brand" style="color:white; font-family: 'Slabo', serif;" href="#">FEOLA CASELLA & GONZALEZ FEOLA</a>
-    </div>
-    <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#nuestrafirma">NUESTRA FIRMA</a></li>
-        <li><a href="#misionvision">MISIÓN</a></li>
-        <li><a href="#misionvision">VISIÓN</a></li>
-        		
-		<li class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#">SERVICIOS
-        <span class="caret"></span></a>
-        <ul class="dropdown-menu">
-          <li><a href="#serviciosjuridicos">JURIDICOS</a></li>
-          <li><a href="#asesoramientointegrado">JURIDICO - CONTABLE</a></li>
-          </ul>
-      </li>
-		
-		 <li><a href="#prof">PROFESIONALES</a></li>
-		<li><a href="#derechos">SUS DERECHOS</a></li>
-		<li><a href="#contacto">CONTACTO</a></li>
-		
-      </ul>
-    </div>
-  </div>
-</nav>
+@extends('layouts.app')
 
-
-
-
-
+@section('content')
 <div class="jumbotron text-center">
 	<h2>Bienvenido a nuestro estudio</h2>
 	<h1 style="color:white; font-family: 'Slabo', serif;">FEOLA CASELLA & GONZALEZ FEOLA</h1> 
@@ -72,18 +20,24 @@
 		</div>					
 	</div>  
 </div>
+{{-- Se recorre la colección de contenedores enviada desde el controlador --}}
 
 @foreach($contenedores as $contenedor)
+	
+	{{-- se "imprimen" los tags de inicio de la estructura del tipo de contenedor --}}
 	{!! $contenedor->tipoContenedor->inicio_estructura !!}
 	
+	{{-- se recorre la lista de contenidos de cada contenedor --}}
 	@foreach($contenedor->contenidos as $contenido)
-	
+
+		{{-- se imprime el título, texto e imagen (por ahora) de cada contenido ya formateado de acuerdo al tipo contenedor --}}
 		{!! $contenido->titulo !!}
 		{!! $contenido->texto !!}
-	
 		{!! $contenido->imagen !!}
+	
 	@endforeach
 	
+	{{-- se "imprimen" los tags de fin de la estructura del tipo de contenedor --}}
 	{!! $contenedor->tipoContenedor->fin_estructura !!}
 @endforeach
 
@@ -176,51 +130,12 @@
 		</div>		
 	</div>  
 </div>
+@endsection
 
 
 
 
-<script>
-$(document).ready(function(){
-  // Add smooth scrolling to all links in navbar + footer link
-  $(".navbar a, footer a[href='#myPage']").on('click', function(event) {
-
-   // Make sure this.hash has a value before overriding default behavior
-  if (this.hash !== "") {
-
-    // Prevent default anchor click behavior
-    event.preventDefault();
-
-    // Store hash
-    var hash = this.hash;
-
-    // Using jQuery's animate() method to add smooth page scroll
-    // The optional number (900) specifies the number of milliseconds it takes to scroll to the specified area
-    $('html, body').animate({
-      scrollTop: $(hash).offset().top
-    }, 900, function(){
-
-      // Add hash (#) to URL when done scrolling (default click behavior)
-      window.location.hash = hash;
-      });
-    } // End if
-  });
-})
 
 
-$(window).scroll(function() {
-  $(".slideanim").each(function(){
-    var pos = $(this).offset().top;
-
-    var winTop = $(window).scrollTop();
-    if (pos < winTop + 600) {
-      $(this).addClass("slide");
-    }
-  });
-});
 
 
-</script>
-
-</body>
-</html>
