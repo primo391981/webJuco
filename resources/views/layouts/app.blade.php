@@ -58,8 +58,12 @@
 										<a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 											{{ Auth::user()->name }} <span class="caret"></span>
 										</a>
-										<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-											<a class="dropdown-item" href="{{ route('logout') }}"
+										<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+											<li>
+												<a href="{{ route('admin') }}">Administración</a>
+											</li>
+											<li>
+												<a class="dropdown-item" href="{{ route('logout') }}"
 											   onclick="event.preventDefault();
 															 document.getElementById('logout-form').submit();">
 												Logout
@@ -68,8 +72,17 @@
 											<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
 												@csrf
 											</form>
+											</li>
+											
+											
 										</div>
-									</li>
+										
+										
+                               
+
+                               
+                            
+					</li>
 			   @endguest
 				
 			  </ul>

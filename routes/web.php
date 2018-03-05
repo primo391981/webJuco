@@ -21,4 +21,10 @@ Route::get('/', 'WebController@index')->name('home');
 //rutas para el funcionamiento del sistema de autenticación
 Auth::routes();
 
+Route::group(['middleware' => ['auth']], function () {
+	
+	//archivos
+	Route::get('admin', 'AdminController@index')->name('admin');
+	Route::get('cms', 'CMSController@index')->name('cms');
+});
 
