@@ -28,3 +28,5 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('cms', 'CMSController@index')->name('cms');
 });
 
+//modificacion prueba
+
