@@ -23,9 +23,13 @@ Auth::routes();
 
 Route::group(['middleware' => ['auth']], function () {
 	
-	//archivos
+	//admin
 	Route::get('admin', 'AdminController@index')->name('admin');
 	Route::get('cms', 'CMSController@index')->name('cms');
+	
+	//contenedores en CMS
+	Route::get('contenedores', 'ContenedorController@lista')->name('contenedores');
+	
 });
 
 //modificacion prueba

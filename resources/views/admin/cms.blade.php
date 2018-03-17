@@ -1,19 +1,25 @@
 
 @extends('admin.layouts.app')
 
-@section('content')
-
-
-            <div class="container">
+@section('menu')
                 <div>
-                    Sistema de Administración de Contenidos
+                    CMS - Menú de opciones
                 </div>
-
+				<div>
+                    <a href="{{ route('contenedores') }}">Contenedores</a>
+                </div>
                 <div>
-				    @foreach($contenedores as $contenedor)
-						{{ $contenedor->titulo }}<br>
-					@endforeach
+				    Contenidos
                 </div>
-            </div>
-
 @endsection
+
+@section('content')
+                <div>
+                    Mensaje de bienvenida
+                </div>
+
+                <div>
+				   
+                </div>
+@endsection
+

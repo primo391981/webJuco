@@ -10,6 +10,8 @@
                 </div>
 
                 <div>
+				<!-- la funcion route de laravel blade envía el link a la ruta nombrada -->
+					<a href="">Usuarios</a>
                     <a href="{{ route('cms') }}">CMS</a>
                     <a href="">Jurídico</a>
                     <a href="">Contable</a>

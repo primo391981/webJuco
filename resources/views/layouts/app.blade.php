@@ -91,6 +91,7 @@
 		</nav>
 
         <main class="py-4">
+		<!-- Contenido que se "rellena" al heredarse las vistas en blade -->
             @yield('content')
         </main>
     </div>

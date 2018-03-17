@@ -81,6 +81,18 @@
 			<h3 class="slideanim">LABORAL</h3>
 			<p>Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto.Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto.</p>
 		</div>
+		
+		<div class="col-xs-12 col-sm-3">
+			<i class="fas fa-university fa-5x slideanim"></i>
+			<h3 class="slideanim">LABORAL</h3>
+			<p>Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto.Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto.</p>
+		</div>
+		
+		<div class="col-xs-12 col-sm-3">
+			<i class="fas fa-university fa-5x slideanim"></i>
+			<h3 class="slideanim">LABORAL</h3>
+			<p>Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto.Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto.</p>
+		</div>
 	</div>	
 </div>
 

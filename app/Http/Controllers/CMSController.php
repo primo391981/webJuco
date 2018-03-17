@@ -12,10 +12,10 @@ class CMSController extends Controller
 	public function index()
     {
 		
-		$contenedores = Contenedor::OrderBy('orden_menu')->get();
+		$subtitulo = 'CMS';
 		//dd($contenedores);
 		//se retorna la vista "index" 
-		return view('admin.cms', ['contenedores' => $contenedores]);
+		return view('admin.cms', ['subtitulo' => $subtitulo]);
     }
 	
 }
