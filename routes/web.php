@@ -30,7 +30,10 @@ Route::group(['middleware' => ['auth']], function () {
 	//contenedores en CMS
 	Route::get('contenedores', 'ContenedorController@lista')->name('contenedores');
 	
+	//contenidos en CMS
+	Route::get('contenidos', 'ContenidoController@lista')->name('contenidos');
+	Route::get('contenidos_agregar', 'ContenidoController@agregar')->name('contenidos');
+	Route::get('contenidos_modificar', 'ContenidoController@modificar')->name('contenidos');
+	Route::get('contenidos_eliminar', 'ContenidoController@eliminar')->name('contenidos');
+	
 });
-
-//modificacion prueba
-

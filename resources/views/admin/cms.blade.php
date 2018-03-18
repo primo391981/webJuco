@@ -9,7 +9,7 @@
                     <a href="{{ route('contenedores') }}">Contenedores</a>
                 </div>
                 <div>
-				    Contenidos
+				    <a href="{{ route('contenidos') }}">Contenidos</a>
                 </div>
 @endsection
 
