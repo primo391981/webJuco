@@ -2,18 +2,6 @@
 <!-- La plantilla utilizada por esta vista esta en admin/layouts/ y se llama app.blade.php -->
 @extends('admin.layouts.app')
 
-@section('menu')
-                <div>
-                    CMS - Menú de opciones
-                </div>
-				<div>
-                    <a href="{{ route('contenedores') }}">Contenedores</a>
-                </div>
-                <div>
-				    <a href="{{ route('contenidos') }}">Contenidos</a>
-                </div>
-@endsection
-
 @section('content')
                 <div class="row">
                     Contenidos
