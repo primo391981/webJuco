@@ -32,8 +32,10 @@ Route::group(['middleware' => ['auth']], function () {
 	
 	//contenidos en CMS
 	Route::get('contenidos', 'ContenidoController@lista')->name('contenidos');
-	Route::get('contenidos_agregar', 'ContenidoController@agregar')->name('contenidos');
-	Route::get('contenidos_modificar', 'ContenidoController@modificar')->name('contenidos');
-	Route::get('contenidos_eliminar', 'ContenidoController@eliminar')->name('contenidos');
-	
+	Route::get('contenidos/agregar', 'ContenidoController@agrega')->name('contenidos/agregar');
+	Route::post('contenidos/agregar', 'ContenidoController@crear')->name('contenidos/agregar');
+//	Route::get('contenidos/modificar', 'ContenidoController@modifica')->name('contenidos/modificar');
+//	Route::post('contenidos/modificar', 'ContenidoController@modificar')->name('contenidos/modificar');
+//	Route::get('contenidos/eliminar', 'ContenidoController@elimina')->name('contenidos/eliminar');
+//	Route::post('contenidos/eliminar', 'ContenidoController@eliminar')->name('contenidos/eliminar');	
 });

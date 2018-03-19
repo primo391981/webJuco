@@ -16,11 +16,11 @@
 
 @section('content')
                 <div class="row">
-                    Contenedores
+                    Contenidos
                 </div>
 				<div class="row">
                     <div class="col-sm-12 pull-right">
-						<h1>Agregar</h1>
+						<a href="{{ route('contenidos/agregar') }}">Agregar</a>
 					</div>
                 </div>
 				<div class="row">	
@@ -30,23 +30,26 @@
 							<tr>
 								<th scope="col">ID</th>
 								<th scope="col">Título</th>
+								<th scope="col">Texto</th>
+								<th scope="col">Ruta Archivo</th>
+								<th scope="col">Imagen</th>
+								<th scope="col">Texto Imagen</th>
 								<th scope="col">Tipo</th>
-								<th scope="col">Órden Menú</th>
-								<th scope="col">id Padre</th>
 								<th scope="col">Acciones</th>
 							</tr>
 						</thead>
 						<tbody>
-						@foreach($contenedores as $contenedor)
-						
-						<tr>
-							<td>{{$contenedor->id}}</td>
-							<td>{{$contenedor->titulo}}</td>
-							<td>{{$contenedor->tipo}}</td>
-							<td>{{$contenedor->orden_menu}}</td>
-							<td>{{$contenedor->id_padre}}</td>
-							<td>modificar elimnar</td>
-						</tr>
+						@foreach($contenidos as $contenido)						
+							<tr>
+								<td>{{$contenido->id}}</td>
+								<td>{{$contenido->titulo}}</td>
+								<td>{{$contenido->texto}}</td>
+								<td>{{$contenido->filepath}}</td>
+								<td>{{$contenido->imagen}}</td>
+								<td>{{$contenido->alt_imagen}}</td>
+								<td>{{$contenido->tipo}}</td>
+								<td>modificar elimnar</td>
+							</tr>
 						@endforeach
 						</tbody>
 						</table>
