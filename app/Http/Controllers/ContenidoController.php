@@ -28,6 +28,13 @@ class ContenidoController extends Controller
 	public function crear()
 	//Valida y agrega el contenido con los datos ingresados en el formulario.
 	{
+		$data = request()->all();
+		
+		Contenido::create([
+			'titulo' => $data['titulo'];
+		]);
+		
+		
 		return "Creando un nuevo contenido";
 	}
 }
