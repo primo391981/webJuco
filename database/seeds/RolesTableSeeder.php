@@ -13,19 +13,19 @@ class RolesTableSeeder extends Seeder
     {
         //
 		DB::table('roles')->insert([
-            'name' => 'superadmin',
+            'nombre' => 'superadmin',
         ]);
 		
 		DB::table('roles')->insert([
-            'name' => 'cmsAdmin',
+            'nombre' => 'cmsAdmin',
         ]);
 		
 		DB::table('roles')->insert([
-            'name' => 'juridicoAdmin',
+            'nombre' => 'juridicoAdmin',
         ]);
 		
 		DB::table('roles')->insert([
-            'name' => 'contableAdmin',
+            'nombre' => 'contableAdmin',
         ]);
     }
 }

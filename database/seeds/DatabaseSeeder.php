@@ -16,6 +16,10 @@ class DatabaseSeeder extends Seeder
 			TipoContenedorsTableSeeder::class,
 			ContenidosTableSeeder::class,
 			ContenedorContenidoTableSeeder::class,
+			UsersTableSeeder::class,
+			RolesTableSeeder::class,
+			UserRoleTableSeeder::class,
+			
 			
 		]);	
     }

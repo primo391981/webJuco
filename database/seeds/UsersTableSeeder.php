@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class ContenidosTableSeeder extends Seeder
+class UsersTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,7 +11,8 @@ class ContenidosTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('users')->insert([
+        //
+		DB::table('users')->insert([
             'name' => 'superadmin',
             'email' => 'superadmin@mail.com',
             'password' => bcrypt('123456'),
@@ -40,6 +41,5 @@ class ContenidosTableSeeder extends Seeder
             'email' => 'admin@mail.com',
             'password' => bcrypt('123456'),
         ]);
-    }
     }
 }

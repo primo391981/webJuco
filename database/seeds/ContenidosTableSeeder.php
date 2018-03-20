@@ -18,7 +18,7 @@ class ContenidosTableSeeder extends Seeder
 			'filepath' => "",
 			'imagen' => "img/reloj.jpg",
 			'alt_imagen' => "ESTUDIO FEOLA CASELLA & GONZALEZ FEOLA",
-			'tipo' => 1,
+			
 
         ]);
 		
@@ -28,7 +28,7 @@ class ContenidosTableSeeder extends Seeder
 			'filepath' => "",
 			'imagen' => "",
 			'alt_imagen' => "",
-			'tipo' => 1,
+			
         ]);
 		
 		DB::table('contenidos')->insert([
@@ -37,7 +37,7 @@ class ContenidosTableSeeder extends Seeder
 			'filepath' => "",
 			'imagen' => "",
 			'alt_imagen' => "",
-			'tipo' => 1,
+			
         ]);
 		
 		DB::table('contenidos')->insert([
@@ -46,7 +46,7 @@ class ContenidosTableSeeder extends Seeder
 			'filepath' => "",
 			'imagen' => "",
 			'alt_imagen' => "",
-			'tipo' => 1,
+			
         ]);
 		
 		DB::table('contenidos')->insert([
@@ -55,7 +55,7 @@ class ContenidosTableSeeder extends Seeder
 			'filepath' => "",
 			'imagen' => "",
 			'alt_imagen' => "",
-			'tipo' => 1,
+			
         ]);
 		
     }
