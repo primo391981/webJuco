@@ -17,10 +17,10 @@ class CreateContenidosTable extends Migration
             $table->increments('id');
 			$table->string('titulo');
 			$table->text('texto');
-			$table->string('filepath');
-			$table->string('imagen');
-			$table->string('alt_imagen');
-			$table->integer('tipo');
+			$table->string('filepath')->nullable($value = true);
+			$table->string('imagen')->nullable($value = true);
+			$table->string('alt_imagen')->nullable($value = true);
+			$table->boolean('activo')->default(true);
             $table->timestamps();
         });
     }

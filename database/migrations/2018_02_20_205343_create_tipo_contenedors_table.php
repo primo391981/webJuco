@@ -20,8 +20,10 @@ class CreateTipoContenedorsTable extends Migration
 			$table->string('fin_estructura');
 			$table->string('titulo_contenido');
 			$table->string('texto_contenido');
-			$table->string('imagen_contenido');
-			$table->string('archivo_contenido');
+			$table->string('imagen_contenido')->nullable($value = true);
+			$table->string('archivo_contenido')->nullable($value = true);
+			$table->string('imagen')->nullable($value = true);
+			$table->boolean('activo')->default(true);
 			$table->timestamps();
         });
     }
