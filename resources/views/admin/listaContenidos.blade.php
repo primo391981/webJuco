@@ -8,7 +8,7 @@
                 </div>
 				<div class="row">
                     <div class="col-sm-12 pull-right">
-						<a href="{{ route('contenidos/agregar') }}">Agregar</a>
+						<a href="{{ route('add_contenido') }}">Agregar</a>
 					</div>
                 </div>
 				<div class="row">	
