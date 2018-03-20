@@ -29,15 +29,27 @@
 
             <div class="container">
                 <div>
-                    Administración Juco
+                    <h1>Administración Juco</h1>
                 </div>
 
                 <div>
 				<!-- la funcion route de laravel blade envía el link a la ruta nombrada -->
-					<a href="">Usuarios</a>
-                    <a href="{{ route('cms') }}">CMS</a>
-                    <a href="">Jurídico</a>
-                    <a href="">Contable</a>
+					@if(Auth::user()->hasRole('superAdmin'))
+						<a href="{{ route('users') }}" >Usuarios</a>
+					@endif
+				
+				
+                    @if(Auth::user()->hasRole('cmsAdmin'))
+						<a href="{{ route('cms') }}" class="btn btn-primary btn-lg">CMS</a>
+					@endif
+					
+					@if(Auth::user()->hasRole('juridicoAdmin'))
+						<a href="" class="btn btn-primary btn-lg">Jurídico</a>
+					@endif
+				
+					@if(Auth::user()->hasRole('contableAdmin'))
+						<a href="" class="btn btn-primary btn-lg">Contable</a>
+					@endif
                     
                 </div>
             </div>
