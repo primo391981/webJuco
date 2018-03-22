@@ -2,11 +2,12 @@
 <!-- La plantilla utilizada por esta vista esta en admin/layouts/ y se llama app.blade.php -->
 @extends('admin.layouts.app')
 
+@section('titulo-seccion', 'Contenidos')
+
+@section('active', 'active')
+
 @section('content')
-                <div class="row">
-                    Contenidos
-                </div>
-				<div class="row">
+               	<div class="row">
                     <div class="col-sm-12 pull-right">
 						<a href="{{ route('add_contenido') }}">Agregar</a>
 					</div>
