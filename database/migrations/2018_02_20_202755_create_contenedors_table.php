@@ -16,6 +16,7 @@ class CreateContenedorsTable extends Migration
         Schema::create('contenedors', function (Blueprint $table) {
             $table->increments('id');
 			$table->string('titulo');
+			$table->string('descripcion');
 			$table->integer('tipo');
 			$table->integer('orden_menu');
 			$table->integer('id_padre'); //si es cero, va en el menú principal, sino, va en el submenu en el orden que indica orden_menu

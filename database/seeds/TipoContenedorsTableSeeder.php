@@ -14,6 +14,7 @@ class TipoContenedorsTableSeeder extends Seeder
         //
 		DB::table('tipo_contenedors')->insert([
             'nombre' => "Contenido Genérico",
+			'descripcion' => 'Descripción de contenido genérico',
 			'inicio_estructura' => "<div id='nuestrafirma' class='container-fluid contpadding'>",
 			'fin_estructura' => "</div>",
 			'titulo_contenido' => "<div class='row'>			
@@ -27,6 +28,7 @@ class TipoContenedorsTableSeeder extends Seeder
 		
 		DB::table('tipo_contenedors')->insert([
             'nombre' => "Contenido Gris",
+			'descripcion' => 'Descripción de contenido gris',
 			'inicio_estructura' => "<div id='misionvision' class='container-fluid contpadding imgfondo darken'>
 									<div class='row'><div class='col-sm-2'></div>",
 			'fin_estructura' => "</div></div>",

@@ -16,6 +16,7 @@ class CreateTipoContenedorsTable extends Migration
         Schema::create('tipo_contenedors', function (Blueprint $table) {
             $table->increments('id');
 			$table->string('nombre');
+			$table->string('descripcion');
 			$table->string('inicio_estructura');
 			$table->string('fin_estructura');
 			$table->string('titulo_contenido');
