@@ -33,6 +33,9 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('cms', 'CMS\CMSController@index')->name('cms')->middleware('role:cmsAdmin');
 	
 	//contenedores en CMS
+	Route::get('menuitems', 'CMS\MenuitemController@lista')->name('menuitems')->middleware('role:cmsAdmin');
+	
+	//contenedores en CMS
 	Route::get('contenedores', 'CMS\ContenedorController@lista')->name('contenedores')->middleware('role:cmsAdmin');
 	Route::get('add_contenedor', 'CMS\ContenedorController@agrega')->name('add_contenedor')->middleware('role:cmsAdmin');
 	Route::post('add_contenedor', 'CMS\ContenedorController@crear')->name('add_contenedor')->middleware('role:cmsAdmin');

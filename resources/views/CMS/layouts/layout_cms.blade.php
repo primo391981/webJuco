@@ -37,10 +37,13 @@
 						
 						  <ul class="nav nav-pills flex-column">
 							<li class="nav-item">
-							  <a class="nav-link " href="{{ route('contenedores') }}">Contenedores <span class="sr-only">(current)</span></a>
+							  <a class="nav-link" href="{{ route('contenedores') }}">Contenedores <span class="sr-only">(current)</span></a>
 							</li>
 							<li class="nav-item">
-							  <a class="nav-link active" href="{{ route('contenidos') }}">Contenidos</a>
+							  <a class="nav-link" href="{{ route('contenidos') }}">Contenidos</a>
+							</li>
+							<li class="nav-item">
+							  <a class="nav-link" href="{{ route('menuitems') }}">Items Menú</a>
 							</li>
 							<li class="nav-item">
 							 <a class="dropdown-item" href="{{ route('logout') }}"
