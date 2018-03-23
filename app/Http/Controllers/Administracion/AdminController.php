@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Administracion;
 
 use App\Http\Controllers\Controller;
 
@@ -18,7 +18,7 @@ class AdminController extends Controller
 		$subtitulo = 'Administración';
 		//dd($contenedores);
 		//se retorna la vista "index" 
-		return view('admin.admin', ['subtitulo' => $subtitulo]);
+		return view('intranet', ['subtitulo' => $subtitulo]);
     }
 	
 }

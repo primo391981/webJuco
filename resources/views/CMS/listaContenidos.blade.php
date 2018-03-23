@@ -1,6 +1,6 @@
 
 <!-- La plantilla utilizada por esta vista esta en admin/layouts/ y se llama app.blade.php -->
-@extends('admin.layouts.app')
+@extends('cms.layouts.layout_cms')
 
 @section('titulo-seccion', 'Contenidos')
 

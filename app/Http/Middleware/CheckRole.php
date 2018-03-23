@@ -17,7 +17,7 @@ class CheckRole
     {
 		if (! $request->user()->hasRole($role)) {
 			return redirect('/');
-			
+			//hacer una vista que diga que no tiene los permisos correspondientes para acceder a esa ruta
 		}
         return $next($request);
     }

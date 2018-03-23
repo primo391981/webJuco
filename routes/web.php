@@ -23,27 +23,27 @@ Auth::routes();
 
 Route::group(['middleware' => ['auth']], function () {
 	//usuarios
-	Route::get('users', 'UserController@index')->name('users')->middleware('role:superAdmin');
+	Route::get('users', 'Administracion\UserController@index')->name('users')->middleware('role:superAdmin');
 	
 	
 	//admin
-	Route::get('admin', 'AdminController@index')->name('admin');
+	Route::get('admin', 'Administracion\AdminController@index')->name('admin');
 	
 	//inex cms
-	Route::get('cms', 'CMSController@index')->name('cms')->middleware('role:cmsAdmin');
+	Route::get('cms', 'CMS\CMSController@index')->name('cms')->middleware('role:cmsAdmin');
 	
 	//contenedores en CMS
-	Route::get('contenedores', 'ContenedorController@lista')->name('contenedores')->middleware('role:cmsAdmin');
-	Route::get('add_contenedor', 'ContenedorController@agrega')->name('add_contenedor')->middleware('role:cmsAdmin');
-	Route::post('add_contenedor', 'ContenedorController@crear')->name('add_contenedor')->middleware('role:cmsAdmin');
+	Route::get('contenedores', 'CMS\ContenedorController@lista')->name('contenedores')->middleware('role:cmsAdmin');
+	Route::get('add_contenedor', 'CMS\ContenedorController@agrega')->name('add_contenedor')->middleware('role:cmsAdmin');
+	Route::post('add_contenedor', 'CMS\ContenedorController@crear')->name('add_contenedor')->middleware('role:cmsAdmin');
 //	Route::get('edit_contenedor/{id}', 'ContenedorController@modifica')->name('edit_contenedor');
 //	Route::post('edit_contenedor', 'ContenedorController@modificar')->name('edit_contenedor');
 //	Route::post('del_contenedor', 'ContenedorController@eliminar')->name('del_contenedor');
 
 	//contenidos en CMS
-	Route::get('contenidos', 'ContenidoController@lista')->name('contenidos')->middleware('role:cmsAdmin');
-	Route::get('add_contenido', 'ContenidoController@agrega')->name('add_contenido')->middleware('role:cmsAdmin');
-	Route::post('add_contenido', 'ContenidoController@crear')->name('add_contenido')->middleware('role:cmsAdmin');
+	Route::get('contenidos', 'CMS\ContenidoController@lista')->name('contenidos')->middleware('role:cmsAdmin');
+	Route::get('add_contenido', 'CMS\ContenidoController@agrega')->name('add_contenido')->middleware('role:cmsAdmin');
+	Route::post('add_contenido', 'CMS\ContenidoController@crear')->name('add_contenido')->middleware('role:cmsAdmin');
 //	Route::get('edit_contenido/{id}', 'ContenidoController@modifica')->name('edit_contenido');
 //	Route::post('edit_contenido', 'ContenidoController@modificar')->name('edit_contenido');
 //	Route::post('del_contenido', 'ContenidoController@eliminar')->name('del_contenido');	

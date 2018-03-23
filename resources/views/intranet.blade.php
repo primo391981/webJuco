@@ -1,5 +1,5 @@
 
-@extends('admin.layouts.app')
+@extends('layouts.layout_intranet')
 
 @section('menu-lateral')
 						<div>

@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\CMS;
 
 use App\Http\Controllers\Controller;
-use App\Contenedor;
+
+use App\CMS\Contenedor;
 
 class CMSController extends Controller
 {
@@ -15,7 +16,7 @@ class CMSController extends Controller
 		$subtitulo = 'CMS';
 		//dd($contenedores);
 		//se retorna la vista "index" 
-		return view('admin.cms', ['subtitulo' => $subtitulo]);
+		return view('CMS.cms', ['subtitulo' => $subtitulo]);
     }
 	
 }

@@ -1,5 +1,5 @@
 
-@extends('layouts.app')
+@extends('layouts.layout_web')
 
 @section('content')
 <div class="jumbotron text-center">

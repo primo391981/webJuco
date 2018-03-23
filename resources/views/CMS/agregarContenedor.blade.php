@@ -1,5 +1,5 @@
 <!-- La plantilla utilizada por esta vista esta en admin/layouts/ y se llama app.blade.php -->
-@extends('admin.layouts.app')
+@extends('cms.layouts.layout_cms')
 
 @section('titulo-seccion', 'Agregar Contenedor')
 
@@ -29,11 +29,10 @@
 
 			<div class="col-md-6">
 				<select name="tipo" id="tipo">
-					<option value="1">Contenido Genérico</option>
-				{{-- @foreach($tipos as $key => $tipo)
-						<option value="{{ $key }}">{{ $tipo }}</option>  
+					@foreach($tipos_contenedor as $tipo)
+						<option value="{{ $tipo->id }}">{{ $tipo->nombre }}</option>  
 					@endforeach
-				--}}
+				
 				</select>
 			</div>			
 		</div>

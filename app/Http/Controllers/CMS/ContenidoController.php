@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\CMS;
 
 use Illuminate\Http\Request;
-use App\Contenido;
+use App\CMS\Contenido;
+
+use App\Http\Controllers\Controller;
 
 class ContenidoController extends Controller
 {
@@ -14,7 +16,7 @@ class ContenidoController extends Controller
 		
 		$subtitulo = 'Lista de Contenidos';
 		//Se retorna la vista "index" 
-		return view('admin.listaContenidos', ['subtitulo' => $subtitulo, 'contenidos' => $contenidos]);
+		return view('cms.listaContenidos', ['subtitulo' => $subtitulo, 'contenidos' => $contenidos]);
     }
 	
 	public function agrega()
@@ -22,7 +24,7 @@ class ContenidoController extends Controller
 	{
 		$subtitulo = 'Agregar Contenido';
 	
-		return view('admin.agregarContenidos', ['subtitulo' => $subtitulo]);
+		return view('cms.agregarContenidos', ['subtitulo' => $subtitulo]);
 	}
 	
 	public function crear(Request $request)
@@ -44,7 +46,7 @@ class ContenidoController extends Controller
 		$contenido->filepath = $request['filepath'];
 		$contenido->imagen = $request['imagen'];
 		$contenido->alt_imagen = $request['alt_imagen'];
-		$contenido->tipo = 1;
+		
 		
 		//dd($contenido);
 		$contenido->save();
@@ -55,6 +57,10 @@ class ContenidoController extends Controller
 		]);
 		*/
 		
-		return "Creando un nuevo contenido";
+		$contenidos = Contenido::orderBy("titulo")->get();
+		$subtitulo = 'Lista de Contenidos';
+		// devolver mensaje de creado correctamente
+		
+		return view('cms.listaContenidos', ['subtitulo' => $subtitulo, 'contenidos' => $contenidos]);
 	}
 }

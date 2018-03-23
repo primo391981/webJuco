@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Contenedor;
-use App\TipoContenedor;
+use App\CMS\Contenedor;
+use App\CMS\TipoContenedor;
 
 class WebController extends Controller
 {

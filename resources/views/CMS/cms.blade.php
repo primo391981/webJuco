@@ -1,5 +1,5 @@
 
-@extends('admin.layouts.app')
+@extends('cms.layouts.layout_cms')
 
 @section('menu')
                 <div>

@@ -1,11 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\CMS;
+
+use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 
 //Se debe indicar qué modelos ("clases") van a utilizarse
-use App\Contenedor;
+use App\CMS\Contenedor;
+use App\CMS\TipoContenedor;
 
 class ContenedorController extends Controller
 {
@@ -17,17 +20,21 @@ class ContenedorController extends Controller
 		//return view('admin.admin');
 		$contenedores = Contenedor::orderBy("orden_menu")->get();
 		
+		
+		
 		$subtitulo = 'Lista de Contenedores';
 		//se retorna la vista "index" 
-		return view('admin.listaContenedores', ['subtitulo' => $subtitulo, 'contenedores' => $contenedores]);
+		return view('cms.listaContenedores', ['subtitulo' => $subtitulo, 'contenedores' => $contenedores]);
     }
 	
 	public function agrega()
 	//Redirige al formulario de agregar contenedor.
 	{
 		$subtitulo = 'Agregar Contenedor';
+		
+		$tipos_contenedor = TipoContenedor::All();
 	
-		return view('admin.agregarContenedor', ['subtitulo' => $subtitulo]);
+		return view('cms.agregarContenedor', ['subtitulo' => $subtitulo, 'tipos_contenedor' => $tipos_contenedor]);
 	}
 	
 	public function crear(Request $request)
@@ -47,10 +54,9 @@ class ContenedorController extends Controller
 		$contenedor->orden_menu = $request['orden_menu'];
 		$contenedor->id_padre = $request['id_padre'];
 		
-		
-		
 		$contenedor->save();
 				
-		return "Creando un nuevo contenedor";
+		// agregar mensaje "Creado correctamente";
+		return view('cms.listaContenedores', ['subtitulo' => $subtitulo, 'contenedores' => $contenedores]);
 	}
 }
