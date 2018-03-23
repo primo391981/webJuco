@@ -1,7 +1,7 @@
 .jumbotron { 
     background-color: #B20000;
-color: #ffffff;
-padding: 100px 25px;
+	color: #ffffff;
+	padding: 100px 25px;
 }
 
 .contpadding {
@@ -30,6 +30,7 @@ h1.titulo{
     ),
     url("../img/2.jpg");
 }
+
 
 
 /*se utiliza porque h1 no es responsivo y asesoramiento/profesionales es una palabra larga*/ 

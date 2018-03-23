@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Administracion;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -26,4 +26,17 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+	
+	public function roles()
+	{
+		return $this->belongsToMany('App\Administracion\Role','user_role');
+	}
+	
+	public function hasRole($role)
+	{
+		if ($this->roles()->where('nombre', $role)->first()) {
+			return true;
+		}
+		return false;
+	}
 }
