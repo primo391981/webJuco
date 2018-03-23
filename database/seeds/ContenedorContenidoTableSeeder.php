@@ -12,27 +12,27 @@ class ContenedorContenidoTableSeeder extends Seeder
     public function run()
     {
         //
-		DB::table('contenedor_contenido')->insert([
+		DB::table('cms_contenedor_contenido')->insert([
             'contenedor_id' => 1,
 			'contenido_id' => 1,
 		]);
 		
-		DB::table('contenedor_contenido')->insert([
+		DB::table('cms_contenedor_contenido')->insert([
             'contenedor_id' => 2,
 			'contenido_id' => 2,
 		]);
 		
-		DB::table('contenedor_contenido')->insert([
+		DB::table('cms_contenedor_contenido')->insert([
             'contenedor_id' => 2,
 			'contenido_id' => 3,
 		]);
 		
-		DB::table('contenedor_contenido')->insert([
+		DB::table('cms_contenedor_contenido')->insert([
             'contenedor_id' => 2,
 			'contenido_id' => 4,
 		]);
 		
-		DB::table('contenedor_contenido')->insert([
+		DB::table('cms_contenedor_contenido')->insert([
             'contenedor_id' => 2,
 			'contenido_id' => 5,
 		]);

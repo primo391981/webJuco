@@ -11,7 +11,7 @@ class ContenedorsTableSeeder extends Seeder
      */
     public function run()
     {
-         DB::table('contenedors')->insert([
+         DB::table('cms_contenedores')->insert([
             'titulo' => "Sección 1",
 			'descripcion' => "Contenedor para Nuestra Firma",
 			'tipo' => 1,
@@ -19,7 +19,7 @@ class ContenedorsTableSeeder extends Seeder
 			'id_padre' => 0
         ]);
 		
-		DB::table('contenedors')->insert([
+		DB::table('cms_contenedores')->insert([
             'titulo' => "Sección 2",
 			'descripcion' => "Contenedor para Misión - Visión",
 			'tipo' => 2,

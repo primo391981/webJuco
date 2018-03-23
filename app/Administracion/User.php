@@ -8,6 +8,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     use Notifiable;
+	
+	protected $table = 'admin_users';
 
     /**
      * The attributes that are mass assignable.
@@ -29,7 +31,7 @@ class User extends Authenticatable
 	
 	public function roles()
 	{
-		return $this->belongsToMany('App\Administracion\Role','user_role');
+		return $this->belongsToMany('App\Administracion\Role','admin_user_role');
 	}
 	
 	public function hasRole($role)
