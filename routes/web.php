@@ -24,12 +24,12 @@ Auth::routes();
 Route::group(['middleware' => ['auth']], function () {
 	//usuarios
 	Route::get('users', 'Administracion\UserController@index')->name('users')->middleware('role:superAdmin');
-	
+	Route::get('usuarios', 'Administracion\UserController@lista')->name('usuarios')->middleware('role:superAdmin');
 	
 	//admin
 	Route::get('admin', 'Administracion\AdminController@index')->name('admin');
 	
-	//inex cms
+	//index cms
 	Route::get('cms', 'CMS\CMSController@index')->name('cms')->middleware('role:cmsAdmin');
 	
 	//contenedores en CMS
