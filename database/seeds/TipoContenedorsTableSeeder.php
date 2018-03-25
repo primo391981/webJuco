@@ -12,33 +12,34 @@ class TipoContenedorsTableSeeder extends Seeder
     public function run()
     {
         //
-		DB::table('cms_tipo_contenedores')->insert([
-            'nombre' => "Contenido Genérico",
-			'descripcion' => 'Descripción de contenido genérico',
-			'inicio_estructura' => "<div id='nuestrafirma' class='container-fluid contpadding'>",
-			'fin_estructura' => "</div>",
-			'titulo_contenido' => "<div class='row'>			
-										<div class='col-xs-12 col-sm-4 col-sm-offset-2'><h1 class='titulo'>%s</h1>",
-			'texto_contenido' => "<p>%s</p></div>",
-			'imagen_contenido' => "<div class='col-xs-12 col-sm-4'>
-								      <img src='%s' class='img-responsive pull-right' alt='%x'/>
-								   </div>",
-			'archivo_contenido' => ""
+		DB::table('tipo_contenedors')->insert([
+            'nombre' => "UNO - CENTRADO BLANCO",			
+			'inicio_estructura' => "<div id='uno' class='container paddingtop'>",
+			'fin_estructura' => "</div>"
         ]);
 		
-		DB::table('cms_tipo_contenedores')->insert([
-            'nombre' => "Contenido Gris",
-			'descripcion' => 'Descripción de contenido gris',
-			'inicio_estructura' => "<div id='misionvision' class='container-fluid contpadding imgfondo darken'>
-									<div class='row'><div class='col-sm-2'></div>",
-			'fin_estructura' => "</div></div>",
-			'titulo_contenido' => "<div class='col-xs-12 col-sm-4'>
-			<h1 class='titulo slideanim'>%s</h1>",
-			'texto_contenido' => "<p style='color:white;' class='slideanim'>%s</p>
-								  </div>",
-			'imagen_contenido' => "",
-			'archivo_contenido' => ""
+		DB::table('tipo_contenedors')->insert([
+            'nombre' => "DOS - CENTRADO GRIS",			
+			'inicio_estructura' => "<div id='dos' class='container-fluid paddingtop fondogris'><div class='container'>",
+			'fin_estructura' => "</div></div>"
+        ]);
+		
+		DB::table('tipo_contenedors')->insert([
+            'nombre' => "TRES - FLUID BLANCO",			
+			'inicio_estructura' => "<div id='tres' class='container-fluid paddingtop'>",
+			'fin_estructura' => "</div>"
+        ]);
+		
+		DB::table('tipo_contenedors')->insert([
+            'nombre' => "CUATRO - FLUID GRIS",			
+			'inicio_estructura' => "<div id='cuatro' class='container-fluid paddingtop fondogris'>",
+			'fin_estructura' => "</div>"
+        ]);
+		
+		DB::table('tipo_contenedors')->insert([
+            'nombre' => "CINCO - FLUID CON FONDO IMG",			
+			'inicio_estructura' => "<div id='cinco' class='container-fluid paddingtop' style='background-image: url('img/2.jpg'); background-size:cover; color:white;' >",
+			'fin_estructura' => "</div>"
         ]);
     }
 }
-

@@ -13,20 +13,14 @@ class CreateTipoContenedorsTable extends Migration
      */
     public function up()
     {
-        Schema::create('cms_tipo_contenedores', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create('tipo_contenedors', function (Blueprint $table) {
+            $table->increments('id')->unsigned();
+			/*$table->integer('tipo_contenedors_id')->unsigned();*/
 			$table->string('nombre');
-			$table->string('descripcion');
 			$table->string('inicio_estructura');
 			$table->string('fin_estructura');
-			$table->string('titulo_contenido');
-			$table->string('texto_contenido');
-			$table->string('imagen_contenido')->nullable($value = true);
-			$table->string('archivo_contenido')->nullable($value = true);
-			$table->string('imagen')->nullable($value = true);
 			
-			$table->timestamps();
-			$table->softDeletes();
+            $table->timestamps();
         });
     }
 
@@ -37,6 +31,6 @@ class CreateTipoContenedorsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cms_tipo_contenedores');
+        Schema::dropIfExists('tipo_contenedors');
     }
 }

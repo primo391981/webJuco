@@ -16,7 +16,7 @@ class CreateMenuitemsTable extends Migration
         Schema::create('cms_menuitems', function (Blueprint $table) {
             $table->increments('id');
 			$table->string('titulo');
-			$table->string('descripcion')->nullable($value = true);;
+			$table->string('descripcion')->nullable($value = true);
 			$table->integer('orden_menu');
             
 			$table->softDeletes();

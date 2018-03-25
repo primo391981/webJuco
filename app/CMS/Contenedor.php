@@ -7,16 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Contenedor extends Model
 {
     //
-	
-	protected $table = 'cms_contenedores';
-	
-	public function contenidos()
-	{
-		return $this->belongsToMany('App\CMS\Contenido','cms_contenedor_contenido');
+	protected $table = 'contenedors';
+	public function tipoContenedor(){
+		return $this->hasOne('App\CMS\TipoContenedor');
 	}
-	
-	 public function tipoContenedor()
-    {
-        return $this->belongsTo('App\CMS\TipoContenedor', 'tipo');
-    }
 }

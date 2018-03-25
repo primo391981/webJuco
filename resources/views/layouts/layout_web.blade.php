@@ -1,57 +1,50 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="{{ app()->getLocale() }}">
-<head>
+  <head>
+    <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- CSRF Token -->
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+   
+   <!--css / googlefonts / icons -->
+	<link rel="stylesheet" href="css/general.css">
+	<link href="https://fonts.googleapis.com/css?family=Slabo+27px" rel="stylesheet">
+	<script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+  
+	<!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+  
+    <title>Hello, world!</title>
+  </head>
+  <body>
+  
+	<nav class="navbar navbar-expand-md navbar-light bg-faded fixed-top">
+	  <a class="navbar-brand" href="#">Navbar</a>
+	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	  </button>
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
-
-    <!-- Styles, fonts scripts-->
-    
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  	<script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
-	<link rel="stylesheet" href="{{ asset('css/general.css') }}"> 
-  	<link href="https://fonts.googleapis.com/css?family=Slabo+27px" rel="stylesheet">
-</head>
-<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
-    <div id="app">
-	
-        <nav class="navbar navbar-default navbar-fixed-top">
-		  <div class="container-fluid">
-			<div class="navbar-header">
-			  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span> 
-			  </button>
-			  <a class="navbar-brand" style="color:white; font-family: 'Slabo', serif;" href="#">FEOLA CASELLA & GONZALEZ FEOLA</a>
-			</div>
-			<div class="collapse navbar-collapse" id="myNavbar">
-			  <ul class="nav navbar-nav navbar-right">
+	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+		<ul class="navbar-nav mr-auto">
+		  <li class="nav-item ">
+			<a class="nav-link" href="#dos">Home <span class="sr-only">(current)</span></a>
+		  </li>
+		  <li class="nav-item">
+			<a class="nav-link" href="#uno">Link</a>
+		  </li>
+		  <li class="nav-item dropdown">
+			<a class="nav-link dropdown-toggle" href="#dos" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			  Dropdown
+			</a>
+			<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+			  <a class="dropdown-item" href="#">Action</a>
 			  
-				<li><a href="#nuestrafirma">NUESTRA FIRMA</a></li>
-				<li><a href="#misionvision">MISIÓN</a></li>
-				<li><a href="#misionvision">VISIÓN</a></li>
-						
-				<li class="dropdown">
-				<a class="dropdown-toggle" data-toggle="dropdown" href="#">SERVICIOS
-				<span class="caret"></span></a>
-				<ul class="dropdown-menu">
-				  <li><a href="#serviciosjuridicos">JURIDICOS</a></li>
-				  <li><a href="#asesoramientointegrado">JURIDICO - CONTABLE</a></li>
-				  </ul>
-			  </li>
-				
-				 <li><a href="#prof">PROFESIONALES</a></li>
-				<li><a href="#derechos">SUS DERECHOS</a></li>
-				<li><a href="#contacto">CONTACTO</a></li>
-			   @guest
+			</div>
+		  </li>	 
+		 
+		    @guest
 				<li><a class="nav-link" href="{{ route('login') }}">Login</a></li>
 			   @else
 				   <li class="nav-item dropdown">
@@ -76,70 +69,32 @@
 											
 											
 										</div>
-										
-										
-                               
-
-                               
-                            
+					         
 					</li>
 			   @endguest
 				
 			  </ul>
-			</div>
-		  </div>
-		</nav>
-
-        <main class="py-4">
-		<!-- Contenido que se "rellena" al heredarse las vistas en blade -->
-            @yield('content')
-        </main>
-    </div>
-
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"></script>
+		 
+		 
+		 
+		</ul>
+		
+	  </div>
+	</nav>
+    
+	<div class="jumbotron text-center">
+		<h2 style="color:white;" >Bienvenido a nuestro estudio</h2>
+		<h1 style="font-family:'Slabo', serif; color:white;">FEOLA CASELLA & GONZALEZ FEOLA</h1> 
+		<h2 style="color:white;">En defensa de sus derechos desde 1990</h2>
+		<h3 style="color:white;">La Paloma - Rocha - Uruguay</h3>		
+	</div>
 	
-	<script>
-$(document).ready(function(){
-  // Add smooth scrolling to all links in navbar + footer link
-  $(".navbar a, footer a[href='#myPage']").on('click', function(event) {
+	@yield('content')
 
-   // Make sure this.hash has a value before overriding default behavior
-  if (this.hash !== "") {
-
-    // Prevent default anchor click behavior
-    event.preventDefault();
-
-    // Store hash
-    var hash = this.hash;
-
-    // Using jQuery's animate() method to add smooth page scroll
-    // The optional number (900) specifies the number of milliseconds it takes to scroll to the specified area
-    $('html, body').animate({
-      scrollTop: $(hash).offset().top
-    }, 900, function(){
-
-      // Add hash (#) to URL when done scrolling (default click behavior)
-      window.location.hash = hash;
-      });
-    } // End if
-  });
-})
-
-
-$(window).scroll(function() {
-  $(".slideanim").each(function(){
-    var pos = $(this).offset().top;
-
-    var winTop = $(window).scrollTop();
-    if (pos < winTop + 600) {
-      $(this).addClass("slide");
-    }
-  });
-});
-
-
-</script>
-
-</body>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
 </html>
