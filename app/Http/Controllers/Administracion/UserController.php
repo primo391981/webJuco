@@ -9,10 +9,10 @@ use App\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
+	//Función que contruye el index del sitio Administracion de Usuarios
     public function index()
-	//Lista los contenidos del CMS
-    {
-		$user = User::find(5);
+	{
+		/*$user = User::find(5);
 		
 		//dd($user->roles);
 		
@@ -23,5 +23,19 @@ class UserController extends Controller
 		}
 		//Se retorna la vista "index" 
 		//return view('admin.listaContenidos', ['subtitulo' => $subtitulo, 'contenidos' => $contenidos]);
+		*/
+		$subtitulo = 'Adminsitración de Usuarios';
+		//Se retorna la vista "index" 
+		return view('Administracion.users', ['subtitulo' => $subtitulo]);
+    }
+	
+	public function lista()
+    {
+		$usuarios = User::with('roles')->get();
+			
+			
+		$subtitulo = 'Lista de Usuarios';
+		//se retorna la vista "index" 
+		return view('administracion.listaUsuarios', ['subtitulo' => $subtitulo, 'usuarios' => $usuarios]);
     }
 }
