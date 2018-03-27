@@ -9,10 +9,10 @@ class Contenedor extends Model
     //
 	protected $table = 'cms_contenedors';
 	public function tipoContenedor(){
-		return $this->hasOne('App\CMS\TipoContenedor');
+		return $this->belongsTo('App\CMS\TipoContenedor','tipo');
 	}
 	public function contenidos(){
-		return $this->belongsToMany('App\CMS\Contenidos','cms_contenido_contenedor');
+		return $this->belongsToMany('App\CMS\Contenido','cms_contenido_contenedor');
 	}
 	
 	
