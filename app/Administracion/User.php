@@ -4,13 +4,16 @@ namespace App\Administracion;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
     use Notifiable;
 	
 	protected $table = 'admin_users';
-
+	
+	use softDeletes;
+	
     /**
      * The attributes that are mass assignable.
      *

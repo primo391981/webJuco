@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Administracion\User;
 
 use App\Http\Controllers\Controller;
+use Auth;
 
 class UserController extends Controller
 {
@@ -26,7 +27,7 @@ class UserController extends Controller
 		*/
 		$subtitulo = 'Adminsitración de Usuarios';
 		//Se retorna la vista "index" 
-		return view('Administracion.users', ['subtitulo' => $subtitulo]);
+		return view('administracion.adminusuarios', ['subtitulo' => $subtitulo]);
     }
 	
 	public function lista()
@@ -38,4 +39,27 @@ class UserController extends Controller
 		//se retorna la vista "index" 
 		return view('administracion.listaUsuarios', ['subtitulo' => $subtitulo, 'usuarios' => $usuarios]);
     }
+	
+	public function activaDesactiva(Request $request) 
+	{
+		if (Auth::id() != $request->user_id) 
+		{
+			$usuario = User::findOrFail($request->user_id);
+			
+			if ($usuario->deleted_at == NULL)
+			{	
+				$usuario->delete();
+				return redirect()->route("usuarios")->with('success', $usuario->name." se eliminó");
+			} 
+			else
+			{
+				$usuario->restore();
+				return redirect()->route("usuarios")->with('success', $usuario->name." se recupero");
+			} 			
+		} 
+		else  
+		{
+			return redirect()->back()->withErrors(['No se pudo eliminar el usuario']);
+		}
+  }
 }
