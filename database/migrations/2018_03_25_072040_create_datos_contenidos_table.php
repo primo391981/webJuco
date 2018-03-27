@@ -13,10 +13,14 @@ class CreateDatosContenidosTable extends Migration
      */
     public function up()
     {
-        Schema::create('datos_contenidos', function (Blueprint $table) {
+        Schema::create('cms_datos_contenidos', function (Blueprint $table) {
             $table->increments('id');
+			$table->integer('idContenido');
+			$table->integer('tipo');
+			//$table->foreign('tipo')->references('id')->on('tiposdatos');
+			$table->string('valor');
 			
-			$table->string('titulo1')->nullable($value = true);
+			/*$table->string('titulo1')->nullable($value = true);
 			$table->string('titulo2')->nullable($value = true);
 			$table->string('sub1')->nullable($value = true);
 			$table->string('sub2')->nullable($value = true);
@@ -36,9 +40,7 @@ class CreateDatosContenidosTable extends Migration
 			$table->string('icon4')->nullable($value = true);
 			
 			$table->integer('contenido_id')->unsigned();
-            $table->foreign('contenido_id')->references('id')->on('contenidos')->onDelete('cascade');
-			
-			
+            $table->foreign('contenido_id')->references('id')->on('contenidos')->onDelete('cascade');*/
 			
 			
             $table->timestamps();
@@ -52,6 +54,6 @@ class CreateDatosContenidosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('datos_contenidos');
+        Schema::dropIfExists('cms_datos_contenidos');
     }
 }

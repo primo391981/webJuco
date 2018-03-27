@@ -12,18 +12,18 @@ class DatosContenidoTableSeeder extends Seeder
     public function run()
     {
         //
-		DB::table('datos_contenidos')->insert([
-            'contenido_id'=>1,
-			'titulo1'=>"MUESTRA TITULO 1",
-			'texto1'=>"MUESTRA TEXTO 1",
-			'imagen1'=>"ruta"
+		DB::table('cms_datos_contenidos')->insert([
+            'idContenido'=>1,
+			'tipo'=>1,
+			'valor'=>"MUESTRA Texto 1"
 		]);
 		
-		DB::table('datos_contenidos')->insert([
-            'contenido_id'=>2,
-			'titulo1'=>"MUESTRA TITULO 2",
-			'texto1'=>"MUESTRA TEXTO 2",
-			'imagen1'=>"ruta"
+		DB::table('cms_datos_contenidos')->insert([
+            'idContenido'=>2,
+			'tipo'=>2,
+			'valor'=>"MUESTRA TEXTO 2"			
 		]);
+			
+		
     }
 }

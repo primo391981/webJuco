@@ -12,13 +12,13 @@ class ContenedorsTableSeeder extends Seeder
     public function run()
     {
         //
-		 DB::table('contenedors')->insert([
+		 DB::table('cms_contenedors')->insert([
             'titulo' => "Sección 1",
 			'tipo' =>1,
 			'orden_menu' =>1,
 			'id_padre' =>1
         ]);
-		 DB::table('contenedors')->insert([
+		 DB::table('cms_contenedors')->insert([
             'titulo' => "Sección 2",
 			'tipo' =>2,
 			'orden_menu' =>2,

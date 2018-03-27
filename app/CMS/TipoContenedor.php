@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class TipoContenedor extends Model
 {
     //
-	protected $table = 'tipo_contenedors';
+	protected $table = 'cms_tipo_contenedors';
 	public function contenedor(){
 		return $this->belongsTo('App\CMS\Contenedor');
 	}
