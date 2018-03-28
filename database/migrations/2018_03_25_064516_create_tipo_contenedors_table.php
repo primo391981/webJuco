@@ -18,9 +18,15 @@ class CreateTipoContenedorsTable extends Migration
 			/*$table->integer('tipo_contenedors_id')->unsigned();*/
 			$table->string('nombre');
 			$table->string('descripcion');
-			$table->string('imagen');
+			$table->string('imagen'); //miniatura
 			$table->string('inicio_estructura');
 			$table->string('fin_estructura');
+			$table->string('titulo_contenido');
+			$table->string('subtitulo_contenido');
+			$table->string('texto_contenido');
+			$table->string('imagen_contenido');
+			$table->string('archivo_contenido');
+			$table->string('estilo');
 			
             $table->timestamps();
         });

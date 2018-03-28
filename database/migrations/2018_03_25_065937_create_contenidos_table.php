@@ -16,6 +16,7 @@ class CreateContenidosTable extends Migration
         Schema::create('cms_contenidos', function (Blueprint $table) {
             $table->increments('id');
 			$table->string('titulo');
+			$table->string('subtitulo');
 			$table->text('texto');
 			$table->string('imagen');
 			$table->string('alt_imagen');

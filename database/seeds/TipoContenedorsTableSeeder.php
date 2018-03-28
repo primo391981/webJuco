@@ -14,12 +14,21 @@ class TipoContenedorsTableSeeder extends Seeder
         //
 		DB::table('cms_tipo_contenedors')->insert([
             'nombre' => "UNO - CENTRADO BLANCO",			
-			'inicio_estructura' => "<div id='uno' class='container paddingtop'>",
+			'inicio_estructura' => "<div id='%id' class='container paddingtop'>",
 			'fin_estructura' => "</div>",
 			'descripcion'=>"CENTRADO BLANCO",
-			'imagen'=>"img"
+			'imagen'=>"img",
+			'titulo_contenido'=>"<div class='row'><div class='col-xs-12 col-sm-12 text-center'><h1>%titulo</h1></div></div>",
+			'subtitulo_contenido'=>"<div class='row'><div class='col-xs-12 col-sm-12 text-center'><h3>%subtitulo</h3></div></div>",
+			'texto_contenido'=>"<div class='row'><div class='col-xs-12 col-sm-6 offset-sm-3 text-center'>
+					<p>%texto</p>
+				</div></div>",
+			'imagen_contenido'=>"",
+			'archivo_contenido'=>"",
+			'estilo'=>""
         ]);
 		
+		/*
 		DB::table('cms_tipo_contenedors')->insert([
             'nombre' => "DOS - CENTRADO GRIS",			
 			'inicio_estructura' => "<div id='dos' class='container-fluid paddingtop fondogris'><div class='container'>",
@@ -51,5 +60,7 @@ class TipoContenedorsTableSeeder extends Seeder
 			'descripcion'=>"CENTRADO BLANCO",
 			'imagen'=>"img"
         ]);
+		
+		*/
     }
 }
