@@ -14,7 +14,7 @@ class CreateTipoContenedorsTable extends Migration
     public function up()
     {
         Schema::create('cms_tipo_contenedors', function (Blueprint $table) {
-            $table->increments('id')->unsigned();
+            $table->increments('id');
 			/*$table->integer('tipo_contenedors_id')->unsigned();*/
 			$table->string('nombre');
 			$table->string('descripcion');

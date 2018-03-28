@@ -27,10 +27,9 @@ class DatabaseSeeder extends Seeder
 		
 			TipoContenedorsTableSeeder::class,
 			ContenedorsTableSeeder::class,
-			TiposContenidosTableSeeder::class,
+			
 			ContenidosTableSeeder::class,
-			TipoDatosTableSeeder::class,
-			DatosContenidoTableSeeder::class,
+			
 			UsersTableSeeder::class,
 			RolesTableSeeder::class,
 			UserRoleTableSeeder::class,

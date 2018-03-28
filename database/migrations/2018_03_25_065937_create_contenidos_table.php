@@ -14,9 +14,16 @@ class CreateContenidosTable extends Migration
     public function up()
     {
         Schema::create('cms_contenidos', function (Blueprint $table) {
-            $table->increments('id')->unsigned();
+            $table->increments('id');
 			$table->string('titulo');
-			$table->integer('tipoContenido');
+			$table->text('texto');
+			$table->string('imagen');
+			$table->string('alt_imagen');
+			$table->string('archivo');
+			$table->string('nombre_archivo');
+			
+			
+			//$table->integer('tipoContenido');
 			
 			//$table->integer('contenidos_id')->unsigned();
 			/*$table->string('nombre');

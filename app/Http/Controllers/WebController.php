@@ -26,6 +26,9 @@ class WebController extends Controller
 		
 		$contenedores = Contenedor::OrderBy('orden_menu')->get();
 		
+		//dd($contenedores[0]->contenidos[0]->tipoContenidos);
+		//dd($contenedores[0]->contenidos[0]->datosContenido);
+		//dd($contenedores[0]->contenidos[0]->datosContenido);
 		//se recorre la lista de contenedores
 		foreach($contenedores as $contenedor){
 			
@@ -33,15 +36,23 @@ class WebController extends Controller
 			foreach($contenedor->contenidos as $contenido){
 				
 				//por cada contenido:
-				//se formatea el título de acuerdo a lo establecido por el tipo de contenedor
-				$contenido->titulo = str_replace("%s",$contenido->titulo, $contenedor->tipoContenedor->titulo_contenido);
 				
-				//se formatea el texto de acuerdo a lo establecido por el tipo de contenedor
-				$contenido->texto = str_replace("%s",$contenido->texto, $contenedor->tipoContenedor->texto_contenido);
+				foreach($contenido->datosContenido as $datos){
+					//se formatea el título de acuerdo a lo establecido por el tipo de contenedor
+					
+					//dd($datos->pivot->tipodato_id);
+					dd($contenido->tipoContenidos->estructura);
+					$contenido->tipoContenidos->estructura = str_replace("%titulo",$datos   ,$contenido->tipoContenidos->estructura);
+					dd($contenido->tipoContenidos->estructura);
 				
-				//se formatea la imagen de acuerdo a lo establecido por el tipo de contenedor y se completa el texto "alt"
-				$contenido->imagen = str_replace("%s",$contenido->imagen, $contenedor->tipoContenedor->imagen_contenido);
-				$contenido->imagen = str_replace("%x",$contenido->alt_imagen, $contenedor->tipoContenedor->imagen_contenido);
+					//se formatea el texto de acuerdo a lo establecido por el tipo de contenedor
+					$contenido->texto = str_replace("%s",$contenido->texto, $contenedor->tipoContenedor->texto_contenido);
+				
+					//se formatea la imagen de acuerdo a lo establecido por el tipo de contenedor y se completa el texto "alt"
+					$contenido->imagen = str_replace("%s",$contenido->imagen, $contenedor->tipoContenedor->imagen_contenido);
+					$contenido->imagen = str_replace("%x",$contenido->alt_imagen, $contenedor->tipoContenedor->imagen_contenido);
+				}
+				
 				
 			}
 			
