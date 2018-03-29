@@ -21,11 +21,14 @@ class CreateTipoContenedorsTable extends Migration
 			$table->string('imagen'); //miniatura
 			$table->string('inicio_estructura');
 			$table->string('fin_estructura');
+			$table->text('estructura_contenido');
+			/*
 			$table->string('titulo_contenido');
 			$table->string('subtitulo_contenido');
 			$table->string('texto_contenido');
 			$table->string('imagen_contenido');
 			$table->string('archivo_contenido');
+			*/
 			$table->string('estilo');
 			
             $table->timestamps();

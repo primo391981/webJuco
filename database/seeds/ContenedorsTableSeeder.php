@@ -24,9 +24,9 @@ class ContenedorsTableSeeder extends Seeder
 
 		DB::table('cms_contenedors')->insert([
             'titulo' => "Sección 2",
-			'tipo' =>1,
+			'tipo' =>2,
 			'orden_menu' =>2,
-			'id_itemmenu' =>1,
+			'id_itemmenu' =>2,
 			'color' =>'',
 			'img_fondo' =>'',
 			'ancho_pantalla' =>''
