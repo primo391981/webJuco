@@ -25,7 +25,7 @@ Route::group(['middleware' => ['auth']], function () {
 	//usuarios
 	Route::get('adminusuarios', 'Administracion\UserController@index')->name('adminusuarios')->middleware('role:superAdmin');
 	Route::get('usuarios', 'Administracion\UserController@lista')->name('usuarios')->middleware('role:superAdmin');
-	Route::post('usuario_activa_desactiva', 'Administracion\UserController@activaDesactiva')->name('usuario_activa_desactiva')->middleware('role:superAdmin');;
+	Route::post('usuario_activa_desactiva', 'Administracion\UserController@activaDesactiva')->name('usuario_activa_desactiva')->middleware('role:superAdmin');
 	
 	//admin
 	Route::get('admin', 'Administracion\AdminController@index')->name('admin');
