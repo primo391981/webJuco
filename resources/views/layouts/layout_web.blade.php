@@ -28,7 +28,7 @@
 
 	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
 		<ul class="navbar-nav mr-auto">
-			@foreach($menuitems as $menuitem)
+			@foreach($menuitems as $menuitem) 
 				<li class="nav-item">
 					<a class="nav-link" href="#{{ $menuitem->contenedores[0]->id }}">{{ $menuitem->titulo }}</a>
 				</li>
