@@ -27,38 +27,42 @@
 				</tr>
 			</thead>
 			<tbody>
-			@foreach($usuarios as $usuario)
 			
-			<tr>
-				<td>{{$usuario->id}}</td>
-				<td>{{$usuario->name}}</td>
-				<td>{{$usuario->nombre}}</td>
-				<td>{{$usuario->apellido}}</td>
-				<td>{{$usuario->email}}</td>
-				<td>
-					@foreach ($usuario->roles()->pluck('nombre') as $role)
-						@if ($loop->first)
-							<span class="label label-default">{{ $role }}</span>
-						@else
-							<span class="label label-default"> <br> {{ $role }}</span>						
-						@endif					
-                    @endforeach</td>
-				<td>
-					modificar 
-					
-					<form method="POST" action="{{ route('usuario_activa_desactiva') }}">
-						@csrf
-						<input type="hidden" name="user_id" value="{{$usuario->id}}">
-						<button type="submit" class="btn btn-primary">
-							@if ($usuario->deleted_at == NULL)
-								Elimnar 
+			@foreach($usuarios as $usuario)
+			@if ($usuario->trashed())
+				<tr class="table-active">
+			@else
+				<tr>
+			@endif
+					<td>{{$usuario->id}}</td>
+					<td>{{$usuario->name}}</td>
+					<td>{{$usuario->nombre}}</td>
+					<td>{{$usuario->apellido}}</td>
+					<td>{{$usuario->email}}</td>
+					<td>
+						@foreach ($usuario->roles()->pluck('nombre') as $role)
+							@if ($loop->first)
+								<span class="label label-default">{{ $role }}</span>
 							@else
-								Recuperar
-							@endif
-						</button>
-					</form>				
-				</td>
-			</tr>
+								<span class="label label-default"> <br> {{ $role }}</span>						
+							@endif					
+						@endforeach</td>
+					<td>
+						modificar 
+						
+						<form method="POST" action="{{ route('usuario_activa_desactiva') }}">
+							@csrf
+							<input type="hidden" name="user_id" value="{{$usuario->id}}">
+							<button type="submit" class="btn btn-primary">
+								@if ($usuario->trashed())
+									Recuperar
+								@else
+									Elimnar 
+								@endif
+							</button>
+						</form>				
+					</td>
+				</tr>
 			@endforeach
 			</tbody>
 			</table>

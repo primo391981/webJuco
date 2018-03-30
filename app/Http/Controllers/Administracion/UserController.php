@@ -31,7 +31,7 @@ class UserController extends Controller
 	{
 		if (Auth::id() != $request->user_id) 
 		{
-			$usuario = User::withTrashed()->where('id', $request->user_id);
+			$usuario = User::withTrashed()->where('id', $request->user_id)->first();
 			
 			if ($usuario->trashed())
 			{	
