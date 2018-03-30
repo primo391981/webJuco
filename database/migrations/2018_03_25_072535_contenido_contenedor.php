@@ -14,11 +14,11 @@ class ContenidoContenedor extends Migration
     public function up()
     {
         //
-		Schema::create('contenido_contenedor', function (Blueprint $table) {
+		Schema::create('cms_contenido_contenedor', function (Blueprint $table) {
             $table->integer('contenido_id')->unsigned();
-           $table->foreign('contenido_id')->references('id')->on('contenidos')->onDelete('cascade');
+           $table->foreign('contenido_id')->references('id')->on('cms_contenidos');
             $table->integer('contenedor_id')->unsigned();
-           $table->foreign('contenedor_id')->references('id')->on('contenedors')->onDelete('cascade');
+           $table->foreign('contenedor_id')->references('id')->on('cms_contenedors');
             $table->primary(['contenedor_id', 'contenido_id']);
         });
     }
@@ -31,5 +31,6 @@ class ContenidoContenedor extends Migration
     public function down()
     {
         //
+		Schema::dropIfExists('cms_contenido_contenedor');
     }
 }

@@ -43,7 +43,21 @@
 							<span class="label label-default"> <br> {{ $role }}</span>						
 						@endif					
                     @endforeach</td>
-				<td>modificar elimnar</td>
+				<td>
+					modificar 
+					
+					<form method="POST" action="{{ route('usuario_activa_desactiva') }}">
+						@csrf
+						<input type="hidden" name="user_id" value="{{$usuario->id}}">
+						<button type="submit" class="btn btn-primary">
+							@if ($usuario->deleted_at == NULL)
+								Elimnar 
+							@else
+								Recuperar
+							@endif
+						</button>
+					</form>				
+				</td>
 			</tr>
 			@endforeach
 			</tbody>

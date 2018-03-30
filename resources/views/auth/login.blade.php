@@ -1,4 +1,4 @@
-@extends('layouts.layout_web')
+@extends('layouts.layout_login')
 
 @section('content')
 <div class="container" style="padding-top:120px;">

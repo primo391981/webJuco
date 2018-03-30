@@ -12,84 +12,55 @@ class ContenidosTableSeeder extends Seeder
     public function run()
     {
         //
-		DB::table('contenidos')->insert([
-            'nombre' => "CONTENIDO 1",
-			'estructura' => "<div class='row'><div class='col-xs-12 col-sm-12 col-md-6'><h1>%titulo</h1><p>%texto</p></div><div class='col-xs-12 col-sm-12 col-md-6'>
-			<img src='%imagen' class='img-fluid mx-auto d-block' alt='%alt'/></div></div>"
+		DB::table('cms_contenidos')->insert([
+            'titulo' => 'titulo1',
+			'subtitulo' => 'subtitulo1',
+			'texto' => 'Lorem Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum',
+			'imagen' =>'',
+			'alt_imagen' => '',
+			'archivo' =>'',
+			'nombre_archivo' => ''
         ]);
 		
-		DB::table('contenidos')->insert([
-            'nombre' => "CONTENIDO 2",
-			'estructura' => "<div class='row'><div class='col-xs-12 col-sm-12 col-md-6'><h1>%titulo</h1><p>%texto</p></div><div class='col-xs-12 col-sm-12 col-md-6'><h1>%titulo2</h1>
-			<p>%texto2</p></div></div>"
+		DB::table('cms_contenidos')->insert([
+            'titulo' => 'titulo2',
+			'subtitulo' => 'subtitulo1',
+			'texto' => 'Lorem Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum',
+			'imagen' =>'',
+			'alt_imagen' => '',
+			'archivo' =>'',
+			'nombre_archivo' => ''
         ]);
 		
-		DB::table('contenidos')->insert([
-            'nombre' => "CONTENIDO 3",
-			'estructura' => "<div class='row'><div class='col-xs-12 col-sm-12 text-center'><h1>%titulo</h1>	<br></div></div>	
-		<div class='row'>
-			<div class='col-xs-12 col-sm-6 col-md-3 text-center'>
-				<i class='%icono1'></i>
-				<h3>%sub1</h3>
-				<p>%texto1</p>
-			</div>
-			<div class='col-xs-12 col-sm-6 col-md-3 text-center'>
-				<i class='%icono2'></i>
-				<h3>%sub2</h3>
-				<p>%texto2</p>
-			</div>
-			<div class='col-xs-12 col-sm-6 col-md-3 text-center'>
-				<i class='icono3'></i>
-				<h3>%sub3</h3>
-				<p>%texto3</p>
-			</div>
-			<div class='col-xs-12 col-sm-6 col-md-3 text-center'>
-				<i class='%icono4'></i>
-				<h3>%sub4</h3>
-				<p>%texto4</p>
-			</div>			
-		</div>"
+		DB::table('cms_contenidos')->insert([
+            'titulo' => 'titulo3',
+			'subtitulo' => 'subtitulo1',
+			'texto' => 'Lorem Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum',
+			'imagen' =>'',
+			'alt_imagen' => '',
+			'archivo' =>'',
+			'nombre_archivo' => ''
         ]);
 		
-		DB::table('contenidos')->insert([
-            'nombre' => "CONTENIDO 4",
-			'estructura' => "<div class='row'>			
-			<div class='col-xs-12 col-sm-12 text-center'>				
-				<h1>%titulo1</h1>
-				<h3>%sub1</h3>
-			</div>
-		</div>	
-		
-		<div class='row'>	
-			<div class='col-xs-12 col-sm-6 offset-sm-3 text-center'>
-					<p>%texto1</p>
-				</div>						
-		</div> "
+		DB::table('cms_contenidos')->insert([
+            'titulo' => 'titulo4',
+			'subtitulo' => 'subtitulo1',
+			'texto' => 'Lorem Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum',
+			'imagen' =>'',
+			'alt_imagen' => '',
+			'archivo' =>'',
+			'nombre_archivo' => ''
         ]);
 		
-		DB::table('contenidos')->insert([
-            'nombre' => "CONTENIDO 5",
-			'estructura' => "<div class='row'>			
-			<div class='col-xs-12 col-sm-12 text-center'>
-				<h1>%titulo1</h1>
-				<br>
-			</div>
-		</div>
-		<div class='row'>
-			<div class='col-xs-12 col-sm-5 offset-sm-1 text-center'>
-				<img src='%imagen1' class='img-fluid center-block' alt='%alt'/>
-				<h3><strong>%sub1</strong></h3>
-				<p>%texto1</p>
-			</div>
-			<div class='col-xs-12 col-sm-5 text-center'>
-				<img src='%imagen2' class='img-fluid center-block' alt='%alt2'/>
-				<h3><strong>%sub2</strong></h3>
-				<p>%texto2</p>
-			</div>						
-		</div>"
+		DB::table('cms_contenidos')->insert([
+            'titulo' => 'titulo5',
+			'subtitulo' => 'subtitulo1',
+			'texto' => 'Lorem Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum',
+			'imagen' =>'',
+			'alt_imagen' => '',
+			'archivo' =>'',
+			'nombre_archivo' => ''
         ]);
-		
-		
-		//falta agregar el ocntenido de links de descarga
+	
     }
 }

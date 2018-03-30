@@ -13,11 +13,27 @@ class CreateContenidosTable extends Migration
      */
     public function up()
     {
-        Schema::create('contenidos', function (Blueprint $table) {
-            $table->increments('id')->unsigned();
+        Schema::create('cms_contenidos', function (Blueprint $table) {
+            $table->increments('id');
+			$table->string('titulo');
+			$table->string('subtitulo');
+			$table->text('texto');
+			$table->string('imagen');
+			$table->string('alt_imagen');
+			$table->string('archivo');
+			$table->string('nombre_archivo');
+			
+			
+			//$table->integer('tipoContenido');
+			
 			//$table->integer('contenidos_id')->unsigned();
-			$table->string('nombre');
+			/*$table->string('nombre');
 			$table->string('estructura',1000);
+			$table->string('imagen');
+			$table->string('descripcion');*/
+			
+			$table->softDeletes();
+			
 			$table->timestamps();
         });
     }
@@ -29,6 +45,6 @@ class CreateContenidosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('contenidos');
+        Schema::dropIfExists('cms_contenidos');
     }
 }

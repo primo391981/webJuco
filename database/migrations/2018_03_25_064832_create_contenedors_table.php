@@ -13,15 +13,15 @@ class CreateContenedorsTable extends Migration
      */
     public function up()
     {
-        Schema::create('contenedors', function (Blueprint $table) {
+        Schema::create('cms_contenedors', function (Blueprint $table) {
             $table->increments('id');
-			$table->string('titulo');//esto es lo que va en el menu
-			$table->integer('tipo')->unsigned();
-			$table->integer('orden_menu');//
-			$table->integer('id_padre'); //si es cero, va en el menú principal, sino, va en el submenu en el orden que indica orden_menu
-			
-			$table->foreign('tipo')->references('id')->on('tipo_contenedors')->onDelete('cascade');
-			
+			$table->string('titulo');
+			$table->integer('tipo');
+			$table->integer('orden_menu');
+			$table->integer('id_itemmenu');
+			$table->string('color'); 
+			$table->string('img_fondo');
+			$table->string('ancho_pantalla');
 			
             $table->timestamps();
         });
@@ -34,6 +34,6 @@ class CreateContenedorsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('contenedors');
+        Schema::dropIfExists('cms_contenedors');
     }
 }
