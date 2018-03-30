@@ -6,8 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Contenido extends Model
 {
-    //
-	protected $table = 'cms_contenidos';
+    protected $table = 'cms_contenidos';
 	public function tipoContenido(){
 		return $this->belongsTo('CMS\TipoContenido','tipoContenido');
 	}

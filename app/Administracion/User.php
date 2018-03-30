@@ -13,7 +13,7 @@ class User extends Authenticatable
 	protected $table = 'admin_users';
 	
 	use softDeletes;
-	
+		
     /**
      * The attributes that are mass assignable.
      *
@@ -32,6 +32,7 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 	
+		
 	public function roles()
 	{
 		return $this->belongsToMany('App\Administracion\Role','admin_user_role');
