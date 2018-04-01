@@ -24,8 +24,11 @@ Auth::routes();
 Route::group(['middleware' => ['auth']], function () {
 	//usuarios
 	Route::get('adminusuarios', 'Administracion\UserController@index')->name('adminusuarios')->middleware('role:superAdmin');
-	Route::get('usuarios', 'Administracion\UserController@lista')->name('usuarios')->middleware('role:superAdmin');
-	Route::post('usuario_activa_desactiva', 'Administracion\UserController@activaDesactiva')->name('usuario_activa_desactiva')->middleware('role:superAdmin');
+	Route::get('usuarios/{estado?}', 'Administracion\UserController@lista')->name('usuarios')->middleware('role:superAdmin');
+	Route::post('del_usuario', 'Administracion\UserController@eliminaRecupera')->name('del_usuario')->middleware('role:superAdmin');
+	Route::get('edit_usuario/{id}', 'Administracion\UserController@edita')->name('edit_usuario')->middleware('role:superAdmin');
+	Route::post('edit_usuario/{id}', 'Administracion\UserController@modificar')->name('edit_usuario')->middleware('role:superAdmin');
+	
 	
 	//admin
 	Route::get('admin', 'Administracion\AdminController@index')->name('admin');

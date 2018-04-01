@@ -18,16 +18,24 @@ class UserController extends Controller
 		return view('administracion.adminusuarios', ['subtitulo' => $subtitulo]);
     }
 	
-	public function lista()
+	public function lista($estado='activos')
     {
-		$usuarios = User::withTrashed()->with('roles')->get();
-						
-		$subtitulo = 'Lista de Usuarios';
-		//se retorna la vista "index" 
-		return view('administracion.listaUsuarios', ['subtitulo' => $subtitulo, 'usuarios' => $usuarios]);
+		
+		if ($estado == "activos")
+		{
+			$subtitulo = 'Lista de Usuarios Activos';
+			$usuarios = User::with('roles')->get();
+		}
+		else
+		{
+			$subtitulo = 'Lista de Usuarios Eliminados';
+			$usuarios = User::onlyTrashed()->with('roles')->get();
+		}		
+		//se retorna la vista "listaUsuarios" 
+		return view('administracion.listaUsuarios', ['subtitulo' => $subtitulo, 'usuarios' => $usuarios, 'estado' => $estado]);
     }
 	
-	public function activaDesactiva(Request $request) 
+	public function eliminaRecupera(Request $request) 
 	{
 		if (Auth::id() != $request->user_id) 
 		{
@@ -36,17 +44,49 @@ class UserController extends Controller
 			if ($usuario->trashed())
 			{	
 				$usuario->restore();
-				return redirect()->route("usuarios")->with('success', $usuario->name." se recupero");				
+				return redirect()->route("usuarios", ['estado' => 'eliminados'])->with('success', "El usuario ".$usuario->name." se recupero correctamente");				
 			} 
 			else
 			{
 				$usuario->delete();
-				return redirect()->route("usuarios")->with('success', $usuario->name." se eliminó");
+				return redirect()->route("usuarios")->with('success', "El usuario ".$usuario->name." se eliminó correctamente");
 			} 			
 		} 
 		else  
 		{
 			return redirect()->back()->withErrors(['No se pudo eliminar el usuario']);
 		}
-  }
+	}
+	
+	public function edita($idUsuario)
+	{
+		$usuario = User::withTrashed()->where('id', $idUsuario)->first();
+						
+		$subtitulo = 'Modificar Ususario';
+		//se retorna a la vista del formulario de modificar 
+		return view('administracion.modificaUsuario', ['subtitulo' => $subtitulo, 'usuario' => $usuario]);
+	}
+	
+	public function modificar($idUsuario, Request $request)
+	{
+		$request->validate([
+			'nombre' => 'required',
+			'apellido' => 'required',
+			'email' => 'required|email|max:255',
+			
+		]);
+		
+		$usuario = User::find($idUsuario);
+		$usuario->nombre = $request['nombre'];
+		$usuario->apellido = $request['apellido'];
+		$usuario->email = $request['email'];
+		
+		
+		$usuario->save();
+		
+		$subtitulo = 'Modificar Ususario';
+		
+		//se retorna la vista "listaUsuarios" 
+		return redirect()->route("usuarios")->with('success', "El usuario ".$usuario->name." ha sido modificado correctamente.");		
+	}
 }
