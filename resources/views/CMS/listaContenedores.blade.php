@@ -9,7 +9,7 @@
 @section('content')
 	<div class="row">
 		<div class="col-sm-12 pull-right">
-			<a href="{{ route('add_contenedor') }}">Agregar</a>
+			<a href="{{ route('contenedor.create') }}">Agregar</a>
 		</div>
 	</div>
 	<div class="row">

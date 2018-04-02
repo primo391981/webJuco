@@ -37,7 +37,7 @@
 						
 						  <ul class="nav nav-pills flex-column">
 							<li class="nav-item">
-							  <a class="nav-link" href="{{ route('contenedores') }}">Contenedores <span class="sr-only">(current)</span></a>
+							  <a class="nav-link" href="{{ route('contenedor.index') }}">Contenedores <span class="sr-only">(current)</span></a>
 							</li>
 							<li class="nav-item">
 							  <a class="nav-link" href="{{ route('contenidos') }}">Contenidos</a>

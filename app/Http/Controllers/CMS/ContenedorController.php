@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\CMS;
 
 use App\Http\Controllers\Controller;
@@ -10,11 +9,17 @@ use Illuminate\Http\Request;
 use App\CMS\Contenedor;
 use App\CMS\TipoContenedor;
 
+
 class ContenedorController extends Controller
 {
-   	public function lista()
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
     {
-		//Si bien se puede acceder directamente a la vista desde la ruta, se mantiene el acceso via controller por si en el futuro se agrega funcionalidad desde este punto
+       //Si bien se puede acceder directamente a la vista desde la ruta, se mantiene el acceso via controller por si en el futuro se agrega funcionalidad desde este punto
 		
 		//se retorna la vista "index" 
 		//return view('admin.admin');
@@ -26,9 +31,15 @@ class ContenedorController extends Controller
 		//se retorna la vista "index" 
 		return view('cms.listaContenedores', ['subtitulo' => $subtitulo, 'contenedores' => $contenedores]);
     }
-	
-	public function agrega()
-	//Redirige al formulario de agregar contenedor.
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //Redirige al formulario de agregar contenedor.
 	{
 		$subtitulo = 'Agregar Contenedor';
 		
@@ -36,27 +47,61 @@ class ContenedorController extends Controller
 	
 		return view('cms.agregarContenedor', ['subtitulo' => $subtitulo, 'tipos_contenedor' => $tipos_contenedor]);
 	}
-	
-	public function crear(Request $request)
-	//Valida y agrega el contenedor con los datos ingresados en el formulario.
-	{
-		$request->validate([
-			'titulo' => 'required',
-			'tipo' => 'required',
-			'orden_menu' => 'required|integer',
-			'id_padre' => 'required|integer',			
-		]);
-		
-		$contenedor = new Contenedor();
-		
-		$contenedor->titulo = $request['titulo'];
-		$contenedor->tipo = $request['tipo'];
-		$contenedor->orden_menu = $request['orden_menu'];
-		$contenedor->id_padre = $request['id_padre'];
-		
-		$contenedor->save();
-				
-		// agregar mensaje "Creado correctamente";
-		return view('cms.listaContenedores', ['subtitulo' => $subtitulo, 'contenedores' => $contenedores]);
-	}
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Contenedors  $contenedors
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Contenedors $contenedors)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Contenedors  $contenedors
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Contenedors $contenedors)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Contenedors  $contenedors
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Contenedors $contenedors)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Contenedors  $contenedors
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Contenedors $contenedors)
+    {
+        //
+    }
 }
