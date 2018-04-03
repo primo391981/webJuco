@@ -17,8 +17,8 @@
 		<label for="texto" class="col-md-4 col-form-label text-md-right">Tipo</label>
 		<div class="col-md-6">
 			<select name="tipo" id="tipo">
-				@foreach($tipos_contenedor as $tipo)
-					<option value="{{ $tipo->id }}">{{ $tipo->nombre }}</option>  
+				@foreach($tipos_contenedor as $key => $tipo)
+					<option value="{{ $tipo->id }}" {{ old('tipo', $contenedor->tipo) == $key + 1 ? 'selected' : '' }}>{{ $tipo->nombre }}</option>  
 				@endforeach
 			</select>
 		</div>			
@@ -51,11 +51,11 @@
 	</div>
 	
 	<div class="form-group row">
-		<label for="orden_menu" class="col-md-4 col-form-label text-md-right">Color de fondo</label>
+		<label for="color" class="col-md-4 col-form-label text-md-right">Color de fondo</label>
 		<div class="col-md-6">
-			<select name="tipo" id="color">
-				<option value="1">blanco</option>
-				<option value="2">gris</option>
+			<select name="color" id="color">
+				<option value="1" {{ old('color', $contenedor->color) == 1 ? 'selected' : '' }}>blanco</option>
+				<option value="2" {{ old('color', $contenedor->color) == 2 ? 'selected' : '' }}>gris</option>
 			</select>
 		</div>			
 	</div>
@@ -63,8 +63,16 @@
 	<div class="form-group row">
 		<label for="ancho_pantalla" class="col-md-4 col-form-label text-md-right">Ancho de pantalla</label>
 		<div class="col-md-6">
-		  <input type="checkbox" aria-label="Ancho de pantalla completo" id="ancho_pantalla">
+		  <input type="checkbox" aria-label="Ancho de pantalla completo" id="ancho_pantalla"  name="ancho_pantalla" {{ old('ancho_pantalla', $contenedor->ancho_pantalla) == 2 ? 'checked' : '' }}>
 		  <label for="ancho_pantalla" class="col-md-1 col-form-label text-md-right">Completo</label>
+		</div>
+	</div>
+	
+	<div class="form-group row">
+		<label for="img_fondo" class="col-md-4 col-form-label text-md-right">Imagen de fondo</label>
+		<div class="col-md-6">
+		  <input type="checkbox" aria-label="Ancho de pantalla completo" id="img_fondo"  name="img_fondo" {{ old('img_fondo', $contenedor->img_fondo) == 1 ? 'checked' : '' }}>
+		  <label for="img_fondo" class="col-md-3 col-form-label text-md-right">Imagen de fondo</label>
 		</div>
 	</div>
 	

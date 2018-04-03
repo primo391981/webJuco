@@ -34,7 +34,7 @@
 				<td>{{$contenedor->tipo}}</td>
 				<td>{{$contenedor->orden_menu}}</td>
 				<td>{{$contenedor->id_padre}}</td>
-				<td>modificar elimnar</td>
+				<td><a href="{{ route('contenedor.edit', ['contenedor' => $contenedor])}}">modificar</a> elimnar</td>
 			</tr>
 			@endforeach
 			</tbody>

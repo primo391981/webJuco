@@ -29,7 +29,7 @@ class ContenedorController extends Controller
 		
 		$subtitulo = 'Lista de Contenedores';
 		//se retorna la vista "index" 
-		return view('cms.listaContenedores', ['subtitulo' => $subtitulo, 'contenedores' => $contenedores]);
+		return view('cms.contenedor.listaContenedores', ['subtitulo' => $subtitulo, 'contenedores' => $contenedores]);
     }
 
     /**
@@ -45,7 +45,7 @@ class ContenedorController extends Controller
 		
 		$tipos_contenedor = TipoContenedor::All();
 	
-		return view('cms.agregarContenedor', ['subtitulo' => $subtitulo, 'tipos_contenedor' => $tipos_contenedor]);
+		return view('cms.contenedor.agregarContenedor', ['subtitulo' => $subtitulo, 'tipos_contenedor' => $tipos_contenedor]);
 	}
     }
 
@@ -66,9 +66,10 @@ class ContenedorController extends Controller
      * @param  \App\Contenedors  $contenedors
      * @return \Illuminate\Http\Response
      */
-    public function show(Contenedors $contenedors)
+    public function show(Contenedor $contenedor)
     {
         //
+				
     }
 
     /**
@@ -77,9 +78,15 @@ class ContenedorController extends Controller
      * @param  \App\Contenedors  $contenedors
      * @return \Illuminate\Http\Response
      */
-    public function edit(Contenedors $contenedors)
+    public function edit(Contenedor $contenedor)
     {
         //
+		 //
+		$subtitulo = 'Editar Contenedor';
+		
+		$tipos_contenedor = TipoContenedor::All();
+		
+		return view('cms.contenedor.editarContenedor', ['subtitulo' => $subtitulo, 'tipos_contenedor' => $tipos_contenedor, 'contenedor' => $contenedor]);
     }
 
     /**
@@ -89,10 +96,40 @@ class ContenedorController extends Controller
      * @param  \App\Contenedors  $contenedors
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Contenedors $contenedors)
+    public function update(Request $request, Contenedor $contenedor)
     {
-        //
-    }
+        //TODO: validar
+	
+		
+		
+		//$cont = Contenedor::findOrFail($contenedor->id);
+		
+		
+		$contenedor->titulo = $request->input('titulo');
+		$contenedor->tipo = $request->input('tipo');
+		$contenedor->orden_menu = $request->input('orden_menu');
+		$contenedor->id_itemmenu = $request->input('id_itemmenu');
+		$contenedor->color = $request->input('color');
+		
+		if($request->input('img_fondo')!==null){
+			$contenedor->img_fondo = "1";
+		} else {
+			$contenedor->img_fondo = "0";
+		}
+			
+		if($request->input('ancho_pantalla')!==null){
+			$contenedor->ancho_pantalla = "2";
+		} else {
+			$contenedor->ancho_pantalla = "1";
+		}
+		
+		$contenedor->save();
+		
+		//dd($contenedor);
+		return redirect()->route('contenedor.edit',['contenedor' => $contenedor]);
+		//return redirect()->route('contenedor.index');
+		
+	}
 
     /**
      * Remove the specified resource from storage.
@@ -100,7 +137,7 @@ class ContenedorController extends Controller
      * @param  \App\Contenedors  $contenedors
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Contenedors $contenedors)
+    public function destroy(Contenedor $contenedor)
     {
         //
     }

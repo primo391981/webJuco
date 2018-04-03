@@ -17,9 +17,9 @@ class ContenedorsTableSeeder extends Seeder
 			'tipo' =>1,
 			'orden_menu' =>1,
 			'id_itemmenu' =>1,
-			'color' =>'',
-			'img_fondo' =>'',
-			'ancho_pantalla' =>''
+			'color' =>'2',
+			'img_fondo' =>'1',
+			'ancho_pantalla' =>'2'
         ]);
 
 		DB::table('cms_contenedors')->insert([
@@ -27,11 +27,10 @@ class ContenedorsTableSeeder extends Seeder
 			'tipo' =>2,
 			'orden_menu' =>2,
 			'id_itemmenu' =>2,
-			'color' =>'',
-			'img_fondo' =>'',
-			'ancho_pantalla' =>''
+			'color' =>'1',
+			'img_fondo' =>'0',
+			'ancho_pantalla' =>'1'
         ]);
-		
 		
     }
 }

@@ -14,7 +14,7 @@ class TipoContenedorsTableSeeder extends Seeder
         //
 		DB::table('cms_tipo_contenedors')->insert([
             'nombre' => "UNO - CENTRADO BLANCO",			
-			'inicio_estructura' => "<div id='%id' class='container paddingtop'>",
+			'inicio_estructura' => "<div id='%id' class='container%fluid paddingtop %fondo %img_fondo'>",
 			'fin_estructura' => "</div>",
 			'descripcion'=>"CENTRADO BLANCO",
 			'imagen'=>"img",
@@ -35,7 +35,7 @@ class TipoContenedorsTableSeeder extends Seeder
 		
 		DB::table('cms_tipo_contenedors')->insert([
             'nombre' => "DOS - 4 columnas",			
-			'inicio_estructura' => "<div id='%id' class='container paddingtop'>	
+			'inicio_estructura' => "<div id='%id' class='container%fluid paddingtop %fondo %img_fondo'>	
 	<div class='col-xs-12 col-sm-12 text-center'>
 				<h1>%titulo_contenedor</h1>
 				<br>

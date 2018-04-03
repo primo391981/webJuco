@@ -9,7 +9,7 @@
                 
 	<form method="POST" action="{{ route('contenedor.store') }}">
 		
-	@include('cms.formContenedor', ['textoBoton' => 'crear contenedor'])
+	@include('cms.contenedor.formContenedor', ['textoBoton' => 'crear contenedor'])
 		
 	</form>				
 @endsection

@@ -45,6 +45,28 @@ class WebController extends Controller
 				
 				$contenedor->inicio_estructura = str_replace("%id", $contenedor->id ,$contenedor->inicio_estructura);
 				
+				$fondo = "";
+				$ancho = "";
+				
+				if($contenedor->color == "2"){
+					$fondo = "fondogris";
+				}; 
+				
+				$contenedor->inicio_estructura = str_replace("%fondo", $fondo ,$contenedor->inicio_estructura);
+				
+				if($contenedor->ancho_pantalla == "2"){
+					$ancho = "-fluid";
+				};
+				
+				$contenedor->inicio_estructura = str_replace("%fluid", $ancho ,$contenedor->inicio_estructura);
+				
+				$img_fondo = "";
+				
+				if($contenedor->img_fondo == "1"){
+					$img_fondo = "fondo1";
+				};
+				
+				$contenedor->inicio_estructura = str_replace("%img_fondo", $img_fondo ,$contenedor->inicio_estructura);
 				
 				//se recorre la lista de contenidos de cada contenedor
 				foreach($contenedor->contenidos as $contenido){

@@ -194,3 +194,9 @@ html {
   color: #ff0000;
   background-color: #b20000;
 }
+
+.fondo1 {
+	background-image: url('/img/2.jpg'); 
+	background-size: cover; 
+	color: white;
+}
