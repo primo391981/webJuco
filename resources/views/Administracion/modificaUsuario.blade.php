@@ -68,7 +68,35 @@
 				@endif
 			</div>
 		</div>
-		
+		<!--
+		<div class="form-group row">
+			<label for="roles" class="col-md-4 col-form-label text-md-right">Rol de usuario</label>
+			
+			<div class="col-md-6">
+				<div class="list-group" id="list1">
+					<a href="#" class="list-group-item active">List 1 <input title="toggle all" type="checkbox" class="all pull-right"></a>
+					<a href="#" class="list-group-item">Second item <input type="checkbox" class="pull-right"></a>
+					<a href="#" class="list-group-item">Third item <input type="checkbox" class="pull-right"></a>
+					<a href="#" class="list-group-item">More item <input type="checkbox" class="pull-right"></a>
+					<a href="#" class="list-group-item">Another <input type="checkbox" class="pull-right"></a>
+				</div>
+			</div>
+			
+			<div class="col-md-2 v-center">
+				<button title="Send to list 2" class="btn btn-default center-block add"><i class="glyphicon glyphicon-chevron-right"></i></button>
+				<button title="Send to list 1" class="btn btn-default center-block remove"><i class="glyphicon glyphicon-chevron-left"></i></button>
+			</div>
+			
+			<div class="col-sm-4">
+				<div class="list-group" id="list2">
+					<a href="#" class="list-group-item active">List 2 <input title="toggle all" type="checkbox" class="all pull-right"></a>
+					<a href="#" class="list-group-item">Alpha <input type="checkbox" class="pull-right"></a>
+					<a href="#" class="list-group-item">Charlie <input type="checkbox" class="pull-right"></a>
+					<a href="#" class="list-group-item">Bravo <input type="checkbox" class="pull-right"></a>
+				</div>
+			</div>
+		</div>
+		-->		
 		<div class="form-group row mb-0">
             <div class="col-md-4 offset-md-2">
 				<button type="submit" class="btn btn-primary btn-md btn-block">
@@ -85,9 +113,5 @@
 			</div>
 		</div>
 		
-	</form>	
-	
-			
-	
-	
+	</form>		
 @endsection

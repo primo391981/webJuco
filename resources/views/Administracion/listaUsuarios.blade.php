@@ -76,6 +76,7 @@
 								</form>				 
 							@endif
 							
+							@if (Auth::id() != $usuario->id)
 							<form method="POST" action="{{ route('del_usuario') }}"> 
 								@csrf
 								<input type="hidden" name="user_id" value="{{$usuario->id}}">
@@ -86,7 +87,8 @@
 										Elimnar 
 									@endif
 								</button>
-							</form>				
+							</form>	
+							@endif
 						</td>
 					</tr>
 			@endforeach
