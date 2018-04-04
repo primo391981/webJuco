@@ -9,7 +9,7 @@
 @section('content')
                	<div class="row">
                     <div class="col-sm-12 pull-right">
-						<a href="{{ route('add_contenido') }}">Agregar</a>
+						<a href="{{ route('contenido.create') }}">Agregar</a>
 					</div>
                 </div>
 				<div class="row">	
@@ -37,7 +37,9 @@
 								<td>{{$contenido->imagen}}</td>
 								<td>{{$contenido->alt_imagen}}</td>
 								<td>{{$contenido->tipo}}</td>
-								<td>modificar elimnar</td>
+								<td>
+									<a href="{{ route('contenido.edit', ['contenido' => $contenido]) }}">modificar</a> elimnar
+								</td>
 							</tr>
 						@endforeach
 						</tbody>

@@ -56,6 +56,31 @@ class ContenedorController extends Controller
     public function store(Request $request)
     {
         //
+		$contenedor = new Contenedor;
+		
+		$contenedor->titulo = $request->input('titulo');
+		$contenedor->tipo = $request->input('tipo');
+		$contenedor->orden_menu = $request->input('orden_menu');
+		$contenedor->id_itemmenu = $request->input('id_itemmenu');
+		$contenedor->color = $request->input('color');
+		
+		if($request->input('img_fondo')!==null){
+			$contenedor->img_fondo = "1";
+		} else {
+			$contenedor->img_fondo = "0";
+		}
+			
+		if($request->input('ancho_pantalla')!==null){
+			$contenedor->ancho_pantalla = "2";
+		} else {
+			$contenedor->ancho_pantalla = "1";
+		}
+		
+		$contenedor->save();
+		
+		//dd($contenedor);
+		return redirect()->route('contenedor.edit',['contenedor' => $contenedor]);
+		//return redirect()->route('contenedor.index');
     }
 
     /**

@@ -40,7 +40,7 @@
 							  <a class="nav-link " href="{{ route('contenedor.index') }}">Contenedores <span class="sr-only">(current)</span></a>
 							</li>
 							<li class="nav-item">
-							  <a class="nav-link active" href="{{ route('contenidos') }}">Contenidos</a>
+							  <a class="nav-link active" href="{{ route('contenido.index') }}">Contenidos</a>
 							</li>
 							<li class="nav-item">
 							 <a class="dropdown-item" href="{{ route('logout') }}"

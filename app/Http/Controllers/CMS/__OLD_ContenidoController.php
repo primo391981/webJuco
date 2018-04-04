@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\CMS;
 
-use App\CMS\Contenido;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+
+use App\CMS\Contenido;
 
 class ContenidoController extends Controller
 {
@@ -42,7 +43,7 @@ class ContenidoController extends Controller
      */
     public function store(Request $request)
     {
-         $request->validate([
+        $request->validate([
 			'titulo' => 'required',
 			'subtitulo' => 'required',
 			'texto' => 'required',
@@ -82,10 +83,10 @@ class ContenidoController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Contenido  $contenido
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Contenido $contenido)
+    public function show($id)
     {
         //
     }
@@ -93,24 +94,22 @@ class ContenidoController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Contenido  $contenido
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Contenido $contenido)
+    public function edit($id)
     {
-		$subtitulo = 'Editar Contenido';
-
-		return view('cms.contenido.editarContenidos', ['subtitulo' => $subtitulo, 'contenido' => $contenido]);
+        //
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Contenido  $contenido
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Contenido $contenido)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -118,10 +117,10 @@ class ContenidoController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Contenido  $contenido
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Contenido $contenido)
+    public function destroy($id)
     {
         //
     }
