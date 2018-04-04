@@ -1,7 +1,7 @@
 <!-- La plantilla utilizada por esta vista esta en admin/layouts/ y se llama app.blade.php -->
 @extends('cms.layouts.layout_cms')
 
-@section('titulo-seccion', 'Agregar Contenedor')
+@section('titulo-seccion', $subtitulo)
 
 @section('active', 'active')
 

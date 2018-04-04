@@ -40,13 +40,11 @@ class ContenedorController extends Controller
     public function create()
     {
         //Redirige al formulario de agregar contenedor.
-	{
 		$subtitulo = 'Agregar Contenedor';
 		
 		$tipos_contenedor = TipoContenedor::All();
 	
 		return view('cms.contenedor.agregarContenedor', ['subtitulo' => $subtitulo, 'tipos_contenedor' => $tipos_contenedor]);
-	}
     }
 
     /**
@@ -99,12 +97,7 @@ class ContenedorController extends Controller
     public function update(Request $request, Contenedor $contenedor)
     {
         //TODO: validar
-	
-		
-		
-		//$cont = Contenedor::findOrFail($contenedor->id);
-		
-		
+			
 		$contenedor->titulo = $request->input('titulo');
 		$contenedor->tipo = $request->input('tipo');
 		$contenedor->orden_menu = $request->input('orden_menu');

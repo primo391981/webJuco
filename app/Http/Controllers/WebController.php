@@ -46,6 +46,7 @@ class WebController extends Controller
 				$contenedor->inicio_estructura = str_replace("%id", $contenedor->id ,$contenedor->inicio_estructura);
 				
 				$fondo = "";
+				
 				$ancho = "";
 				
 				if($contenedor->color == "2"){

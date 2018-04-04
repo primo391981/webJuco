@@ -42,7 +42,7 @@ Route::group(['middleware' => ['auth']], function () {
 	
 	
 	//contenedores en CMS
-	Route::resource('contenedor', 'CMS\ContenedorController')->middleware('role:cmsAdmin');;
+	Route::resource('contenedor', 'CMS\ContenedorController')->middleware('role:cmsAdmin');
 	/*
 	Route::get('contenedores', 'CMS\ContenedorController@lista')->name('contenedores')->middleware('role:cmsAdmin');
 	Route::get('add_contenedor', 'CMS\ContenedorController@agrega')->name('add_contenedor')->middleware('role:cmsAdmin');
