@@ -76,12 +76,7 @@
 				</button>
 			</div>
 			<div class="col-md-4 offset-md-2">
-				<form method="GET" action="{{ route('usuarios') }}"> 
-					@csrf
-					<button type="submit" class="btn btn-primary btn-md btn-block">
-						Cancelar
-					</button>
-				</form>
+				<a class="btn btn-primary btn-md btn-block" href="{{ route('usuarios') }}">Cancelar</a>
 			</div>
 		</div>
 		
