@@ -7,7 +7,6 @@
 @section('active', 'active')
                 
 @section('content')
-	
 	<form method="POST" action="{{ route('edit_usuario', ['id' => $usuario->id]) }}">
 		@csrf
 		<!-- ID y nombre de usaurio no se modifican -->
@@ -71,30 +70,37 @@
 		
 		<div class="form-group row">
 			<label for="roles" class="col-md-4 col-form-label text-md-right">Rol de usuario</label>
-			
+			@if ($usuario->id == Auth::id() )
+				<div class="col-md-6">
+					<label for="rol_usuario" class="col-md-4 col-form-label text-md-center">superadmin</label>
+				</div>
+			@else
 			<div class="col-md-2">
-				<div class="list-group" id="list1">
-					<a href="#" class="list-group-item active">Roles <input title="toggle all" type="checkbox" class="all pull-right"></a>
-					<a href="#" class="list-group-item">admin <input type="checkbox" class="pull-right"></a>
-					<a href="#" class="list-group-item">adminjuridico <input type="checkbox" class="pull-right"></a>
-					<a href="#" class="list-group-item">admincontable <input type="checkbox" class="pull-right"></a>
+				<div class="list-group" id="listaRoles">
+				<select multiple name="roles[]"> 
+				@foreach ($roles as $role)
+					@if ( $role->id != 1 )
+						<option value="{{ $role->id }}">{{ $role->nombre }}</option>
+					@endif
+					
+					{{--<a href="#" class="list-group-item">admincontable <input type="checkbox" class="pull-right"></a>--}}
+				@endforeach
+				</select>
 				</div>
 			</div>
-			
-			<div class="col-md-2 v-center">
-				<button title="Send to list 2" class="btn btn-default center-block add"><i class="glyphicon glyphicon-chevron-right"></i></button>
-				<button title="Send to list 1" class="btn btn-default center-block remove"><i class="glyphicon glyphicon-chevron-left"></i></button>
-			</div>
-			
+								
 			<div class="col-md-2">
-				<div class="list-group" id="list2">
-					<a href="#" class="list-group-item active">Roles Asignados <input title="toggle all" type="checkbox" class="all pull-right"></a>
-					<a href="#" class="list-group-item">admincms <input type="checkbox" class="pull-right"></a>
+				<div class="list-group" id="rolesAsignados">
+				<select multiple name="roles_user[]">
+				@foreach ($usuario->roles as $rol_user)					
+					<option  class="pull-right" value="{{ $rol_user->id }}">{{ $rol_user->nombre }}</option>
 					
-					
-					
+					{{--<a href="#" class="list-group-item">admincms <input type="checkbox" class="pull-right"></a>--}}
+				@endforeach	
+				</select>
 				</div>
 			</div>
+			@endif
 		</div>
 		
 		<div class="form-group row mb-0">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Administracion;
 
 use Illuminate\Http\Request;
 use App\Administracion\User;
+use App\Administracion\Role;
 
 use App\Http\Controllers\Controller;
 use Auth;
@@ -31,6 +32,7 @@ class UserController extends Controller
 			$subtitulo = 'Lista de Usuarios Eliminados';
 			$usuarios = User::onlyTrashed()->with('roles')->get();
 		}		
+			
 		//se retorna la vista "listaUsuarios" 
 		return view('administracion.listaUsuarios', ['subtitulo' => $subtitulo, 'usuarios' => $usuarios, 'estado' => $estado]);
     }
@@ -61,10 +63,11 @@ class UserController extends Controller
 	public function edita($idUsuario)
 	{
 		$usuario = User::withTrashed()->where('id', $idUsuario)->first();
-						
+		$roles = Role::all();
+		
 		$subtitulo = 'Modificar Ususario';
 		//se retorna a la vista del formulario de modificar 
-		return view('administracion.modificaUsuario', ['subtitulo' => $subtitulo, 'usuario' => $usuario]);
+		return view('administracion.modificaUsuario', ['subtitulo' => $subtitulo, 'usuario' => $usuario, 'roles' => $roles]);
 	}
 	
 	public function modificar($idUsuario, Request $request)
