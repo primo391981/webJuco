@@ -20,6 +20,9 @@ class ContenidoContenedor extends Migration
             $table->integer('contenedor_id')->unsigned();
            $table->foreign('contenedor_id')->references('id')->on('cms_contenedors');
             $table->primary(['contenedor_id', 'contenido_id']);
+			
+			//orden en caso de muchos contenidos en un contenedor_id
+			$table->integer('orden')->default(1);
         });
     }
 

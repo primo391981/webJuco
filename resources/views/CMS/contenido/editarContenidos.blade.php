@@ -8,9 +8,9 @@
 
 @section('content')
                 
-	<form method="POST" action="{{ route('contenido.store') }}">
+	<form method="POST" action="{{ route('contenido.update', ['contenido' => $contenido]) }}">
 		{{ method_field('PUT') }}
-		@include('cms.contenido.formContenido', ['textoBoton' => 'editar contenido'])
+		@include('cms.contenido.formContenido', ['textoBoton' => 'guardar cambios'])
 	</form>
 				
 @endsection
