@@ -28,35 +28,7 @@
 		<div class="container-fluid">
             <div class="row">
 				<div class="col-md-2">
-					@section('menu-lateral')
-						<div>
-							CMS - Menú de opciones
-						</div>
-						
-						<nav class="hidden-xs-down bg-faded sidebar">
-						
-						  <ul class="nav nav-pills flex-column">
-							<li class="nav-item">
-							  <a class="nav-link " href="{{ route('contenedor.index') }}">Contenedores <span class="sr-only">(current)</span></a>
-							</li>
-							<li class="nav-item">
-							  <a class="nav-link active" href="{{ route('contenido.index') }}">Contenidos</a>
-							</li>
-							<li class="nav-item">
-							 <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        Cerrar sesión
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        @csrf
-                                    </form>
-							</li>
-							
-						  </ul>
-						</nav>
-					@show
+					@yield('menu-lateral')
 				</div>
 				<div class="col-md-10">
 					<div class="row">
