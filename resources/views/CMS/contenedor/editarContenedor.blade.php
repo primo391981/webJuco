@@ -16,8 +16,10 @@
 						<div class="form-horizontal">
 							<div class="form-group">
 								<label for="contenidos" class="col-md-2 control-label"><a id="contenidos"></a>Contenidos</label>
+								
 								<div class="col-md-10">
 									@foreach($contenedor->contenidos->sortBy('orden') as $contenido)
+									<div class="row">
 										<div class="form-group">
 											<div class="col-md-8">
 												{{ $contenido->titulo }}
@@ -55,6 +57,7 @@
 											@endif
 											</div>
 										</div>
+									</div>	
 									@endforeach
 								</div>
 								

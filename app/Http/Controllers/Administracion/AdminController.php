@@ -18,6 +18,9 @@ class AdminController extends Controller
 		$subtitulo = 'Administración';
 		//dd($contenedores);
 		//se retorna la vista "index" 
+		
+		//si hay un solo rol, preguntar cual y direccionar directamente
+		
 		return view('intranet', ['subtitulo' => $subtitulo]);
     }
 	

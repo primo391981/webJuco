@@ -180,8 +180,10 @@ class ContenidoController extends Controller
 		//posicion a la que desciende 
 		$nuevo_orden_down = $nuevo_orden_up+1;
 		
-		$contenedor->contenidos()->updateExistingPivot($contenido_id,['orden' => $nuevo_orden_up]);
-		$contenedor->contenidos()->updateExistingPivot($contenido_id_down,['orden' => $nuevo_orden_down]);
+		//transaccion
+			$contenedor->contenidos()->updateExistingPivot($contenido_id,['orden' => $nuevo_orden_up]);
+			$contenedor->contenidos()->updateExistingPivot($contenido_id_down,['orden' => $nuevo_orden_down]);
+		//
 		
 		return redirect()->route('contenedor.edit', ['contenedor' => $contenedor]);
 
