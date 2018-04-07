@@ -15,7 +15,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $subtitulo = 'Adminsitración de Usuarios';
+		//Se retorna la vista "index" 
+		return view('administracion.adminusuarios', ['subtitulo' => $subtitulo]);
     }
 
     /**

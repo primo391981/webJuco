@@ -1,33 +1,31 @@
-+--------+-----------+------------------------------+--------------------+------------------------------------------------------------------------+--------------------------+
-| Domain | Method    | URI                          | Name               | Action                                                                 | Middleware               |
-+--------+-----------+------------------------------+--------------------+------------------------------------------------------------------------+--------------------------+
-|        | GET|HEAD  | /                            | home               | App\Http\Controllers\WebController@index                               | web                      |
-|        | POST      | add_contenido                | add_contenido      | App\Http\Controllers\CMS\ContenidoController@crear                     | web,auth,role:cmsAdmin   |
-|        | GET|HEAD  | add_contenido                | add_contenido      | App\Http\Controllers\CMS\ContenidoController@agrega                    | web,auth,role:cmsAdmin   |
-|        | GET|HEAD  | admin                        | admin              | App\Http\Controllers\Administracion\AdminController@index              | web,auth                 |
-|        | GET|HEAD  | adminusuarios                | adminusuarios      | App\Http\Controllers\Administracion\UserController@index               | web,auth,role:superAdmin |
-|        | GET|HEAD  | api/user                     |                    | Closure                                                                | api,auth:api             |
-|        | GET|HEAD  | cms                          | cms                | App\Http\Controllers\CMS\CMSController@index                           | web,auth,role:cmsAdmin   |
-|        | GET|HEAD  | contenedor                   | contenedor.index   | App\Http\Controllers\CMS\ContenedorController@index                    | web,auth,role:cmsAdmin   |
-|        | POST      | contenedor                   | contenedor.store   | App\Http\Controllers\CMS\ContenedorController@store                    | web,auth,role:cmsAdmin   |
-|        | GET|HEAD  | contenedor/create            | contenedor.create  | App\Http\Controllers\CMS\ContenedorController@create                   | web,auth,role:cmsAdmin   |
-|        | DELETE    | contenedor/{contenedor}      | contenedor.destroy | App\Http\Controllers\CMS\ContenedorController@destroy                  | web,auth,role:cmsAdmin   |
-|        | PUT|PATCH | contenedor/{contenedor}      | contenedor.update  | App\Http\Controllers\CMS\ContenedorController@update                   | web,auth,role:cmsAdmin   |
-|        | GET|HEAD  | contenedor/{contenedor}      | contenedor.show    | App\Http\Controllers\CMS\ContenedorController@show                     | web,auth,role:cmsAdmin   |
-|        | GET|HEAD  | contenedor/{contenedor}/edit | contenedor.edit    | App\Http\Controllers\CMS\ContenedorController@edit                     | web,auth,role:cmsAdmin   |
-|        | GET|HEAD  | contenidos                   | contenidos         | App\Http\Controllers\CMS\ContenidoController@lista                     | web,auth,role:cmsAdmin   |
-|        | POST      | del_usuario                  | del_usuario        | App\Http\Controllers\Administracion\UserController@eliminaRecupera     | web,auth,role:superAdmin |
-|        | GET|HEAD  | edit_usuario/{id}            | edit_usuario       | App\Http\Controllers\Administracion\UserController@edita               | web,auth,role:superAdmin |
-|        | POST      | edit_usuario/{id}            | edit_usuario       | App\Http\Controllers\Administracion\UserController@modificar           | web,auth,role:superAdmin |
-|        | POST      | login                        |                    | App\Http\Controllers\Auth\LoginController@login                        | web,guest                |
-|        | GET|HEAD  | login                        | login              | App\Http\Controllers\Auth\LoginController@showLoginForm                | web,guest                |
-|        | POST      | logout                       | logout             | App\Http\Controllers\Auth\LoginController@logout                       | web                      |
-|        | GET|HEAD  | menuitems                    | menuitems          | App\Http\Controllers\CMS\MenuitemController@lista                      | web,auth,role:cmsAdmin   |
-|        | POST      | password/email               | password.email     | App\Http\Controllers\Auth\ForgotPasswordController@sendResetLinkEmail  | web,guest                |
-|        | GET|HEAD  | password/reset               | password.request   | App\Http\Controllers\Auth\ForgotPasswordController@showLinkRequestForm | web,guest                |
-|        | POST      | password/reset               |                    | App\Http\Controllers\Auth\ResetPasswordController@reset                | web,guest                |
-|        | GET|HEAD  | password/reset/{token}       | password.reset     | App\Http\Controllers\Auth\ResetPasswordController@showResetForm        | web,guest                |
-|        | GET|HEAD  | register                     | register           | App\Http\Controllers\Auth\RegisterController@showRegistrationForm      | web,guest                |
-|        | POST      | register                     |                    | App\Http\Controllers\Auth\RegisterController@register                  | web,guest                |
-|        | GET|HEAD  | usuarios/{estado?}           | usuarios           | App\Http\Controllers\Administracion\UserController@lista               | web,auth,role:superAdmin |
-+--------+-----------+------------------------------+--------------------+------------------------------------------------------------------------+--------------------------+
++--------+-----------+------------------------+------------------+------------------------------------------------------------------------+--------------------------+
+| Domain | Method    | URI                    | Name             | Action                                                                 | Middleware               |
++--------+-----------+------------------------+------------------+------------------------------------------------------------------------+--------------------------+
+|        | GET|HEAD  | /                      | home             | App\Http\Controllers\WebController@index                               | web                      |
+|        | POST      | add_contenedor         | add_contenedor   | App\Http\Controllers\CMS\ContenedorController@crear                    | web,auth,role:cmsAdmin   |
+|        | GET|HEAD  | add_contenedor         | add_contenedor   | App\Http\Controllers\CMS\ContenedorController@agrega                   | web,auth,role:cmsAdmin   |
+|        | POST      | add_contenido          | add_contenido    | App\Http\Controllers\CMS\ContenidoController@crear                     | web,auth,role:cmsAdmin   |
+|        | GET|HEAD  | add_contenido          | add_contenido    | App\Http\Controllers\CMS\ContenidoController@agrega                    | web,auth,role:cmsAdmin   |
+|        | GET|HEAD  | admin                  | admin            | App\Http\Controllers\Administracion\AdminController@index              | web,auth                 |
+|        | GET|HEAD  | api/user               |                  | Closure                                                                | api,auth:api             |
+|        | GET|HEAD  | cms                    | cms              | App\Http\Controllers\CMS\CMSController@index                           | web,auth,role:cmsAdmin   |
+|        | GET|HEAD  | contenedores           | contenedores     | App\Http\Controllers\CMS\ContenedorController@lista                    | web,auth,role:cmsAdmin   |
+|        | GET|HEAD  | contenidos             | contenidos       | App\Http\Controllers\CMS\ContenidoController@lista                     | web,auth,role:cmsAdmin   |
+|        | GET|HEAD  | login                  | login            | App\Http\Controllers\Auth\LoginController@showLoginForm                | web,guest                |
+|        | POST      | login                  |                  | App\Http\Controllers\Auth\LoginController@login                        | web,guest                |
+|        | POST      | logout                 | logout           | App\Http\Controllers\Auth\LoginController@logout                       | web                      |
+|        | GET|HEAD  | menuitems              | menuitems        | App\Http\Controllers\CMS\MenuitemController@lista                      | web,auth,role:cmsAdmin   |
+|        | POST      | password/email         | password.email   | App\Http\Controllers\Auth\ForgotPasswordController@sendResetLinkEmail  | web,guest                |
+|        | GET|HEAD  | password/reset         | password.request | App\Http\Controllers\Auth\ForgotPasswordController@showLinkRequestForm | web,guest                |
+|        | POST      | password/reset         |                  | App\Http\Controllers\Auth\ResetPasswordController@reset                | web,guest                |
+|        | GET|HEAD  | password/reset/{token} | password.reset   | App\Http\Controllers\Auth\ResetPasswordController@showResetForm        | web,guest                |
+|        | POST      | register               |                  | App\Http\Controllers\Auth\RegisterController@register                  | web,guest                |
+|        | GET|HEAD  | register               | register         | App\Http\Controllers\Auth\RegisterController@showRegistrationForm      | web,guest                |
+|        | POST      | user                   | user.store       | App\Http\Controllers\Administracion\UserController@store               | web,auth,role:superAdmin |
+|        | GET|HEAD  | user                   | user.index       | App\Http\Controllers\Administracion\UserController@index               | web,auth,role:superAdmin |
+|        | GET|HEAD  | user/create            | user.create      | App\Http\Controllers\Administracion\UserController@create              | web,auth,role:superAdmin |
+|        | PUT|PATCH | user/{user}            | user.update      | App\Http\Controllers\Administracion\UserController@update              | web,auth,role:superAdmin |
+|        | GET|HEAD  | user/{user}            | user.show        | App\Http\Controllers\Administracion\UserController@show                | web,auth,role:superAdmin |
+|        | DELETE    | user/{user}            | user.destroy     | App\Http\Controllers\Administracion\UserController@destroy             | web,auth,role:superAdmin |
+|        | GET|HEAD  | user/{user}/edit       | user.edit        | App\Http\Controllers\Administracion\UserController@edit                | web,auth,role:superAdmin |
++--------+-----------+------------------------+------------------+------------------------------------------------------------------------+--------------------------+

@@ -35,7 +35,7 @@
                 <div>
 				<!-- la funcion route de laravel blade envía el link a la ruta nombrada -->
 					@if(Auth::user()->hasRole('superAdmin'))
-						<a href="{{ route('adminusuarios') }}" class="btn btn-primary btn-lg">Usuarios</a>
+						<a href="{{ route('user.index') }}" class="btn btn-primary btn-lg">Usuarios</a>
 					@endif
 				
 				
