@@ -18,13 +18,13 @@
 			<table class="table">
 				<tr>
 					<td>
-						<a href="">Agregar</a>
+						<a href="{{ route('user.create') }}">Agregar</a>
 					</td>
 					<td>
 					@if ($estado == "eliminados")
-						<a class="nav-link" href="{{ route('usuarios') }}">Usuarios Activos</a>
+						<a class="nav-link" href="{{ route('user.list') }}">Usuarios Activos</a>
 					@else
-						<a class="nav-link" href="{{ route('usuarios', ['estado' => 'eliminados']) }}">Usuarios Eliminados</a>
+						<a class="nav-link" href="{{ route('user.list', ['estado' => 'eliminados']) }}">Usuarios Eliminados</a>
 					@endif
 					</td>
 				</tr>
@@ -69,7 +69,7 @@
 							@endforeach</td>
 						<td>
 							@if (!$usuario->trashed())
-								<form method="GET" action="{{ route('edit_usuario', ['id' => $usuario->id]) }}">
+								<form method="GET" action="{{ route('user.edit', ['user' => $usuario]) }}">
 									<button type="submit" class="btn btn-primary btn-md btn-block">
 										Modificar
 									</button>
@@ -77,9 +77,8 @@
 							@endif
 							
 							@if (Auth::id() != $usuario->id)
-							<form method="POST" action="{{ route('del_usuario') }}"> 
-								@csrf
-								<input type="hidden" name="user_id" value="{{$usuario->id}}">
+							<form method="POST" action="{{ route('user.destroy', ['user' => $usuario]) }}"> 
+								@csrf								
 								<button type="submit" class="btn btn-primary btn-md btn-block">
 									@if ($usuario->trashed())
 										Recuperar

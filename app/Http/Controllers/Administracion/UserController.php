@@ -13,11 +13,40 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($estado='activos')
     {
-        $subtitulo = 'Adminsitración de Usuarios';
-		//Se retorna la vista "index" 
-		return view('administracion.listaUsuarios', ['subtitulo' => $subtitulo]);
+		dd($estado);
+        if ($estado == "activos")
+		{
+			$subtitulo = 'Lista de Usuarios Activos';
+			$usuarios = User::with('roles')->get();
+		}
+		else
+		{
+			$subtitulo = 'Lista de Usuarios Eliminados';
+			$usuarios = User::onlyTrashed()->with('roles')->get();
+		}		
+			
+		//se retorna la vista "listaUsuarios" 
+		return view('administracion.listaUsuarios', ['subtitulo' => $subtitulo, 'usuarios' => $usuarios, 'estado' => $estado]);
+    }
+	
+	public function lista($estado='activos')
+    {
+		
+		if ($estado == "activos")
+		{
+			$subtitulo = 'Lista de Usuarios Activos';
+			$usuarios = User::with('roles')->get();
+		}
+		else
+		{
+			$subtitulo = 'Lista de Usuarios Eliminados';
+			$usuarios = User::onlyTrashed()->with('roles')->get();
+		}		
+			
+		//se retorna la vista "listaUsuarios" 
+		return view('administracion.listaUsuarios', ['subtitulo' => $subtitulo, 'usuarios' => $usuarios, 'estado' => $estado]);
     }
 
     /**
@@ -82,7 +111,24 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy(User $user)
-    {
-        //
+    {		
+		dd($user);
+        if (Auth::id() != $usuario->id) 
+		{
+			if ($usuario->trashed())
+			{	
+				$usuario->restore();
+				return redirect()->route("usuarios", ['estado' => 'eliminados'])->with('success', "El usuario ".$usuario->name." se recupero correctamente");				
+			} 
+			else
+			{
+				$usuario->delete();
+				return redirect()->route("usuarios")->with('success', "El usuario ".$usuario->name." se eliminó correctamente");
+			} 			
+		} 
+		else  
+		{
+			return redirect()->back()->withErrors(['No se pudo eliminar el usuario']);
+		}
     }
 }
