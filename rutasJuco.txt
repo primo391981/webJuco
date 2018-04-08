@@ -24,10 +24,11 @@
 |        | GET|HEAD  | user                   | user.index       | App\Http\Controllers\Administracion\UserController@index               | web,auth,role:superAdmin |
 |        | POST      | user                   | user.store       | App\Http\Controllers\Administracion\UserController@store               | web,auth,role:superAdmin |
 |        | GET|HEAD  | user/create            | user.create      | App\Http\Controllers\Administracion\UserController@create              | web,auth,role:superAdmin |
-|        | GET|HEAD  | user/{estado?}         | user             | App\Http\Controllers\Administracion\UserController@index               | web,auth,role:superAdmin |
+|        | GET|HEAD  | user/list/{estado?}    | user.list        | App\Http\Controllers\Administracion\UserController@lista               | web,auth,role:superAdmin |
 |        | DELETE    | user/{user}            | user.destroy     | App\Http\Controllers\Administracion\UserController@destroy             | web,auth,role:superAdmin |
 |        | PUT|PATCH | user/{user}            | user.update      | App\Http\Controllers\Administracion\UserController@update              | web,auth,role:superAdmin |
 |        | GET|HEAD  | user/{user}            | user.show        | App\Http\Controllers\Administracion\UserController@show                | web,auth,role:superAdmin |
 |        | GET|HEAD  | user/{user}/edit       | user.edit        | App\Http\Controllers\Administracion\UserController@edit                | web,auth,role:superAdmin |
+|        | GET|HEAD  | user/{user}/restore    | user.restore     | App\Http\Controllers\Administracion\UserController@restore             | web,auth,role:superAdmin |
 |        | GET|HEAD  | useradmin              | useradmin        | App\Http\Controllers\Administracion\UseradminController@index          | web,auth,role:superAdmin |
 +--------+-----------+------------------------+------------------+------------------------------------------------------------------------+--------------------------+

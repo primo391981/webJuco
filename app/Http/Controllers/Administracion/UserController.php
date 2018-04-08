@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Administracion;
 use App\Administracion\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Auth;
 
 class UserController extends Controller
 {
@@ -13,20 +14,11 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($estado='activos')
+    public function index()
     {
-		dd($estado);
-        if ($estado == "activos")
-		{
-			$subtitulo = 'Lista de Usuarios Activos';
-			$usuarios = User::with('roles')->get();
-		}
-		else
-		{
-			$subtitulo = 'Lista de Usuarios Eliminados';
-			$usuarios = User::onlyTrashed()->with('roles')->get();
-		}		
-			
+		$subtitulo = 'Lista de Usuarios Activos';
+		$usuarios = User::with('roles')->get();
+		
 		//se retorna la vista "listaUsuarios" 
 		return view('administracion.listaUsuarios', ['subtitulo' => $subtitulo, 'usuarios' => $usuarios, 'estado' => $estado]);
     }
@@ -112,23 +104,27 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {		
-		dd($user);
-        if (Auth::id() != $usuario->id) 
+		if (Auth::id() != $user->id)
 		{
-			if ($usuario->trashed())
-			{	
-				$usuario->restore();
-				return redirect()->route("usuarios", ['estado' => 'eliminados'])->with('success', "El usuario ".$usuario->name." se recupero correctamente");				
-			} 
-			else
-			{
-				$usuario->delete();
-				return redirect()->route("usuarios")->with('success', "El usuario ".$usuario->name." se eliminó correctamente");
-			} 			
+			$user->delete();
+			return redirect()->route("user.list")->with('success', "El usuario ".$user->name." se eliminó correctamente");
 		} 
 		else  
 		{
 			return redirect()->back()->withErrors(['No se pudo eliminar el usuario']);
+		}
+    }
+	
+	public function restore(User $user)
+    {		
+		if (Auth::id() != $user->id AND $user->trashed())
+			{	
+				$user->restore();
+				return redirect()->route("user.list", ['estado' => 'eliminados'])->with('success', "El usuario ".$user->name." se recupero correctamente");					
+		} 
+		else  
+		{
+			return redirect()->back()->withErrors(['No se pudo recuperar el usuario']);
 		}
     }
 }

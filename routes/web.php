@@ -30,6 +30,7 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('useradmin', 'Administracion\UseradminController@index')->name('useradmin')->middleware('role:superAdmin');
 	//usuarios
 	Route::get('user/list/{estado?}', 'Administracion\UserController@lista')->name('user.list')->middleware('role:superAdmin');
+	Route::get('user/{user}/restore', 'Administracion\UserController@restore')->name('user.restore')->middleware('role:superAdmin');
 	Route::resource('user', 'Administracion\UserController')->middleware('role:superAdmin');
 	//Route::get('adminusuarios', 'Administracion\UserController@index')->name('adminusuarios')->middleware('role:superAdmin');
 	//Route::get('usuarios/{estado?}', 'Administracion\UserController@lista')->name('usuarios')->middleware('role:superAdmin');
