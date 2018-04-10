@@ -2,24 +2,30 @@
 
 namespace App\Http\Controllers\Administracion;
 
-use Illuminate\Http\Request;
 use App\Administracion\User;
-
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
 
 class UserController extends Controller
 {
-	//Función que contruye el index del sitio Administracion de Usuarios
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
-	{		
-		$subtitulo = 'Adminsitración de Usuarios';
-		//Se retorna la vista "index" 
-		return view('administracion.adminusuarios', ['subtitulo' => $subtitulo]);
+    {
+		$subtitulo = 'Lista de Usuarios Activos';
+		$usuarios = User::with('roles')->get();
+		
+		//se retorna la vista "listaUsuarios" 
+		return view('administracion.listaUsuarios', ['subtitulo' => $subtitulo, 'usuarios' => $usuarios, 'estado' => $estado]);
     }
 	
 	public function lista($estado='activos')
     {
+		//dd($estado);
 		
 		if ($estado == "activos")
 		{
@@ -31,62 +37,97 @@ class UserController extends Controller
 			$subtitulo = 'Lista de Usuarios Eliminados';
 			$usuarios = User::onlyTrashed()->with('roles')->get();
 		}		
+			
 		//se retorna la vista "listaUsuarios" 
 		return view('administracion.listaUsuarios', ['subtitulo' => $subtitulo, 'usuarios' => $usuarios, 'estado' => $estado]);
     }
-	
-	public function eliminaRecupera(Request $request) 
-	{
-		if (Auth::id() != $request->user_id) 
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Administracion\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function show(User $user)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Administracion\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(User $user)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Administracion\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, User $user)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Administracion\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(User $user)
+    {		
+		if (Auth::id() != $user->id)
 		{
-			$usuario = User::withTrashed()->where('id', $request->user_id)->first();
-			
-			if ($usuario->trashed())
-			{	
-				$usuario->restore();
-				return redirect()->route("usuarios", ['estado' => 'eliminados'])->with('success', "El usuario ".$usuario->name." se recupero correctamente");				
-			} 
-			else
-			{
-				$usuario->delete();
-				return redirect()->route("usuarios")->with('success', "El usuario ".$usuario->name." se eliminó correctamente");
-			} 			
+			$user->delete();
+			return redirect()->route("user.list")->with('success', "El usuario ".$user->name." se eliminó correctamente");
 		} 
 		else  
 		{
 			return redirect()->back()->withErrors(['No se pudo eliminar el usuario']);
 		}
-	}
+    }
 	
-	public function edita($idUsuario)
-	{
-		$usuario = User::withTrashed()->where('id', $idUsuario)->first();
-						
-		$subtitulo = 'Modificar Ususario';
-		//se retorna a la vista del formulario de modificar 
-		return view('administracion.modificaUsuario', ['subtitulo' => $subtitulo, 'usuario' => $usuario]);
-	}
-	
-	public function modificar($idUsuario, Request $request)
-	{
-		$request->validate([
-			'nombre' => 'required',
-			'apellido' => 'required',
-			'email' => 'required|email|max:255',
+	public function restore(Request $request)
+    {
+		if (Auth::id() != $request->user_id) 
+		{
+			$user= User::onlyTrashed()->where('id', $request->user_id)->first();
 			
-		]);
-		
-		$usuario = User::find($idUsuario);
-		$usuario->nombre = $request['nombre'];
-		$usuario->apellido = $request['apellido'];
-		$usuario->email = $request['email'];
-		
-		
-		$usuario->save();
-		
-		$subtitulo = 'Modificar Ususario';
-		
-		//se retorna la vista "listaUsuarios" 
-		return redirect()->route("usuarios")->with('success', "El usuario ".$usuario->name." ha sido modificado correctamente.");		
-	}
+			$user->restore();
+			return redirect()->route("user.list", ['estado' => 'eliminados'])->with('success', "El usuario ".$user->name." se recupero correctamente");					
+		} 
+		else  
+		{
+			return redirect()->back()->withErrors(['No se pudo recuperar el usuario']);
+		}
+    }
 }

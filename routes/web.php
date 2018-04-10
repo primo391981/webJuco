@@ -23,16 +23,23 @@ Auth::routes();
 
 Route::group(['middleware' => ['auth']], function () {
 	
-	
-	//usuarios
-	Route::get('adminusuarios', 'Administracion\UserController@index')->name('adminusuarios')->middleware('role:superAdmin');
-	Route::get('usuarios/{estado?}', 'Administracion\UserController@lista')->name('usuarios')->middleware('role:superAdmin');
-	Route::post('del_usuario', 'Administracion\UserController@eliminaRecupera')->name('del_usuario')->middleware('role:superAdmin');
-	Route::get('edit_usuario/{id}', 'Administracion\UserController@edita')->name('edit_usuario')->middleware('role:superAdmin');
-	Route::post('edit_usuario/{id}', 'Administracion\UserController@modificar')->name('edit_usuario')->middleware('role:superAdmin');
-	
 	//admin
 	Route::get('admin', 'Administracion\AdminController@index')->name('admin');
+	
+	//index administracion
+	Route::get('useradmin', 'Administracion\UseradminController@index')->name('useradmin')->middleware('role:superAdmin');
+	//usuarios
+	Route::get('user/list/{estado?}', 'Administracion\UserController@lista')->name('user.list')->middleware('role:superAdmin');
+	Route::post('user/restore', 'Administracion\UserController@restore')->name('user.restore')->middleware('role:superAdmin');
+	Route::resource('user', 'Administracion\UserController')->middleware('role:superAdmin');
+	//Route::get('adminusuarios', 'Administracion\UserController@index')->name('adminusuarios')->middleware('role:superAdmin');
+	//Route::get('usuarios/{estado?}', 'Administracion\UserController@lista')->name('usuarios')->middleware('role:superAdmin');
+	//Route::post('del_usuario', 'Administracion\UserController@eliminaRecupera')->name('del_usuario')->middleware('role:superAdmin');
+	//Route::get('edit_usuario/{id}', 'Administracion\UserController@edita')->name('edit_usuario')->middleware('role:superAdmin');
+	//Route::post('edit_usuario/{id}', 'Administracion\UserController@modificar')->name('edit_usuario')->middleware('role:superAdmin');
+	
+	
+	
 	
 	//index cms
 	Route::get('cms', 'CMS\CMSController@index')->name('cms')->middleware('role:cmsAdmin');
