@@ -1,25 +1,50 @@
+@extends('layouts.layout_intranet')
 
-@extends('cms.layouts.layout_cms')
-
-@section('menu')
-                <div>
-                    CMS - Menú de opciones
-                </div>
-				<div>
-                    <a href="{{ route('contenedor.index') }}">Contenedores</a>
-                </div>
-                <div>
-				    <a href="{{ route('contenido.index') }}">Contenidos</a>
-                </div>
+@section('menu-lateral')
+<li>
+    <a href="#"><i class="fas fa-th-large"></i> Contenedores <i class="fas fa-caret-down"></i></a>
+		<ul class="nav nav-second-level">
+			 <li><a href="{{ route('contenedor.index') }}"><i class="fas fa-list-ul"></i> Listado</a></li>
+			 <li><a href="{{ route('contenedor.create') }}"><i class="fas fa-plus"></i> Agregar nuevo</a></li>
+        </ul>
+</li>
+<li>
+    <a href="#"><i class="fas fa-th"></i> Contenidos <i class="fas fa-caret-down"></i></a>
+		<ul class="nav nav-second-level">
+			 <li><a href="{{ route('contenido.index') }}"><i class="fas fa-list-ul"></i> Listado</a></li>
+        </ul>
+</li>		
 @endsection
 
 @section('content')
-                <div>
-                    Mensaje de bienvenida
-                </div>
+<br>
+<h1 class="text-info">para cms utilizar colores class info</h1>
+<div class="row">
+	<div class="col-xs-12 col-sm-12 col-md-6">
+		<div class="panel panel-info">
+			  <div class="panel-heading text-center"><h1><i class="fas fa-th-large"></i> Contenedores</h1></div>
+			  <div class="panel-body text-info">
+				<a href="{{ route('contenedor.index') }}"><i class="fas fa-list-ul"></i> Listado</a><br>
+				<p>poner todas las funcionalidades de contenedor como en el menu lateral</p><br>
+				<p>colocar todas las vistas en una.Ya mostrar el form de agregar/ listado de contenedores </p>
+			  </div>
+			  <!--<div class="panel-footer"><a href="{{ route('cms') }}" class="btn btn-info btn-block" role="button"><i class="fas fa-sign-in-alt"></i> Ingresar</a></div>-->
+		</div>
+		
+		
+	</div>
+	<div class="col-xs-12 col-sm-6">
+		<div class="panel panel-info">
+			  <div class="panel-heading text-center"><h1><i class="fas fa-th"></i> Contenidos</h1></div>
+			  <div class="panel-body text-info">
+				<a href="{{ route('contenido.index') }}"><i class="fas fa-list-ul"></i> Listado</a><br>
+				<p>poner todas las funcionalidades de contenedor como en el menu lateral</p><br>
+				<p>colocar todas las vistas en una.Ya mostrar el form de agregar/ listado de contenedores </p>
+			  </div>
+			  <!--<div class="panel-footer"><a href="{{ route('cms') }}" class="btn btn-info btn-block" role="button"><i class="fas fa-sign-in-alt"></i> Ingresar</a></div>-->
+		</div>
+	</div>
+</div>
 
-                <div>
-				   
-                </div>
 @endsection
 

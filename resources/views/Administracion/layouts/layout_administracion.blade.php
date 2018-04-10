@@ -28,6 +28,7 @@
 		<div class="container-fluid">
             <div class="row">
 				<div class="col-md-2">
+				<h1>LAYOUT ADMIN</h1>
 					@section('menu-lateral')
 						<div>
 							Administación Usuarios - Menú de opciones
