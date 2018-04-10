@@ -94,7 +94,8 @@
 							
 						
 			</div>
-			<div class="panel-footer"><a href="{{ route('cms') }}" class="btn btn-info btn-block" role="button"><i class="fas fa-sign-in-alt"></i> Ingresar</a></div>
+			<div class="panel-footer"><a href="{{ route('contenido.index') }}" class="btn btn-info btn-block" role="button"><i class="fas fa-list-ul"></i> Asociar contenido</a></div>
+			
 		</div>
 	</div>
 </div><!--CIERRA ROW-->

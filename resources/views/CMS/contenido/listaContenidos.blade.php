@@ -23,7 +23,7 @@
 @endsection
 
 @section('content')
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<!--<script src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
 <br>
 <div class="row text-info">
 	<div class="col-xs-12">
