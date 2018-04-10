@@ -94,7 +94,7 @@
 							
 						
 			</div>
-			<div class="panel-footer"><a href="{{ route('contenido.index') }}" class="btn btn-info btn-block" role="button"><i class="fas fa-list-ul"></i> Asociar contenido</a></div>
+			<div class="panel-footer"><a href="{{ route('contenido.index') }}" class="btn btn-info btn-block" role="button"><i class="fas fa-hands-helping"></i> Asociar contenido</a></div>
 			
 		</div>
 	</div>
