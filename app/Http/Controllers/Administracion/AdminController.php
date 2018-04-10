@@ -34,7 +34,7 @@ class AdminController extends Controller
 			switch($rol)
 			{
 				
-				case 'superadmin':return redirect()->route('adminusuarios');
+				case 'superadmin':return redirect()->route('useradmin');
 					break;
 				case 'cmsAdmin':return redirect()->route('cms');
 					break;
