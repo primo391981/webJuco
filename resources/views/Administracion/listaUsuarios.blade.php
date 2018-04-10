@@ -78,12 +78,12 @@
 							
 							@if (Auth::id() != $usuario->id)
 								@if ($usuario->trashed())
-									<form method="POST" action="{{ route('user.destroy', ['user' => $usuario]) }}">
-										{{ method_field('DELETE') }}
-										@csrf								
+									<form method="POST" action="{{ route('user.restore', ['user_id' => $usuario->id]) }}">
+										@csrf	
 										<button type="submit" class="btn btn-primary btn-md btn-block">Recuperar
 								@else
-									<form method="POST" action="{{ route('user.restore', ['user' => $usuario]) }}">
+									<form method="POST" action="{{ route('user.destroy', ['user' => $usuario]) }}">
+										{{ method_field('DELETE') }}
 										@csrf								
 										<button type="submit" class="btn btn-primary btn-md btn-block">	Elimnar 
 								@endif

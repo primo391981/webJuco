@@ -25,6 +25,7 @@ class UserController extends Controller
 	
 	public function lista($estado='activos')
     {
+		//dd($estado);
 		
 		if ($estado == "activos")
 		{
@@ -115,12 +116,14 @@ class UserController extends Controller
 		}
     }
 	
-	public function restore(User $user)
-    {		
-		if (Auth::id() != $user->id AND $user->trashed())
-			{	
-				$user->restore();
-				return redirect()->route("user.list", ['estado' => 'eliminados'])->with('success', "El usuario ".$user->name." se recupero correctamente");					
+	public function restore(Request $request)
+    {
+		if (Auth::id() != $request->user_id) 
+		{
+			$user= User::onlyTrashed()->where('id', $request->user_id)->first();
+			
+			$user->restore();
+			return redirect()->route("user.list", ['estado' => 'eliminados'])->with('success', "El usuario ".$user->name." se recupero correctamente");					
 		} 
 		else  
 		{
