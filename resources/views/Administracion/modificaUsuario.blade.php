@@ -1,10 +1,12 @@
+@extends('layouts.layout_intranet')
 
-<!-- La plantilla utilizada por esta vista esta en administracion/layouts/ y se llama layouts_administracion.blade.php -->
-@extends('administracion.layouts.layout_administracion')
+@section('navbar')
+<a class="navbar-brand" href="#"><strong>ADMIN USUARIOS</strong></a>
+@endsection
+@section('menu-lateral')
+<li><a href="{{ route('user.list') }}"><i class="fas fa-list-ul"></i> Listado</a></li>
+@endsection
 
-@section('titulo-seccion', 'Modificar Usuario')
-
-@section('active', 'active')
                 
 @section('content')
 	<form method="POST" action="{{ route('edit_usuario', ['id' => $usuario->id]) }}">

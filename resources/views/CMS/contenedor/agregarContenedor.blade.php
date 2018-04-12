@@ -4,27 +4,48 @@
 <!--@section('titulo-seccion', $subtitulo)
 
 @section('active', 'active')-->
-
+@section('navbar')
+<a class="navbar-brand" href="#"><strong>CMS - CONTENEDOR</strong></a>
+@endsection
 @section('menu-lateral')
-<li><a href="{{ route('contenedor.index') }}"><i class="fas fa-list-ul"></i> Listado</a></li>
-<li><a href="{{ route('contenedor.create') }}"><i class="fas fa-plus"></i> Agregar nuevo</a></li>
-
-
+<li>
+    <a href="#"><i class="fas fa-th-large"></i> Contenedores <i class="fas fa-caret-down"></i></a>
+		<ul class="nav nav-second-level">
+			 <li><a href="{{ route('contenedor.index') }}"><i class="fas fa-list-ul"></i> Listado</a></li>
+			 <li><a href="{{ route('contenedor.create') }}"><i class="fas fa-plus"></i> Agregar nuevo</a></li>
+        </ul>
+</li>
 <li>
     <a href="#"><i class="fas fa-th"></i> Contenidos <i class="fas fa-caret-down"></i></a>
 		<ul class="nav nav-second-level">
 			 <li><a href="{{ route('contenido.index') }}"><i class="fas fa-list-ul"></i> Listado</a></li>
 			 <li><a href="{{ route('contenido.create') }}"><i class="fas fa-plus"></i> Agregar nuevo</a></li>
-
         </ul>
-</li>	
+</li>
+<li>
+    <a href="#"><i class="fas fa-sitemap"></i> Items menú <i class="fas fa-caret-down"></i></a>
+		<ul class="nav nav-second-level">
+			 <li><a href="#"><i class="fas fa-list-ul"></i> Listado</a></li>
+			 <li><a href="#"><i class="fas fa-plus"></i> Agregar nuevo</a></li>
+        </ul>
+</li>		
 @endsection
 @section('content')
 <br>
 <div class="row">
-	<div class="col-xs-12 col-sm-12 col-md-7">
+	<!--solamente es visible en cel-->
+	<div class="col-xs-12 visible-xs"><a href="{{ route('contenedor.index') }}" class="btn btn-info" style="margin-bottom:5%;" role="button"><i class="fas fa-list-ul"></i> Listado contenedores</a></div>				  
+</div>
+<div class="row">
+	<div class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2">
 		<div class="panel panel-info">
-			<div class="panel-heading text-center"><h4>Agregar nuevo contenedor</h4></div>
+			<div class="panel-heading">
+			<div class="row">
+					<div class="col-sm-9"><h4>Agregar nuevo contenedor</h4></div>
+					<div class="col-sm-3 hidden-xs"><a href="{{ route('contenedor.index') }}" class="btn btn-info" role="button"><i class="fas fa-list-ul"></i> Listado contenedores</a></div>
+			</div>	
+			</div>	
+			
 			<div class="panel-body text-info">
 					<form method="POST" action="{{ route('contenedor.store') }}" class="form-horizontal">		
 					@include('cms.contenedor.formContenedor', ['textoBoton' => 'Confirmar'])		
@@ -34,12 +55,8 @@
 		</div>
 	</div>
 	
-	<div class="col-xs-12 col-sm-12 col-md-5">
-		<p>nuevo contenido o form centrado</p>
-	</div>
+	
 </div>
-
-
-				
+			
 @endsection
 
