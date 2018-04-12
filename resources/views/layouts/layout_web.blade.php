@@ -33,12 +33,7 @@
 					<a class="nav-link" href="#{{ $menuitem->contenedores[0]->id }}">{{ $menuitem->titulo }}</a>
 				</li>
 			@endforeach
-		  <li class="nav-item ">
-			<a class="nav-link" href="#dos">Home <span class="sr-only">(current)</span></a>
-		  </li>
-		  <li class="nav-item">
-			<a class="nav-link" href="#uno">link</a>
-		  </li>
+		  
 		  <li class="nav-item dropdown">
 			<a class="nav-link dropdown-toggle" href="#dos" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 			  Dropdown
@@ -50,7 +45,7 @@
 		  </li>	 
 		 
 		    @guest
-				<li><a class="nav-link" href="{{ route('login') }}">Login</a></li>
+				<li><a class="nav-link" href="#"  data-toggle="modal" data-target="#logueousuario">Login</a></li>
 			   @else
 				   <li class="nav-item dropdown">
 										<a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -95,7 +90,77 @@
 	</div>
 	
 	@yield('content')
+	
+	<!-- Modal logueo usuario -->
+<div class="modal fade text-light" id="logueousuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content bg-danger">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-user"></i> Logueo usuario</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+	      <form method="POST" action="{{ route('login') }}">
+                        @csrf
 
+                        <div class="form-group row">
+                            <label for="name" class="control-label col-sm-3 col-form-label">Usuario</label>
+                            <div class="col-sm-9">
+                                <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" required autofocus>
+							    @if ($errors->has('name'))
+                                    <span class="invalid-feedback">
+                                        <strong>{{ $errors->first('name') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="password" class="control-label col-sm-3 col-form-label">Contraseña</label>
+
+                            <div class="col-sm-9">
+                                <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
+
+                                @if ($errors->has('password'))
+                                    <span class="invalid-feedback">
+                                        <strong>{{ $errors->first('password') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                                <div class="col-sm-9 checkbox offset-sm-3">
+                                    <label>
+                                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Guardar contraseña
+                                    </label>
+                                </div>
+                            
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-sm-9 offset-sm-3">
+                                <button type="submit" class="btn btn-light"><i class="fas fa-check"></i> Aceptar</button>
+
+                                <a class="btn btn-link text-light" href="{{ route('password.request') }}">
+                                    Olvidaste tu contraseña?
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                
+    
+			</div>
+		
+      
+    </div>
+  </div>
+</div>
+	
+	
+	
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
