@@ -48,9 +48,12 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('menuitems', 'CMS\MenuitemController@lista')->name('menuitems')->middleware('role:cmsAdmin');
 			
 	//contenedores en CMS
+	Route::post('asigncontenido/{contenido}', 'CMS\ContenedorController@asignContenido')->name('contenedor.asign')->middleware('role:cmsAdmin');
 	Route::resource('contenedor', 'CMS\ContenedorController')->middleware('role:cmsAdmin');
+
 	
 	//contenidos en CMS
+	Route::get('searchcontenido', 'CMS\ContenidoController@search')->name('contenido.search')->middleware('role:cmsAdmin');
 	Route::post('upcontenido', 'CMS\ContenidoController@upContenido')->name('contenido.up')->middleware('role:cmsAdmin');
 	Route::post('downcontenido', 'CMS\ContenidoController@downContenido')->name('contenido.down')->middleware('role:cmsAdmin');
 	Route::resource('contenido', 'CMS\ContenidoController')->middleware('role:cmsAdmin');

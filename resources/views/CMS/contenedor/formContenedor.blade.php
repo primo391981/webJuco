@@ -20,33 +20,17 @@
 			</select>
 		</div>			
 </div>
+
 <div class="form-group row">
-		<label for="orden_menu" class="control-label col-sm-3">Orden en Menú:</label>
+		<label for="id_itemmenu" class="control-label col-sm-3">Item de Menú:</label>
 		<div class="col-sm-9">
-			<input id="orden_menu" type="text" class="form-control{{ $errors->has('orden_menu') ? ' is-invalid' : '' }}" name="orden_menu" value="{{ isset($contenedor) ? $contenedor->orden_menu : old
-
-('orden_menu') }}" required autofocus>
-
-			@if ($errors->has('orden_menu'))
-				<span class="invalid-feedback">
-					<strong>{{ $errors->first('orden_menu') }}</strong>
-				</span>
-			@endif
-		</div>
-</div>
-<div class="form-group row">
-		<label for="id_itemmenu" class="control-label col-sm-3">ID Padre:</label>
-		<div class="col-sm-9">
-			<input id="id_itemmenu" type="text" class="form-control{{ $errors->has('id_itemmenu') ? ' is-invalid' : '' }}" name="id_itemmenu" value="{{ isset($contenedor) ? $contenedor->id_itemmenu : old
-
-('id_itemmenu') }}" required autofocus>
-
-			@if ($errors->has('id_itemmenu'))
-				<span class="invalid-feedback">
-					<strong>{{ $errors->first('id_itemmenu') }}</strong>
-				</span>
-			@endif
-		</div>
+			<select name="id_itemmenu" class="form-control" id="id_itemmenu">
+				@foreach($menuitems as $key => $menuitem)
+					<option value="{{ $menuitem->id }}" {{ old('id_itemmenu', isset($contenedor) ? $contenedor->id_itemmenu : '' ) == $key + 1 ? 'selected' : '' }}>{{ $menuitem->titulo }}</option>  
+				@endforeach
+			</select>
+		</div>		
+		
 </div>
 <div class="form-group row">
 		<label for="color" class="control-label col-sm-3">Color de fondo:</label>

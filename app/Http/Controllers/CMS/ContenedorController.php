@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 //Se debe indicar qué modelos ("clases") van a utilizarse
 use App\CMS\Contenedor;
 use App\CMS\TipoContenedor;
+use App\CMS\Menuitem;
+use App\CMS\Contenido;
+
 
 
 class ContenedorController extends Controller
@@ -43,8 +46,10 @@ class ContenedorController extends Controller
 		$subtitulo = 'Agregar Contenedor';
 		
 		$tipos_contenedor = TipoContenedor::All();
+		
+		$menuitems = Menuitem::All();
 	
-		return view('cms.contenedor.agregarContenedor', ['subtitulo' => $subtitulo, 'tipos_contenedor' => $tipos_contenedor]);
+		return view('cms.contenedor.agregarContenedor', ['subtitulo' => $subtitulo, 'tipos_contenedor' => $tipos_contenedor, 'menuitems' => $menuitems]);
     }
 
     /**
@@ -109,7 +114,9 @@ class ContenedorController extends Controller
 		
 		$tipos_contenedor = TipoContenedor::All();
 		
-		return view('cms.contenedor.editarContenedor', ['subtitulo' => $subtitulo, 'tipos_contenedor' => $tipos_contenedor, 'contenedor' => $contenedor]);
+		$menuitems = Menuitem::All();
+		
+		return view('cms.contenedor.editarContenedor', ['subtitulo' => $subtitulo, 'tipos_contenedor' => $tipos_contenedor, 'contenedor' => $contenedor, 'menuitems' => $menuitems]);
     }
 
     /**
@@ -159,4 +166,26 @@ class ContenedorController extends Controller
     {
         //
     }
+	
+	public function asignContenido(Request $request, $contenido_id)
+    {
+        //dd($contenido_id);
+		$id_contenedor = $request->contenedor_id;
+		$contenedor = Contenedor::findOrFail($id_contenedor);
+		$contenido = Contenido::findOrFail($contenido_id);
+		$orden = $contenedor->contenidos()->count() + 1; 
+		
+		if($contenedor->contenidos()->save($contenido, ['orden' => $orden])){
+			$mensaje = "contenido asignado correctamente";
+		} else {
+			$mensaje = "el contenido no ha sido asignado";
+		};
+		
+		if ($request->ajax()) {
+            return response()->json([
+                'message' => $mensaje
+            ]);
+        }
+    }
+	
 }

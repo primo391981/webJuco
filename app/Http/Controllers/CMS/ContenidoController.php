@@ -24,6 +24,26 @@ class ContenidoController extends Controller
 		//Se retorna la vista "index" 
 		return view('cms.contenido.listaContenidos', ['subtitulo' => $subtitulo, 'contenidos' => $contenidos]);
     }
+	
+	 public function search(Request $request)
+    {
+        $cadena = $request->search;
+		
+		$contenidos = Contenido::where("titulo", "like", "%".$cadena."%")->get();
+		
+		//return count($contenidos);
+		
+		if ($request->ajax()) {
+            return response()->json([
+                'contenidos' => $contenidos,
+            ]);
+        }
+		
+		dd($respuesta);
+		return $respuesta;
+		//Se retorna la vista "index" 
+		//return view('cms.contenido.listaContenidos', ['subtitulo' => $subtitulo, 'contenidos' => $contenidos]);
+    }
 
     /**
      * Show the form for creating a new resource.
