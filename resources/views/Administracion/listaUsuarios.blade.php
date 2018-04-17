@@ -93,9 +93,9 @@
 											<td>
 												@foreach ($usuario->roles()->pluck('nombre') as $role)
 													@if ($loop->first)
-														<span class="label label-default">{{ $role }}</span>
+														<span class="label label-info">{{ $role }}</span>
 													@else
-														<span class="label label-default"> <br> {{ $role }}</span>						
+														<span class="label label-info"> <br> {{ $role }}</span>						
 													@endif					
 												@endforeach
 											</td>
