@@ -1,13 +1,7 @@
+@extends('cms.cms')
 
-<!-- La plantilla utilizada por esta vista esta en admin/layouts/ y se llama app.blade.php -->
-@extends('layouts.layout_intranet')
+@section('seccion', " - Editar Contenido")
 
-<!--@section('titulo-seccion', $subtitulo)
-
-@section('active', 'active')-->
-@section('navbar')
-<a class="navbar-brand" href="#"><strong>CMS - CONTENIDO</strong></a>
-@endsection
 @section('menu-lateral')
 <li>
     <a href="#"><i class="fas fa-th-large"></i> Contenedores <i class="fas fa-caret-down"></i></a>

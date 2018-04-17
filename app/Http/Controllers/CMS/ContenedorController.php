@@ -65,9 +65,18 @@ class ContenedorController extends Controller
 		
 		$contenedor->titulo = $request->input('titulo');
 		$contenedor->tipo = $request->input('tipo');
-		$contenedor->orden_menu = $request->input('orden_menu');
+		
+		
 		$contenedor->id_itemmenu = $request->input('id_itemmenu');
+		
+		//obtener el orden dentro de menuitem correspondiente
+		$menuitem = Menuitem::findOrFail($contenedor->id_itemmenu);
+		$orden = $menuitem->contenedores->count();
+		$contenedor->orden_menu = $orden + 1;
+		
+		
 		$contenedor->color = $request->input('color');
+		
 		
 		if($request->input('img_fondo')!==null){
 			$contenedor->img_fondo = "1";
@@ -132,7 +141,7 @@ class ContenedorController extends Controller
 			
 		$contenedor->titulo = $request->input('titulo');
 		$contenedor->tipo = $request->input('tipo');
-		$contenedor->orden_menu = $request->input('orden_menu');
+		
 		$contenedor->id_itemmenu = $request->input('id_itemmenu');
 		$contenedor->color = $request->input('color');
 		

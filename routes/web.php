@@ -45,7 +45,7 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('cms', 'CMS\CMSController@index')->name('cms')->middleware('role:cmsAdmin');
 	
 	//menuitems en CMS
-	Route::get('menuitems', 'CMS\MenuitemController@lista')->name('menuitems')->middleware('role:cmsAdmin');
+	Route::resource('menuitem', 'CMS\MenuitemController')->middleware('role:cmsAdmin');
 			
 	//contenedores en CMS
 	Route::post('asigncontenido/{contenido}', 'CMS\ContenedorController@asignContenido')->name('contenedor.asign')->middleware('role:cmsAdmin');
