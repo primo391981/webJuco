@@ -82,13 +82,21 @@
 	  </div>
 	</nav>
     
-	<div class="jumbotron text-center">
+	<div class="jumbotron text-center d-block d-sm-none">
 		<h2 style="color:white;" >Bienvenido a nuestro estudio</h2>
 		<h1 style="font-family:'Slabo', serif; color:white;">FEOLA CASELLA & GONZALEZ FEOLA</h1> 
 		<h2 style="color:white;">En defensa de sus derechos desde 1990</h2>
 		<h3 style="color:white;">La Paloma - Rocha - Uruguay</h3>		
 	</div>
-	
+	<div class="embed-responsive embed-responsive-16by9 d-none d-sm-block" style="margin-top:56px;">
+		<video autoplay loop ><source src="img/orilla2.mp4" type="video/mp4"></video>					
+			<div class="text-center"style="position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);width:100%;">
+				<h2 style="color:white;text-shadow: 0 0 3px black;" ><strong>Bienvenido a nuestro estudio</strong></h2>
+				<h1 style="font-family:'Slabo', serif; color:white;text-shadow: 0 0 3px black; font-size:50px;"><strong>FEOLA CASELLA & GONZALEZ FEOLA</strong></h1> 
+				<h2 style="color:white;text-shadow: 0 0 3px black;"><strong>En defensa de sus derechos desde 1990</strong></h2>
+				<h3 style="color:white;text-shadow: 0 0 3px black;"><strong>La Paloma - Rocha - Uruguay</strong></h3>				
+			</div>	
+	</div>	
 	@yield('content')
 	
 	<!-- Modal logueo usuario -->
@@ -108,7 +116,7 @@
                         <div class="form-group row">
                             <label for="name" class="control-label col-sm-3 col-form-label">Usuario</label>
                             <div class="col-sm-9">
-                                <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" required autofocus>
+                                <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" required>
 							    @if ($errors->has('name'))
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('name') }}</strong>
@@ -144,7 +152,7 @@
                             <div class="col-sm-9 offset-sm-3">
                                 <button type="submit" class="btn btn-light"><i class="fas fa-check"></i> Aceptar</button>
 
-                                <a class="btn btn-link text-light" href="{{ route('password.request') }}">
+                                <a class="btn btn-link text-light"  data-toggle="modal" data-target="#recuperarpass" <!--href="{{ route('password.request') }}-->">
                                     Olvidaste tu contraseña?
                                 </a>
                             </div>
@@ -158,7 +166,60 @@
     </div>
   </div>
 </div>
-	
+
+<!-- Modal recuoerar pass -->
+<div class="modal fade " id="recuperarpass" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-user"></i> Logueo usuario</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+			@if (session('status'))
+                        <div class="alert alert-success">
+                            {{ session('status') }}
+                        </div>
+                    @endif
+
+                    <form method="POST" action="{{ route('password.email') }}">
+                        @csrf
+
+                        <div class="form-group row">
+                            <label for="email" class="col-md-4 col-form-label text-md-right">E-Mail Address</label>
+
+                            <div class="col-md-6">
+                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required>
+
+                                @if ($errors->has('email'))
+                                    <span class="invalid-feedback">
+                                       <!--<strong>{{ $errors->first('email') }}</strong>-->
+									   <p>hola como andas</p>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-0">
+                            <div class="col-md-6 offset-md-4">
+                                <button type="submit" class="btn btn-primary">
+                                    Send Password Reset Link
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+	  
+	  
+	  </div>
+    </div>
+  </div>
+</div>
+
+
+
+
 	
 	
     <!-- Optional JavaScript -->
@@ -166,5 +227,11 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-  </body>
+ 
+	<!--para obtener el foco en el modal logueo-->
+	<script>$('#logueousuario').on('shown.bs.modal', function () {$('#name').focus();})</script>
+	<!--<script>$('#recuperarpass').on('hidden.bs.modal', function() {return false;})</script>-->
+	<script>$('#recuperarpass').on('hidden.bs.modal', function() { this.modal('show');});</script>
+	
+ </body>
 </html>
