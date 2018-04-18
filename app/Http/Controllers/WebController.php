@@ -26,7 +26,7 @@ class WebController extends Controller
 		//se obtienen todos los contenedores que existen en el sistema ordenados por orden en el menú
 		//todo: filtrar por aquellos contenedores "publicados" o "activos"
 		
-		$menuitems = Menuitem::has('contenedores')->get();
+		$menuitems = Menuitem::has('contenedores')->orderBy('orden_menu')->get();
 		
 		foreach($menuitems as $menuitem){
 			//$contenedores = Contenedor::OrderBy('orden_menu')->get();

@@ -27,7 +27,7 @@
 								<th>ID</th>
 								<th>Título</th>
 								<th>Descripción</th>
-								<th>Órden Menú</th>
+								<th colspan="2">Orden Menú</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -36,9 +36,32 @@
 							<td>{{$menuitem->id}}</td>
 							<td>{{$menuitem->titulo}}</td>
 							<td>{{$menuitem->descripcion}}</td>
-							<td>{{$menuitem->orden_menu}}</td>
-							<td><a href="{{ route('menuitem.edit', ['menuitem' => $menuitem])}}" data-toggle="tooltip" title="Editar"><i class="far fa-edit"></i></a> <a href="#" data-toggle="tooltip" title="Eliminar"><i class="far fa-trash-alt"></i></a>
+
+							<td>
+								@if($menuitem->orden_menu != 1)
+									<form  method="POST" class="form-inline" action="{{ route('menuitem.up') }}">
+										{{ csrf_field() }}
+										<input type="hidden" name="menuitem_id" value="{{ $menuitem->id }}">
+										<button class="btn btn-link" type="submit" data-toggle="tooltip" title="Subir nivel"><i class="fas fa-level-up-alt" aria-hidden="true"></i></button>
+									</form>
+								@else
+									<button class="btn btn-link" style="color:red;" disabled><i class="fas fa-level-up-alt"></i></button>
+								@endif												
+							</td>							
+							<td>
+								@if($menuitem->orden_menu < count($menuitems))
+									<form method="POST" class="form-inline" action="{{ route('menuitem.down') }}" >
+										{{ csrf_field() }}
+										<input type="hidden" name="menuitem_id" value="{{ $menuitem->id }}">
+										<button class="btn btn-link" type="submit" data-toggle="tooltip" title="Bajar nivel"><i class="fas fa-level-down-alt" aria-hidden="true"></i></button>
+									</form>
+								@else
+									<button class="btn btn-link" style="color:red;" disabled><i class="fas fa-level-down-alt"></i></button>							
+								@endif
 							</td>
+							
+							<td><a href="{{ route('menuitem.edit', ['menuitem' => $menuitem])}}" data-toggle="tooltip" title="Editar"><i class="far fa-edit"></i></a></td>
+							<td><a href="#" data-toggle="tooltip" title="Eliminar"><i class="far fa-trash-alt"></i></a></td>
 						</tr>
 						@endforeach
 						</tbody>

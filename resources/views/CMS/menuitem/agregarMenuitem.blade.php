@@ -20,10 +20,10 @@
 			
 			<div class="panel-body text-info">
 					<form method="POST" action="{{ route('menuitem.store') }}" class="form-horizontal">		
-					@include('cms.menuitem.formMenuitem', ['textoBoton' => 'Confirmar'])		
+						@include('cms.menuitem.formMenuitem', ['textoBoton' => 'Confirmar'])		
 					</form>
 			</div>
-			<div class="panel-footer"><a href="{{ route('menuitem.index') }}" class="btn btn-info btn-block" role="button"><i class="fas fa-list-ul"></i> Listado conde Items de Menú</a></div>
+			<div class="panel-footer"><a href="{{ route('menuitem.index') }}" class="btn btn-info btn-block" role="button"><i class="fas fa-list-ul"></i> Listado de Items de Menú</a></div>
 		</div>
 	</div>
 	

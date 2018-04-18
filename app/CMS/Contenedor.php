@@ -18,4 +18,8 @@ class Contenedor extends Model
 	public function contenidos(){
 		return $this->belongsToMany('App\CMS\Contenido','cms_contenido_contenedor')->withPivot('orden')->orderBy('orden');
 	}
+	
+	public function menuitem(){
+		return $this->belongsTo('App\CMS\Menuitem','id_itemmenu');
+	}
 }

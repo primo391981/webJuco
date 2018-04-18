@@ -32,7 +32,7 @@
 												<p class="text-center">{{ $contenido->id }} {{ $contenido->titulo }}</p>
 											</div>
 											<div class="col-xs-2">
-												<form class="form-inline" action="" method="POST">
+												<form class="form-inline" action="{{ route('contenido.deassign') }}" method="POST">
 													{{ csrf_field() }}
 													<input type="hidden" name="contenedor_id" value="{{ $contenedor->id }}">
 													<input type="hidden" name="contenido_id" value="{{ $contenido->id }}">
@@ -105,7 +105,7 @@
 			<table class="table table-striped" id="contenidos">
 			</table>
 			
-			<form id='form-delete' action="{{ route('contenedor.asign', ':CONTENIDO_ID') }}">
+			<form id='form-delete' action="{{ route('contenido.assign', ':CONTENIDO_ID') }}">
 				{{ csrf_field() }}
 				<input type="hidden" name="contenedor_id" value="{{ $contenedor->id}}">
 			</form>

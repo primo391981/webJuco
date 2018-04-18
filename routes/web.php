@@ -38,32 +38,26 @@ Route::group(['middleware' => ['auth']], function () {
 	//Route::get('edit_usuario/{id}', 'Administracion\UserController@edita')->name('edit_usuario')->middleware('role:superAdmin');
 	//Route::post('edit_usuario/{id}', 'Administracion\UserController@modificar')->name('edit_usuario')->middleware('role:superAdmin');
 	
-	
-	
-	
 	//index cms
 	Route::get('cms', 'CMS\CMSController@index')->name('cms')->middleware('role:cmsAdmin');
 	
 	//menuitems en CMS
+	Route::post('upmenuitem', 'CMS\MenuitemController@upMenu')->name('menuitem.up')->middleware('role:cmsAdmin');
+	Route::post('downmenuitem', 'CMS\MenuitemController@downMenu')->name('menuitem.down')->middleware('role:cmsAdmin');
 	Route::resource('menuitem', 'CMS\MenuitemController')->middleware('role:cmsAdmin');
 			
 	//contenedores en CMS
-	Route::post('asigncontenido/{contenido}', 'CMS\ContenedorController@asignContenido')->name('contenedor.asign')->middleware('role:cmsAdmin');
+	Route::post('deassigncontenedor', 'CMS\ContenedorController@deassignContenedor')->name('contenedor.deassign')->middleware('role:cmsAdmin');
+	Route::post('upcontenedor', 'CMS\ContenedorController@upContenedor')->name('contenedor.up')->middleware('role:cmsAdmin');
+	Route::post('downcontenedor', 'CMS\ContenedorController@downContenedor')->name('contenedor.down')->middleware('role:cmsAdmin');
+	Route::post('deassigncontenido', 'CMS\ContenedorController@deassignContenido')->name('contenido.deassign')->middleware('role:cmsAdmin');
+	Route::post('assigncontenido/{contenido}', 'CMS\ContenedorController@assignContenido')->name('contenido.assign')->middleware('role:cmsAdmin');
 	Route::resource('contenedor', 'CMS\ContenedorController')->middleware('role:cmsAdmin');
 
-	
 	//contenidos en CMS
 	Route::get('searchcontenido', 'CMS\ContenidoController@search')->name('contenido.search')->middleware('role:cmsAdmin');
 	Route::post('upcontenido', 'CMS\ContenidoController@upContenido')->name('contenido.up')->middleware('role:cmsAdmin');
 	Route::post('downcontenido', 'CMS\ContenidoController@downContenido')->name('contenido.down')->middleware('role:cmsAdmin');
 	Route::resource('contenido', 'CMS\ContenidoController')->middleware('role:cmsAdmin');
-	
-	/*
-	Route::get('contenidos', 'CMS\ContenidoController@lista')->name('contenidos')->middleware('role:cmsAdmin');
-	Route::get('add_contenido', 'CMS\ContenidoController@agrega')->name('add_contenido')->middleware('role:cmsAdmin');
-	Route::post('add_contenido', 'CMS\ContenidoController@crear')->name('add_contenido')->middleware('role:cmsAdmin');
-//	Route::get('edit_contenido/{id}', 'ContenidoController@modifica')->name('edit_contenido');
-//	Route::post('edit_contenido', 'ContenidoController@modificar')->name('edit_contenido');
-//	Route::post('del_contenido', 'ContenidoController@eliminar')->name('del_contenido');	
-*/
+
 });

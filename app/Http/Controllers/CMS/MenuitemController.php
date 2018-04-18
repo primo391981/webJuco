@@ -66,7 +66,9 @@ class MenuitemController extends Controller
      */
     public function edit(Menuitem $menuitem)
     {
-        //
+        $subtitulo = 'Editar Item de Menú';
+		
+		return view('cms.menuitem.editarMenuitem', ['menuitem' => $menuitem, 'subtitulo' => $subtitulo]);
     }
 
     /**
@@ -91,4 +93,51 @@ class MenuitemController extends Controller
     {
         //
     }
+	
+	//subir el nivel de un item 
+	public function upMenu(Request $request)
+	{
+		$menuitem_id = $request->input('menuitem_id');
+		
+		$menuitem_up = Menuitem::find($menuitem_id);
+		
+		$orden_actual = $menuitem_up->orden_menu;
+		
+		$menuitem_down = Menuitem::where('orden_menu',$orden_actual-1)->first();
+		
+		//se sube el nivel del item
+		$menuitem_up->orden_menu--;
+		$menuitem_down->orden_menu++;
+		
+		$menuitem_up->save();
+		$menuitem_down->save();
+		
+		return redirect()->route('menuitem.index');
+
+	}
+	
+	
+	//bajar el nivel de un item 
+	public function downMenu(Request $request)
+	{
+		$menuitem_id = $request->input('menuitem_id');
+		
+		$menuitem_down = Menuitem::find($menuitem_id);
+		
+		$orden_actual = $menuitem_down->orden_menu;
+		
+		$menuitem_up = Menuitem::where('orden_menu',$orden_actual+1)->first();
+		
+		//dd($menuitem_up);
+		
+		//se sube el nivel del item
+		$menuitem_down->orden_menu++;
+		$menuitem_up->orden_menu--;
+		
+		$menuitem_down->save();
+		$menuitem_up->save();
+		
+		return redirect()->route('menuitem.index');
+		
+	}
 }
