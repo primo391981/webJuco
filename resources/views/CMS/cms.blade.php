@@ -1,9 +1,9 @@
 @extends('layouts.layout_intranet')
 
-
 @section('navbar')
-<a class="navbar-brand" href="#"><strong>CMS</strong></a>
+<a class="navbar-brand" href="#"><strong>CMS @yield('seccion')</strong></a>
 @endsection
+
 @section('menu-lateral')
 <li>
     <a href="#"><i class="fas fa-th-large"></i> Contenedores <i class="fas fa-caret-down"></i></a>
@@ -22,8 +22,8 @@
 <li>
     <a href="#"><i class="fas fa-sitemap"></i> Items menú <i class="fas fa-caret-down"></i></a>
 		<ul class="nav nav-second-level">
-			 <li><a href="#"><i class="fas fa-list-ul"></i> Listado</a></li>
-			 <li><a href="#"><i class="fas fa-plus"></i> Agregar nuevo</a></li>
+			 <li><a href="{{ route('menuitem.index') }}"><i class="fas fa-list-ul"></i> Listado</a></li>
+			 <li><a href="{{ route('menuitem.create') }}"><i class="fas fa-plus"></i> Agregar nuevo</a></li>
         </ul>
 </li>		
 @endsection

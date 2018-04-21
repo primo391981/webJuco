@@ -1,36 +1,6 @@
-<!-- La plantilla utilizada por esta vista esta en admin/layouts/ y se llama app.blade.php -->
-@extends('layouts.layout_intranet')
+@extends('cms.cms')
 
-<!--@section('titulo-seccion', 'Editar Contenedor')
-
-@section('active', 'active')-->
-@section('navbar')
-<a class="navbar-brand" href="#"><strong>CMS - CONTENEDOR</strong></a>
-@endsection
-@section('menu-lateral')
-<li>
-    <a href="#"><i class="fas fa-th-large"></i> Contenedores <i class="fas fa-caret-down"></i></a>
-		<ul class="nav nav-second-level">
-			 <li><a href="{{ route('contenedor.index') }}"><i class="fas fa-list-ul"></i> Listado</a></li>
-			 <li><a href="{{ route('contenedor.create') }}"><i class="fas fa-plus"></i> Agregar nuevo</a></li>
-        </ul>
-</li>
-<li>
-    <a href="#"><i class="fas fa-th"></i> Contenidos <i class="fas fa-caret-down"></i></a>
-		<ul class="nav nav-second-level">
-			 <li><a href="{{ route('contenido.index') }}"><i class="fas fa-list-ul"></i> Listado</a></li>
-			 <li><a href="{{ route('contenido.create') }}"><i class="fas fa-plus"></i> Agregar nuevo</a></li>
-        </ul>
-</li>
-<li>
-    <a href="#"><i class="fas fa-sitemap"></i> Items menú <i class="fas fa-caret-down"></i></a>
-		<ul class="nav nav-second-level">
-			 <li><a href="#"><i class="fas fa-list-ul"></i> Listado</a></li>
-			 <li><a href="#"><i class="fas fa-plus"></i> Agregar nuevo</a></li>
-        </ul>
-</li>		
-@endsection
-
+@section('seccion', " - Editar Contenedor")
 
 @section('content')
 <br>
@@ -62,7 +32,7 @@
 												<p class="text-center">{{ $contenido->id }} {{ $contenido->titulo }}</p>
 											</div>
 											<div class="col-xs-2">
-												<form class="form-inline" action="" method="POST">
+												<form class="form-inline" action="{{ route('contenido.deassign') }}" method="POST">
 													{{ csrf_field() }}
 													<input type="hidden" name="contenedor_id" value="{{ $contenedor->id }}">
 													<input type="hidden" name="contenido_id" value="{{ $contenido->id }}">
@@ -135,7 +105,7 @@
 			<table class="table table-striped" id="contenidos">
 			</table>
 			
-			<form id='form-delete' action="{{ route('contenedor.asign', ':CONTENIDO_ID') }}">
+			<form id='form-delete' action="{{ route('contenido.assign', ':CONTENIDO_ID') }}">
 				{{ csrf_field() }}
 				<input type="hidden" name="contenedor_id" value="{{ $contenedor->id}}">
 			</form>

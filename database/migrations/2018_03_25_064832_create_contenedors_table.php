@@ -17,8 +17,8 @@ class CreateContenedorsTable extends Migration
             $table->increments('id');
 			$table->string('titulo');
 			$table->integer('tipo');
-			$table->integer('orden_menu');
-			$table->integer('id_itemmenu');
+			$table->integer('orden_menu')->nullable();
+			$table->integer('id_itemmenu')->nullable();
 			$table->string('color'); 
 			$table->string('img_fondo');
 			$table->string('ancho_pantalla');

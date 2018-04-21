@@ -1,39 +1,7 @@
+@extends('cms.cms')
 
-<!-- La plantilla utilizada por esta vista esta en admin/layouts/ y se llama app.blade.php -->
+@section('seccion', " - Contenedores")
 
-@extends('layouts.layout_intranet')
-
-<!--@section('titulo-seccion', 'Contenedores')
-
-@section('active', 'active')-->
-@section('navbar')
-<a class="navbar-brand" href="#"><strong>CMS - CONTENEDOR</strong></a>
-@endsection
-@section('menu-lateral')
-<li>
-    <a href="#"><i class="fas fa-th-large"></i> Contenedores <i class="fas fa-caret-down"></i></a>
-		<ul class="nav nav-second-level">
-			 <li><a href="{{ route('contenedor.index') }}"><i class="fas fa-list-ul"></i> Listado</a></li>
-			 <li><a href="{{ route('contenedor.create') }}"><i class="fas fa-plus"></i> Agregar nuevo</a></li>
-        </ul>
-</li>
-<li>
-    <a href="#"><i class="fas fa-th"></i> Contenidos <i class="fas fa-caret-down"></i></a>
-		<ul class="nav nav-second-level">
-			 <li><a href="{{ route('contenido.index') }}"><i class="fas fa-list-ul"></i> Listado</a></li>
-			 <li><a href="{{ route('contenido.create') }}"><i class="fas fa-plus"></i> Agregar nuevo</a></li>
-        </ul>
-</li>
-<li>
-    <a href="#"><i class="fas fa-sitemap"></i> Items menú <i class="fas fa-caret-down"></i></a>
-		<ul class="nav nav-second-level">
-			 <li><a href="#"><i class="fas fa-list-ul"></i> Listado</a></li>
-			 <li><a href="#"><i class="fas fa-plus"></i> Agregar nuevo</a></li>
-        </ul>
-</li>		
-@endsection
-
-                
 @section('content')
 <br>
 <div class="row">
@@ -59,19 +27,19 @@
 								<th>ID</th>
 								<th>Título</th>
 								<th>Tipo</th>
-								<th>Órden Menú</th>
-								<th>id Padre</th>
+								<th>Item de menú</th>
+								<th>Orden en menú</th>
 								<th>Acciones</th>
 							</tr>
 						</thead>
 						<tbody>
-						@foreach($contenedores as $contenedor)						
+						@foreach($contenedores->sortBy('id_itemmenu') as $contenedor)						
 						<tr>
 							<td>{{$contenedor->id}}</td>
 							<td>{{$contenedor->titulo}}</td>
 							<td>{{$contenedor->tipo}}</td>
+							<td>{{ !is_null($contenedor->menuitem) ? $contenedor->menuitem->titulo : "sin asignar"}}</td>
 							<td>{{$contenedor->orden_menu}}</td>
-							<td>{{$contenedor->id_padre}}</td>
 							<td><a href="{{ route('contenedor.edit', ['contenedor' => $contenedor])}}" data-toggle="tooltip" title="Editar"><i class="far fa-edit"></i></a> <a href="#" data-toggle="tooltip" title="Eliminar"><i class="far fa-trash-alt"></i></a>
 							</td>
 						</tr>

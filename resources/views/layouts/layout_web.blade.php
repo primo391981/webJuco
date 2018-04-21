@@ -30,7 +30,7 @@
 		<ul class="navbar-nav mr-auto">
 			@foreach($menuitems as $menuitem) 
 				<li class="nav-item">
-					<a class="nav-link" href="#{{ $menuitem->contenedores[0]->id }}">{{ $menuitem->titulo }}</a>
+					<a class="nav-link" href="#{{ $menuitem->contenedores->sortBy('orden_menu')->first()->id }}">{{ $menuitem->titulo }}</a>
 				</li>
 			@endforeach
 		  

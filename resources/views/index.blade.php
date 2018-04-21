@@ -4,7 +4,7 @@
 
 {{-- Se recorre la colección de contenedores enviada desde el controlador --}}
 @foreach($menuitems as $menuitem)
-	@foreach($menuitem->contenedores as $contenedor)
+	@foreach($menuitem->contenedores->sortBy('orden_menu') as $contenedor)
 		
 		{{-- se "imprimen" los tags de inicio de la estructura del tipo de contenedor --}}
 		{!! $contenedor->inicio_estructura !!}
