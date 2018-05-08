@@ -8,6 +8,7 @@ use App\CMS\TipoContenedor;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
 class ContenidoController extends Controller
 {
@@ -81,9 +82,10 @@ class ContenidoController extends Controller
 		$contenido->subtitulo = $request['subtitulo'];
 		$contenido->texto = $request['texto'];
 		$contenido->archivo = $request['archivo'] !== null ? $request['archivo'] : "";
+		$contenido->nombre_archivo = $request['nombre_archivo'] !== null ? $request['nombre_archivo'] : "";
 		$contenido->imagen = $request['imagen'] !== null ? $request['imagen'] : "";
-		$contenido->alt_imagen = $request['imagen'] !== null ? $request['alt_imagen'] : "";
-		$contenido->nombre_archivo = $request['imagen'] !== null ? $request['nombre_archivo'] : "";
+		$contenido->alt_imagen = $request['alt_imagen'] !== null ? $request['alt_imagen'] : "";
+		
 		
 		//dd($contenido);
 		//dd($contenido);
@@ -139,20 +141,33 @@ class ContenidoController extends Controller
 			'titulo' => 'required',
 			'subtitulo' => 'required',
 			'texto' => 'required',
-			//'filepath' => 'nullable',
-			//'imagen' => 'nullable',
-			//'alt_imagen' => 'nullable',
 		]);
 		
 		$contenido->titulo = $request['titulo'];
 		$contenido->subtitulo = $request['subtitulo'];
 		$contenido->texto = $request['texto'];
-		$contenido->archivo = $request['archivo'] !== null ? $request['archivo'] : "";
-		$contenido->imagen = $request['imagen'] !== null ? $request['imagen'] : "";
-		$contenido->alt_imagen = $request['imagen'] !== null ? $request['alt_imagen'] : "";
-		$contenido->nombre_archivo = $request['imagen'] !== null ? $request['nombre_archivo'] : "";
 		
-		//dd($contenido);
+		//manejo del archivo adjunto
+		if($request->hasFile('archivo')){
+			$archivo = $request->file('archivo');
+			$path = $archivo->store('public/contenidos/archivos');
+			$contenido->archivo = Storage::url($path);
+			$contenido->nombre_archivo = $request['nombre_archivo'] !== null ? $request['nombre_archivo'] : "nombre de archivo";
+			
+		} 
+		
+		//manejo de imagen adjunta
+		if($request->hasFile('imagen')){
+			$imagen = $request->file('imagen');
+			$path = $imagen->store('public/contenidos/imagenes');
+			$contenido->imagen = Storage::url($path);
+			$contenido->alt_imagen = $request['alt_imagen'] !== null ? $request['alt_imagen'] : "Texto de imagen";
+			//dd($contenido);
+		} 
+		
+		
+		
+		
 		//dd($contenido);
 		$contenido->save();
 		

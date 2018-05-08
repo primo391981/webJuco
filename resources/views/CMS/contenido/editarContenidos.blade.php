@@ -1,30 +1,7 @@
 @extends('cms.cms')
 
-@section('seccion', " - Editar Contenido")
+@section('seccion', " - Nuevo Contenido")
 
-@section('menu-lateral')
-<li>
-    <a href="#"><i class="fas fa-th-large"></i> Contenedores <i class="fas fa-caret-down"></i></a>
-		<ul class="nav nav-second-level">
-			 <li><a href="{{ route('contenedor.index') }}"><i class="fas fa-list-ul"></i> Listado</a></li>
-			 <li><a href="{{ route('contenedor.create') }}"><i class="fas fa-plus"></i> Agregar nuevo</a></li>
-        </ul>
-</li>
-<li>
-    <a href="#"><i class="fas fa-th"></i> Contenidos <i class="fas fa-caret-down"></i></a>
-		<ul class="nav nav-second-level">
-			 <li><a href="{{ route('contenido.index') }}"><i class="fas fa-list-ul"></i> Listado</a></li>
-			 <li><a href="{{ route('contenido.create') }}"><i class="fas fa-plus"></i> Agregar nuevo</a></li>
-        </ul>
-</li>
-<li>
-    <a href="#"><i class="fas fa-sitemap"></i> Items menú <i class="fas fa-caret-down"></i></a>
-		<ul class="nav nav-second-level">
-			 <li><a href="#"><i class="fas fa-list-ul"></i> Listado</a></li>
-			 <li><a href="#"><i class="fas fa-plus"></i> Agregar nuevo</a></li>
-        </ul>
-</li>		
-@endsection
 @section('content')
 <br>
 <div class="row">
@@ -32,7 +9,7 @@
 		<div class="panel panel-info">
 			<div class="panel-heading text-center"><h4>Editar Contenido</h4></div>
 			<div class="panel-body text-info">
-				<form method="POST" action="{{ route('contenido.update', ['contenido' => $contenido]) }}" class="form-horizontal">
+				<form method="POST" action="{{ route('contenido.update', ['contenido' => $contenido]) }}" class="form-horizontal" enctype="multipart/form-data">
 				{{ method_field('PUT') }}
 				@include('cms.contenido.formContenido', ['textoBoton' => 'Confirmar'])
 				</form>

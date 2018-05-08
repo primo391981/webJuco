@@ -27,10 +27,9 @@
 								<th class="scope">ID</th>
 								<th>Título</th>
 								<th>Texto</th>
-								<th>Ruta Archivo</th>
+								<th>Archivo</th>
 								<th>Imagen</th>
 								<th>Texto Imagen</th>
-								<th>Tipo</th>
 								<th>Acciones</th>
 							</tr>
 						</thead>
@@ -40,10 +39,13 @@
 								<td>{{$contenido->id}}</td>
 								<td>{{$contenido->titulo}}</td>
 								<td>{!!$contenido->texto!!}</td>
-								<td>{{$contenido->filepath}}</td>
-								<td>{{$contenido->imagen}}</td>
+								<td><a href="{{ asset($contenido->archivo) }}">{{ $contenido->nombre_archivo }}</a></td>
+								<td>
+									@if($contenido->archivo!="")
+										<img src="{{ asset ($contenido->imagen) }}" height="40">
+									@endif
+								</td>
 								<td>{{$contenido->alt_imagen}}</td>
-								<td>{{$contenido->tipo}}</td>
 								<td>
 									<a href="{{ route('contenido.edit', ['contenido' => $contenido]) }}" data-toggle="tooltip" title="Editar"><i class="far fa-edit"></i></a> 
 									<a href="#" data-toggle="tooltip" title="Eliminar"><i class="far fa-trash-alt"></i></a>

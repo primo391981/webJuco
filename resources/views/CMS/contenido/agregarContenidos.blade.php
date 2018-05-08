@@ -18,8 +18,8 @@
 				</div>
 			</div>
 			<div class="panel-body text-info">
-				<form method="POST" action="{{ route('contenido.store') }}"class="form-horizontal">
-				@include('cms.contenido.formContenido', ['textoBoton' => 'Confirmar'])
+				<form method="POST" action="{{ route('contenido.store') }}"class="form-horizontal" enctype="multipart/form-data">
+					@include('cms.contenido.formContenido', ['textoBoton' => 'Confirmar'])
 				</form>
 			</div>
 			<div class="panel-footer"><a href="{{ route('contenido.index') }}" class="btn btn-info btn-block" role="button"><i class="fas fa-list-ul"></i> Listado contenidos</a></div>

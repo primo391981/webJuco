@@ -35,17 +35,13 @@ class TipoContenedorsTableSeeder extends Seeder
 		
 		DB::table('cms_tipo_contenedors')->insert([
             'nombre' => "DOS - 4 columnas",			
-			'inicio_estructura' => "<div id='%id' class='container%fluid paddingtop %fondo %img_fondo'>	
-	<div class='col-xs-12 col-sm-12 text-center'>
-				<h1>%titulo_contenedor</h1>
-				<br>
-	</div><div class='row'>",
+			'inicio_estructura' => "<div id='%id' class='container%fluid paddingtop %fondo %img_fondo'><div class='col-xs-12 col-sm-12 text-center'><h1>%titulo_contenedor</h1><br></div><div class='row'>",
 			'fin_estructura' => "</div></div>",
 			'descripcion'=>"4 columnas",
 			'imagen'=>"img",
 			'estructura_contenido'=>"
 										<div class='col-xs-12 col-sm-6 col-md-3 text-center'>
-											<i class='fas fa-home fa-5x'></i>
+											<img src='%imagen' class='img-fluid mx-auto d-block' alt='%alt_imagen'/>
 											<h3>%titulo</h3>
 											<p>%texto</p>
 										</div>
@@ -53,61 +49,55 @@ class TipoContenedorsTableSeeder extends Seeder
 			'estilo'=>""
         ]);
 		
-		
-		
-		/*
 		DB::table('cms_tipo_contenedors')->insert([
-            'nombre' => "DOS - 4 columnas con ícono",			
-			'inicio_estructura' => "<div id='%id' class='container paddingtop'><div class='col-xs-12 col-sm-12 text-center'>
-									<h1>%titulo_contenido</h1><br></div><div class='row'>",
-			'fin_estructura' => "</div>",
-			'descripcion'=>"4 columnas con ícono",
+            'nombre' => "TRES - Con imagen lateral",			
+			'inicio_estructura' => "<div id='%id' class='container%fluid paddingtop %fondo %img_fondo'><div class='container'>",
+			'fin_estructura' => "</div></div>",
+			'descripcion'=>"Imagen lateral",
 			'imagen'=>"img",
-			'titulo_contenido'=>"<div class='col-xs-12 col-sm-6 col-md-3 text-center'>
-				<i class='fas fa-home fa-5x'></i>
-				<h3>%titulo</h3>",
-			'subtitulo_contenido'=>"<div class='row'><div class='col-xs-12 col-sm-12 text-center'><h3>%subtitulo</h3></div></div>",
-			'texto_contenido'=>"<div class='row'><div class='col-xs-12 col-sm-6 offset-sm-3 text-center'>
-					<p>%texto</p>
-				</div></div>",
-			'imagen_contenido'=>"",
-			'archivo_contenido'=>"",
+			'estructura_contenido'=>"
+										<div class='row'>
+											<div class='col-xs-12 col-sm-12 col-md-6'>
+												<h1>%titulo</h1>
+												<p>%texto</p>
+											</div>	
+											<div class='col-xs-12 col-sm-12 col-md-6'>
+												<img src='%imagen' class='img-fluid mx-auto d-block' alt='%alt_imagen'/>
+											</div>
+										</div>
+									",
 			'estilo'=>""
         ]);
 		
-		/*
 		DB::table('cms_tipo_contenedors')->insert([
-            'nombre' => "DOS - CENTRADO GRIS",			
-			'inicio_estructura' => "<div id='dos' class='container-fluid paddingtop fondogris'><div class='container'>",
+            'nombre' => "CUATRO - Profesionales",			
+			'inicio_estructura' => "<div id='%id' class='container%fluid paddingtop %fondo %img_fondo'><div class='row'><div class='col-xs-12 col-sm-12 text-center'><h1>%titulo_contenedor</h1><br></div></div><div class='row'>",
 			'fin_estructura' => "</div></div>",
-			'descripcion'=>"",
-			'imagen'=>"img"
+			'descripcion'=>"Lista Profesionales",
+			'imagen'=>"img",
+			'estructura_contenido'=>"
+										<div class='col-xs-12 col-sm-6 text-center'>
+											<img src='%imagen' class='img-fluid center-block' alt='%alt_imagen'/>
+											<h3><strong>%titulo</strong></h3>
+											<p>%texto</p>
+										</div>
+									",
+			'estilo'=>""
         ]);
 		
 		DB::table('cms_tipo_contenedors')->insert([
-            'nombre' => "TRES - FLUID BLANCO",			
-			'inicio_estructura' => "<div id='tres' class='container-fluid paddingtop'>",
-			'fin_estructura' => "</div>",
-			'descripcion'=>"CENTRADO BLANCO",
-			'imagen'=>"img"
+            'nombre' => "CINCO - Dos columnas",			
+			'inicio_estructura' => "<div id='%id' class='container%fluid paddingtop %fondo %img_fondo''><div class='row'>",
+			'fin_estructura' => "</div></div>",
+			'descripcion'=>"Lista Profesionales",
+			'imagen'=>"img",
+			'estructura_contenido'=>"<div class='col-xs-12 col-sm-12 col-md-6'><h1>%titulo</h1><p>%texto</p></div>",
+			'estilo'=>""
         ]);
 		
-		DB::table('cms_tipo_contenedors')->insert([
-            'nombre' => "CUATRO - FLUID GRIS",			
-			'inicio_estructura' => "<div id='cuatro' class='container-fluid paddingtop fondogris'>",
-			'fin_estructura' => "</div>",
-			'descripcion'=>"CENTRADO BLANCO",
-			'imagen'=>"img"
-        ]);
 		
-		DB::table('cms_tipo_contenedors')->insert([
-            'nombre' => "CINCO - FLUID CON FONDO IMG",			
-			'inicio_estructura' => "<div id='cinco' class='container-fluid paddingtop' style='background-image: url('img/2.jpg'); background-size:cover; color:white;' >",
-			'fin_estructura' => "</div>",
-			'descripcion'=>"CENTRADO BLANCO",
-			'imagen'=>"img"
-        ]);
 		
-		*/
+		
+
     }
 }
