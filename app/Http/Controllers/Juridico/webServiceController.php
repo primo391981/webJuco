@@ -9,12 +9,18 @@ use SoapClient;
 class WebServiceController extends Controller
 {
     //
-	public function test(){
+	    //
+	public function index(){
+		return view('Juridico.webservice.busqueda');
+	}
+	
+	public function test(Request $request){
 				
 		$wsdl = "http://www.expedientes.poderjudicial.gub.uy/wsConsultaIUE.php?wsdl";    
         $client = new SoapClient($wsdl);
           
-        $parameters = "10-1/2010";
+		 
+        $parameters = $request->iue;
 
         $values = $client->ConsultaIUE($parameters);
 		//dd($values);

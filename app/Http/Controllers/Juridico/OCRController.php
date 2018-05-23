@@ -8,10 +8,10 @@ use thiagoalessio\TesseractOCR\TesseractOCR;
 
 class OCRController extends Controller
 {
-    //
+
 	public function ocrtext(){
 		
-		$imagen = "/home/vagrant/code/webJuco/public/img/text.png";
+		$imagen = "/home/vagrant/code/webJuco/public/img/pdf1.png";
 		
 		$tesseract = new TesseractOCR($imagen);
 		//dd($tesseract);
@@ -25,7 +25,7 @@ class OCRController extends Controller
 		//$valor = $texto->run();
 		
 		//dd($valor);
-		echo($tesseract->run());
+		echo($tesseract->lang('spa')->run());
 	}
 	
 }

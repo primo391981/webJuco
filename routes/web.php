@@ -18,7 +18,11 @@
 
 Route::get('/', 'WebController@index')->name('home');
 
-Route::get('webservice', 'Juridico\WebServiceController@test')->name('test');
+//Webservice
+Route::get('webservice', 'Juridico\WebServiceController@index')->name('test');
+Route::post('webservice', 'Juridico\WebServiceController@test')->name('searchExpediente');
+
+//OCR
 Route::get('ocr', 'Juridico\OCRController@ocrtext')->name('ocr');
 
 //rutas para el funcionamiento del sistema de autenticación
