@@ -11,7 +11,7 @@ class OCRController extends Controller
 
 	public function ocrtext(){
 		
-		$imagen = "/home/vagrant/code/webJuco/public/img/pdf1.png";
+		$imagen = "/home/vagrant/code/webJuco/public/img/pdf4.png";
 		
 		$tesseract = new TesseractOCR($imagen);
 		//dd($tesseract);
