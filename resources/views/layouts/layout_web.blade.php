@@ -16,7 +16,7 @@
 	<!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
   
-    <title>Hello, world!</title>
+    <title></title>
   </head>
   <body>
   
@@ -104,7 +104,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content bg-danger">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-user"></i> Logueo usuario</h5>
+        <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-user"></i> Acceso a usuarios</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -112,7 +112,6 @@
       <div class="modal-body">
 	      <form method="POST" action="{{ route('login') }}">
                         @csrf
-
                         <div class="form-group row">
                             <label for="name" class="control-label col-sm-3 col-form-label">Usuario</label>
                             <div class="col-sm-9">

@@ -10,12 +10,6 @@ use App\CMS\Menuitem;
 
 class WebController extends Controller
 {
-    /**
-     * Show the profile for the given user.
-     *
-     * @param  int  $id
-     * @return Response
-     */
     
 	//función que contruye el index del sitio web
 	public function index()
@@ -29,12 +23,7 @@ class WebController extends Controller
 		$menuitems = Menuitem::has('contenedores')->orderBy('orden_menu')->get();
 		
 		foreach($menuitems as $menuitem){
-			//$contenedores = Contenedor::OrderBy('orden_menu')->get();
-			
-			//dd($menuitem->contenedores[0]->id);
-			//dd($contenedores[0]->contenidos);
-			//dd($contenedores[0]->contenidos[0]->datosContenido);
-			//dd($contenedores[0]->contenidos[0]->datosContenido);
+						
 			//se recorre la lista de contenedores
 			foreach($menuitem->contenedores as $contenedor){
 				
@@ -75,10 +64,8 @@ class WebController extends Controller
 					
 					//por cada contenido:
 					$contenido->estructura = $contenedor->tipoContenedor->estructura_contenido;
-					//dd($contenido);
+			
 						//se formatea el título de acuerdo a lo establecido por el tipo de contenedor
-						//dd($contenedor->tipoContenedor);
-						//dd($datos->pivot->tipodato_id);
 						$contenido->estructura = str_replace("%titulo", $contenido->titulo ,$contenido->estructura);
 						
 						//se formatea el texto de acuerdo a lo establecido por el tipo de contenedor
@@ -99,23 +86,12 @@ class WebController extends Controller
 						//se formatea el texto de acuerdo a lo establecido por el tipo de contenedor
 						$contenido->estructura = str_replace("%nombre_archivo", $contenido->nombre_archivo ,$contenido->estructura);
 						
-					/*
-						//se formatea la imagen de acuerdo a lo establecido por el tipo de contenedor y se completa el texto "alt"
-						$contenido->imagen = str_replace("%imagen",$contenido->imagen, $contenedor->tipoContenedor->imagen_contenido);
-						$contenido->imagen = str_replace("%alt_imagen",$contenido->alt_imagen, $contenedor->tipoContenedor->imagen_contenido);
-					*/
-					//dd($contenido);
-					
 				}
 				
 			}
 		}
 		
-		
-		//$menuitems = Menuitem::All();
 		//se retorna la vista "index" con la colección de contenedores
-		
-		
 		return view('index', ['menuitems' => $menuitems]);
     }
 	
