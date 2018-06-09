@@ -36,7 +36,7 @@ class DatabaseSeeder extends Seeder
 			MenuitemsTableSeeder::class,
 			
 			ContenidosContenedorsTableSeeder::class,
-			
+			EmpresaTableSeeder::class
 			
 		]);	
     }

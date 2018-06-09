@@ -14,7 +14,7 @@ class OCRController extends Controller
 		
 		$tesseract = new TesseractOCR($imagen);
 		
-		$tesseract->executable('/usr/bin/tesseract');
+		//$tesseract->executable('/usr/bin/tesseract');
         //dd($tesseract);
 		//var_dump($tesseract);
 		//$texto = new TesseractOCR($imagen);
