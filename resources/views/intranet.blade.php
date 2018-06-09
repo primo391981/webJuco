@@ -2,9 +2,9 @@
 
 <!-- SI TIENE MAS DE UN ROL UTILIZA ESTA VIEW -->
 @section('menu-lateral')
-<li><a href="{{ route('cms') }}"><i class="fas fa-edit"></i> Edición web</a></li>
-<li><a href="{{ route('cms') }}"><i class="fas fa-balance-scale"></i> Admin. Jurídica</a></li>
-<li><a href="{{ route('cms') }}"><i class="fas fa-university"></i> Admin. Contable</a></li>
+@if(Auth::user()->hasRole('cmsAdmin'))<li><a href="{{ route('cms') }}"><i class="fas fa-edit"></i> Edición web</a></li>@endif
+@if(Auth::user()->hasRole('juridicoAdmin'))<li><a href="{{ route('cms') }}"><i class="fas fa-balance-scale"></i> Admin. Jurídica</a></li>@endif
+@if(Auth::user()->hasRole('contableAdmin'))<li><a href="{{ route('cms') }}"><i class="fas fa-university"></i> Admin. Contable</a></li>@endif
 @endsection
 
 @section('content')
