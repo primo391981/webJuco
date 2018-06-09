@@ -8,24 +8,25 @@ use thiagoalessio\TesseractOCR\TesseractOCR;
 
 class OCRController extends Controller
 {
-
 	public function ocrtext(){
 		
-		$imagen = "/home/vagrant/code/webJuco/public/img/pdf4.png";
+		$imagen = '/home/vagrant/code/Juco/public/img/text.png';
 		
 		$tesseract = new TesseractOCR($imagen);
-		//dd($tesseract);
-        $tesseract->executable('/usr/bin/tesseract');
-        //var_dump($tesseract);
+		
+		$tesseract->executable('/usr/bin/tesseract');
+        //dd($tesseract);
+		//var_dump($tesseract);
 		//$texto = new TesseractOCR($imagen);
+		//$texto->executable('/usr/bin/tesseract');
 		//dd($texto);
 		//($imagen)->run();
 		//dd($texto);
-		
+	
 		//$valor = $texto->run();
 		
 		//dd($valor);
-		echo($tesseract->lang('spa')->run());
+		echo("Prueba OCR <br><br>El texto obtenido de la imagen: <br><br>".$tesseract->lang('spa')->run());
 	}
 	
 }
