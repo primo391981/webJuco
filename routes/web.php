@@ -35,19 +35,19 @@ Auth::routes();
 
 Route::group(['middleware' => ['auth']], function () {
 	
-	//admin
+	//intranet
 	Route::get('admin', 'Administracion\AdminController@index')->name('admin');
 		
-	//admin de usuarios
-	
+	//ADMIN USUARIOS	
 	//index administracion
 	Route::get('useradmin', 'Administracion\UseradminController@index')->name('useradmin')->middleware('role:superAdmin');
 	
 	Route::get('user/list/{estado?}', 'Administracion\UserController@lista')->name('user.list')->middleware('role:superAdmin');
 	Route::post('user/restore', 'Administracion\UserController@restore')->name('user.restore')->middleware('role:superAdmin');
 	Route::resource('user', 'Administracion\UserController')->middleware('role:superAdmin');
+	//FIN USUARIOS
 	
-	
+	//CMS
 	//index cms
 	Route::get('cms', 'CMS\CMSController@index')->name('cms')->middleware('role:cmsAdmin');
 	
@@ -69,5 +69,11 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::post('upcontenido', 'CMS\ContenidoController@upContenido')->name('contenido.up')->middleware('role:cmsAdmin');
 	Route::post('downcontenido', 'CMS\ContenidoController@downContenido')->name('contenido.down')->middleware('role:cmsAdmin');
 	Route::resource('contenido', 'CMS\ContenidoController')->middleware('role:cmsAdmin');
-
+	//FIN CMS
+	
+	//CONTABLE
+	Route::get('contable', 'Contable\ContableController@index')->name('contable')->middleware('role:contableAdmin');
+	Route::resource('empresa', 'EmpresaController')->middleware('role:contableAdmin');
+	
+	
 });

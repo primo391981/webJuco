@@ -38,7 +38,7 @@
 				<div class="panel panel-warning">
 				  <div class="panel-heading"><h4><i class="fas fa-university"></i> CONTABLE</h4></div>
 				  <div class="panel-body">lalallalalalalla</div>
-				  <div class="panel-footer"><a href="{{ route('cms') }}" class="btn btn-warning btn-block" role="button"><i class="fas fa-sign-in-alt"></i> Ingresar</a></div>
+				  <div class="panel-footer"><a href="{{ route('contable') }}" class="btn btn-warning btn-block" role="button"><i class="fas fa-sign-in-alt"></i> Ingresar</a></div>
 				</div>
 			  </div>
 			@endif
