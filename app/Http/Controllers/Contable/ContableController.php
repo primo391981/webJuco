@@ -10,6 +10,6 @@ class ContableController extends Controller
     //
 	public function index()
 	{
-		return view ('Contable.contable');
+		return view ('contable.contable');
 	}
 }

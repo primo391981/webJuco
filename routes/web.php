@@ -72,7 +72,10 @@ Route::group(['middleware' => ['auth']], function () {
 	//FIN CMS
 	
 	//CONTABLE
+	//dashboard contable
 	Route::get('contable', 'Contable\ContableController@index')->name('contable')->middleware('role:contableAdmin');
+	
+	//empresa
 	Route::resource('empresa', 'EmpresaController')->middleware('role:contableAdmin');
 	
 	

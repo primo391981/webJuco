@@ -7,34 +7,20 @@ use App\Empresa;
 
 class EmpresaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
        $empresas=Empresa::All();
 	   return view('contable.empresa.listaEmpresas', ['empresas' => $empresas]);
-	   
+	   //este es el camino de las carpetas hasta llegar al blade correspondiente
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        //return vista con FORM para add empresa
+		return view('contable.empresa.agregarEmpresa',[]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+   
     public function store(Request $request)
     {
         //
