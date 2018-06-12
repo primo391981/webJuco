@@ -23,7 +23,22 @@ class EmpresaController extends Controller
    
     public function store(Request $request)
     {
-        //
+        $empresa = new Empresa;
+		$empresa->rut=$request->input('rut');
+		$empresa->razonSocial=$request->input('razonSocial');
+		$empresa->nombreFantasia=$request->input('nomFantasia');
+		$empresa->domicilio=$request->input('domicilio');
+		$empresa->numBps=$request->input('numBps');
+		$empresa->numBse=$request->input('numBse');
+		$empresa->numMtss=$request->input('numMtss');
+		$empresa->grupo=$request->input('grupo');
+		$empresa->subGrupo=$request->input('subGrupo');
+		$empresa->email=$request->input('email');
+		$empresa->telefono=$request->input('telefono');
+		$empresa->nomContacto=$request->input('nomContacto');
+		$empresa->save();		
+		
+		return redirect()->route('empresa.index');
     }
 
     /**

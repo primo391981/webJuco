@@ -1,26 +1,26 @@
 @extends('contable.contable')
 
-@section('seccion', " - Empresas")
+@section('seccion', " - Lisatado")
 
 @section('content')
 
 <br>
 <div class="row">
 	<!--solamente es visible en cel-->
-	<div class="col-xs-12 visible-xs"><a href="#" class="btn btn-info" role="button" style="margin-bottom:5%;"><i class="fas fa-plus"></i> Agregar nueva</a></div>				  
+	<div class="col-xs-12 visible-xs"><a href="{{ route('empresa.create') }}" class="btn btn-warning" role="button" style="margin-bottom:5%;"><i class="fas fa-plus"></i> Agregar nueva empresa</a></div>				  
 </div>
 <div class="row text-info">
 	<div class="col-xs-12">
-		<div class="panel panel-info">
+		<div class="panel panel-warning">
 				  <div class="panel-heading text-center">
 					<div class="row">
 						<div class="col-sm-9"><h4>Listado empresas</h4></div>
-						<div class="col-sm-3 hidden-xs"><a href="#" class="btn btn-info pull-right" role="button"><i class="fas fa-plus"></i> Agregar nueva</a></div>				  
+						<div class="col-sm-3 hidden-xs"><a href="{{ route('empresa.create') }}" class="btn btn-warning pull-right" role="button"><i class="fas fa-plus"></i> Agregar nueva empresa</a></div>				  
 					</div>
 				  </div>
-				  <div class="panel-body text-info">					
+				  <div class="panel-body text-warning">					
 					<div class="table-responsive">
-						<table id="tableempresas" class="table"> <!--table-hover-->
+						<table id="tableEmpresas" class="table"> <!--table-hover-->
 							
 							<thead>
 							<tr>
@@ -45,14 +45,20 @@
 					</div>
 					
 				  </div>
-				  <div class="panel-footer"><a href="#" class="btn btn-info btn-block" role="button"><i class="fas fa-plus"></i> Agregar nueva</a></div>
+				  <div class="panel-footer"><a href="{{ route('empresa.create') }}" class="btn btn-warning btn-block" role="button"><i class="fas fa-plus"></i> Agregar nueva empresa</a></div>
 		</div>
 	</div>
 </div>
 <script>
-	$(document).ready(function() {
-    $('#tablecontenidos').DataTable();
+$(window).resize(function() {
+    if( $(this).width() > 1024 ) {
+        $(document).ready(function() {
+    $('#tableEmpresas').DataTable();
 } );
+    }
+});
+
+
 </script>
 @endsection
 
