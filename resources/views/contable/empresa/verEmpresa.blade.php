@@ -20,7 +20,7 @@
 				  </div>
 				  <div class="panel-body text-warning">					
 					<div class="table-responsive">
-						<table id="tableEmpresas" class="table table-hover"> <!--table-hover-->
+						<table id="tableEmpresas" class="table"> <!--table-hover-->
 							
 							<thead>
 							<tr>
@@ -55,22 +55,14 @@
 	</div>
 </div>
 <script>
-
-$(document).ready(function() {
-    $('#tableEmpresas').DataTable( {        
-		"language": {
-		"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"},
-		dom: '<"top"f>t<"bottom"Bpi><"clear">',
-        buttons: [
-           { extend: 'print', text: 'IMPRIMIR' },
-		   { extend: 'pdf', text: 'PDF' },
-		   { extend: 'copy', text: 'COPIAR TABLA' }
-		   
-        ]
-    } );
-	
-	
+/*$(window).resize(function() {
+    if( $(this).width() > 1024 ) {
+        $(document).ready(function() {
+    $('#tableEmpresas').DataTable();
 } );
+    }
+});
+*/
 
 </script>
 @endsection
