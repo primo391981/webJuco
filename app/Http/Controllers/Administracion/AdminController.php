@@ -4,6 +4,11 @@ namespace App\Http\Controllers\Administracion;
 
 use App\Http\Controllers\Controller;
 
+
+use App\Administracion\User;
+use Auth;
+
+
 class AdminController extends Controller
 {
     
@@ -18,7 +23,31 @@ class AdminController extends Controller
 		$subtitulo = 'Administración';
 		//dd($contenedores);
 		//se retorna la vista "index" 
+		
+		//si hay un solo rol, preguntar cual y direccionar directamente
+		//dd(count(Auth::user()->roles));
+		if(count(Auth::user()->roles)==1)
+			
+		{
+			
+			$rol= Auth::user()->roles[0]->nombre;
+			switch($rol)
+			{
+				
+				case 'superadmin':return redirect()->route('useradmin');
+					break;
+				case 'cmsAdmin':return redirect()->route('cms');
+					break;
+				/*case 'juridicoAdmin':return redirect()->route('juridico');
+					break;		
+				case 'contableAdmin':return redirect()->route('contable');
+					break;*/
+				
+			}
+			
+		}
 		return view('intranet', ['subtitulo' => $subtitulo]);
     }
+	
 	
 }

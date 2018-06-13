@@ -2,26 +2,132 @@
 
 namespace App\Http\Controllers\Administracion;
 
-use Illuminate\Http\Request;
 use App\Administracion\User;
-
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Auth;
 
 class UserController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
-	//Lista los contenidos del CMS
     {
-		$user = User::find(5);
+		$subtitulo = 'Lista de Usuarios Activos';
+		$usuarios = User::with('roles')->get();
 		
-		//dd($user->roles);
+		//se retorna la vista "listaUsuarios" 
+		return view('administracion.listaUsuarios', ['subtitulo' => $subtitulo, 'usuarios' => $usuarios, 'estado' => $estado]);
+    }
+	
+	public function lista($estado='activos')
+    {
+		//dd($estado);
 		
-		if ($user->roles()->where('nombre', 'cmsAdmin')->first()) {
-			echo "si";
-		} else {
-			echo "no";
+		if ($estado == "activos")
+		{
+			$subtitulo = 'Lista de Usuarios Activos';
+			$usuarios = User::with('roles')->get();
 		}
-		//Se retorna la vista "index" 
-		//return view('admin.listaContenidos', ['subtitulo' => $subtitulo, 'contenidos' => $contenidos]);
+		else
+		{
+			$subtitulo = 'Lista de Usuarios Eliminados';
+			$usuarios = User::onlyTrashed()->with('roles')->get();
+		}		
+			
+		//se retorna la vista "listaUsuarios" 
+		return view('administracion.listaUsuarios', ['subtitulo' => $subtitulo, 'usuarios' => $usuarios, 'estado' => $estado]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Administracion\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function show(User $user)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Administracion\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(User $user)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Administracion\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, User $user)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Administracion\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(User $user)
+    {		
+		if (Auth::id() != $user->id)
+		{
+			$user->delete();
+			return redirect()->route("user.list")->with('success', "El usuario ".$user->name." se eliminó correctamente");
+		} 
+		else  
+		{
+			return redirect()->back()->withErrors(['No se pudo eliminar el usuario']);
+		}
+    }
+	
+	public function restore(Request $request)
+    {
+		if (Auth::id() != $request->user_id) 
+		{
+			$user= User::onlyTrashed()->where('id', $request->user_id)->first();
+			
+			$user->restore();
+			return redirect()->route("user.list", ['estado' => 'eliminados'])->with('success', "El usuario ".$user->name." se recupero correctamente");					
+		} 
+		else  
+		{
+			return redirect()->back()->withErrors(['No se pudo recuperar el usuario']);
+		}
     }
 }

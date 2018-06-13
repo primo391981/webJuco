@@ -11,20 +11,26 @@ class ContenedorsTableSeeder extends Seeder
      */
     public function run()
     {
-         DB::table('contenedors')->insert([
+        //
+		 DB::table('cms_contenedors')->insert([
             'titulo' => "Sección 1",
-			'descripcion' => "Contenedor para Nuestra Firma",
-			'tipo' => 1,
-			'orden_menu' => 0,
-			'id_padre' => 0
+			'tipo' =>1,
+			'orden_menu' =>1,
+			'id_itemmenu' =>1,
+			'color' =>'2',
+			'img_fondo' =>'1',
+			'ancho_pantalla' =>'2'
+        ]);
+
+		DB::table('cms_contenedors')->insert([
+            'titulo' => "Sección 2",
+			'tipo' =>2,
+			'orden_menu' =>2,
+			'id_itemmenu' =>2,
+			'color' =>'1',
+			'img_fondo' =>'0',
+			'ancho_pantalla' =>'1'
         ]);
 		
-		DB::table('contenedors')->insert([
-            'titulo' => "Sección 2",
-			'descripcion' => "Contenedor para Misión - Visión",
-			'tipo' => 2,
-			'orden_menu' => 1,
-			'id_padre' => 0
-        ]);
     }
 }

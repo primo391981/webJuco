@@ -13,11 +13,13 @@ class CreateRolesTable extends Migration
      */
     public function up()
     {
-        Schema::create('roles', function (Blueprint $table) {
+        Schema::create('admin_roles', function (Blueprint $table) {
             $table->increments('id');
 			$table->text('nombre');
 			$table->string('descripcion');
+			
 			$table->timestamps();
+			$table->softDeletes();
         });
     }
 
@@ -28,6 +30,6 @@ class CreateRolesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('roles');
+        Schema::dropIfExists('admin_roles');
     }
 }

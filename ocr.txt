@@ -1,0 +1,344 @@
+Sorting...
+Full Text Search...
+gimagereader/xenial 3.1.2+git368fa8f-2build1 amd64
+  Graphical GTK+ front-end to tesseract-ocr
+
+python-pyocr/xenial,xenial 0.3.0-1 all
+  Python wrapper for OCR engines (Python 2)
+
+python3-pyocr/xenial,xenial 0.3.0-1 all
+  Python wrapper for OCR engines (Python 3)
+
+tesseract-ocr/xenial,now 3.04.01-4 amd64 [installed]
+  Tesseract command line OCR tool
+
+tesseract-ocr-afr/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Afrikaans
+
+tesseract-ocr-all/xenial,xenial 3.04.01-4 all
+  Tesseract OCR with all language packages
+
+tesseract-ocr-amh/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Amharic
+
+tesseract-ocr-ara/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Arabic
+
+tesseract-ocr-asm/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Assamese
+
+tesseract-ocr-aze/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Azerbaijani
+
+tesseract-ocr-aze-cyrl/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Azerbaijani (Cyrillic)
+
+tesseract-ocr-bel/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Belarusian
+
+tesseract-ocr-ben/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Bengali
+
+tesseract-ocr-bod/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Tibetan Standard
+
+tesseract-ocr-bos/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Bosnian
+
+tesseract-ocr-bul/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Bulgarian
+
+tesseract-ocr-cat/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Catalan
+
+tesseract-ocr-ceb/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Cebuano
+
+tesseract-ocr-ces/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Czech
+
+tesseract-ocr-chi-sim/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Simplified Chinese
+
+tesseract-ocr-chi-tra/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Traditional Chinese
+
+tesseract-ocr-chr/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Cherokee
+
+tesseract-ocr-cym/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Welsh
+
+tesseract-ocr-dan/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Danish
+
+tesseract-ocr-dan-frak/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Danish (Fraktur)
+
+tesseract-ocr-deu/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for German
+
+tesseract-ocr-deu-frak/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for German Fraktur
+
+tesseract-ocr-dev/xenial,xenial 3.04.01-4 all
+  transitional dummy package
+
+tesseract-ocr-dzo/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Dzongkha
+
+tesseract-ocr-ell/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Greek
+
+tesseract-ocr-eng/xenial,xenial,now 3.04.00-1 all [installed,automatic]
+  tesseract-ocr language files for English
+
+tesseract-ocr-enm/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Middle English
+
+tesseract-ocr-epo/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Esperanto
+
+tesseract-ocr-equ/xenial,xenial,now 3.04.00-1 all [installed,automatic]
+  tesseract-ocr language files for equations
+
+tesseract-ocr-est/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Estonian
+
+tesseract-ocr-eus/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Basque
+
+tesseract-ocr-fas/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Persian
+
+tesseract-ocr-fin/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Finnish
+
+tesseract-ocr-fra/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for French
+
+tesseract-ocr-frk/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Frankish
+
+tesseract-ocr-frm/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Middle French
+
+tesseract-ocr-gle/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Irish
+
+tesseract-ocr-gle-uncial/xenial,xenial 0.1~beta1-1 all
+  tesseract-ocr language files for Irish (Uncial)
+
+tesseract-ocr-glg/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Galician
+
+tesseract-ocr-grc/xenial,xenial 1:2.0-1 all
+  tesseract-ocr language files for Ancient Greek
+
+tesseract-ocr-guj/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Gujarati
+
+tesseract-ocr-hat/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Hatian
+
+tesseract-ocr-heb/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Hebrew
+
+tesseract-ocr-hin/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Hindi
+
+tesseract-ocr-hrv/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Croatian
+
+tesseract-ocr-hun/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Hungarian
+
+tesseract-ocr-iku/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Inuktitut
+
+tesseract-ocr-ind/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Indonesian
+
+tesseract-ocr-isl/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Icelandic
+
+tesseract-ocr-ita/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Italian
+
+tesseract-ocr-ita-old/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Old Italian
+
+tesseract-ocr-jav/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Javanese
+
+tesseract-ocr-jpn/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Japanese
+
+tesseract-ocr-kan/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Kannada
+
+tesseract-ocr-kat/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Georgian
+
+tesseract-ocr-kat-old/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Old Georgian
+
+tesseract-ocr-kaz/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Kazakh
+
+tesseract-ocr-khm/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Khmer
+
+tesseract-ocr-kir/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Kyrgyz
+
+tesseract-ocr-kor/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Korean
+
+tesseract-ocr-kur/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Kurdish
+
+tesseract-ocr-lao/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Lao
+
+tesseract-ocr-lat/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Latin
+
+tesseract-ocr-lav/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Latvian
+
+tesseract-ocr-lit/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Lithuanian
+
+tesseract-ocr-mal/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Malayalam
+
+tesseract-ocr-mar/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Marathi
+
+tesseract-ocr-mkd/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Macedonian
+
+tesseract-ocr-mlt/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Maltese
+
+tesseract-ocr-msa/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Malay
+
+tesseract-ocr-mya/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Burmese
+
+tesseract-ocr-nep/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Nepali
+
+tesseract-ocr-nld/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Dutch
+
+tesseract-ocr-nor/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Norwegian
+
+tesseract-ocr-ori/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Oriya
+
+tesseract-ocr-osd/xenial,xenial,now 3.04.00-1 all [installed,automatic]
+  tesseract-ocr language files for script and orientation
+
+tesseract-ocr-pan/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Punjabi
+
+tesseract-ocr-pol/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Polish
+
+tesseract-ocr-por/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Portuguese
+
+tesseract-ocr-pus/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Pashto
+
+tesseract-ocr-ron/xenial,xenial 3.04.00-2 all
+  tesseract-ocr language files for Romanian
+
+tesseract-ocr-rus/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Russian
+
+tesseract-ocr-san/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Sanskrit
+
+tesseract-ocr-sin/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Sinhala
+
+tesseract-ocr-slk/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Slovak
+
+tesseract-ocr-slk-frak/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Slovak Fractur
+
+tesseract-ocr-slv/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Slovenian
+
+tesseract-ocr-spa/xenial,xenial,now 3.04.00-1 all [installed]
+  tesseract-ocr language files for Spanish
+
+tesseract-ocr-spa-old/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Old Spanish
+
+tesseract-ocr-sqi/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Albanian
+
+tesseract-ocr-srp/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Serbian
+
+tesseract-ocr-srp-latn/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Serbian (Latin)
+
+tesseract-ocr-swa/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Swahili
+
+tesseract-ocr-swe/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Swedish
+
+tesseract-ocr-syr/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Syriac
+
+tesseract-ocr-tam/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Tamil
+
+tesseract-ocr-tel/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Telugu
+
+tesseract-ocr-tgk/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Tajik
+
+tesseract-ocr-tgl/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Tagalog
+
+tesseract-ocr-tha/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Thai
+
+tesseract-ocr-tir/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Tigrinya
+
+tesseract-ocr-tur/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Turkish
+
+tesseract-ocr-uig/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Uyghur
+
+tesseract-ocr-ukr/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Ukranian
+
+tesseract-ocr-urd/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Urdu
+
+tesseract-ocr-uzb/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Uzbek
+
+tesseract-ocr-uzb-cyrl/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Uzbek (Cyrillic)
+
+tesseract-ocr-vie/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Vietnamese
+
+tesseract-ocr-yid/xenial,xenial 3.04.00-1 all
+  tesseract-ocr language files for Yiddish
+

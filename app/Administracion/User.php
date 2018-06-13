@@ -4,11 +4,16 @@ namespace App\Administracion;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
     use Notifiable;
-
+	
+	protected $table = 'admin_users';
+	
+	use softDeletes;
+		
     /**
      * The attributes that are mass assignable.
      *
@@ -27,9 +32,10 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 	
+		
 	public function roles()
 	{
-		return $this->belongsToMany('App\Administracion\Role','user_role');
+		return $this->belongsToMany('App\Administracion\Role','admin_user_role');
 	}
 	
 	public function hasRole($role)

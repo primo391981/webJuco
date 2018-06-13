@@ -2,36 +2,73 @@
 
 namespace App\Http\Controllers\CMS;
 
-use Illuminate\Http\Request;
 use App\CMS\Contenido;
+use App\CMS\Contenedor;
+use App\CMS\TipoContenedor;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
 class ContenidoController extends Controller
 {
-    public function lista()
-	//Lista los contenidos del CMS
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
     {
-		$contenidos = Contenido::orderBy("titulo")->get();
+        $contenidos = Contenido::orderBy("titulo")->get();
 		
 		$subtitulo = 'Lista de Contenidos';
 		//Se retorna la vista "index" 
-		return view('cms.listaContenidos', ['subtitulo' => $subtitulo, 'contenidos' => $contenidos]);
+		return view('cms.contenido.listaContenidos', ['subtitulo' => $subtitulo, 'contenidos' => $contenidos]);
     }
 	
-	public function agrega()
-	//Redirige al formulario de agregar Contenido.
-	{
-		$subtitulo = 'Agregar Contenido';
+	 public function search(Request $request)
+    {
+        $cadena = $request->search;
+		
+		$contenidos = Contenido::where("titulo", "like", "%".$cadena."%")->get();
+		
+		//return count($contenidos);
+		
+		if ($request->ajax()) {
+            return response()->json([
+                'contenidos' => $contenidos,
+            ]);
+        }
+		
+		dd($respuesta);
+		return $respuesta;
+		//Se retorna la vista "index" 
+		//return view('cms.contenido.listaContenidos', ['subtitulo' => $subtitulo, 'contenidos' => $contenidos]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        $subtitulo = 'Agregar Contenido';
 	
-		return view('cms.agregarContenidos', ['subtitulo' => $subtitulo]);
-	}
-	
-	public function crear(Request $request)
-	//Valida y agrega el contenido con los datos ingresados en el formulario.
-	{
-		$request->validate([
+		return view('cms.contenido.agregarContenidos', ['subtitulo' => $subtitulo]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+         $request->validate([
 			'titulo' => 'required',
+			'subtitulo' => 'required',
 			'texto' => 'required',
 			//'filepath' => 'nullable',
 			//'imagen' => 'nullable',
@@ -40,12 +77,95 @@ class ContenidoController extends Controller
 		
 		//dd($request);
 		$contenido = new Contenido();
+		//dd($request);
+		$contenido->titulo = $request['titulo'];
+		$contenido->subtitulo = $request['subtitulo'];
+		$contenido->texto = $request['texto'];
+		$contenido->archivo = $request['archivo'] !== null ? $request['archivo'] : "";
+		$contenido->nombre_archivo = $request['nombre_archivo'] !== null ? $request['nombre_archivo'] : "";
+		$contenido->imagen = $request['imagen'] !== null ? $request['imagen'] : "";
+		$contenido->alt_imagen = $request['alt_imagen'] !== null ? $request['alt_imagen'] : "";
+		
+		
+		//dd($contenido);
+		//dd($contenido);
+		$contenido->save();
+		
+		
+		/*Contenido::create([
+			'titulo' => $data['titulo']
+		]);
+		*/
+		
+		$contenidos = Contenido::orderBy("titulo")->get();
+		$subtitulo = 'Lista de Contenidos';
+		// devolver mensaje de creado correctamente
+		
+		return view('cms.contenido.listaContenidos', ['subtitulo' => $subtitulo, 'contenidos' => $contenidos]);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Contenido  $contenido
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Contenido $contenido)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Contenido  $contenido
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Contenido $contenido)
+    {
+		$subtitulo = 'Editar Contenido';
+
+		return view('cms.contenido.editarContenidos', ['subtitulo' => $subtitulo, 'contenido' => $contenido]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Contenido  $contenido
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Contenido $contenido)
+    {
+        $request->validate([
+			'titulo' => 'required',
+			'subtitulo' => 'required',
+			'texto' => 'required',
+		]);
 		
 		$contenido->titulo = $request['titulo'];
+		$contenido->subtitulo = $request['subtitulo'];
 		$contenido->texto = $request['texto'];
-		$contenido->filepath = $request['filepath'];
-		$contenido->imagen = $request['imagen'];
-		$contenido->alt_imagen = $request['alt_imagen'];
+		
+		//manejo del archivo adjunto
+		if($request->hasFile('archivo')){
+			$archivo = $request->file('archivo');
+			$path = $archivo->store('public/contenidos/archivos');
+			$contenido->archivo = Storage::url($path);
+			$contenido->nombre_archivo = $request['nombre_archivo'] !== null ? $request['nombre_archivo'] : "nombre de archivo";
+			
+		} 
+		
+		//manejo de imagen adjunta
+		if($request->hasFile('imagen')){
+			$imagen = $request->file('imagen');
+			$path = $imagen->store('public/contenidos/imagenes');
+			$contenido->imagen = Storage::url($path);
+			$contenido->alt_imagen = $request['alt_imagen'] !== null ? $request['alt_imagen'] : "Texto de imagen";
+			//dd($contenido);
+		} 
+		
+		
 		
 		
 		//dd($contenido);
@@ -61,6 +181,76 @@ class ContenidoController extends Controller
 		$subtitulo = 'Lista de Contenidos';
 		// devolver mensaje de creado correctamente
 		
-		return view('cms.listaContenidos', ['subtitulo' => $subtitulo, 'contenidos' => $contenidos]);
+		return view('cms.contenido.listaContenidos', ['subtitulo' => $subtitulo, 'contenidos' => $contenidos]);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Contenido  $contenido
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Contenido $contenido)
+    {
+        //
+    }
+	
+	//subir el nivel de un contenido 
+	public function upContenido(Request $request)
+	{
+		$contenido_id = $request->input('contenido_id');
+		
+		$contenedor_id = $request->input('contenedor_id');
+		
+		$contenedor = Contenedor::findOrFail($contenedor_id);
+		$contenido = $contenedor->contenidos->where('id',$contenido_id)->first();
+		
+		$nuevo_orden_up = $contenido->pivot->orden - 1;
+		
+		$contenido = $contenedor->contenidos;
+		
+		//id del contenido que va a descender
+		$contenido_id_down = $contenido[$nuevo_orden_up-1]->id;
+		
+		//posicion a la que desciende 
+		$nuevo_orden_down = $nuevo_orden_up+1;
+		
+		//transaccion
+			$contenedor->contenidos()->updateExistingPivot($contenido_id,['orden' => $nuevo_orden_up]);
+			$contenedor->contenidos()->updateExistingPivot($contenido_id_down,['orden' => $nuevo_orden_down]);
+		//
+		
+		return redirect()->route('contenedor.edit', ['contenedor' => $contenedor]);
+
+	}
+	
+	
+	//bajar el nivel de un contenido 
+	public function downContenido(Request $request)
+	{
+		
+		$contenido_id = $request->input('contenido_id');
+
+		$contenedor_id = $request->input('contenedor_id');
+		
+		$contenedor = Contenedor::findOrFail($contenedor_id);
+
+		$contenido = $contenedor->contenidos->where('id',$contenido_id)->first();
+		
+		$nuevo_orden_down = $contenido->pivot->orden + 1;
+		
+		$contenido = $contenedor->contenidos;
+		
+		//id del organo que va a descender
+		$contenido_id_up = $contenido[$nuevo_orden_down - 1]->id;
+		
+		//posicion a la que desciende 
+		$nuevo_orden_up = $nuevo_orden_down - 1;
+		
+		$contenedor->contenidos()->updateExistingPivot($contenido_id,['orden' => $nuevo_orden_down]);
+		$contenedor->contenidos()->updateExistingPivot($contenido_id_up,['orden' => $nuevo_orden_up]);
+
+		return redirect()->route('contenedor.edit', ['contenedor' => $contenedor]);
+		
 	}
 }
