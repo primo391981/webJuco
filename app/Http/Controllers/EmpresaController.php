@@ -49,7 +49,9 @@ class EmpresaController extends Controller
      */
     public function show($id)
     {
-        //
+		
+        $empresa=Empresa::find($id);
+		return view('contable.empresa.verEmpresa',['empresa'=>$empresa]); 
     }
 
     /**

@@ -22,13 +22,13 @@
 	
 <!--TABLAS DINAMICAS-->	
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css">
 
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css">
 
-<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+	<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
 	
-	<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+	<!--<script src="https://code.jquery.com/jquery-3.3.1.js"></script>-->
 <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.flash.min.js"></script>

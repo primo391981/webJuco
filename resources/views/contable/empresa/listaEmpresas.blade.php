@@ -1,6 +1,6 @@
 @extends('contable.contable')
 
-@section('seccion', " - Lisatado")
+@section('seccion', " - Listado")
 
 @section('content')
 
@@ -63,9 +63,9 @@ $(document).ready(function() {
 		dom: '<"top"f>t<"bottom"Bpi><"clear">',
         buttons: [
            { extend: 'print', text: 'IMPRIMIR' },
-		   { extend: 'pdf', text: 'PDF' },
+		   { extend: 'pdf', text: 'PDF' },		   
+		   { extend: 'excel', text: 'EXCEL' },
 		   { extend: 'copy', text: 'COPIAR TABLA' }
-		   
         ]
     } );
 	
