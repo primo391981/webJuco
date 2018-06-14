@@ -1,6 +1,6 @@
 @extends('contable.contable')
 
-@section('seccion', " - Lisatado")
+@section('seccion', " - DETALLE")
 
 @section('content')
 <br>
@@ -18,144 +18,14 @@
 					</div>
 				  </div>
 				  <div class="panel-body text-warning">					
-					<form class="form-horizontal">	
 					
-							 <div class="form-group row">
-							<label for="rut" class="control-label col-sm-3">RUT</label>
-							<div class="col-sm-9">
-								<input id="rut" type="number" class="form-control" name="rut" value="{{$empresa->rut}}" readonly>
-								@if ($errors->has('rut'))
-									<span class="invalid-feedback">
-										<strong>{{ $errors->first('rut') }}</strong>
-									</span>
-								@endif
-							</div>	
-						 </div>
-						<div class="form-group row">
-							<label for="razonSocial" class="control-label col-sm-3">RAZÓN SOCIAL</label>
-							<div class="col-sm-9">
-								<input id="razonSocial" type="text" class="form-control" name="razonSocial" value="{{$empresa->razonSocial}}"readonly>
-								@if ($errors->has('razonSocial'))
-									<span class="invalid-feedback">
-										<strong>{{ $errors->first('razonSocial') }}</strong>
-									</span>
-								@endif
-							</div>	
-						 </div>
-						 <div class="form-group row">
-							<label for="nomFantasia" class="control-label col-sm-3">NOMBRE FANTASIA</label>
-							<div class="col-sm-9">
-								<input id="nomFantasia" type="text" class="form-control" name="nomFantasia" value="{{$empresa->nomFantasia}}"readonly>
-								@if ($errors->has('nomFantasia'))
-									<span class="invalid-feedback">
-										<strong>{{ $errors->first('nomFantasia') }}</strong>
-									</span>
-								@endif
-							</div>	
-						 </div>
-						  <div class="form-group row">
-							<label for="domicilio" class="control-label col-sm-3">DOMICILIO</label>
-							<div class="col-sm-9">
-								<input id="domicilio" type="text" class="form-control" name="domicilio" value="{{$empresa->domicilio}}"readonly>
-								@if ($errors->has('domicilio'))
-									<span class="invalid-feedback">
-										<strong>{{ $errors->first('domicilio') }}</strong>
-									</span>
-								@endif
-							</div>	
-						 </div>
-						  <div class="form-group row">
-							<label for="numBps" class="control-label col-sm-3">NÚMERO BPS</label>
-							<div class="col-sm-9">
-								<input id="numBps" type="number" class="form-control" name="numBps" value="{{$empresa->numBps}}"readonly>
-								@if ($errors->has('numBps'))
-									<span class="invalid-feedback">
-										<strong>{{ $errors->first('numBps') }}</strong>
-									</span>
-								@endif
-							</div>	
-						 </div>
-						 <div class="form-group row">
-							<label for="numBse" class="control-label col-sm-3">NÚMERO BSE</label>
-							<div class="col-sm-9">
-								<input id="numBse" type="number" class="form-control" name="numBse" value="{{$empresa->numBse}}" readonly>
-								@if ($errors->has('numBse'))
-									<span class="invalid-feedback">
-										<strong>{{ $errors->first('numBse') }}</strong>
-									</span>
-								@endif
-							</div>	
-						 </div>
-						 <div class="form-group row">
-							<label for="numMtss" class="control-label col-sm-3">NÚMERO MTSS</label>
-							<div class="col-sm-9">
-								<input id="numMtss" type="number" class="form-control" name="numMtss" value="{{$empresa->numMtss}}" readonly>
-								@if ($errors->has('numMtss'))
-									<span class="invalid-feedback">
-										<strong>{{ $errors->first('numMtss') }}</strong>
-									</span>
-								@endif
-							</div>	
-						 </div>
-						 <div class="form-group row">
-							<label for="grupo" class="control-label col-sm-3">GRUPO</label>
-							<div class="col-sm-9">
-								<input id="grupo" type="number" class="form-control" name="grupo" value="{{$empresa->grupo}}"readonly>
-								@if ($errors->has('grupo'))
-									<span class="invalid-feedback">
-										<strong>{{ $errors->first('grupo') }}</strong>
-									</span>
-								@endif
-							</div>	
-						 </div>
-						 <div class="form-group row">
-							<label for="subGrupo" class="control-label col-sm-3">SUB GRUPO</label>
-							<div class="col-sm-9">
-								<input id="subGrupo" type="number" class="form-control" name="subGrupo" value="{{$empresa->subGrupo}}" readonly>
-								@if ($errors->has('subGrupo'))
-									<span class="invalid-feedback">
-										<strong>{{ $errors->first('subGrupo') }}</strong>
-									</span>
-								@endif
-							</div>	
-						 </div>
-						 <div class="form-group row">
-							<label for="email" class="control-label col-sm-3">CORREO ELECTRÓNICO</label>
-							<div class="col-sm-9">
-								<input id="email" type="email" class="form-control" name="email" value="{{$empresa->email}}"readonly>
-								@if ($errors->has('email'))
-									<span class="invalid-feedback">
-										<strong>{{ $errors->first('email') }}</strong>
-									</span>
-								@endif
-							</div>	
-						 </div>
-						  <div class="form-group row">
-							<label for="telefono" class="control-label col-sm-3">TELEFONO</label>
-							<div class="col-sm-9">
-								<input id="telefono" type="text" class="form-control" name="telefono" value="{{$empresa->telefono}}"readonly>
-								@if ($errors->has('telefono'))
-									<span class="invalid-feedback">
-										<strong>{{ $errors->first('telefono') }}</strong>
-									</span>
-								@endif
-							</div>	
-						 </div>
-						  <div class="form-group row">
-							<label for="nomContacto" class="control-label col-sm-3">NOMBRE DE CONTACTO</label>
-							<div class="col-sm-9">
-								<input id="nomContacto" type="text" class="form-control" name="nomContacto" value="{{$empresa->nomContacto}}"readonly>
-								@if ($errors->has('nomContacto'))
-									<span class="invalid-feedback">
-										<strong>{{ $errors->first('nomContacto') }}</strong>
-									</span>
-								@endif
-							</div>	
-						 </div>
+					<h1>{{$empresa->nombreFantasia}}</h1>
+					<hr></hr>
+					<h3><strong><em>RUT :</em></strong> {{$empresa->rut}}  <strong><em>RAZON SOCIAL :</em></strong> {{$empresa->razonSocial}}</h3>
 					
-						
-						
-					</form>
+					
+					
+					
 					
 					
 				  </div>

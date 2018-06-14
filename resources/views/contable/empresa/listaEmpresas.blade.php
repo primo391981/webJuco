@@ -38,7 +38,7 @@
 								<td>{{$empresa->nomContacto}}</td>
 								<td>{{$empresa->telefono}}</td>								
 								<td>
-								<a href="{{route('empresa.show', $empresa->id)}}" data-toggle="tooltip" title="Detalle" class=""><i class="fas fa-info-circle fa-lg"></i></a>
+								<a href="{{route('empresa.show', $empresa->id)}}" data-toggle="tooltip" title="Detalle"><i class="fas fa-info-circle fa-lg"></i></a>
 								<a href="{{ route('empresa.edit', $empresa->id)}}" data-toggle="tooltip" title="Editar"><i class="far fa-edit fa-lg"></i></a>
 								<a href="#" data-toggle="tooltip" title="Eliminar"><i class="far fa-trash-alt fa-lg"></i></a>	
 								</td>
