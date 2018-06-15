@@ -20,14 +20,16 @@
 				  </div>
 				  <div class="panel-body text-warning">					
 					<div class="table-responsive">
-						<table id="tableEmpresas" class="table table-hover"> <!--table-hover-->
+						<table id="tableEmpresas" class="table">
 							
 							<thead>
 							<tr>
 								<th>NOMBRE FANTASIA</th>
 								<th>CONTACTO</th>
 								<th>TELEFONO</th>
-								<th>ACCION</th>
+								<th></th>
+								<th></th>
+								<th></th>
 								
 							</tr>
 						</thead>
@@ -40,20 +42,21 @@
 								
 								
 								<td>
-									
-									
-											<div class="col-xs-2"><a href="{{route('empresa.show', $empresa->id)}}" data-toggle="tooltip" title="Detalle" class="btn btn-warning" role="button"><i class="fas fa-info-circle"></i></a></div>
-											<div class="col-xs-2"><a href="{{ route('empresa.edit', $empresa->id)}}" data-toggle="tooltip" title="Editar" class="btn btn-primary" role="button"><i class="far fa-edit"></i></a></div>
-											<div class="col-xs-2">
-													<form method="POST" action="{{ route('empresa.destroy',$empresa->id) }}">
-														{{ method_field('DELETE') }}
-															@csrf	
-														<button type="submit"class="btn btn-danger"><i class="far fa-trash-alt"></i></button>												
-													</form>										
-											
-											</div>
-										
-																				
+									<form method="GET" action="{{route('empresa.show', $empresa->id)}}">																
+										<button type="submit"class="btn btn-info"><i class="fas fa-info-circle"></i></button>												
+									</form>
+								</td>	
+								<td>
+									<form method="GET" action="{{ route('empresa.edit', $empresa->id) }}">																
+										<button type="submit"class="btn btn-warning"><i class="far fa-edit"></i></button>												
+									</form>
+								</td>				
+								<td>
+									<form method="POST" action="{{ route('empresa.destroy',$empresa->id) }}">
+										{{ method_field('DELETE') }}
+										@csrf	
+										<button type="submit"class="btn btn-danger"><i class="far fa-trash-alt"></i></button>												
+									</form>
 								</td>
 							</tr>
 						@endforeach
