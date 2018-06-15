@@ -1,6 +1,6 @@
 @extends('contable.contable')
 
-@section('seccion', " - Listado")
+@section('seccion', " - LISTADO")
 
 @section('content')
 
@@ -12,9 +12,9 @@
 <div class="row text-info">
 	<div class="col-xs-12">
 		<div class="panel panel-warning">
-				  <div class="panel-heading text-center">
+				  <div class="panel-heading">
 					<div class="row">
-						<div class="col-sm-9"><h4>Listado empresas</h4></div>
+						<div class="col-sm-9"><h4>LISTADO EMPRESAS</h4></div>
 						<div class="col-sm-3 hidden-xs"><a href="{{ route('empresa.create') }}" class="btn btn-warning pull-right" role="button"><i class="fas fa-plus"></i> Agregar nueva empresa</a></div>				  
 					</div>
 				  </div>
@@ -37,10 +37,23 @@
 								<td>{{$empresa->nombreFantasia}}</td>
 								<td>{{$empresa->nomContacto}}</td>
 								<td>{{$empresa->telefono}}</td>								
+								
+								
 								<td>
-								<a href="{{route('empresa.show', $empresa->id)}}" data-toggle="tooltip" title="Detalle"><i class="fas fa-info-circle fa-lg"></i></a>
-								<a href="{{ route('empresa.edit', $empresa->id)}}" data-toggle="tooltip" title="Editar"><i class="far fa-edit fa-lg"></i></a>
-								<a href="#" data-toggle="tooltip" title="Eliminar"><i class="far fa-trash-alt fa-lg"></i></a>	
+									
+									
+											<div class="col-xs-2"><a href="{{route('empresa.show', $empresa->id)}}" data-toggle="tooltip" title="Detalle" class="btn btn-warning" role="button"><i class="fas fa-info-circle"></i></a></div>
+											<div class="col-xs-2"><a href="{{ route('empresa.edit', $empresa->id)}}" data-toggle="tooltip" title="Editar" class="btn btn-primary" role="button"><i class="far fa-edit"></i></a></div>
+											<div class="col-xs-2">
+													<form method="POST" action="{{ route('empresa.destroy',$empresa->id) }}">
+														{{ method_field('DELETE') }}
+															@csrf	
+														<button type="submit"class="btn btn-danger"><i class="far fa-trash-alt"></i></button>												
+													</form>										
+											
+											</div>
+										
+																				
 								</td>
 							</tr>
 						@endforeach

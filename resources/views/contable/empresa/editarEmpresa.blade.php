@@ -1,6 +1,6 @@
 @extends('contable.contable') <!--layotu: carpeta contable/blade contable-->
 
-@section('seccion', " - EDITAR EMPRESA")
+@section('seccion', " - EDITAR")
 
 @section('content')
 
@@ -15,7 +15,7 @@
 			<div class="panel-heading">
 				<div class="row">
 					<div class="col-sm-9"><h4>EDITAR EMPRESA</h4></div>
-					<div class="col-sm-3 hidden-xs"><a href="{{ route('empresa.index') }}" class="btn btn-warning" role="button"><i class="fas fa-list-ul"></i> Listado empresas</a></div>
+					<div class="col-sm-3 hidden-xs"><a href="{{ route('empresa.index') }}" class="btn btn-warning pull-right" role="button"><i class="fas fa-list-ul"></i> Listado empresas</a></div>
 				</div>
 			</div>
 			
