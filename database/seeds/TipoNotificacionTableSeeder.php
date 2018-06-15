@@ -11,6 +11,26 @@ class TipoNotificacionTableSeeder extends Seeder
      */
     public function run()
     {
-        //
+        DB::table('juridico_tipo_notificacion')->insert([
+			'nombre'=>'Nota',
+			'descripcion'=>'Nota simple'
+		]);
+		
+		DB::table('juridico_tipo_notificacion')->insert([
+			'nombre'=>'Nota importante',
+			'descripcion'=>'Nota importante'
+		]);
+		
+		DB::table('juridico_tipo_notificacion')->insert([
+			'nombre'=>'Nota urgente',
+			'descripcion'=>'Nota urgente'
+		]);
+		
+		DB::table('juridico_tipo_notificacion')->insert([
+			'nombre'=>'Recordatorio',
+			'descripcion'=>'Recordatorio'
+		]);
+		
+		
     }
 }
