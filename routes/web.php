@@ -76,6 +76,10 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('contable', 'Contable\ContableController@index')->name('contable')->middleware('role:contableAdmin');
 	
 	//empresa
+	Route::get('desactivada', 'EmpresaController@desactivada')->name('empresa.desactivada')->middleware('role:contableAdmin');
+	//primero lo que aparece en la barra,segundo la ubicacion en carpetas del controlador, tres el nombre que se le da al metodo.
+	Route::get('restaurar/{id}', 'EmpresaController@restaurar')->name('empresa.restaurar')->middleware('role:contableAdmin');
+	
 	Route::resource('empresa', 'EmpresaController')->middleware('role:contableAdmin');
 	
 	

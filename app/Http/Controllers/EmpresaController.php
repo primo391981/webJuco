@@ -13,6 +13,12 @@ class EmpresaController extends Controller
 	   return view('contable.empresa.listaEmpresas', ['empresas' => $empresas]);
 	   //este es el camino de las carpetas hasta llegar al blade correspondiente
     }
+	public function desactivada()
+    {
+       $empresas=Empresa::onlyTrashed()->get();
+	   return view('contable.empresa.listaNoEmpresas', ['empresas' => $empresas]);
+	   //este es el camino de las carpetas hasta llegar al blade correspondiente
+    }
 
     public function create()
     {
@@ -107,6 +113,24 @@ class EmpresaController extends Controller
     {
 		$empresa=Empresa::find($id);
 		$empresa->delete();
+		
 		return redirect()->route('empresa.index');
+    }
+	
+	public function restaurar($id)
+    {
+		/*$empresa= Empresa::onlyTrashed()->where('id',$id);			
+		$empresa->restore();
+		return redirect()->route('empresa.index');*/
+		
+		$empresa= Empresa::onlyTrashed()->where('id',$id);			
+		if($empresa->restore())
+		{
+			$msj="restauro ok"
+		}
+		else{$msj="no restauro"};
+		
+	   return view('contable.empresa.listaNoEmpresas', ['msj'=>$msj]);
+		
     }
 }

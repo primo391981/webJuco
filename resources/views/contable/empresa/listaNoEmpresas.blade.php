@@ -1,11 +1,10 @@
 @extends('contable.contable')
 
-@section('seccion', " - ACTIVAS")
+@section('seccion', " - DESACTIVADAS")
 
 @section('content')
 
 <br>
-
 <div class="row">
 	<!--solamente es visible en cel-->
 	<div class="col-xs-12 visible-xs"><a href="{{ route('empresa.create') }}" class="btn btn-warning" role="button" style="margin-bottom:5%;"><i class="fas fa-plus"></i> Agregar nueva empresa</a></div>				  
@@ -15,7 +14,7 @@
 		<div class="panel panel-warning">
 				  <div class="panel-heading">
 					<div class="row">
-						<div class="col-sm-9"><h4>LISTADO EMPRESAS ACTIVAS</h4></div>
+						<div class="col-sm-9"><h4>LISTADO EMPRESAS DESACTIVADAS</h4></div>
 						<div class="col-sm-3 hidden-xs"><a href="{{ route('empresa.create') }}" class="btn btn-warning pull-right" role="button"><i class="fas fa-plus"></i> Agregar nueva empresa</a></div>				  
 					</div>
 				  </div>
@@ -35,32 +34,24 @@
 							</tr>
 						</thead>
 						<tbody>
-						@foreach($empresas as $empresa)						
-							<tr>								
+						
+						@foreach($empresas as $empresa)			
+						<tr>										
 								<td>{{$empresa->nombreFantasia}}</td>
 								<td>{{$empresa->nomContacto}}</td>
-								<td>{{$empresa->telefono}}</td>								
+								<td>{{$empresa->telefono}}</td>
 								
-								
 								<td>
-									<form method="GET" action="{{route('empresa.show', $empresa->id)}}">																
-										<button type="submit"class="btn btn-info"><i class="fas fa-info-circle"></i></button>												
-									</form>
-								</td>	
-								<td>
-									<form method="GET" action="{{ route('empresa.edit', $empresa->id) }}">																
-										<button type="submit"class="btn btn-warning"><i class="far fa-edit"></i></button>												
-									</form>
-								</td>				
-								<td>
-									<form method="POST" action="{{ route('empresa.destroy',$empresa->id) }}">
-										{{ method_field('DELETE') }}
-										@csrf	
-										<button type="submit"class="btn btn-danger"><i class="far fa-trash-alt"></i></button>												
+									<form method="GET" action="{{route('empresa.restaurar', $empresa->id)}}">																
+										<button type="submit"class="btn btn-info"><i class="fas fa-recycle"></i></button>												
 									</form>
 								</td>
-							</tr>
+											
+								
+						</tr>
 						@endforeach
+							
+							
 						</tbody>
 						
 						</table>
