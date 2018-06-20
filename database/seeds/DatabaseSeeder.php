@@ -36,7 +36,14 @@ class DatabaseSeeder extends Seeder
 			MenuitemsTableSeeder::class,
 			
 			ContenidosContenedorsTableSeeder::class,
-			EmpresaTableSeeder::class
+			EmpresaTableSeeder::class,
+			
+			TipoArchivoTableSeeder::class,
+			TipoExpedienteTableSeeder::class,
+			TipoPasoTableSeeder::class,
+			TipoPermisoTableSeeder::class,
+			TipoNotificacionTableSeeder::class,
+			EstadosTableSeeder::class,
 			
 		]);	
     }
