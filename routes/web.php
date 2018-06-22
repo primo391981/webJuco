@@ -78,9 +78,6 @@ Route::group(['middleware' => ['auth']], function () {
 	//cargos
 	Route::resource('cargo', 'Contable\CargoController')->middleware('role:contableAdmin');
 	
-	//remuneraciones
-	Route::resource('remuneracion', 'Contable\RemuneracionController')->middleware('role:contableAdmin');
-	
 	//empresa
 	Route::resource('empresa', 'EmpresaController')->middleware('role:contableAdmin');
 	

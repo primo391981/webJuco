@@ -44,6 +44,7 @@ class DatabaseSeeder extends Seeder
 			TipoPermisoTableSeeder::class,
 			TipoNotificacionTableSeeder::class,
 			EstadosTableSeeder::class,
+			RemuneracionesTableSeeder::class,
 			
 		]);	
     }
