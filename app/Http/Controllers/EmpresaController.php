@@ -119,18 +119,8 @@ class EmpresaController extends Controller
 	
 	public function restaurar($id)
     {
-		/*$empresa= Empresa::onlyTrashed()->where('id',$id);			
-		$empresa->restore();
-		return redirect()->route('empresa.index');*/
-		
 		$empresa= Empresa::onlyTrashed()->where('id',$id);			
-		if($empresa->restore())
-		{
-			$msj="restauro ok"
-		}
-		else{$msj="no restauro"};
-		
-	   return view('contable.empresa.listaNoEmpresas', ['msj'=>$msj]);
-		
+		$empresa->restore();
+		return redirect()->route('empresa.index');
     }
 }
