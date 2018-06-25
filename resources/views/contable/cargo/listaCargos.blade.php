@@ -36,7 +36,8 @@
 								<td>{{$cargo->id}}</td>
 								<td>{{$cargo->nombre}}</td>
 								<td>{{$cargo->descripcion}}</td>
-								
+								<td><a href="{{ route('cargo.edit', ['cargo' => $cargo])}}" data-toggle="tooltip" title="Editar"><i class="far fa-edit"></i></a> <a href="#" data-toggle="tooltip" title="Eliminar"><i class="far fa-trash-alt"></i></a>
+							</td>
 							</tr>
 						@endforeach
 						</tbody>

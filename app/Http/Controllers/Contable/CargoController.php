@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Contable;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Contable\Cargo;
 use App\Contable\Remuneracion;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class CargoController extends Controller
 {
@@ -16,8 +16,7 @@ class CargoController extends Controller
      */
     public function index()
     {
-        //
-		$cargos = Cargo::All();
+        $cargos = Cargo::All();
 		$remuneraciones = Remuneracion::All();
 		return view('contable.cargo.listaCargos', ['cargos' => $cargos, 'remuneraciones' => $remuneraciones]);
     }
@@ -29,8 +28,7 @@ class CargoController extends Controller
      */
     public function create()
     {
-        //
-		$remuneraciones = Remuneracion::All();
+        $remuneraciones = Remuneracion::All();
 		return view('contable.cargo.agregarCargos', ['remuneraciones' => $remuneraciones]);
     }
 
@@ -42,9 +40,7 @@ class CargoController extends Controller
      */
     public function store(Request $request)
     {
-        //
-		
-		$cargo = new Cargo;
+        $cargo = new Cargo;
 		$cargo->nombre = $request->nombre;
 		$cargo->descripcion = $request->descripcion;
 		$cargo->id_remuneracion = $request->id_remuneracion;
@@ -57,10 +53,10 @@ class CargoController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Contable\Cargo  $cargo
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Cargo $cargo)
     {
         //
     }
@@ -68,22 +64,26 @@ class CargoController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Contable\Cargo  $cargo
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Cargo $cargo)
     {
-        //
+        $subtitulo = 'Editar Cargo';
+		
+		$remuneraciones = Remuneracion::All();
+		
+		return view('contable.cargo.editarCargos', ['subtitulo' => $subtitulo, 'cargo' => $cargo, 'remuneraciones' => $remuneraciones]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Contable\Cargo  $cargo
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Cargo $cargo)
     {
         //
     }
@@ -91,10 +91,10 @@ class CargoController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Contable\Cargo  $cargo
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Cargo $cargo)
     {
         //
     }
