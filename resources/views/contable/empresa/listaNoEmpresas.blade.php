@@ -10,6 +10,21 @@
 	<div class="col-xs-12 visible-xs"><a href="{{ route('empresa.create') }}" class="btn btn-warning" role="button" style="margin-bottom:5%;"><i class="fas fa-plus"></i> Agregar nueva empresa</a></div>				  
 </div>
 <div class="row text-info">
+<script>
+$(document).ready(function() {
+    $('#tableEmpresas').DataTable( {        
+		"language": {
+		"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"},
+		dom: '<"top"f>t<"bottom"Bpi><"clear">',
+        buttons: [
+           { extend: 'print', text: 'IMPRIMIR' },
+		   { extend: 'pdf', text: 'PDF' },		   
+		   { extend: 'excel', text: 'EXCEL' },
+		   { extend: 'copy', text: 'COPIAR TABLA' }
+        ]
+    } );	
+} );
+</script>
 	<div class="col-xs-12">
 		<div class="panel panel-warning">
 				  <div class="panel-heading">
@@ -28,9 +43,6 @@
 								<th>CONTACTO</th>
 								<th>TELEFONO</th>
 								<th></th>
-								<th></th>
-								<th></th>
-								
 							</tr>
 						</thead>
 						<tbody>
@@ -46,8 +58,6 @@
 										<button type="submit"class="btn btn-info"><i class="fas fa-recycle"></i></button>												
 									</form>
 								</td>
-											
-								
 						</tr>
 						@endforeach
 							
@@ -62,24 +72,6 @@
 		</div>
 	</div>
 </div>
-<script>
 
-$(document).ready(function() {
-    $('#tableEmpresas').DataTable( {        
-		"language": {
-		"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"},
-		dom: '<"top"f>t<"bottom"Bpi><"clear">',
-        buttons: [
-           { extend: 'print', text: 'IMPRIMIR' },
-		   { extend: 'pdf', text: 'PDF' },		   
-		   { extend: 'excel', text: 'EXCEL' },
-		   { extend: 'copy', text: 'COPIAR TABLA' }
-        ]
-    } );
-	
-	
-} );
-
-</script>
 @endsection
 

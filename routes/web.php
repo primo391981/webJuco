@@ -85,6 +85,8 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::resource('empresa', 'EmpresaController')->middleware('role:contableAdmin');
 	
 	//persona
+	Route::get('desactivado', 'PersonaController@desactivado')->name('persona.desactivado')->middleware('role:contableAdmin');
+	Route::get('restauraremp/{id}', 'PersonaController@restaurar')->name('persona.restaurar')->middleware('role:contableAdmin');
 	Route::resource('persona', 'PersonaController')->middleware('role:contableAdmin');
 	
 });

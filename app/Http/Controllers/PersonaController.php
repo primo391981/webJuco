@@ -17,7 +17,12 @@ class PersonaController extends Controller
         $personas=Persona::All();
 		return view('contable.persona.listaPersonas', ['personas' => $personas]);
     }
-
+	public function desactivado()
+    {
+       $personas=Persona::onlyTrashed()->get();
+	   return view('contable.persona.listaNoPersonas', ['personas' => $personas]);
+	   //este es el camino de las carpetas hasta llegar al blade correspondiente
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -57,7 +62,8 @@ class PersonaController extends Controller
      */
     public function show($id)
     {
-        //
+        $persona=Persona::find($id);
+		return view('contable.persona.verPersona',['persona'=>$persona]);
     }
 
     /**
@@ -68,7 +74,8 @@ class PersonaController extends Controller
      */
     public function edit($id)
     {
-        //
+        $persona=Persona::find($id);
+		return view('contable.persona.editarPersona',['persona'=>$persona]);
     }
 
     /**
@@ -80,7 +87,17 @@ class PersonaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $persona=Persona::find($id);		
+		$persona->documento=$request->input('documento');
+		$persona->nombre=$request->input('nombre');
+		$persona->apellido=$request->input('apellido');
+		$persona->domicilio=$request->input('domicilio');
+		$persona->telefono=$request->input('telefono');
+		$persona->email=$request->input('email');
+		$persona->cantHijos=$request->input('cantHijos');		
+		$persona->estadoCivil=$request->input('estadoCivil');		
+		$persona->save();
+		return redirect()->route('persona.index');
     }
 
     /**
@@ -91,6 +108,15 @@ class PersonaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $persona=Persona::find($id);
+		$persona->delete();
+		
+		return redirect()->route('persona.index');
+    }
+	public function restaurar($id)
+    {
+		$persona= Persona::onlyTrashed()->where('id',$id);			
+		$persona->restore();
+		return redirect()->route('persona.index');
     }
 }
