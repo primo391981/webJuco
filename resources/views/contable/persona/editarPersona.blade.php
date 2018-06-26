@@ -1,6 +1,6 @@
 @extends('contable.contable') <!--layotu: carpeta contable/blade contable-->
 
-@section('seccion', " - AGREGAR")
+@section('seccion', " - EDITAR")
 
 @section('content')
 
@@ -14,18 +14,19 @@
 		<div class="panel panel-warning">
 			<div class="panel-heading">
 				<div class="row">
-					<div class="col-sm-9"><h4>AGREGAR NUEVA EMPRESA</h4></div>
+					<div class="col-sm-9"><h4>EDITAR EMPRESA</h4></div>
 					<div class="col-sm-3 hidden-xs"><a href="{{ route('empresa.index') }}" class="btn btn-warning pull-right" role="button"><i class="fas fa-list-ul"></i> Listado empresas</a></div>
 				</div>
 			</div>
 			
 			<div class="panel-body text-warning">
-					<form method="POST" action="{{ route('empresa.store') }}" class="form-horizontal">		
-						 @csrf
+					<form method="POST" action="{{ route('empresa.update',$empresa->id) }}" class="form-horizontal">		
+						 {{ method_field('PUT') }}
+						 {{ csrf_field() }}
 						 <div class="form-group row">
 							<label for="rut" class="control-label col-sm-3">RUT</label>
 							<div class="col-sm-9">
-								<input id="rut" type="number" class="form-control" name="rut" value="{{old('rut')}}" required min="0" autofocus>
+								<input id="rut" type="number" class="form-control" name="rut" value="{{$empresa->rut}}" required min="0" autofocus>
 								@if ($errors->has('rut'))
 									<span class="invalid-feedback">
 										<strong>{{ $errors->first('rut') }}</strong>
@@ -36,7 +37,7 @@
 						<div class="form-group row">
 							<label for="razonSocial" class="control-label col-sm-3">RAZÓN SOCIAL</label>
 							<div class="col-sm-9">
-								<input id="razonSocial" type="text" class="form-control" name="razonSocial" value="{{old('razonSocial')}}"required>
+								<input id="razonSocial" type="text" class="form-control" name="razonSocial" value="{{$empresa->razonSocial}}">
 								@if ($errors->has('razonSocial'))
 									<span class="invalid-feedback">
 										<strong>{{ $errors->first('razonSocial') }}</strong>
@@ -47,7 +48,7 @@
 						 <div class="form-group row">
 							<label for="nombreFantasia" class="control-label col-sm-3">NOMBRE FANTASIA</label>
 							<div class="col-sm-9">
-								<input id="nombreFantasia" type="text" class="form-control" name="nombreFantasia" value="{{old('nombreFantasia')}}"required>
+								<input id="nombreFantasia" type="text" class="form-control" name="nombreFantasia" value="{{$empresa->nombreFantasia}}">
 								@if ($errors->has('nombreFantasia'))
 									<span class="invalid-feedback">
 										<strong>{{ $errors->first('nombreFantasia') }}</strong>
@@ -58,7 +59,7 @@
 						  <div class="form-group row">
 							<label for="domicilio" class="control-label col-sm-3">DOMICILIO</label>
 							<div class="col-sm-9">
-								<input id="domicilio" type="text" class="form-control" name="domicilio" value="{{old('domicilio')}}">
+								<input id="domicilio" type="text" class="form-control" name="domicilio" value="{{$empresa->domicilio}}">
 								@if ($errors->has('domicilio'))
 									<span class="invalid-feedback">
 										<strong>{{ $errors->first('domicilio') }}</strong>
@@ -69,7 +70,7 @@
 						  <div class="form-group row">
 							<label for="numBps" class="control-label col-sm-3">NÚMERO BPS</label>
 							<div class="col-sm-9">
-								<input id="numBps" type="number" class="form-control" name="numBps" value="{{old('numBps')}}" min="0">
+								<input id="numBps" type="number" class="form-control" name="numBps" value="{{$empresa->numBps}}" min="0">
 								@if ($errors->has('numBps'))
 									<span class="invalid-feedback">
 										<strong>{{ $errors->first('numBps') }}</strong>
@@ -80,7 +81,7 @@
 						 <div class="form-group row">
 							<label for="numBse" class="control-label col-sm-3">NÚMERO BSE</label>
 							<div class="col-sm-9">
-								<input id="numBse" type="number" class="form-control" name="numBse" value="{{old('numBse')}}" min="0">
+								<input id="numBse" type="number" class="form-control" name="numBse" value="{{$empresa->numBse}}" min="0">
 								@if ($errors->has('numBse'))
 									<span class="invalid-feedback">
 										<strong>{{ $errors->first('numBse') }}</strong>
@@ -91,7 +92,7 @@
 						 <div class="form-group row">
 							<label for="numMtss" class="control-label col-sm-3">NÚMERO MTSS</label>
 							<div class="col-sm-9">
-								<input id="numMtss" type="number" class="form-control" name="numMtss" value="{{old('numMtss')}}" min="0">
+								<input id="numMtss" type="number" class="form-control" name="numMtss" value="{{$empresa->numMtss}}" min="0">
 								@if ($errors->has('numMtss'))
 									<span class="invalid-feedback">
 										<strong>{{ $errors->first('numMtss') }}</strong>
@@ -102,7 +103,7 @@
 						 <div class="form-group row">
 							<label for="grupo" class="control-label col-sm-3">GRUPO</label>
 							<div class="col-sm-9">
-								<input id="grupo" type="number" class="form-control" name="grupo" value="{{old('grupo')}}" min="0">
+								<input id="grupo" type="number" class="form-control" name="grupo" value="{{$empresa->grupo}}" min="0">
 								@if ($errors->has('grupo'))
 									<span class="invalid-feedback">
 										<strong>{{ $errors->first('grupo') }}</strong>
@@ -113,7 +114,7 @@
 						 <div class="form-group row">
 							<label for="subGrupo" class="control-label col-sm-3">SUB GRUPO</label>
 							<div class="col-sm-9">
-								<input id="subGrupo" type="number" class="form-control" name="subGrupo" value="{{old('subGrupo')}}" min="0">
+								<input id="subGrupo" type="number" class="form-control" name="subGrupo" value="{{$empresa->subGrupo}}" min="0">
 								@if ($errors->has('subGrupo'))
 									<span class="invalid-feedback">
 										<strong>{{ $errors->first('subGrupo') }}</strong>
@@ -124,7 +125,7 @@
 						 <div class="form-group row">
 							<label for="email" class="control-label col-sm-3">CORREO ELECTRÓNICO</label>
 							<div class="col-sm-9">
-								<input id="email" type="email" class="form-control" name="email" value="{{old('subGrupo')}}">
+								<input id="email" type="email" class="form-control" name="email" value="{{$empresa->email}}">
 								@if ($errors->has('email'))
 									<span class="invalid-feedback">
 										<strong>{{ $errors->first('email') }}</strong>
@@ -135,7 +136,7 @@
 						  <div class="form-group row">
 							<label for="telefono" class="control-label col-sm-3">TELEFONO</label>
 							<div class="col-sm-9">
-								<input id="telefono" type="text" class="form-control" name="telefono" value="{{old('telefono')}}">
+								<input id="telefono" type="text" class="form-control" name="telefono" value="{{$empresa->telefono}}">
 								@if ($errors->has('telefono'))
 									<span class="invalid-feedback">
 										<strong>{{ $errors->first('telefono') }}</strong>
@@ -146,7 +147,7 @@
 						  <div class="form-group row">
 							<label for="nomContacto" class="control-label col-sm-3">NOMBRE DE CONTACTO</label>
 							<div class="col-sm-9">
-								<input id="nomContacto" type="text" class="form-control" name="nomContacto" value="{{old('nomContacto')}}">
+								<input id="nomContacto" type="text" class="form-control" name="nomContacto" value="{{$empresa->nomContacto}}">
 								@if ($errors->has('nomContacto'))
 									<span class="invalid-feedback">
 										<strong>{{ $errors->first('nomContacto') }}</strong>
