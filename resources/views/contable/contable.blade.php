@@ -13,6 +13,14 @@
         </ul>
 </li>
 <li>
+    <a href="#"><i class="fas fa-building"></i> Cargos <i class="fas fa-caret-down"></i></a>
+		<ul class="nav nav-second-level">
+			 <li><a href="{{ route('cargo.index') }}"><i class="fas fa-list-ul"></i> Listado</a></li>
+			 <li><a href="{{ route('cargo.create') }}"><i class="fas fa-plus"></i> Agregar nuevo</a></li>
+        </ul>
+</li>
+
+<li>
     <a href="#"><i class="fas fa-cogs"></i> Parametros <i class="fas fa-caret-down"></i></a>
 		<ul class="nav nav-second-level">
 			 <li><a href="#"><i class="fas fa-list-ul"></i> Listado</a></li>
