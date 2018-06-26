@@ -14,7 +14,8 @@ class PersonaController extends Controller
      */
     public function index()
     {
-        
+        $personas=Persona::All();
+		return view('contable.persona.listaPersonas', ['personas' => $personas]);
     }
 
     /**
@@ -45,7 +46,7 @@ class PersonaController extends Controller
 		$persona->cantHijos=$request->input('cantHijos');		
 		$persona->estadoCivil=$request->input('estadoCivil');		
 		$persona->save();		
-		return redirect()->route('empresa.index');
+		return redirect()->route('persona.index');
     }
 
     /**
