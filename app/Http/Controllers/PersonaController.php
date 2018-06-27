@@ -86,7 +86,7 @@ class PersonaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PersonaRequest $request, $id)
     {
         $persona=Persona::find($id);		
 		$persona->documento=$request->input('documento');

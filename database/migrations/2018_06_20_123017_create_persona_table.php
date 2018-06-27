@@ -20,7 +20,7 @@ class CreatePersonaTable extends Migration
 			$table->string('apellido');
 			$table->string('domicilio');
 			$table->string('telefono');
-			$table->string('email')->unique()->nullable();
+			$table->string('email');
 			$table->double('cantHijos');
 			$table->string('estadoCivil');
 			

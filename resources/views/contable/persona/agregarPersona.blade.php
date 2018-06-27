@@ -61,7 +61,7 @@
 						 <div class="form-group row">
 							<label for="email" class="control-label col-sm-3">CORREO ELECTRÓNICO</label>
 							<div class="col-sm-9">
-								<input id="email" type="email" class="form-control" name="email" value="{{old('email')}}">
+								<input id="email" type="text" class="form-control" name="email" value="{{old('email')}}">
 								@if ($errors->has('email'))
 									<span style="color:red;">{{ $errors->first('email') }}</span>
 								@endif
