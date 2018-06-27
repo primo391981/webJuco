@@ -10,7 +10,7 @@
 		<ul class="nav nav-second-level">
 			 <li><a href="{{ route('empresa.index') }}"><i class="fas fa-list-ul"></i> Activas</a></li>
 			 <li><a href="{{ route('empresa.create') }}"><i class="fas fa-plus"></i> Agregar nueva</a></li>
-			<li><a href="{{ route('empresa.desactivada') }}"><i class="fas fa-list-ul"></i> Desactivadas</a></li>
+			<li><a href="{{ route('empresa.desactivada') }}"><i class="fas fa-list-ul"></i> Inactivas</a></li>
         </ul>
 </li>
 <li>
@@ -23,8 +23,9 @@
 <li>
     <a href="#"><i class="fas fa-briefcase"></i> Cargos <i class="fas fa-caret-down"></i></a>
 		<ul class="nav nav-second-level">
-			 <li><a href="{{ route('cargo.index') }}"><i class="fas fa-list-ul"></i> Listado</a></li>
+			 <li><a href="{{ route('cargo.index') }}"><i class="fas fa-list-ul"></i> Activos</a></li>
 			 <li><a href="{{ route('cargo.create') }}"><i class="fas fa-plus"></i> Agregar nuevo</a></li>
+			 <li><a href="{{ route('cargo.inactivos') }}"><i class="fas fa-list-ul"></i> Inactivos</a></li>
         </ul>
 </li>
 

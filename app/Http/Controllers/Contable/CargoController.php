@@ -17,8 +17,15 @@ class CargoController extends Controller
     public function index()
     {
         $cargos = Cargo::All();
-		$remuneraciones = Remuneracion::All();
-		return view('contable.cargo.listaCargos', ['cargos' => $cargos, 'remuneraciones' => $remuneraciones]);
+		
+		return view('contable.cargo.listaCargos', ['cargos' => $cargos, 'subtitle' => "Activos"]);
+    }
+	
+	public function inactivos()
+    {
+        $cargos = Cargo::onlyTrashed()->get();
+		
+		return view('contable.cargo.listaCargos', ['cargos' => $cargos, 'subtitle' => "Inactivos"]);
     }
 
     /**
@@ -47,7 +54,9 @@ class CargoController extends Controller
 		
 		$cargo->save();
 		
-		return redirect()->route('cargo.index');
+		$subtitle = 'Activos';
+		
+		return redirect()->route('cargo.index', $subtitle);
     }
 
     /**
@@ -85,7 +94,22 @@ class CargoController extends Controller
      */
     public function update(Request $request, Cargo $cargo)
     {
-        //
+        $cargo->nombre = $request->nombre;
+		$cargo->descripcion = $request->descripcion;
+		$cargo->save();
+		
+		return redirect()->route('cargo.index');
+    }
+	
+	public function activar(Cargo $cargo)
+    {
+		dd($cargo);
+		
+        $cargo->restore();
+		
+		$subtitle = 'Inactivos';
+		
+		return redirect()->route('cargo.index', $subtitle);
     }
 
     /**
@@ -96,6 +120,8 @@ class CargoController extends Controller
      */
     public function destroy(Cargo $cargo)
     {
-        //
+        $cargo->delete();
+		
+		return redirect()->route('cargo.index');
     }
 }

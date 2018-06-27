@@ -14,19 +14,21 @@
 		<div class="panel panel-warning">
 				  <div class="panel-heading text-center">
 					<div class="row">
-						<div class="col-sm-9"><h4>Listado cargos</h4></div>
+						<div class="col-sm-9"><h4>Listado cargos {{ $subtitle }}</h4></div>
 						<div class="col-sm-3 hidden-xs"><a href="{{ route('cargo.create') }}" class="btn btn-warning pull-right" role="button"><i class="fas fa-plus"></i> Agregar nuevo cargo</a></div>				  
 					</div>
 				  </div>
 				  <div class="panel-body text-warning">					
 					<div class="table-responsive">
-						<table id="tableEmpresas" class="table"> <!--table-hover-->
+						<table id="tableEmpresas" class="table">
 							
 							<thead>
 							<tr>
 								<th class="scope">ID</th>
 								<th>nombre</th>
 								<th>descripción</th>
+								<th></th>
+								<th></th>
 								
 							</tr>
 						</thead>
@@ -36,8 +38,28 @@
 								<td>{{$cargo->id}}</td>
 								<td>{{$cargo->nombre}}</td>
 								<td>{{$cargo->descripcion}}</td>
-								<td><a href="{{ route('cargo.edit', ['cargo' => $cargo])}}" data-toggle="tooltip" title="Editar"><i class="far fa-edit"></i></a> <a href="#" data-toggle="tooltip" title="Eliminar"><i class="far fa-trash-alt"></i></a>
-							</td>
+								@if($subtitle === "Activo")
+								<td>
+									<form method="GET" action="{{ route('cargo.edit', $cargo) }}">																
+										<button type="submit"class="btn btn-warning"><i class="far fa-edit"></i></button>												
+									</form>
+								</td>				
+								<td>
+									<form method="POST" action="{{ route('cargo.destroy',$cargo) }}">
+										{{ method_field('DELETE') }}
+										@csrf	
+										<button type="submit"class="btn btn-danger"><i class="far fa-trash-alt"></i></button>												
+									</form>
+								</td>
+								@else
+									<td>
+									<form method="POST" action="{{ route('cargo.activar',$cargo) }}">
+										@csrf	
+										<button type="submit"class="btn btn-danger"><i class="fas fa-recycle"></i></button>												
+									</form>
+									</td>
+								@endif
+							
 							</tr>
 						@endforeach
 						</tbody>
