@@ -38,29 +38,13 @@
 								<td>{{$cargo->id}}</td>
 								<td>{{$cargo->nombre}}</td>
 								<td>{{$cargo->descripcion}}</td>
-								@if($subtitle === "Activos")
 								<td>
-									<form method="GET" action="{{ route('cargo.edit', $cargo) }}">																
-										<button type="submit"class="btn btn-warning"><i class="far fa-edit"></i></button>												
-									</form>
-								</td>				
-								<td>
-									<form method="POST" action="{{ route('cargo.destroy',$cargo) }}">
-										{{ method_field('DELETE') }}
-										@csrf	
-										<button type="submit"class="btn btn-danger"><i class="far fa-trash-alt"></i></button>												
-									</form>
-								</td>
-								@else
-									<td>
 									<form method="POST" action="{{ route('cargo.activar') }}">
 										@csrf	
 										<input type="hidden" name="cargo_id" value="{{$cargo->id}}">
 										<button type="submit"class="btn btn-danger"><i class="fas fa-recycle"></i></button>												
 									</form>
 									</td>
-								@endif
-							
 							</tr>
 						@endforeach
 						</tbody>

@@ -25,7 +25,7 @@ class CargoController extends Controller
     {
         $cargos = Cargo::onlyTrashed()->get();
 		
-		return view('contable.cargo.listaCargos', ['cargos' => $cargos, 'subtitle' => "Inactivos"]);
+		return view('contable.cargo.listaCargosInactivos', ['cargos' => $cargos, 'subtitle' => "Inactivos"]);
     }
 
     /**
@@ -101,15 +101,17 @@ class CargoController extends Controller
 		return redirect()->route('cargo.index');
     }
 	
-	public function activar(Cargo $cargo)
+	public function activar(Request $request)
     {
-		dd($cargo);
 		
-        $cargo->restore();
 		
-		$subtitle = 'Inactivos';
+		$cargo = Cargo::onlyTrashed()
+                ->where('id', $request->cargo_id)
+                ->first();
+				
+		$cargo->restore();
 		
-		return redirect()->route('cargo.index', $subtitle);
+		return redirect()->route('cargo.index.inactivos');
     }
 
     /**
