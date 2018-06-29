@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Contable;
 
 use App\Contable\Cargo;
 use App\Contable\Remuneracion;
+use App\Http\Requests\CargoRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -45,7 +46,7 @@ class CargoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CargoRequest $request)
     {
         $cargo = new Cargo;
 		$cargo->nombre = $request->nombre;
@@ -54,9 +55,7 @@ class CargoController extends Controller
 		
 		$cargo->save();
 		
-		$subtitle = 'Activos';
-		
-		return redirect()->route('cargo.index', $subtitle);
+		return redirect()->route('cargo.index')->with('success', "El cargo se creó correctamente");;
     }
 
     /**
@@ -92,18 +91,17 @@ class CargoController extends Controller
      * @param  \App\Contable\Cargo  $cargo
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Cargo $cargo)
+    public function update(CargoRequest $request, Cargo $cargo)
     {
         $cargo->nombre = $request->nombre;
 		$cargo->descripcion = $request->descripcion;
 		$cargo->save();
 		
-		return redirect()->route('cargo.index');
+		return redirect()->route('cargo.index')->with('success', "El cargo fue modificado correctamente");
     }
 	
 	public function activar(Request $request)
     {
-		
 		
 		$cargo = Cargo::onlyTrashed()
                 ->where('id', $request->cargo_id)
@@ -111,7 +109,7 @@ class CargoController extends Controller
 				
 		$cargo->restore();
 		
-		return redirect()->route('cargo.index.inactivos');
+		return redirect()->route('cargo.index.inactivos')->with('success', "El cargo fue restaurado correctamente");
     }
 
     /**
@@ -124,6 +122,6 @@ class CargoController extends Controller
     {
         $cargo->delete();
 		
-		return redirect()->route('cargo.index');
+		return redirect()->route('cargo.index')->with('success', "El cargo fue eliminado correctamente");
     }
 }
