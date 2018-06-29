@@ -76,10 +76,14 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('contable', 'Contable\ContableController@index')->name('contable')->middleware('role:contableAdmin');
 	
 	//cargos
-	
 	Route::get('cargo/inactivos', 'Contable\CargoController@inactivos')->name('cargo.index.inactivos')->middleware('role:contableAdmin');
 	Route::post('cargo/activar', 'Contable\CargoController@activar')->name('cargo.activar')->middleware('role:contableAdmin');
 	Route::resource('cargo', 'Contable\CargoController')->middleware('role:contableAdmin');
+	
+	//parametros generales
+	Route::get('parametrogral/inactivos', 'Contable\ParametroGeneralController@inactivos')->name('parametrogral.index.inactivos')->middleware('role:contableAdmin');
+	Route::post('parametrogral/activar', 'Contable\ParametroGeneralController@activar')->name('parametrogral.activar')->middleware('role:contableAdmin');
+	Route::resource('parametrogral', 'Contable\ParametroGeneralController')->middleware('role:contableAdmin');
 	
 	//empresa
 	Route::get('desactivada', 'EmpresaController@desactivada')->name('empresa.desactivada')->middleware('role:contableAdmin');

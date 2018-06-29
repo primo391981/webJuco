@@ -55,7 +55,7 @@ class CargoController extends Controller
 		
 		$cargo->save();
 		
-		return redirect()->route('cargo.index')->with('success', "El cargo se creó correctamente");;
+		return redirect()->route('cargo.index')->with('success', "El cargo se creó correctamente");
     }
 
     /**
