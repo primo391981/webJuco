@@ -40,8 +40,8 @@
 							<tr>								
 								<td>{{$persona->documento}}</td>
 								<td>{{$persona->nombre}}</td>
-								<td>{{$persona->apellido}}</td>								
-								<td>nombre EMPRESA ASOCIADA</td>	
+								<td>{{$persona->apellido}}</td>	
+								<td>{{$persona->nombreFantasia}}</td>
 								
 								<td>
 									<form method="GET" action="{{route('persona.show', $persona->id)}}">																

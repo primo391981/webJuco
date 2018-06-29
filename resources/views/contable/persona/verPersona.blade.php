@@ -31,15 +31,61 @@
 								<h3><strong><em>CANTIDAD DE HIJOS :</em></strong> {{$persona->cantHijos}}</h3>
 						</div>
 						<div class="col-sm-6">
-								
+							<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModal"><i class="fas fa-handshake"></i> Asociar a empresa</button>
 						</div>
 					</div>
-					
 				  </div>
 		<div class="panel-footer"><a href="{{ route('persona.index') }}" class="btn btn-warning btn-block" role="button"><i class="fas fa-list-ul"></i> Listado empleados</a></div>
 		</div>
 	</div>
 </div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">SELECCIONE UNA EMPRESA</h5>
+      </div>
+      <div class="modal-body">
+		<div class="table-responsive">
+						<table class="table table-sm">
+							
+							<thead>
+							<tr>
+								<th>RAZON SOCIAL</th>
+								<th>NOMBRE FANTASIA</th>
+								<th></th>								
+							</tr>
+						</thead>
+						<tbody>
+						@foreach($empresas as $emp)						
+							<tr>								
+								<td>{{$emp->razonSocial}}</td>
+								<td>{{$emp->nombreFantasia}}</td>
+												
+								<td>
+									<form method="POST" action="{{route('empleado.altaAsociacion',[$emp->id,$persona->id]) }}">																
+									@csrf
+										<button type="submit"class="btn btn-warning"><i class="fas fa-check-circle"></i></button>												
+									</form>
+								</td>
+							</tr>
+						@endforeach
+						</tbody>
+						
+						</table>
+					</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 
 @endsection

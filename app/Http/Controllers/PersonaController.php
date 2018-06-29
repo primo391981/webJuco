@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Persona;
+use App\Empresa;
+use App\Empleado;
 use App\Http\Requests\PersonaRequest;
+use App\Http\Controllers\Controller;
 
 class PersonaController extends Controller
 {
@@ -15,7 +19,14 @@ class PersonaController extends Controller
      */
     public function index()
     {
-        $personas=Persona::All();
+       /* $personas=Persona::All();
+		$empleados=Empleado::All();*/
+		$personas = DB::table('persona')
+            ->leftJoin('empleados', 'persona.id', '=', 'empleados.idpersona')
+			->leftJoin('empresa', 'empleados.idempresa', '=', 'empresa.id')			
+            ->select('persona.*', 'empresa.nombreFantasia')
+            ->get();
+		
 		return view('contable.persona.listaPersonas', ['personas' => $personas]);
     }
 	public function desactivado()
@@ -64,7 +75,8 @@ class PersonaController extends Controller
     public function show($id)
     {
         $persona=Persona::find($id);
-		return view('contable.persona.verPersona',['persona'=>$persona]);
+		$empresas=Empresa::All();
+		return view('contable.persona.verPersona',['persona'=>$persona,'empresas'=>$empresas]);
     }
 
     /**
