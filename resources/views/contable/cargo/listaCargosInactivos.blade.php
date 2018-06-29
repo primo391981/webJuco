@@ -15,7 +15,7 @@
 		<div class="panel panel-warning">
 				  <div class="panel-heading text-center">
 					<div class="row">
-						<div class="col-sm-9"><h4>Listado cargos {{ $subtitle }}</h4></div>
+						<div class="col-sm-9"><h4>Listado cargos Inactivos</h4></div>
 						<div class="col-sm-3 hidden-xs"><a href="{{ route('cargo.create') }}" class="btn btn-warning pull-right" role="button"><i class="fas fa-plus"></i> Agregar nuevo cargo</a></div>				  
 					</div>
 				  </div>
@@ -28,6 +28,7 @@
 								<th class="scope">ID</th>
 								<th>nombre</th>
 								<th>descripción</th>
+								<th>tipo remuneración</th>
 								<th></th>
 								<th></th>
 								
@@ -39,6 +40,7 @@
 								<td>{{$cargo->id}}</td>
 								<td>{{$cargo->nombre}}</td>
 								<td>{{$cargo->descripcion}}</td>
+								<td>{{$cargo->remuneracion->nombre}}</td>
 								<td>
 									<form method="POST" action="{{ route('cargo.activar') }}">
 										@csrf	

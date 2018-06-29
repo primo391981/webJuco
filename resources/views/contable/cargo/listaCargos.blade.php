@@ -19,7 +19,7 @@
 		<div class="panel panel-warning">
 				  <div class="panel-heading text-center">
 					<div class="row">
-						<div class="col-sm-9"><h4>Listado cargos {{ $subtitle }}</h4></div>
+						<div class="col-sm-9"><h4>Listado cargos Activos</h4></div>
 						<div class="col-sm-3 hidden-xs"><a href="{{ route('cargo.create') }}" class="btn btn-warning pull-right" role="button"><i class="fas fa-plus"></i> Agregar nuevo cargo</a></div>				  
 					</div>
 				  </div>
@@ -32,6 +32,7 @@
 								<th class="scope">ID</th>
 								<th>nombre</th>
 								<th>descripción</th>
+								<th>tipo remuneración</th>
 								<th></th>
 								<th></th>
 								
@@ -43,7 +44,7 @@
 								<td>{{$cargo->id}}</td>
 								<td>{{$cargo->nombre}}</td>
 								<td>{{$cargo->descripcion}}</td>
-								@if($subtitle === "Activos")
+								<td>{{$cargo->remuneracion->nombre}}</td>
 								<td>
 									<form method="GET" action="{{ route('cargo.edit', $cargo) }}">																
 										<button type="submit"class="btn btn-warning"><i class="far fa-edit"></i></button>												
@@ -56,16 +57,6 @@
 										<button type="submit"class="btn btn-danger"><i class="far fa-trash-alt"></i></button>												
 									</form>
 								</td>
-								@else
-									<td>
-									<form method="POST" action="{{ route('cargo.activar') }}">
-										@csrf	
-										<input type="hidden" name="cargo_id" value="{{$cargo->id}}">
-										<button type="submit"class="btn btn-danger"><i class="fas fa-recycle"></i></button>												
-									</form>
-									</td>
-								@endif
-							
 							</tr>
 						@endforeach
 						</tbody>

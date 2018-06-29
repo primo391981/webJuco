@@ -19,14 +19,14 @@ class CargoController extends Controller
     {
         $cargos = Cargo::All();
 		
-		return view('contable.cargo.listaCargos', ['cargos' => $cargos, 'subtitle' => "Activos"]);
+		return view('contable.cargo.listaCargos', ['cargos' => $cargos]);
     }
 	
 	public function inactivos()
     {
         $cargos = Cargo::onlyTrashed()->get();
 		
-		return view('contable.cargo.listaCargosInactivos', ['cargos' => $cargos, 'subtitle' => "Inactivos"]);
+		return view('contable.cargo.listaCargosInactivos', ['cargos' => $cargos]);
     }
 
     /**
