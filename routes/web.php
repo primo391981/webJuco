@@ -76,6 +76,9 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('contable', 'Contable\ContableController@index')->name('contable')->middleware('role:contableAdmin');
 	
 	//cargos
+	
+	Route::get('cargo/inactivos', 'Contable\CargoController@inactivos')->name('cargo.index.inactivos')->middleware('role:contableAdmin');
+	Route::post('cargo/activar', 'Contable\CargoController@activar')->name('cargo.activar')->middleware('role:contableAdmin');
 	Route::resource('cargo', 'Contable\CargoController')->middleware('role:contableAdmin');
 	
 	//empresa

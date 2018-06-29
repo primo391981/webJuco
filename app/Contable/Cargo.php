@@ -12,4 +12,10 @@ class Cargo extends Model
 	protected $table = 'contable_cargos';
 	 
     protected $dates = ['deleted_at'];
+	
+	public function remuneracion(){
+		
+		return $this->belongsTo('App\Contable\Remuneracion','id_remuneracion');
+	}
+	
 }
