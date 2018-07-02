@@ -31,8 +31,21 @@
 								<h3><strong><em>CANTIDAD DE HIJOS :</em></strong> {{$persona->cantHijos}}</h3>
 						</div>
 						<div class="col-sm-6">
+						
+						@if ($empleado)
+							<!---tengo un empleado y a su vez es esta asociado a  una empresa-->
+							<p>El emplado {{$persona->nombre}} {{$persona->apellido}} ya está asociado a una empresa.</p>
+							<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModal" disabled><i class="fas fa-handshake"></i> Asociar a empresa</button>
+							<form method="POST" action="{{ route('empleado.destroy',$empleado->id) }}">
+										{{ method_field('DELETE') }}
+										@csrf	
+										<button type="submit"class="btn btn-danger"><i class="fas fa-sign-out-alt"></i> Desvincular de la empresa</button>												
+							</form>
+						@else
 							<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModal"><i class="fas fa-handshake"></i> Asociar a empresa</button>
-						</div>
+						@endif
+						
+												</div>
 					</div>
 				  </div>
 		<div class="panel-footer"><a href="{{ route('persona.index') }}" class="btn btn-warning btn-block" role="button"><i class="fas fa-list-ul"></i> Listado empleados</a></div>

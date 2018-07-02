@@ -41,7 +41,24 @@
 								<td>{{$persona->documento}}</td>
 								<td>{{$persona->nombre}}</td>
 								<td>{{$persona->apellido}}</td>	
-								<td>{{$persona->nombreFantasia}}</td>
+								
+								@if($empleados->isEmpty())
+									<td></td>
+								@else
+								<?php $i = 0; ?>
+										@foreach($empleados as $emp)
+											@if ($emp->idPersona == $persona->id)
+													<td>{{$emp->nombreFantasia}}</td>
+														<?php $i = 1; ?>
+														@break
+											@endif
+										@endforeach
+										@if($i==0)
+											<td></td>
+										@endif
+										
+								@endif
+								
 								
 								<td>
 									<form method="GET" action="{{route('persona.show', $persona->id)}}">																

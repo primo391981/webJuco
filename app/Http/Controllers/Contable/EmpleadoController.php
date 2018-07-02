@@ -44,6 +44,7 @@ class EmpleadoController extends Controller
 		$empleado->save();		
 		return redirect()->route('persona.index');
     }
+	
     public function store(Request $request)
     {
        
@@ -91,6 +92,9 @@ class EmpleadoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $emp=Empleado::find($id);
+		$emp->delete();
+	
+		return redirect()->route('persona.index');
     }
 }

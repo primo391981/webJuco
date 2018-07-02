@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Persona;
 use App\Empresa;
-use App\Empleado;
+use App\Contable\Empleado;
 use App\Http\Requests\PersonaRequest;
 use App\Http\Controllers\Controller;
 
@@ -19,16 +19,15 @@ class PersonaController extends Controller
      */
     public function index()
     {
-       /* $personas=Persona::All();
-		$empleados=Empleado::All();*/
-		$personas = DB::table('persona')
-            ->leftJoin('empleados', 'persona.id', '=', 'empleados.idpersona')
-			->leftJoin('empresa', 'empleados.idempresa', '=', 'empresa.id')			
-            ->select('persona.*', 'empresa.nombreFantasia')
-            ->get();
-		
-		return view('contable.persona.listaPersonas', ['personas' => $personas]);
+        $personas=Persona::All();
+		$empleados = DB::table('empleados')
+			->join('empresa','empleados.idempresa','=','empresa.id')
+            ->whereNull('empleados.deleted_at')
+            ->select('empleados.*','empresa.*')
+            ->get();		
+		return view('contable.persona.listaPersonas', ['personas' => $personas,'empleados'=>$empleados]);
     }
+	
 	public function desactivado()
     {
        $personas=Persona::onlyTrashed()->get();
@@ -74,9 +73,15 @@ class PersonaController extends Controller
      */
     public function show($id)
     {
+		$empleado = DB::table('empleados')->where([
+			['idpersona', '=', $id],
+			['deleted_at', '=', null],			
+		])->first();
+		//con first devulve uno solo, con get una coleccion de datos
+		
         $persona=Persona::find($id);
 		$empresas=Empresa::All();
-		return view('contable.persona.verPersona',['persona'=>$persona,'empresas'=>$empresas]);
+		return view('contable.persona.verPersona',['persona'=>$persona,'empresas'=>$empresas,'empleado'=>$empleado]);
     }
 
     /**
