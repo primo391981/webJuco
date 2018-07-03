@@ -7,7 +7,7 @@
 <br>
 <div class="row">
 	<!--solamente es visible en cel-->
-	<div class="col-xs-12 visible-xs"><a href="{{ route('parametrogral.create') }}" class="btn btn-warning" role="button" style="margin-bottom:5%;"><i class="fas fa-plus"></i> Agregar nuevo parámetro general</a></div>				  
+	<div class="col-xs-12 visible-xs"><a href="{{ route('parametrogeneral.create') }}" class="btn btn-warning" role="button" style="margin-bottom:5%;"><i class="fas fa-plus"></i> Agregar nuevo parámetro general</a></div>				  
 </div>
 @if (Session::has('success'))
 		<div class="alert alert-success">
@@ -20,7 +20,7 @@
 				  <div class="panel-heading text-center">
 					<div class="row">
 						<div class="col-sm-9"><h4>Listado parámetros generales Activos</h4></div>
-						<div class="col-sm-3 hidden-xs"><a href="{{ route('parametrogral.create') }}" class="btn btn-warning pull-right" role="button"><i class="fas fa-plus"></i> Agregar nuevo parámetro general</a></div>				  
+						<div class="col-sm-3 hidden-xs"><a href="{{ route('parametrogeneral.create') }}" class="btn btn-warning pull-right" role="button"><i class="fas fa-plus"></i> Agregar nuevo parámetro general</a></div>				  
 					</div>
 				  </div>
 				  <div class="panel-body text-warning">					
@@ -44,23 +44,19 @@
 						@foreach($params as $param)						
 							<tr>
 								<td>{{$param->id}}</td>
+									
 								<td>{{$param->nombre}}</td>
 								<td>{{$param->descripcion}}</td>
 								<td>{{$param->fecha_inicio}}</td>
 								<td>{{$param->fecha_fin}}</td>
 								<td>{{$param->valor}}</td>
 								<td>
-									<form method="GET" action="{{ route('parametrogral.edit', $param) }}">																
+									<form method="GET" action="{{ route('parametrogeneral.edit', $param) }}">																
 										<button type="submit" class="btn btn-warning"><i class="far fa-edit"></i></button>												
 									</form>
-								</td>		
+								</td>	
 								<td>
-									<form method="GET" action="{{ route('parametrogral.edit', $param) }}">																
-										<button type="submit"class="btn btn-warning"><i class="far fa-edit"></i></button>												
-									</form>
-								</td>									
-								<td>
-									<form method="POST" action="{{ route('parametrogral.destroy',$param) }}">
+									<form method="POST" action="{{ route('parametrogeneral.destroy',$param) }}">
 										{{ method_field('DELETE') }}
 										@csrf	
 										<button type="submit"class="btn btn-danger"><i class="far fa-trash-alt"></i></button>												
@@ -74,7 +70,7 @@
 					</div>
 					
 				  </div>
-				  <div class="panel-footer"><a href="{{ route('parametrogral.create') }}" class="btn btn-warning btn-block" role="button"><i class="fas fa-plus"></i> Agregar nuevo parámetro general</a></div>
+				  <div class="panel-footer"><a href="{{ route('parametrogeneral.create') }}" class="btn btn-warning btn-block" role="button"><i class="fas fa-plus"></i> Agregar nuevo parámetro general</a></div>
 		</div>
 	</div>
 </div>

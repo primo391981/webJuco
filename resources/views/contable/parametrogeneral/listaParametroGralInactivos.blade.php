@@ -15,8 +15,8 @@
 		<div class="panel panel-warning">
 				  <div class="panel-heading text-center">
 					<div class="row">
-						<div class="col-sm-9"><h4>Listado cargos Inactivos</h4></div>
-						<div class="col-sm-3 hidden-xs"><a href="{{ route('cargo.create') }}" class="btn btn-warning pull-right" role="button"><i class="fas fa-plus"></i> Agregar nuevo cargo</a></div>				  
+						<div class="col-sm-9"><h4>Listado parámetros generales Activos</h4></div>
+						<div class="col-sm-3 hidden-xs"><a href="{{ route('parametrogeneral.create') }}" class="btn btn-warning pull-right" role="button"><i class="fas fa-plus"></i> Agregar nuevo parámetro general</a></div>				  
 					</div>
 				  </div>
 				  <div class="panel-body text-warning">					
@@ -28,23 +28,26 @@
 								<th class="scope">ID</th>
 								<th>nombre</th>
 								<th>descripción</th>
-								<th>tipo remuneración</th>
+								<th>fecha inicio</th>
+								<th>fecha fin</th>
+								<th>valor</th>
 								<th></th>
-								<th></th>
-								
 							</tr>
 						</thead>
 						<tbody>
-						@foreach($cargos as $cargo)						
+						@foreach($params as $param)						
 							<tr>
-								<td>{{$cargo->id}}</td>
-								<td>{{$cargo->nombre}}</td>
-								<td>{{$cargo->descripcion}}</td>
-								<td>{{$cargo->remuneracion->nombre}}</td>
+								<td>{{$param->id}}</td>
+									
+								<td>{{$param->nombre}}</td>
+								<td>{{$param->descripcion}}</td>
+								<td>{{$param->fecha_inicio}}</td>
+								<td>{{$param->fecha_fin}}</td>
+								<td>{{$param->valor}}</td>
 								<td>
-									<form method="POST" action="{{ route('cargo.activar') }}">
+									<form method="POST" action="{{ route('parametrogeneral.activar') }}">
 										@csrf	
-										<input type="hidden" name="cargo_id" value="{{$cargo->id}}">
+										<input type="hidden" name="param_id" value="{{$param->id}}">
 										<button type="submit"class="btn btn-danger"><i class="fas fa-recycle"></i></button>												
 									</form>
 									</td>
@@ -56,7 +59,7 @@
 					</div>
 					
 				  </div>
-				  <div class="panel-footer"><a href="{{ route('cargo.create') }}" class="btn btn-warning btn-block" role="button"><i class="fas fa-plus"></i> Agregar nuevo cargo</a></div>
+				  <div class="panel-footer"><a href="{{ route('parametrogeneral.create') }}" class="btn btn-warning btn-block" role="button"><i class="fas fa-plus"></i> Agregar nuevo parámetro general</a></div>
 		</div>
 	</div>
 </div>

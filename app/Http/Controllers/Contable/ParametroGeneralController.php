@@ -23,9 +23,9 @@ class ParametroGeneralController extends Controller
 	
 	public function inactivos()
     {
-        $cargos = Cargo::onlyTrashed()->get();
+        $params = ParametroGeneral::onlyTrashed()->get();
 		
-		return view('contable.cargo.listaCargosInactivos', ['cargos' => $cargos]);
+		return view('contable.parametrogeneral.listaParametroGralInactivos', ['params' => $params]);
     }
 
     /**
@@ -55,7 +55,7 @@ class ParametroGeneralController extends Controller
 		
 		$param->save();
 		
-		return redirect()->route('parametrogral.index')->with('success', "El parámetro se creó correctamente");
+		return redirect()->route('parametrogeneral.index')->with('success', "El parámetro se creó correctamente");
 		
     }
 
@@ -65,7 +65,7 @@ class ParametroGeneralController extends Controller
      * @param  \App\Contable\ParametroGeneral  $parametroGeneral
      * @return \Illuminate\Http\Response
      */
-    public function show(ParametroGeneral $parametroGeneral)
+    public function show(ParametroGeneral $parametrogeneral)
     {
         //
     }
@@ -76,13 +76,11 @@ class ParametroGeneralController extends Controller
      * @param  \App\Contable\ParametroGeneral  $parametroGeneral
      * @return \Illuminate\Http\Response
      */
-    public function edit(ParametroGeneral $param)
+    public function edit(ParametroGeneral $parametrogeneral)
     {
         $subtitulo = 'Editar parámetro general';
 		
-		dd($param);
-		
-		return view('contable.parametrogeneral.editarParametroGral', ['subtitulo' => $subtitulo, 'param' => $param]);
+		return view('contable.parametrogeneral.editarParametroGral', ['subtitulo' => $subtitulo, 'param' => $parametrogeneral]);
     }
 
     /**
@@ -92,9 +90,28 @@ class ParametroGeneralController extends Controller
      * @param  \App\Contable\ParametroGeneral  $parametroGeneral
      * @return \Illuminate\Http\Response
      */
-    public function update(ParametroGeneralRequest $request, ParametroGeneral $parametroGeneral)
+    public function update(ParametroGeneralRequest $request, ParametroGeneral $parametrogeneral)
     {
-        //
+        $parametrogeneral->nombre = $request->nombre;
+		$parametrogeneral->descripcion = $request->descripcion;
+		$parametrogeneral->fecha_inicio = $request->fecha_inicio;
+		$parametrogeneral->fecha_fin = $request->fecha_fin;
+		$parametrogeneral->valor = $request->valor;
+		$parametrogeneral->save();
+		
+		return redirect()->route('parametrogeneral.index')->with('success', "El parámetro fue modificado correctamente");
+    }
+
+	public function activar(Request $request)
+    {
+		
+		$param = ParametroGeneral::onlyTrashed()
+                ->where('id', $request->param_id)
+                ->first();
+				
+		$param->restore();
+		
+		return redirect()->route('parametrogeneral.index.inactivos')->with('success', "El cargo fue restaurado correctamente");
     }
 
     /**
@@ -103,8 +120,10 @@ class ParametroGeneralController extends Controller
      * @param  \App\Contable\ParametroGeneral  $parametroGeneral
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ParametroGeneral $parametroGeneral)
+    public function destroy(ParametroGeneral $parametrogeneral)
     {
-        //
+         $parametrogeneral->delete();
+		
+		return redirect()->route('parametrogeneral.index')->with('success', "El parámetro fue eliminado correctamente");
     }
 }

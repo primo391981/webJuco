@@ -32,9 +32,9 @@
 <li>
     <a href="#"><i class="fas fa-cogs"></i> Parametros Generales<i class="fas fa-caret-down"></i></a>
 		<ul class="nav nav-second-level">
-			 <li><a href="{{ route('parametrogral.index') }}"><i class="fas fa-list-ul"></i> Activos</a></li>
-			 <li><a href="{{ route('parametrogral.create') }}"><i class="fas fa-plus"></i> Agregar nuevo</a></li>
-			 <li><a href="{{ route('parametrogral.index.inactivos') }}"><i class="fas fa-list-ul"></i> Inactivos</a></li>
+			 <li><a href="{{ route('parametrogeneral.index') }}"><i class="fas fa-list-ul"></i> Activos</a></li>
+			 <li><a href="{{ route('parametrogeneral.create') }}"><i class="fas fa-plus"></i> Agregar nuevo</a></li>
+			 <li><a href="{{ route('parametrogeneral.index.inactivos') }}"><i class="fas fa-list-ul"></i> Inactivos</a></li>
         </ul>
 </li>
 <li>
