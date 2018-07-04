@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Empresa;
+use App\Http\Requests\EmpresaRequest;
 
 class EmpresaController extends Controller
 {
@@ -27,7 +28,7 @@ class EmpresaController extends Controller
     }
 
    
-    public function store(Request $request)
+    public function store(EmpresaRequest $request)
     {
         $empresa = new Empresa;
 		$empresa->rut=$request->input('rut');
@@ -80,7 +81,7 @@ class EmpresaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(EmpresaRequest $request, $id)
     {
 		$empresa=Empresa::find($id);
 		$empresa->rut=$request->input('rut');

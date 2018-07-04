@@ -16,15 +16,15 @@ class CreateEmpresaTable extends Migration
         Schema::create('empresa', function (Blueprint $table) {
             $table->increments('id');
 			$table->string('razonSocial');
-			$table->double('rut')->unique()->nullable();
+			$table->double('rut')->nullable();
 			$table->string('domicilio')->nullable();
 			$table->string('nombreFantasia');
-			$table->double('numBps')->unique()->nullable();
-			$table->double('numBse')->unique()->nullable();
-			$table->double('numMtss')->unique()->nullable();
+			$table->double('numBps')->nullable();
+			$table->double('numBse')->nullable();
+			$table->double('numMtss')->nullable();
 			$table->integer('grupo')->nullable();
 			$table->integer('subGrupo')->nullable();
-			$table->string('email')->unique()->nullable();
+			$table->string('email')->nullable();
 			$table->string('telefono')->nullable();
 			$table->string('nomContacto')->nullable();
 			

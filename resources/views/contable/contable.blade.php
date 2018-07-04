@@ -16,8 +16,9 @@
 <li>
     <a href="#"><i class="fas fa-users"></i> Empleados <i class="fas fa-caret-down"></i></a>
 		<ul class="nav nav-second-level">
-			<li><a href="{{ route('persona.index') }}"><i class="fas fa-list-ul"></i> Listado</a></li>
+			<li><a href="{{ route('persona.index') }}"><i class="fas fa-list-ul"></i> Activos</a></li>
 			<li><a href="{{ route('persona.create') }}"><i class="fas fa-plus"></i> Agregar nuevo</a></li>
+			<li><a href="{{ route('persona.desactivado') }}"><i class="fas fa-list-ul"></i> Desactivados</a></li>
 		</ul>
 </li>
 <li>
