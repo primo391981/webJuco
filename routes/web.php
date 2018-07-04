@@ -100,4 +100,13 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::post('altaAsociacion/{idempresa}/{idpersona}', 'Contable\EmpleadoController@altaAsociacion')->name('empleado.altaAsociacion')->middleware('role:contableAdmin');
 	Route::resource('empleado', 'Contable\EmpleadoController')->middleware('role:contableAdmin');
 	
+	//JURIDICO
+	//dashboard contable
+	Route::get('juridico', 'Juridico\JuridicoController@index')->name('juridico')->middleware('role:juridicoAdmin');
+	
+	//clientes
+	Route::get('cliente/inactivos', 'Juridico\ClienteController@inactivos')->name('cliente.index.inactivos')->middleware('role:juridicoAdmin');
+	//Route::post('cargo/activar', 'Contable\CargoController@activar')->name('cargo.activar')->middleware('role:contableAdmin');
+	Route::resource('cliente', 'Juridico\ClienteController')->middleware('role:juridicoAdmin');
+	
 });
