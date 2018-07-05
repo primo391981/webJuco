@@ -31,7 +31,7 @@
 							<tr>
 								<th class="scope">ID</th>
 								<th>nombre</th>
-								<th>descripción</th>
+								<th>tipo</th>
 								<th>tipo remuneración</th>
 								<th></th>
 								<th></th>
@@ -42,9 +42,20 @@
 						@foreach($clientes as $cliente)						
 							<tr>
 								<td>{{$cliente->id}}</td>
-								<td>{{$cliente->nombre}}</td>
-								<td>{{$cliente->descripcion}}</td>
-								<td>{{$cliente->remuneracion->nombre}}</td>
+								<td>
+									@if($cliente->persona_type=="App\Persona")
+										{{$cliente->persona->apellido}} 
+									@endif
+									{{$cliente->persona->nombre}}
+								</td>
+								<td>
+									@if($cliente->persona_type=="App\Persona")
+										Física 
+									@else
+										Jurídica
+									@endif
+								</td>
+								<td></td>
 								<td>
 									<form method="GET" action="{{ route('cliente.edit', $cliente) }}">																
 										<button type="submit"class="btn btn-warning"><i class="far fa-edit"></i></button>												

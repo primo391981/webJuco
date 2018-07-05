@@ -12,4 +12,9 @@ class Cliente extends Model
     protected $table = "juridico_clientes";
 	protected $dates = ['deleted_at'];
 	
+	public function persona()
+    {
+        return $this->morphTo();
+    }
+	
 }
