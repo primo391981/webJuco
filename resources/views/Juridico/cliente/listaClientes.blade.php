@@ -32,7 +32,7 @@
 								<th class="scope">ID</th>
 								<th>nombre</th>
 								<th>tipo</th>
-								<th>tipo remuneración</th>
+								<th></th>
 								<th></th>
 								<th></th>
 								

@@ -106,7 +106,7 @@ Route::group(['middleware' => ['auth']], function () {
 	
 	//clientes
 	Route::get('cliente/inactivos', 'Juridico\ClienteController@inactivos')->name('cliente.index.inactivos')->middleware('role:juridicoAdmin');
-	//Route::post('cargo/activar', 'Contable\CargoController@activar')->name('cargo.activar')->middleware('role:contableAdmin');
+	Route::post('cliente/activar', 'Juridico\ClienteController@activar')->name('cliente.activar')->middleware('role:juridicoAdmin');
 	Route::resource('cliente', 'Juridico\ClienteController')->middleware('role:juridicoAdmin');
 	
 });
