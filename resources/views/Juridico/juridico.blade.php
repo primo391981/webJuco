@@ -25,16 +25,16 @@
 
 @section('content')
 <br>
-<h1  class="text-warning">Administración Juco - Jurídico</h1>
+<h1  class="text-success">Administración Juco - Jurídico</h1>
 <hr>
 <div class="row">
 	<div class="col-xs-12 col-sm-12 col-md-4">
-		<div class="panel panel-warning">
+		<div class="panel panel-success">
 			  <div class="panel-heading text-center"><h1><i class="fas fa-building"></i> Clientes</h1></div>
-			  <div class="panel-body text-warning">
-					<a class="btn btn-warning btn-block" href="{{ route('cliente.create') }}" role="button"><i class="fas fa-plus"></i> Agregar nuevo cliente</a>
-					<a class="btn btn-warning btn-block" href="{{ route('cliente.index') }}" role="button"><i class="fas fa-list-ul"></i> Listado de clientes activos</a>
-					<a class="btn btn-warning btn-block" href="{{ route('cliente.index.inactivos') }}" role="button"><i class="fas fa-list-ul"></i> Listado de clientes inactivos</a>
+			  <div class="panel-body text-success">
+					<a class="btn btn-success btn-block" href="{{ route('cliente.create') }}" role="button"><i class="fas fa-plus"></i> Agregar nuevo cliente</a>
+					<a class="btn btn-success btn-block" href="{{ route('cliente.index') }}" role="button"><i class="fas fa-list-ul"></i> Listado de clientes activos</a>
+					<a class="btn btn-success btn-block" href="{{ route('cliente.index.inactivos') }}" role="button"><i class="fas fa-list-ul"></i> Listado de clientes inactivos</a>
 					
 			  </div>
 		</div>

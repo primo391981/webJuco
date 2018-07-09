@@ -30,9 +30,9 @@
 							<thead>
 							<tr>
 								<th class="scope">ID</th>
-								<th>nombre</th>
 								<th>tipo</th>
-								<th></th>
+								<th>Identificador</th>
+								<th>Nombre</th>
 								<th></th>
 								<th></th>
 								
@@ -44,17 +44,26 @@
 								<td>{{$cliente->id}}</td>
 								<td>
 									@if($cliente->persona_type=="App\Persona")
-										{{$cliente->persona->apellido}} 
-									@endif
-									{{$cliente->persona->nombre}}
-								</td>
-								<td>
-									@if($cliente->persona_type=="App\Persona")
 										Física 
 									@else
 										Jurídica
 									@endif
 								</td>
+								<td>
+									@if($cliente->persona_type=="App\Persona")
+										{{ $cliente->persona->tipoDoc->nombre }}
+										{{ $cliente->persona->documento}}
+									@else
+										Jurídica
+									@endif
+								</td>
+								<td>
+									@if($cliente->persona_type=="App\Persona")
+										{{$cliente->persona->apellido}} 
+									@endif
+									{{$cliente->persona->nombre}}
+								</td>
+								
 								<td></td>
 								<td>
 									<form method="GET" action="{{ route('cliente.edit', $cliente) }}">																

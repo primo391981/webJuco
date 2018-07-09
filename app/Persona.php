@@ -14,4 +14,9 @@ class Persona extends Model
     {
         return $this->morphMany('\App\Contable\Cliente', 'persona');
     }
+	
+	public function tipoDoc()
+	{
+		return $this->belongsTo('App\tipoDoc', 'tipoDocumento');
+	}
 }

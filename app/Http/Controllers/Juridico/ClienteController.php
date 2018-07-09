@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Juridico;
 
 use App\Juridico\Cliente;
 use App\Persona;
+use App\Tipodoc;
+use App\EstadoCivil;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -28,6 +30,29 @@ class ClienteController extends Controller
 		return view('juridico.cliente.listaClientesInactivos', ['clientes' => $clientes]);
     }
 
+	
+	public function search(Request $request)
+    {
+		dd($request->ajax());
+		
+		$tipodoc = $request->tipodoc;
+		$doc = $request->documento;
+		
+		$personas = Persona::where([
+			["tipoDocumento", "=", $tipodoc],
+			["documento", "like", "%".$doc."%"]
+		])->get();
+		
+		if($request->ajax()) {
+			return response()->json([
+                'personas' => $personas	,
+            ]);
+        }
+		
+		//return $respuesta;
+		//Se retorna la vista "index" 
+		//return view('cms.contenido.listaContenidos', ['subtitulo' => $subtitulo, 'contenidos' => $contenidos]);
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -35,7 +60,22 @@ class ClienteController extends Controller
      */
     public function create()
     {
-        echo "lalala";
+        return view('juridico.cliente.agregarClientes');
+    }
+	
+	/**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function createFisica()
+    {
+        $tiposdoc = Tipodoc::All();
+		
+		$estados = EstadoCivil::All();
+				
+		
+		return view('juridico.cliente.agregarFisica', ['tiposdoc' => $tiposdoc, 'estados' => $estados]);
     }
 
     /**
@@ -46,7 +86,32 @@ class ClienteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+		$tipoPersona = $request->tipo_persona;
+		if($tipoPersona == "fisica"){	
+			$persona = new Persona();
+			$persona->tipoDocumento = $request->tipodoc;
+			$persona->documento = $request->documento;
+			$persona->nombre = $request->nombre;
+			$persona->apellido = $request->apellido;
+			$persona->domicilio = $request->domicilio;
+			$persona->email = $request->email;
+			$persona->telefono = $request->telefono;
+			$persona->estadoCivil = $request->estadoCivil;
+			$persona->cantHijos = $request->cantHijos;
+			$persona_type = 'App\Persona';
+		}
+		$persona->save();
+		
+		$cliente = new Cliente();
+		$cliente->persona_id = $persona->id;
+		$cliente->persona_type = $persona_type;
+		$cliente->save();
+		
+		return redirect()->route('cliente.index')->with('success', "El cliente se agregó correctamente");
+		
+		
+		
+	   
     }
 
     /**
@@ -70,12 +135,13 @@ class ClienteController extends Controller
     {
         if($cliente->persona_type == 'App\Persona'){
 			$persona = Persona::find($cliente->persona_id);
-			return view('juridico.cliente.editarClientes', ['persona' => $persona, 'tipo' => 'fisica']);
+			$estados = EstadoCivil::All();
+			$tiposdoc = Tipodoc::All();
+			return view('juridico.cliente.editarClientes', ['persona' => $persona, 'tipo' => 'fisica', 'tiposdoc' => $tiposdoc, 'estados' => $estados]);
 		} else {
 			echo "nada";
 		}
-		
-		
+	
     }
 
     /**

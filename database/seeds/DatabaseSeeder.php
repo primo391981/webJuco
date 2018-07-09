@@ -46,6 +46,9 @@ class DatabaseSeeder extends Seeder
 			EstadosTableSeeder::class,
 			RemuneracionesTableSeeder::class,
 			
+			TipodocTableSeeder::class,
+			EstadoCivilTableSeeder::class,
+			
 		]);	
     }
 }
