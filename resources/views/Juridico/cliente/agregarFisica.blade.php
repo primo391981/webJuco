@@ -33,15 +33,25 @@
 
 $(document).ready(function(){
 	var form = $("#formPersona");
-	form.attr("action","/cliente/search");
-	
+	var url = "/cliente/search";
 	$("#documento").keyup(function( event ) {
 	  var data = form.serialize();
-	  var url = form.attr("action");
+	  var inicio = 0;
 	  $.get(url, data, function (result) {
-            alert(result.message);
-        }).fail(function () {
-            alert('Error en la busqueda');
+           
+		   if(result.personas != null){
+				$("#documento").val(result.personas.documento);
+				$("#documento").setSelection(inicio,10);
+				$("#nombre").val(result.personas.nombre);   
+				$("#apellido").val(result.personas.apellido); 
+				$("#domicilio").val(result.personas.domicilio); 
+				$("#email").val(result.personas.email); 
+				$("#telefono").val(result.personas.telefono); 
+				$("#cantHijos").val(result.personas.cantHijos); 
+				$("#estadoCivil").val(result.personas.estadoCivil); 
+			   
+		   }
+		   
         });
 	}).keydown(function( event ) {
 	  if ( event.which == 13 ) {
@@ -49,6 +59,24 @@ $(document).ready(function(){
 	  }
 	});
 });
+
+jQuery.fn.setSelection = function(selectionStart, selectionEnd) {
+	if(this.lengh == 0) return this;
+	input = this[0];
+
+	if (input.createTextRange) {
+		var range = input.createTextRange();
+		range.collapse(true);
+		range.moveEnd('character', selectionEnd);
+		range.moveStart('character', selectionStart);
+		range.select();
+	} else if (input.setSelectionRange) {
+		input.focus();
+		input.setSelectionRange(selectionStart, selectionEnd);
+	}
+
+	return this;
+}
 </script>	
 				
 @endsection

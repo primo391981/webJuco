@@ -12,7 +12,7 @@
 						<div class="form-group row">
 							<label for="documento" class="control-label col-sm-3">DOCUMENTO</label>
 							<div class="col-sm-9">
-								<input id="documento" type="number" class="form-control" name="documento" value="{{isset($persona) ? $persona->documento : old('documento') }}"autofocus>
+								<input id="documento" type="text" class="form-control" name="documento" value="{{isset($persona) ? $persona->documento : old('documento') }}"autofocus>
 								@if ($errors->has('documento'))
 									<span style="color:red;">{{ $errors->first('documento') }}</span>
 								@endif

@@ -33,19 +33,17 @@ class ClienteController extends Controller
 	
 	public function search(Request $request)
     {
-		dd($request->ajax());
-		
 		$tipodoc = $request->tipodoc;
 		$doc = $request->documento;
 		
 		$personas = Persona::where([
 			["tipoDocumento", "=", $tipodoc],
 			["documento", "like", "%".$doc."%"]
-		])->get();
+		])->first();
 		
 		if($request->ajax()) {
 			return response()->json([
-                'personas' => $personas	,
+                'personas' => $personas
             ]);
         }
 		
