@@ -54,14 +54,18 @@
 										{{ $cliente->persona->tipoDoc->nombre }}
 										{{ $cliente->persona->documento}}
 									@else
-										Jurídica
+										Rut
+										{{ $cliente->persona->rut}}
 									@endif
 								</td>
 								<td>
 									@if($cliente->persona_type=="App\Persona")
 										{{$cliente->persona->apellido}} 
+										{{$cliente->persona->nombre}}
+									@else
+										{{$cliente->persona->razonSocial}}
 									@endif
-									{{$cliente->persona->nombre}}
+									
 								</td>
 								
 								<td></td>

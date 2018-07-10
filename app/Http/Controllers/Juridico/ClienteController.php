@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Juridico;
 
 use App\Juridico\Cliente;
 use App\Persona;
+use App\Empresa;
 use App\Tipodoc;
 use App\EstadoCivil;
 use Illuminate\Http\Request;
@@ -33,19 +34,20 @@ class ClienteController extends Controller
 	
 	public function search(Request $request)
     {
-		$tipodoc = $request->tipodoc;
-		$doc = $request->documento;
-		
-		$personas = Persona::where([
-			["tipoDocumento", "=", $tipodoc],
-			["documento", "like", "%".$doc."%"]
-		])->first();
-		
-		if($request->ajax()) {
-			return response()->json([
-                'personas' => $personas
-            ]);
-        }
+		if(!is_null($request->documento)){
+			$tipodoc = $request->tipodoc;
+			$doc = $request->documento;
+			$personas = Persona::where([
+				["tipoDocumento", "=", $tipodoc],
+				["documento", "like", $doc],
+			])->first();
+			
+			if($request->ajax()) {
+				return response()->json([
+					'personas' => $personas
+				]);
+			}
+		}
 		
 		//return $respuesta;
 		//Se retorna la vista "index" 
@@ -75,6 +77,17 @@ class ClienteController extends Controller
 		
 		return view('juridico.cliente.agregarFisica', ['tiposdoc' => $tiposdoc, 'estados' => $estados]);
     }
+	
+	public function createJuridica()
+    {
+        //$tiposdoc = Tipodoc::All();
+		
+		//$estados = EstadoCivil::All();
+			
+		//return view('juridico.cliente.agregarJuridica', ['tiposdoc' => $tiposdoc, 'estados' => $estados]);
+		
+		return view('juridico.cliente.agregarJuridica');
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -85,6 +98,7 @@ class ClienteController extends Controller
     public function store(Request $request)
     {
 		$tipoPersona = $request->tipo_persona;
+
 		if($tipoPersona == "fisica"){	
 			$persona = new Persona();
 			$persona->tipoDocumento = $request->tipodoc;
@@ -97,7 +111,23 @@ class ClienteController extends Controller
 			$persona->estadoCivil = $request->estadoCivil;
 			$persona->cantHijos = $request->cantHijos;
 			$persona_type = 'App\Persona';
+		} else {
+			$persona = new Empresa();
+			$persona->razonSocial = $request->razonSocial;
+			$persona->rut = $request->rut;
+			$persona->domicilio = $request->domicilio;
+			$persona->nombreFantasia = $request->nombreFantasia;
+			$persona->numBps = $request->numBps;
+			$persona->numBse = $request->numBse;
+			$persona->numMtss = $request->numMtss;
+			$persona->grupo = $request->grupo;
+			$persona->subGrupo = $request->subGrupo;
+			$persona->email = $request->email;
+			$persona->telefono = $request->telefono;
+			$persona->nomContacto = $request->nomContacto;
+			$persona_type = 'App\Empresa';
 		}
+		
 		$persona->save();
 		
 		$cliente = new Cliente();
@@ -149,10 +179,38 @@ class ClienteController extends Controller
      * @param  \App\Juridico\Cliente  $cliente
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Persona $cliente)
+    public function update(Request $request, Cliente $cliente)
     {
-        $cliente->documento = $request->documento;
-		$cliente->save();
+		
+		$persona = $cliente->persona;
+		if($cliente->persona_type=="App\Persona"){
+			$persona->tipoDocumento = $request->tipodoc;
+			$persona->documento = $request->documento;
+			$persona->nombre = $request->nombre;
+			$persona->apellido = $request->apellido;
+			$persona->domicilio = $request->domicilio;
+			$persona->email = $request->email;
+			$persona->telefono = $request->telefono;
+			$persona->estadoCivil = $request->estadoCivil;
+			$persona->cantHijos = $request->cantHijos;
+		} else {
+			$persona->razonSocial = $request->razonSocial;
+			$persona->rut = $request->rut;
+			$persona->domicilio = $request->domicilio;
+			$persona->nombreFantasia = $request->nombreFantasia;
+			$persona->numBps = $request->numBps;
+			$persona->numBse = $request->numBse;
+			$persona->numMtss = $request->numMtss;
+			$persona->grupo = $request->grupo;
+			$persona->subGrupo = $request->subGrupo;
+			$persona->email = $request->email;
+			$persona->telefono = $request->telefono;
+			$persona->nomContacto = $request->nomContacto;
+
+		}
+		
+		$persona->save();
+		
 		return redirect()->route('cliente.index')->with('success', "El cliente fue modificado correctamente");
     }
 	
