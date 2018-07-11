@@ -17,7 +17,6 @@
 				  <div class="panel-heading text-center">
 					<div class="row">
 						<div class="col-sm-9"><h4>Listado clientes Inactivos</h4></div>
-						<div class="col-sm-3 hidden-xs"><a href="{{ route('cliente.create') }}" class="btn btn-warning pull-right" role="button"><i class="fas fa-plus"></i> Agregar nuevo cliente</a></div>				  
 					</div>
 				  </div>
 				  <div class="panel-body text-warning">					
@@ -27,9 +26,9 @@
 							<thead>
 							<tr>
 								<th class="scope">ID</th>
-								<th>nombre</th>
 								<th>tipo</th>
-								<th>tipo remuneración</th>
+								<th>Identificador</th>
+								<th>Nombre</th>
 								<th></th>
 								<th></th>
 								
@@ -41,16 +40,28 @@
 								<td>{{$cliente->id}}</td>
 								<td>
 									@if($cliente->persona_type=="App\Persona")
-										{{$cliente->persona->apellido}} 
-									@endif
-									{{$cliente->persona->nombre}}
-								</td>
-								<td>
-									@if($cliente->persona_type=="App\Persona")
 										Física 
 									@else
 										Jurídica
 									@endif
+								</td>
+								<td>
+									@if($cliente->persona_type=="App\Persona")
+										{{ $cliente->persona->tipoDoc->nombre }}
+										{{ $cliente->persona->documento}}
+									@else
+										RUT
+										{{ $cliente->persona->rut}}
+									@endif
+								</td>
+								<td>
+									@if($cliente->persona_type=="App\Persona")
+										{{$cliente->persona->apellido}} 
+										{{$cliente->persona->nombre}}
+									@else
+										{{$cliente->persona->razonSocial}}
+									@endif
+									
 								</td>
 								<td></td>
 								<td>
@@ -68,7 +79,6 @@
 					</div>
 					
 				  </div>
-				  <div class="panel-footer"><a href="{{ route('cliente.create') }}" class="btn btn-warning btn-block" role="button"><i class="fas fa-plus"></i> Agregar nuevo cliente</a></div>
 		</div>
 	</div>
 </div>

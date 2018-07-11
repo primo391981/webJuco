@@ -8,6 +8,7 @@
 	<!--solamente es visible en cel-->
 	<div class="col-xs-12 visible-xs"><a href="{{ route('cliente.index') }}" class="btn btn-warning" style="margin-bottom:5%;" role="button"><i class="fas fa-list-ul"></i> Listado clientes</a></div>				  
 </div>
+
 <div class="row">
 	<div class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2">
 		<div class="panel panel-warning">

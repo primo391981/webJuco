@@ -27,6 +27,8 @@ class CreatePersonaTable extends Migration
 			
 			$table->softDeletes();
             $table->timestamps();
+			
+			$table->unique(['tipoDocumento','documento'],'identificacion');
         });
     }
 

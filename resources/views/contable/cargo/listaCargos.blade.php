@@ -14,6 +14,7 @@
 			{{Session::get('success')}}
 		</div>
 @endif 
+
 <div class="row text-info">
 	<div class="col-xs-12">
 		<div class="panel panel-warning">

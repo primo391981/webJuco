@@ -34,20 +34,27 @@ class ClienteController extends Controller
 	
 	public function search(Request $request)
     {
-		if(!is_null($request->documento)){
-			$tipodoc = $request->tipodoc;
-			$doc = $request->documento;
-			$personas = Persona::where([
-				["tipoDocumento", "=", $tipodoc],
-				["documento", "like", $doc],
-			])->first();
-			
-			if($request->ajax()) {
+		if($request->tipo_persona == "fisica"){
+			if(!is_null($request->documento)){
+				$tipodoc = $request->tipodoc;
+				$doc = $request->documento;
+				$personas = Persona::where([
+					["tipoDocumento", "=", $tipodoc],
+					["documento", "like", $doc],
+				])->first();
+			}
+		} else {
+			if(!is_null($request->rut)){
+				$rut = $request->rut;
+				$personas = Empresa::where("rut", "like", $rut)->first();
+			}
+		}
+		
+		if($request->ajax()) {
 				return response()->json([
 					'personas' => $personas
 				]);
 			}
-		}
 		
 		//return $respuesta;
 		//Se retorna la vista "index" 
@@ -98,44 +105,70 @@ class ClienteController extends Controller
     public function store(Request $request)
     {
 		$tipoPersona = $request->tipo_persona;
-
+//die();
 		if($tipoPersona == "fisica"){	
-			$persona = new Persona();
-			$persona->tipoDocumento = $request->tipodoc;
-			$persona->documento = $request->documento;
-			$persona->nombre = $request->nombre;
-			$persona->apellido = $request->apellido;
-			$persona->domicilio = $request->domicilio;
-			$persona->email = $request->email;
-			$persona->telefono = $request->telefono;
-			$persona->estadoCivil = $request->estadoCivil;
-			$persona->cantHijos = $request->cantHijos;
+			
+			$persona = Persona::where([
+				['tipoDocumento','=',$request->tipodoc],
+				['documento','=',$request->documento]
+			])->first();
+			
+			if(is_null($persona)){
+				$persona = new Persona();
+				$persona->tipoDocumento = $request->tipodoc;
+				$persona->documento = $request->documento;
+				$persona->nombre = $request->nombre;
+				$persona->apellido = $request->apellido;
+				$persona->domicilio = $request->domicilio;
+				$persona->email = $request->email;
+				$persona->telefono = $request->telefono;
+				$persona->estadoCivil = $request->estadoCivil;
+				$persona->cantHijos = $request->cantHijos;
+				$persona->save();
+			}
 			$persona_type = 'App\Persona';
 		} else {
-			$persona = new Empresa();
-			$persona->razonSocial = $request->razonSocial;
-			$persona->rut = $request->rut;
-			$persona->domicilio = $request->domicilio;
-			$persona->nombreFantasia = $request->nombreFantasia;
-			$persona->numBps = $request->numBps;
-			$persona->numBse = $request->numBse;
-			$persona->numMtss = $request->numMtss;
-			$persona->grupo = $request->grupo;
-			$persona->subGrupo = $request->subGrupo;
-			$persona->email = $request->email;
-			$persona->telefono = $request->telefono;
-			$persona->nomContacto = $request->nomContacto;
+			
+			$persona = Empresa::where('rut','=',$request->rut)->first();
+			
+			if(is_null($persona)){
+				$persona = new Empresa();
+				$persona->razonSocial = $request->razonSocial;
+				$persona->rut = $request->rut;
+				$persona->domicilio = $request->domicilio;
+				$persona->nombreFantasia = $request->nombreFantasia;
+				$persona->numBps = $request->numBps;
+				$persona->numBse = $request->numBse;
+				$persona->numMtss = $request->numMtss;
+				$persona->grupo = $request->grupo;
+				$persona->subGrupo = $request->subGrupo;
+				$persona->email = $request->email;
+				$persona->telefono = $request->telefono;
+				$persona->nomContacto = $request->nomContacto;
+				$persona->save();
+			}
 			$persona_type = 'App\Empresa';
 		}
 		
-		$persona->save();
 		
-		$cliente = new Cliente();
-		$cliente->persona_id = $persona->id;
-		$cliente->persona_type = $persona_type;
-		$cliente->save();
+		$cliente=Cliente::where([
+			['persona_id','=',$persona->id],
+			['persona_type','=',$persona_type],
+		])->get();
 		
-		return redirect()->route('cliente.index')->with('success', "El cliente se agregó correctamente");
+		if(count($cliente)==0){
+			$cliente = new Cliente();
+			$cliente->persona_id = $persona->id;
+			$cliente->persona_type = $persona_type;
+			$cliente->save();
+			
+			return redirect()->route('cliente.index')->with('success', "El cliente se agregó correctamente");
+		} else {
+			return back()->withInput()->withError('El cliente ya se encuentra regsitrado');
+		}
+		
+		
+		
 		
 		
 		
@@ -167,7 +200,9 @@ class ClienteController extends Controller
 			$tiposdoc = Tipodoc::All();
 			return view('juridico.cliente.editarClientes', ['persona' => $persona, 'tipo' => 'fisica', 'tiposdoc' => $tiposdoc, 'estados' => $estados]);
 		} else {
-			echo "nada";
+			$persona = Empresa::find($cliente->persona_id);
+			
+			return view('juridico.cliente.editarClientes', ['persona' => $persona, 'tipo' => 'juridica']);
 		}
 	
     }
