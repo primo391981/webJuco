@@ -15,10 +15,8 @@ class CreatePersonaTable extends Migration
     {
         Schema::create('persona', function (Blueprint $table) {
             $table->increments('id');
-			$table->integer('tipoDocumento');
+			$table->integer('tipoDocumento')->unsigned();
 			$table->string('documento');
-			$table->integer('tipoDoc')->unsigned();
-			$table->double('documento');
 			$table->string('nombre');
 			$table->string('apellido');
 			$table->string('domicilio');
@@ -26,8 +24,6 @@ class CreatePersonaTable extends Migration
 			$table->string('email')->nullable();
 			$table->integer('cantHijos');
 			$table->integer('estadoCivil');
-			$table->double('cantHijos');
-			$table->string('estadoCivil');
 				
 			$table->foreign('tipoDoc')->references('id')->on('tiposDocumentos');
 			
