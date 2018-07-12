@@ -16,7 +16,7 @@ class CreateClienteTable extends Migration
         Schema::create('juridico_clientes', function (Blueprint $table) {
             $table->increments('id');
 			$table->integer('persona_id');
-			$table->string('persona_type');
+			$table->string('persona_type'); // App\Persona o App\Empresa
 			$table->softdeletes();
             $table->timestamps();
         });

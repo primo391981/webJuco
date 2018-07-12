@@ -216,7 +216,6 @@ class ClienteController extends Controller
      */
     public function update(Request $request, Cliente $cliente)
     {
-		
 		$persona = $cliente->persona;
 		if($cliente->persona_type=="App\Persona"){
 			$persona->tipoDocumento = $request->tipodoc;
@@ -251,7 +250,6 @@ class ClienteController extends Controller
 	
 	public function activar(Request $request)
     {
-		
 		$cliente = Cliente::onlyTrashed()
                 ->where('id', $request->cliente_id)
                 ->first();
