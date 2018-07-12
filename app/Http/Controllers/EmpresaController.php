@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Empresa;
+use App\Contable\TipoDocumento;
 use App\Http\Requests\EmpresaRequest;
+use Illuminate\Support\Facades\DB;
 
 class EmpresaController extends Controller
 {
@@ -58,7 +60,17 @@ class EmpresaController extends Controller
     {
 		
         $empresa=Empresa::find($id);
-		return view('contable.empresa.verEmpresa',['empresa'=>$empresa]);
+		
+		$empleados = DB::table('empresa')
+            ->join('empleados', 'empresa.id', '=', 'empleados.idempresa')
+            ->join('persona', 'empleados.idpersona', '=', 'persona.id')
+			->where('empresa.id', '=', $empresa->id)
+			->whereNull('empleados.deleted_at')
+            ->select('persona.*')
+            ->get();
+		
+		$tiposDocumentos=TipoDocumento::All();
+		return view('contable.empresa.verEmpresa',['empresa'=>$empresa,'empleados'=>$empleados,'tiposDocumentos'=>$tiposDocumentos]);
 		
     }
 

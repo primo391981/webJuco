@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Persona;
 use App\Empresa;
 use App\Contable\Empleado;
+use App\Contable\TipoDocumento;
+
 use App\Http\Requests\PersonaRequest;
 use App\Http\Controllers\Controller;
 
@@ -41,7 +43,8 @@ class PersonaController extends Controller
      */
     public function create()
     {
-        return view('contable.persona.agregarPersona',[]);
+		$tiposDocumentos=TipoDocumento::All();
+		return view('contable.persona.agregarPersona',['tiposDocumentos'=>$tiposDocumentos]);
     }
 
     /**
@@ -52,7 +55,25 @@ class PersonaController extends Controller
      */
     public function store(PersonaRequest $request)
     {   
-		$persona=new Persona;		
+	
+		$persona=new Persona;
+		
+		switch($request->input('tipoDocumento'))
+        {
+            case "CEDULA":
+                $persona->tipoDoc=1;
+                break;
+            case "DNI" :
+                $persona->tipoDoc=2;
+                break;
+			case "PASAPORTE" :
+                $persona->tipoDoc=3;
+                break;
+			case "OTROS" :
+                $persona->tipoDoc=4;
+                break;            
+        }
+		
 		$persona->documento=$request->input('documento');
 		$persona->nombre=$request->input('nombre');
 		$persona->apellido=$request->input('apellido');
