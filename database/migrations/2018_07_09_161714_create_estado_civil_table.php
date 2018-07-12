@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateClienteTable extends Migration
+class CreateEstadoCivilTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,9 @@ class CreateClienteTable extends Migration
      */
     public function up()
     {
-        Schema::create('juridico_clientes', function (Blueprint $table) {
+        Schema::create('estado_civil', function (Blueprint $table) {
             $table->increments('id');
-			$table->integer('persona_id');
-			$table->string('persona_type'); // App\Persona o App\Empresa
-			$table->softdeletes();
-            $table->timestamps();
+			$table->text('nombre');
         });
     }
 
@@ -29,6 +26,6 @@ class CreateClienteTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('juridico_clientes');
+        Schema::dropIfExists('estado_civil');
     }
 }

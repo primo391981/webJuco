@@ -10,4 +10,9 @@ class Empresa extends Model
 {
 	protected $table="empresa";
 	use softDeletes;
+	
+	public function cliente()
+    {
+        return $this->morphMany('\App\Contable\Cliente', 'persona');
+    }
 }
