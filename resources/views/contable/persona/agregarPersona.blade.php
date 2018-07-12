@@ -22,6 +22,17 @@
 			<div class="panel-body text-warning">
 					<form method="POST" action="{{ route('persona.store') }}" class="form-horizontal">		
 						 @csrf
+						 
+						 <div class="form-group row">
+							<label for="tipoDocumento" class="control-label col-sm-3">TIPO DE DOCUMENTO</label>
+							<div class="col-sm-9">
+								<select class="form-control" id="tipoDocumento" name="tipoDocumento">
+								@foreach($tiposDocumentos as $td)
+								<option>{{$td->nombre}}</option>
+								@endforeach
+								</select>
+							</div>
+						  </div>						 
 						 <div class="form-group row">
 							<label for="documento" class="control-label col-sm-3">DOCUMENTO</label>
 							<div class="col-sm-9">
