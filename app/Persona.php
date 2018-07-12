@@ -19,4 +19,13 @@ class Persona extends Model
 	{
 		return $this->belongsTo('App\tipoDoc', 'tipoDocumento');
 	}
+	
+	public function eCivil()
+	{
+		return $this->belongsTo('App\EstadoCivil', 'estadoCivil');
+	}
+	
+	public function empresas(){
+		return $this->belongsToMany('App\Empresa','empleados','idempresa','idpersona');
+	}
 }

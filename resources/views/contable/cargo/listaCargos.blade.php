@@ -14,26 +14,30 @@
 			{{Session::get('success')}}
 		</div>
 @endif 
-
+@if (Session::has('error'))
+		<div class="alert alert-danger">
+			{{Session::get('error')}}
+		</div>
+@endif 
 <div class="row text-info">
 	<div class="col-xs-12">
 		<div class="panel panel-warning">
-				  <div class="panel-heading text-center">
+				  <div class="panel-heading">
 					<div class="row">
-						<div class="col-sm-9"><h4>Listado cargos Activos</h4></div>
+						<div class="col-sm-9"><h4>LISTADO CARGOS ACTIVOS</h4></div>
 						<div class="col-sm-3 hidden-xs"><a href="{{ route('cargo.create') }}" class="btn btn-warning pull-right" role="button"><i class="fas fa-plus"></i> Agregar nuevo cargo</a></div>				  
 					</div>
 				  </div>
 				  <div class="panel-body text-warning">					
 					<div class="table-responsive">
-						<table id="tableEmpresas" class="table">
+						<table id="tableCargos" class="table">
 							
 							<thead>
 							<tr>
 								<th class="scope">ID</th>
-								<th>nombre</th>
-								<th>descripción</th>
-								<th>tipo remuneración</th>
+								<th>NOMBRE</th>
+								<th>DESCRIPCION</th>
+								<th>TIPO REMUNERACION</th>
 								<th></th>
 								<th></th>
 								
@@ -71,13 +75,21 @@
 	</div>
 </div>
 <script>
-$(window).resize(function() {
-    if( $(this).width() > 1024 ) {
-        $(document).ready(function() {
-    $('#tableEmpresas').DataTable();
+$(document).ready(function() {
+    $('#tableCargos').DataTable( {        
+		"language": {
+		"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"},
+		dom: '<"top"f>t<"bottom"Bpi><"clear">',
+        buttons: [
+           { extend: 'print', text: 'IMPRIMIR' },
+		   { extend: 'pdf', text: 'PDF' },		   
+		   { extend: 'excel', text: 'EXCEL' },
+		   { extend: 'copy', text: 'COPIAR TABLA' }
+        ]
+    } );
+	
+	
 } );
-    }
-});
 
 
 </script>

@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use App\Persona;
 use App\Empresa;
 use App\Contable\Empleado;
-use App\Contable\TipoDocumento;
+use App\TipoDoc;
+use App\EstadoCivil;
 
 use App\Http\Requests\PersonaRequest;
 use App\Http\Controllers\Controller;
@@ -43,8 +44,9 @@ class PersonaController extends Controller
      */
     public function create()
     {
-		$tiposDocumentos=TipoDocumento::All();
-		return view('contable.persona.agregarPersona',['tiposDocumentos'=>$tiposDocumentos]);
+		$tiposDocumentos=TipoDoc::All();
+		$estados = EstadoCivil::All();
+		return view('contable.persona.agregarPersona',['tiposdoc'=>$tiposDocumentos, 'estados'=>$estados]);
     }
 
     /**
@@ -58,22 +60,7 @@ class PersonaController extends Controller
 	
 		$persona=new Persona;
 		
-		switch($request->input('tipoDocumento'))
-        {
-            case "CEDULA":
-                $persona->tipoDoc=1;
-                break;
-            case "DNI" :
-                $persona->tipoDoc=2;
-                break;
-			case "PASAPORTE" :
-                $persona->tipoDoc=3;
-                break;
-			case "OTROS" :
-                $persona->tipoDoc=4;
-                break;            
-        }
-		
+		$persona->tipoDocumento = $request->input('tipodoc');		
 		$persona->documento=$request->input('documento');
 		$persona->nombre=$request->input('nombre');
 		$persona->apellido=$request->input('apellido');
@@ -114,7 +101,10 @@ class PersonaController extends Controller
     public function edit($id)
     {
         $persona=Persona::find($id);
-		return view('contable.persona.editarPersona',['persona'=>$persona]);
+		$tiposDocumentos=TipoDoc::All();
+		$estados = EstadoCivil::All();
+		
+		return view('contable.persona.editarPersona',['persona'=>$persona, 'tiposdoc'=>$tiposDocumentos, 'estados'=>$estados]);
     }
 
     /**

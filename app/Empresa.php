@@ -15,4 +15,8 @@ class Empresa extends Model
     {
         return $this->morphMany('\App\Contable\Cliente', 'persona');
     }
+	
+	public function empleados(){
+		return $this->belongsToMany('App\Persona','empleados','idempresa','idpersona');
+	}
 }

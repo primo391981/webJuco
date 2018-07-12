@@ -21,11 +21,12 @@
 					<h1>{{$persona->nombre}} {{$persona->apellido}}</h1>
 					<hr>
 					
+								<h3><strong><em>TIPO DOCUMENTO :</em></strong> {{$persona->tipoDoc->nombre}}</h3>
 								<h3><strong><em>DOCUMENTO :</em></strong> {{$persona->documento}}</h3>
 								<h3><strong><em>TELÉFONO :</em></strong> {{$persona->telefono}}</h3>
 								<h3><strong><em>CORREO ELECTRÓNICO :</em></strong> {{$persona->email}}</h3>
 								<h3><strong><em>DOMICILIO :</em></strong> {{$persona->domicilio}}</h3>
-								<h3><strong><em>ESTADO CIVIL :</em></strong> {{$persona->estadoCivil}}</h3>
+								<h3><strong><em>ESTADO CIVIL :</em></strong> {{$persona->eCivil->nombre}}</h3>
 								<h3><strong><em>CANTIDAD DE HIJOS :</em></strong> {{$persona->cantHijos}}</h3>
 					</div>
 					

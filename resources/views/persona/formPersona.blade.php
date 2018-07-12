@@ -1,6 +1,6 @@
 	@csrf
 						<div class="form-group row">
-								<label for="tipodoc" class="control-label col-sm-3">Tipo documento:</label>
+								<label for="tipodoc" class="control-label col-sm-3">TIPO DOCUMENTO:</label>
 								<div class="col-sm-9">
 									<select name="tipodoc" class="form-control" id="tipodoc">
 										@foreach($tiposdoc as $key => $tipo)

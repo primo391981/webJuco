@@ -51,17 +51,17 @@
 						<table id="tableEmpleados" class="table">
 							<thead>
 							<tr>
-								<th>NOMBRE FANTASIA</th>
-								<th>CONTACTO</th>
-								<th>TELEFONO</th>
+								<th>DOCUMENTO</th>
+								<th>NOMBRE</th>
+								<th>APELLIDO</th>
 								<th></th>
 								<th></th>
 							</tr>
 						</thead>
 						<tbody>
-						@foreach($empleados as $emp)						
+						@foreach($empresa->empleados as $emp)						
 							<tr>								
-								<td>{{$emp->documento}}</td>
+								<td>{{$emp->tipoDoc->nombre}} {{$emp->documento}}</td>
 								<td>{{$emp->nombre}}</td>
 								<td>{{$emp->apellido}}</td>
 								<td>									
@@ -75,11 +75,12 @@
 											  <div class="modal-body">
 													<p><strong>NOMBRE :</strong> {{$emp->nombre}}</p>
 													<p><strong>APELLIDO :</strong> {{$emp->apellido}}</p>
+													<p><strong>TIPO DOCUMENTO :</strong> {{$emp->tipoDoc->nombre}}</p>
 													<p><strong>DOCUMENTO :</strong> {{$emp->documento}}</p>
 													<p><strong>TELÉFONO :</strong> {{$emp->telefono}}</p>
 													<p><strong>CORREO ELECTRÓNICO :</strong> {{$emp->email}}</p>
 													<p><strong>DOMICILIO :</strong> {{$emp->domicilio}}</p>
-													<p><strong>ESTADO CIVIL :</strong> {{$emp->estadoCivil}}</p>
+													<p><strong>ESTADO CIVIL :</strong> {{$emp->eCivil->nombre}}</p>
 													<p><strong>CANTIDAD DE HIJOS :</strong> {{$emp->cantHijos}}</p>
 											  </div>
 											  <div class="modal-footer">
@@ -104,7 +105,7 @@
 						
 				  </div>
 			<div class="panel-footer">
-				<button type="button" class="btn btn-warning btn-block" data-toggle="modal" data-target="#myModal"><i class="fas fa-plus"></i> Agregar nuevo empleado</button>
+				<!--<button type="button" class="btn btn-warning btn-block" data-toggle="modal" data-target="#myModal"><i class="fas fa-plus"></i> Agregar nuevo empleado</button>-->
 				
 				<div class="modal fade" tabindex="-1" id="myModal" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
 				  <div class="modal-dialog modal-lg">

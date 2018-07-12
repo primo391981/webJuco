@@ -25,7 +25,7 @@ class CreatePersonaTable extends Migration
 			$table->integer('cantHijos');
 			$table->integer('estadoCivil');
 				
-			$table->foreign('tipoDoc')->references('id')->on('tiposDocumentos');
+			$table->foreign('tipoDocumento')->references('id')->on('tipo_documento');
 			
 			$table->softDeletes();
             $table->timestamps();
