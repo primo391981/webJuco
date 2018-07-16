@@ -1,5 +1,7 @@
 @csrf
-
+		@if(isset($cargo))
+			<input type="hidden" name="id" value="{{$cargo->id}}">
+		@endif
 		<div class="form-group row">
 			<label for="nombre" class="control-label col-sm-3">Nombre:</label>
 			<div class="col-sm-9">

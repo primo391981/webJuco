@@ -95,6 +95,7 @@ class CargoController extends Controller
     {
         $cargo->nombre = $request->nombre;
 		$cargo->descripcion = $request->descripcion;
+		$cargo->id_remuneracion = $request->id_remuneracion;
 		$cargo->save();
 		
 		return redirect()->route('cargo.index')->with('success', "El cargo fue modificado correctamente");

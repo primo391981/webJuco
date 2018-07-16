@@ -23,8 +23,9 @@ class CargoRequest extends FormRequest
      */
     public function rules()
     {
+		//dd($this->id);
         return [
-            'nombre'=>'required|unique:contable_cargos,nombre,'.$this->cargo->id,
+            'nombre'=>'required|unique:contable_cargos,Id,'.$this->id,
 			'descripcion'=>'required'
         ];
     }
