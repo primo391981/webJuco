@@ -1,6 +1,6 @@
 @extends('juridico.juridico')
 
-@section('seccion', " - Listado")
+@section('seccion', " - ACTIVOS")
 
 @section('content')
 
@@ -17,22 +17,22 @@
 <div class="row text-info">
 	<div class="col-xs-12">
 		<div class="panel panel-success">
-				  <div class="panel-heading text-center">
+				  <div class="panel-heading">
 					<div class="row">
-						<div class="col-sm-9"><h4>Listado clientes Activos</h4></div>
+						<div class="col-sm-9"><h4>LISTADO CLIENTES ACTIVOS</h4></div>
 						<div class="col-sm-3 hidden-xs"><a href="{{ route('cliente.create') }}" class="btn btn-success pull-right" role="button"><i class="fas fa-plus"></i> Agregar nuevo cliente</a></div>				  
 					</div>
 				  </div>
 				  <div class="panel-body text-success">					
 					<div class="table-responsive">
-						<table id="tableEmpresas" class="table">
+						<table id="tableCli" class="table">
 							
 							<thead>
 							<tr>
 								<th class="scope">ID</th>
-								<th>tipo</th>
-								<th>Identificador</th>
-								<th>Nombre</th>
+								<th>TIPO</th>
+								<th>IDENTIFICADOR</th>
+								<th>NOMBRE</th>
 								<th></th>
 								<th></th>
 								
@@ -68,7 +68,7 @@
 									
 								</td>
 								
-								<td></td>
+								
 								<td>
 									<form method="GET" action="{{ route('cliente.edit', $cliente) }}">																
 										<button type="submit"class="btn btn-warning"><i class="far fa-edit"></i></button>												
@@ -94,14 +94,20 @@
 	</div>
 </div>
 <script>
-$(window).resize(function() {
-    if( $(this).width() > 1024 ) {
-        $(document).ready(function() {
-    $('#tableEmpresas').DataTable();
+$(document).ready(function() {
+    $('#tableCli').DataTable( {        
+		"language": {
+		"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"},
+		dom: '<"top"f>t<"bottom"Bpi><"clear">',
+        buttons: [
+           { extend: 'print', text: 'IMPRIMIR' },
+		   { extend: 'pdf', text: 'PDF' },		   
+		   { extend: 'excel', text: 'EXCEL' },
+		   { extend: 'copy', text: 'COPIAR TABLA' }
+        ]
+    } );
+	
+	
 } );
-    }
-});
-
-
 </script>
 @endsection

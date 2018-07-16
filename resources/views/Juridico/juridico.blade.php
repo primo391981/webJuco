@@ -6,7 +6,7 @@
 
 @section('menu-lateral')
 <li>
-    <a href="#"><i class="fas fa-building"></i> Clientes <i class="fas fa-caret-down"></i></a>
+    <a href="#"><i class="fas fa-users"></i> Clientes <i class="fas fa-caret-down"></i></a>
 		<ul class="nav nav-second-level">
 			 <li><a href="{{ route('cliente.index') }}"><i class="fas fa-list-ul"></i> Activos</a></li>
 			 <li><a href="{{ route('cliente.create') }}"><i class="fas fa-plus"></i> Agregar nuevo</a></li>
@@ -15,7 +15,7 @@
 </li>
 
 <li>
-    <a href="#"><i class="fas fa-clipboard-list"></i> Reportes<i class="fas fa-caret-down"></i></a>
+    <a href="#"><i class="fas fa-clipboard-list"></i> Reportes <i class="fas fa-caret-down"></i></a>
 		<ul class="nav nav-second-level">
 			 <li><a href="#"><i class="fas fa-list-ul"></i> Listado</a></li>
 			 <li><a href="#"><i class="fas fa-plus"></i> Agregar nuevo</a></li>

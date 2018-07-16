@@ -1,6 +1,6 @@
 @extends('juridico.juridico')
 
-@section('seccion', " - Nuevo cliente")
+@section('seccion', " - AGREGAR")
 
 @section('content')
 <br>
@@ -18,7 +18,7 @@
 		<div class="panel panel-success">
 			<div class="panel-heading">
 				<div class="row">
-					<div class="col-sm-9"><h4>Agregar nuevo cliente - Persona Jurídica</h4></div>
+					<div class="col-sm-9"><h4>AGREGAR NUEVO CLIENTE</h4></div>
 					<div class="col-sm-3 hidden-xs"><a href="{{ route('cliente.index') }}" class="btn btn-success" role="button"><i class="fas fa-list-ul"></i> Listado clientes</a></div>
 				</div>
 			</div>

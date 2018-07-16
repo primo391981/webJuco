@@ -12,15 +12,15 @@ class EstadoCivilTableSeeder extends Seeder
     public function run()
     {
         DB::table('estado_civil')->insert([
-			'nombre'=>'Casado'
+			'nombre'=>'CASADO'
 		]);
 		
 		DB::table('estado_civil')->insert([
-			'nombre'=>'Soltero'
+			'nombre'=>'SOLTERO'
 		]);
 		
 		DB::table('estado_civil')->insert([
-			'nombre'=>'otro'
+			'nombre'=>'OTRO'
 		]);
     }
 }

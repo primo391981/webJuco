@@ -1,6 +1,6 @@
 @extends('contable.contable')
 
-@section('seccion', " - Listado")
+@section('seccion', " - ACTIVOS")
 
 @section('content')
 
@@ -17,24 +17,24 @@
 <div class="row text-info">
 	<div class="col-xs-12">
 		<div class="panel panel-warning">
-				  <div class="panel-heading text-center">
+				  <div class="panel-heading">
 					<div class="row">
-						<div class="col-sm-9"><h4>Listado parámetros generales Activos</h4></div>
-						<div class="col-sm-3 hidden-xs"><a href="{{ route('parametrogeneral.create') }}" class="btn btn-warning pull-right" role="button"><i class="fas fa-plus"></i> Agregar nuevo parámetro general</a></div>				  
+						<div class="col-sm-9"><h4>LISTADO DE PARAMETROS GENERALES ACTIVOS</h4></div>
+						<div class="col-sm-3 hidden-xs"><a href="{{ route('parametrogeneral.create') }}" class="btn btn-warning pull-right" role="button"><i class="fas fa-plus"></i> Agregar nuevo parámetro gral.</a></div>				  
 					</div>
 				  </div>
 				  <div class="panel-body text-warning">					
 					<div class="table-responsive">
-						<table id="tableEmpresas" class="table">
+						<table id="tablePG" class="table">
 							
 							<thead>
 							<tr>
 								<th class="scope">ID</th>
-								<th>nombre</th>
-								<th>descripción</th>
-								<th>fecha inicio</th>
-								<th>fecha fin</th>
-								<th>valor</th>
+								<th>NOMBRE</th>
+								<th>DESCRIPCIÓN</th>
+								<th>FECHA INICIO</th>
+								<th>FECHA FIN</th>
+								<th>VALOR</th>
 								<th></th>
 								<th></th>
 								
@@ -70,19 +70,26 @@
 					</div>
 					
 				  </div>
-				  <div class="panel-footer"><a href="{{ route('parametrogeneral.create') }}" class="btn btn-warning btn-block" role="button"><i class="fas fa-plus"></i> Agregar nuevo parámetro general</a></div>
+				  <div class="panel-footer"><a href="{{ route('parametrogeneral.create') }}" class="btn btn-warning btn-block" role="button"><i class="fas fa-plus"></i> Agregar nuevo parámetro gral.</a></div>
 		</div>
 	</div>
 </div>
 <script>
-$(window).resize(function() {
-    if( $(this).width() > 1024 ) {
-        $(document).ready(function() {
-    $('#tableEmpresas').DataTable();
+$(document).ready(function() {
+    $('#tablePG').DataTable( {        
+		"language": {
+		"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"},
+		dom: '<"top"f>t<"bottom"Bpi><"clear">',
+        buttons: [
+           { extend: 'print', text: 'IMPRIMIR' },
+		   { extend: 'pdf', text: 'PDF' },		   
+		   { extend: 'excel', text: 'EXCEL' },
+		   { extend: 'copy', text: 'COPIAR TABLA' }
+        ]
+    } );
+	
+	
 } );
-    }
-});
-
 
 </script>
 @endsection

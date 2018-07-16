@@ -3,7 +3,7 @@
 			<input type="hidden" name="id" value="{{$cargo->id}}">
 		@endif
 		<div class="form-group row">
-			<label for="nombre" class="control-label col-sm-3">Nombre:</label>
+			<label for="nombre" class="control-label col-sm-3">NOMBRE</label>
 			<div class="col-sm-9">
 				<input id="nombre" type="text" class="form-control{{ $errors->has('nombre') ? ' is-invalid' : '' }}" name="nombre" value="{{ isset($cargo) ? $cargo->nombre : old('nombre') }}" required autofocus>
 				@if ($errors->has('nombre'))
@@ -15,7 +15,7 @@
 		</div>
 		
 		<div class="form-group row">
-			<label for="descripcion" class="control-label col-sm-3">Descripción:</label>
+			<label for="descripcion" class="control-label col-sm-3">DESCRIPCIÓN</label>
 
 			<div class="col-sm-9">
 				<input id="descripcion" type="text" class="form-control{{ $errors->has('descripcion') ? ' is-invalid' : '' }}" name="descripcion" value="{{ isset($cargo) ? $cargo->descripcion : old('descripcion') }}" required autofocus>
@@ -29,7 +29,7 @@
 		</div>
 		
 		<div class="form-group row">
-			<label for="id_remuneracion" class="control-label col-sm-3">Tipo de Remuneración:</label>
+			<label for="id_remuneracion" class="control-label col-sm-3">TIPO DE REMUNERACIÓN</label>
 
 			<div class="col-sm-9">
 			<select name="id_remuneracion" class="form-control" id="id_remuneracion">

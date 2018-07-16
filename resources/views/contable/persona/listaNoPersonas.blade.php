@@ -1,6 +1,6 @@
 @extends('contable.contable')
 
-@section('seccion', " - DESACTIVADOS")
+@section('seccion', " - INACTIVOS")
 
 @section('content')
 <script>
@@ -28,7 +28,7 @@ $(document).ready(function() {
 		<div class="panel panel-warning">
 				  <div class="panel-heading">
 					<div class="row">
-						<div class="col-sm-9"><h4>LISTADO EMPLEADOS DESACTIVADOS</h4></div>
+						<div class="col-sm-9"><h4>LISTADO EMPLEADOS INACTIVOS</h4></div>
 						<div class="col-sm-3 hidden-xs"><a href="{{ route('persona.create') }}" class="btn btn-warning pull-right" role="button"><i class="fas fa-plus"></i> Agregar nuevo empleado</a></div>				  
 					</div>
 				  </div>

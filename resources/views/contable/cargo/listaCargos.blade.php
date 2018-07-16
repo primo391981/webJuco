@@ -1,6 +1,6 @@
 @extends('contable.contable')
 
-@section('seccion', " - Listado")
+@section('seccion', " - ACTIVOS")
 
 @section('content')
 
@@ -12,6 +12,7 @@
 @if (Session::has('success'))
 		<div class="alert alert-success">
 			{{Session::get('success')}}
+			
 		</div>
 @endif 
 @if (Session::has('error'))
@@ -90,7 +91,5 @@ $(document).ready(function() {
 	
 	
 } );
-
-
 </script>
 @endsection

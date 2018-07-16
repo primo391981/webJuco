@@ -1,6 +1,6 @@
 @extends('contable.contable')
 
-@section('seccion', " - Nuevo Parámetro General")
+@section('seccion', " - AGREGAR")
 
 @section('content')
 <br>
@@ -13,8 +13,8 @@
 		<div class="panel panel-warning">
 			<div class="panel-heading">
 				<div class="row">
-					<div class="col-sm-9"><h4>Agregar Nuevo Parámetro General</h4></div>
-					<div class="col-sm-3 hidden-xs"><a href="{{ route('parametrogeneral.index') }}" class="btn btn-warning" role="button"><i class="fas fa-list-ul"></i> Listado parámetros generales</a></div>
+					<div class="col-sm-9"><h4>AGREGAR NUEVO PARÁMETRO GENERAL</h4></div>
+					<div class="col-sm-3 hidden-xs"><a href="{{ route('parametrogeneral.index') }}" class="btn btn-warning" role="button"><i class="fas fa-list-ul"></i> Listado parámetros gral.</a></div>
 				</div>
 			</div>
 			<div class="panel-body text-warning">
@@ -22,7 +22,7 @@
 					@include('contable.parametrogeneral.formParametroGral', ['textoBoton' => 'Confirmar'])
 				</form>
 			</div>
-			<div class="panel-footer"><a href="{{ route('parametrogeneral.index') }}" class="btn btn-warning btn-block" role="button"><i class="fas fa-list-ul"></i> Listado parámetros generales</a></div>
+			<div class="panel-footer"><a href="{{ route('parametrogeneral.index') }}" class="btn btn-warning btn-block" role="button"><i class="fas fa-list-ul"></i> Listado parámetros gral.</a></div>
 		</div>
 	</div>
 	

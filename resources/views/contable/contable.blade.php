@@ -18,7 +18,7 @@
 		<ul class="nav nav-second-level">
 			<li><a href="{{ route('persona.index') }}"><i class="fas fa-list-ul"></i> Activos</a></li>
 			<li><a href="{{ route('persona.create') }}"><i class="fas fa-plus"></i> Agregar nuevo</a></li>
-			<li><a href="{{ route('persona.desactivado') }}"><i class="fas fa-list-ul"></i> Desactivados</a></li>
+			<li><a href="{{ route('persona.desactivado') }}"><i class="fas fa-list-ul"></i> Inactivos</a></li>
 		</ul>
 </li>
 <li>

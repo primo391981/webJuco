@@ -1,6 +1,6 @@
 @extends('juridico.juridico')
 
-@section('seccion', " - Listado")
+@section('seccion', " - INACTIVOS")
 
 @section('content')
 
@@ -11,24 +11,29 @@
 			{{Session::get('success')}}
 		</div>
 @endif 
+<div class="row">
+	<!--solamente es visible en cel-->
+	<div class="col-xs-12 visible-xs"><a href="{{ route('cliente.create') }}" class="btn btn-success" role="button" style="margin-bottom:5%;"><i class="fas fa-plus"></i> Agregar nuevo cliente</a></div>				  
+</div>
 <div class="row text-info">
 	<div class="col-xs-12">
-		<div class="panel panel-warning">
-				  <div class="panel-heading text-center">
+		<div class="panel panel-success">
+				  <div class="panel-heading">
 					<div class="row">
-						<div class="col-sm-9"><h4>Listado clientes Inactivos</h4></div>
+						<div class="col-sm-9"><h4>LISTADO CLIENTES INACTIVOS</h4></div>
+						<div class="col-sm-3 hidden-xs"><a href="{{ route('cliente.create') }}" class="btn btn-success pull-right" role="button"><i class="fas fa-plus"></i> Agregar nuevo cliente</a></div>
 					</div>
 				  </div>
-				  <div class="panel-body text-warning">					
+				  <div class="panel-body text-success">					
 					<div class="table-responsive">
-						<table id="tableEmpresas" class="table">
+						<table id="tableCli" class="table">
 							
 							<thead>
 							<tr>
 								<th class="scope">ID</th>
-								<th>tipo</th>
-								<th>Identificador</th>
-								<th>Nombre</th>
+								<th>TIPO</th>
+								<th>IDENTIFICADOR</th>
+								<th>NOMBRE</th>
 								<th></th>
 								<th></th>
 								
@@ -68,7 +73,7 @@
 									<form method="POST" action="{{ route('cliente.activar') }}">
 										@csrf	
 										<input type="hidden" name="cliente_id" value="{{$cliente->id}}">
-										<button type="submit"class="btn btn-danger"><i class="fas fa-recycle"></i></button>												
+										<button type="submit"class="btn btn-primary"><i class="fas fa-recycle"></i></button>												
 									</form>
 								</td>
 							</tr>
@@ -79,18 +84,25 @@
 					</div>
 					
 				  </div>
+				  <div class="panel-footer"><a href="{{ route('cliente.create') }}" class="btn btn-success btn-block" role="button"><i class="fas fa-plus"></i> Agregar nuevo cliente</a></div>
 		</div>
 	</div>
 </div>
 <script>
-$(window).resize(function() {
-    if( $(this).width() > 1024 ) {
-        $(document).ready(function() {
-    $('#tableEmpresas').DataTable();
+$(document).ready(function() {
+    $('#tableCli').DataTable( {        
+		"language": {
+		"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"},
+		dom: '<"top"f>t<"bottom"Bpi><"clear">',
+        buttons: [
+           { extend: 'print', text: 'IMPRIMIR' },
+		   { extend: 'pdf', text: 'PDF' },		   
+		   { extend: 'excel', text: 'EXCEL' },
+		   { extend: 'copy', text: 'COPIAR TABLA' }
+        ]
+    } );
+	
+	
 } );
-    }
-});
-
-
 </script>
 @endsection

@@ -64,8 +64,7 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-	
-	
+		
 </head>
 <body>    
 	<div id="wrapper">
@@ -91,19 +90,7 @@
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
-                        <li class="sidebar-search">
-                            <div class="input-group custom-search-form">
-                                <input type="text" class="form-control" placeholder="Buscar...">
-                                <span class="input-group-btn">
-                                <button class="btn btn-default" type="button">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </span>
-                            </div>
-                            <!-- /input-group -->
-                        </li>
-                        
-						<!-- CONTENIDO DEL MENU LATERAL DINAMICO -->
+                       	<!-- CONTENIDO DEL MENU LATERAL DINAMICO -->
 						@yield('menu-lateral')
 						
 						<li class="nav-item"> 
