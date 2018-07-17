@@ -9,6 +9,7 @@ use App\Empresa;
 use App\Contable\Empleado;
 use App\TipoDoc;
 use App\EstadoCivil;
+use Exception;
 
 use App\Http\Requests\PersonaRequest;
 use App\Http\Controllers\Controller;
@@ -69,8 +70,16 @@ class PersonaController extends Controller
 		$persona->email=$request->input('email');
 		$persona->cantHijos=$request->input('cantHijos');		
 		$persona->estadoCivil=$request->input('estadoCivil');		
-		$persona->save();		
-		return redirect()->route('persona.index');
+		try
+		{
+			$persona->save();
+			
+			return redirect()->route('persona.index')->with('success', "El empleado ".$persona->tipoDocumento."-".$persona->documento." se recupero correctamente");				;
+		}
+		catch(Exception $e){
+			return back()->withInput()->withError("El empleado no se pudo registrar, intente nuevamente o contacte al administrador.");				;
+		}
+		
     }
 
     /**

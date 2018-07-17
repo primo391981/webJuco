@@ -13,8 +13,8 @@
 		<div class="panel panel-warning">
 			<div class="panel-heading">
 				<div class="row">
-					<div class="col-sm-9"><h4>AGREGAR NUEVO CARGO</h4></div>
-					<div class="col-sm-3 hidden-xs"><a href="{{ route('cargo.index') }}" class="btn btn-warning" role="button"><i class="fas fa-list-ul"></i> Listado cargos activos</a></div>
+					<div class="col-sm-8"><h4>AGREGAR NUEVO CARGO</h4></div>
+					<div class="col-sm-4 hidden-xs"><a href="{{ route('cargo.index') }}" class="btn btn-warning" role="button"><i class="fas fa-list-ul"></i> Listado cargos activos</a></div>
 				</div>
 			</div>
 			<div class="panel-body text-warning">

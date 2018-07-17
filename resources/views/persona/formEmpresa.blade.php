@@ -9,7 +9,7 @@
 							</div>	
 						 </div>
 						<div class="form-group row">
-							<label for="razonSocial" class="control-label col-sm-3">RAZÓN SOCIAL</label>
+							<label for="razonSocial" class="control-label col-sm-3">RAZÓN SOCIAL *</label>
 							<div class="col-sm-9">
 								<input id="razonSocial" type="text" class="form-control" name="razonSocial" value="{{isset($persona) ? $persona->razonSocial : old('razonSocial') }}">
 								@if ($errors->has('razonSocial'))
@@ -18,7 +18,7 @@
 							</div>	
 						 </div>
 						 <div class="form-group row">
-							<label for="nombreFantasia" class="control-label col-sm-3">NOMBRE FANTASIA</label>
+							<label for="nombreFantasia" class="control-label col-sm-3">NOMBRE FANTASIA *</label>
 							<div class="col-sm-9">
 								<input id="nombreFantasia" type="text" class="form-control" name="nombreFantasia" value="{{isset($persona) ? $persona->nombreFantasia : old('nombreFantasia')}}">
 								@if ($errors->has('nombreFantasia'))

@@ -10,7 +10,7 @@
 								</div>			
 						</div>
 						<div class="form-group row">
-							<label for="documento" class="control-label col-sm-3">DOCUMENTO</label>
+							<label for="documento" class="control-label col-sm-3">DOCUMENTO *</label>
 							<div class="col-sm-9">
 								<input id="documento" type="text" class="form-control" name="documento" value="{{isset($persona) ? $persona->documento : old('documento') }}"autofocus>
 								@if ($errors->has('documento'))
@@ -19,7 +19,7 @@
 							</div>	
 						 </div>
 						 <div class="form-group row">
-							<label for="nombre" class="control-label col-sm-3">NOMBRE</label>
+							<label for="nombre" class="control-label col-sm-3">NOMBRE *</label>
 							<div class="col-sm-9">
 								<input id="nombre" type="text" class="form-control" name="nombre" value="{{isset($persona) ? $persona->nombre : old('nombre') }}">
 								@if ($errors->has('nombre'))
@@ -28,7 +28,7 @@
 							</div>	
 						 </div>
 						 <div class="form-group row">
-							<label for="apellido" class="control-label col-sm-3">APELLIDO</label>
+							<label for="apellido" class="control-label col-sm-3">APELLIDO *</label>
 							<div class="col-sm-9">
 								<input id="apellido" type="text" class="form-control" name="apellido" value="{{isset($persona) ? $persona->apellido : old('apellido') }}">
 								@if ($errors->has('apellido'))
@@ -37,7 +37,7 @@
 							</div>	
 						 </div>
 						  <div class="form-group row">
-							<label for="domicilio" class="control-label col-sm-3">DOMICILIO</label>
+							<label for="domicilio" class="control-label col-sm-3">DOMICILIO *</label>
 							<div class="col-sm-9">
 								<input id="domicilio" type="text" class="form-control" name="domicilio" value="{{isset($persona) ? $persona->domicilio : old('domicilio') }}">
 								@if ($errors->has('domicilio'))
@@ -55,7 +55,7 @@
 							</div>	
 						 </div>
 						  <div class="form-group row">
-							<label for="telefono" class="control-label col-sm-3">TELEFONO</label>
+							<label for="telefono" class="control-label col-sm-3">TELEFONO *</label>
 							<div class="col-sm-9">
 								<input id="telefono" type="text" class="form-control" name="telefono" value="{{isset($persona) ? $persona->telefono : old('telefono') }}">
 								@if ($errors->has('telefono'))
@@ -64,7 +64,7 @@
 							</div>	
 						 </div>
 						 <div class="form-group row">
-								<label for="estadoCivil" class="control-label col-sm-3">ESTADO CIVIL</label>
+								<label for="estadoCivil" class="control-label col-sm-3">ESTADO CIVIL *</label>
 								<div class="col-sm-9">
 									<select name="estadoCivil" class="form-control" id="estadoCivil">
 										@foreach($estados as $key => $estado)
@@ -74,17 +74,15 @@
 								</div>			
 						</div>
 						 
-						 <div class="form-group row">
-							<label for="cantHijos" class="control-label col-sm-3">CANTIDAD DE HIJOS</label>
+						<div class="form-group row">
+							<label for="cantHijos" class="control-label col-sm-3">CANTIDAD DE HIJOS *</label>
 							<div class="col-sm-9">
 								<input id="cantHijos" type="number" class="form-control" name="cantHijos" value="{{isset($persona) ? $persona->cantHijos : old('cantHijos') }}" >
 								@if ($errors->has('cantHijos'))
 									<span style="color:red;">{{ $errors->first('cantHijos') }}</span>
 								@endif
 							</div>	
-						 </div>
-						 
-						 
+						</div>
 						 
 						<div class="form-group row">
 								<br>

@@ -3,6 +3,16 @@
 @section('seccion', " - INACTIVOS")
 
 @section('content')
+@if (Session::has('success'))
+	<div class="alert alert-success">
+		{{Session::get('success')}}
+	</div>
+@endif 
+@if (Session::has('error'))
+	<div class="alert alert-danger">
+		{{Session::get('error')}}
+	</div>
+@endif 
 <script>
 $(document).ready(function() {
     $('#tablePersonas').DataTable( {        
