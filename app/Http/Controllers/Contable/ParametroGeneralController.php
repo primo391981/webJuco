@@ -46,6 +46,12 @@ class ParametroGeneralController extends Controller
      */
     public function store(ParametroGeneralRequest $request)
     {
+		$parametro = ParametroGeneral::where('nombre',$request->nombre)->latest()->first();
+		if(!is_null($parametro)){
+			return response()->json([
+					'mensaje' => "El Parámetro ya existe en la base de datos. Desea sobreescribirlo?",
+				]);	
+		}
 		$param = new ParametroGeneral();
 		$param->nombre = $request->nombre;
 		$param->descripcion = $request->descripcion;

@@ -44,7 +44,7 @@
 			<label for="fecha_fin" class="control-label col-sm-3">FECHA FIN</label>
 
 			<div class="col-sm-9">
-				<input id="fecha_fin" type="date" class="form-control{{ $errors->has('fecha_fin') ? ' is-invalid' : '' }}" name="fecha_fin" value="{{ isset($param) ? $param->fecha_fin : old('fecha_fin') }}" required autofocus>
+				<input id="fecha_fin" type="date" class="form-control{{ $errors->has('fecha_fin') ? ' is-invalid' : '' }}" name="fecha_fin" value="{{ isset($param) ? $param->fecha_fin : old('fecha_fin') }}" autofocus>
 
 				@if ($errors->has('fecha_fin'))
 					<span class="invalid-feedback">

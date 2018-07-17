@@ -7,6 +7,7 @@ use App\Contable\Remuneracion;
 use App\Http\Requests\CargoRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Exception;
 
 class CargoController extends Controller
 {
@@ -53,9 +54,13 @@ class CargoController extends Controller
 		$cargo->descripcion = $request->descripcion;
 		$cargo->id_remuneracion = $request->id_remuneracion;
 		
-		$cargo->save();
-		
-		return redirect()->route('cargo.index')->with('success', "El cargo se creó correctamente");
+		try {
+			$cargo->save();
+			return redirect()->route('cargo.index')->with('success', "El cargo ".$cargo->nombre." se creó correctamente");				;
+		} catch(Exception $e){
+			return back()->withInput()->withError("El cargo no se pudo registrar, intente nuevamente o contacte al administrador.");				;
+		};
+
     }
 
     /**
@@ -96,9 +101,14 @@ class CargoController extends Controller
         $cargo->nombre = $request->nombre;
 		$cargo->descripcion = $request->descripcion;
 		$cargo->id_remuneracion = $request->id_remuneracion;
-		$cargo->save();
 		
-		return redirect()->route('cargo.index')->with('success', "El cargo fue modificado correctamente");
+		try {
+			$cargo->save();
+			return redirect()->route('cargo.index')->with('success', "El cargo ".$cargo->nombre." se editó correctamente");				;
+		} catch(Exception $e){
+			return back()->withInput()->withError("El cargo no se pudo registrar, intente nuevamente o contacte al administrador.");				;
+		};
+
     }
 	
 	public function activar(Request $request)

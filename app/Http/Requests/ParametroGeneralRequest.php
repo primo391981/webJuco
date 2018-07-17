@@ -23,12 +23,13 @@ class ParametroGeneralRequest extends FormRequest
      */
     public function rules()
     {
+		//dd($this->request);
         return [
             'nombre'=>'required',
 			'descripcion'=>'required',
 			'valor'=>'required|numeric',
 			'fecha_inicio'=>'date|required',
-			'fecha_fin'=>'date|required'
+			'fecha_fin'=>'nullable|date'
         ];
     }
 }

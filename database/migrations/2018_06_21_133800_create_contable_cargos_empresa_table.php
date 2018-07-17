@@ -15,12 +15,13 @@ class CreateContableCargosEmpresaTable extends Migration
     {
         Schema::create('contable_cargos', function (Blueprint $table) {
             $table->increments('id');
-			$table->text('nombre');
+			$table->string('nombre',30);
 			$table->text('descripcion');
 			$table->integer('id_remuneracion');
 			$table->timestamps();
 			$table->softDeletes();
             
+			$table->unique(['nombre','id_remuneracion'],'cargo');
         });
     }
 
