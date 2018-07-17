@@ -37,6 +37,8 @@ class ParametroGeneralController extends Controller
     {
 		return view('contable.parametrogeneral.agregarParametroGral');
     }
+	
+	
 
     /**
      * Store a newly created resource in storage.
@@ -47,24 +49,55 @@ class ParametroGeneralController extends Controller
     public function store(ParametroGeneralRequest $request)
     {
 		$parametro = ParametroGeneral::where('nombre',$request->nombre)->latest()->first();
+		$bandera = 1;
+		if(!is_null($parametro)){
+			if($request->fecha_inicio > $parametro->fecha_inicio){
+				if(is_null($parametro->fecha_fin)){
+					$parametro->fecha_fin = $request->fecha_inicio;
+					$parametro->save();
+				} 
+			} else {
+				$bandera = 0;
+			}
+		}
+		if($bandera==1){
+			$param = new ParametroGeneral();
+			$param->nombre = $request->nombre;
+			$param->descripcion = $request->descripcion;
+			$param->fecha_inicio = $request->fecha_inicio;
+			$param->fecha_fin = $request->fecha_fin;
+			$param->valor = $request->valor;
+			
+			$param->save();
+			
+			return redirect()->route('parametrogeneral.index')->with('success', "El parámetro se creó correctamente");
+		} else {
+			return back()->withInput()->withError('Error en la carga del parámetro');
+		}
+		
+		
+		
+		
+		
+		
+    }
+
+	/**
+     * Search a created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function search(ParametroGeneralRequest $request)
+    {
+		$parametro = ParametroGeneral::where('nombre',$request->nombre)->latest()->first();
 		if(!is_null($parametro)){
 			return response()->json([
 					'mensaje' => "El Parámetro ya existe en la base de datos. Desea sobreescribirlo?",
 				]);	
 		}
-		$param = new ParametroGeneral();
-		$param->nombre = $request->nombre;
-		$param->descripcion = $request->descripcion;
-		$param->fecha_inicio = $request->fecha_inicio;
-		$param->fecha_fin = $request->fecha_fin;
-		$param->valor = $request->valor;
-		
-		$param->save();
-		
-		return redirect()->route('parametrogeneral.index')->with('success', "El parámetro se creó correctamente");
-		
     }
-
+	
     /**
      * Display the specified resource.
      *

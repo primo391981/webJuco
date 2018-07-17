@@ -29,7 +29,6 @@
 			</div>
 			<div class="panel-body text-warning">
 				<form method="POST" action="{{ route('parametrogeneral.store') }}"class="form-horizontal" enctype="multipart/form-data" id="form">
-					<input type="hidden" name="confirm" value="no" id="confirm">
 					@include('contable.parametrogeneral.formParametroGral', ['textoBoton' => 'Confirmar'])
 				</form>
 			</div>
@@ -47,15 +46,17 @@ $(document).ready(function(){
 	
 	form.submit(function() {
 		var data = form.serialize();
-		$.post(form.attr('action'), data, function (result) {
-		if(result.mensaje != null){
-			if(confirm(result.mensaje)){
-				$('#confirm').attr('value') = "si";
-				
+		$.get("/parametrogeneral/search", data, function (result) {
+			if(result.mensaje){
+				if(confirm(result.mensaje)){
+					$.post(form.attr('action'), data, function (result) {
+						if(result.mensaje){
+							alert(result.mensaje);
+						}
+					});
+				}
 			}
-		} 
-			   
-	});
+		});
 		return false; // return false to cancel form action
 	});
 	
