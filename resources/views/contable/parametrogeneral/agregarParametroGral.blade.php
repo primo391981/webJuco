@@ -29,7 +29,7 @@
 			</div>
 			<div class="panel-body text-warning">
 				<form method="POST" action="{{ route('parametrogeneral.store') }}"class="form-horizontal" enctype="multipart/form-data" id="form">
-					@include('contable.parametrogeneral.formParametroGral', ['textoBoton' => 'Confirmar'])
+					@include('contable.parametrogeneral.formParametroGral', ['textoBoton' => 'Confirmar', 'readonly' => ''])
 				</form>
 			</div>
 			<div class="panel-footer"><a href="{{ route('parametrogeneral.index') }}" class="btn btn-warning btn-block" role="button"><i class="fas fa-list-ul"></i> Listado parámetros gral.</a></div>
@@ -45,17 +45,29 @@ $(document).ready(function(){
 	var btnSubmit = $("#btnSubmit");
 	btnSubmit.click(function() {
 		//e.preventDefault();
-		var data = form.serialize();
-		$.get("/parametrogeneral/search", data, function (result) {
-			if(result.find){
-				if(confirm(result.mensaje)){
+		if( $('#nombre').val()=="" || $('#fecha_inicio').val()=="" || $('#valor').val()==""){
+			console.log("check");
+			//form.submit();
+			return true;
+		} else {
+			console.log("check1");
+			var data = form.serialize();
+			$.get("/parametrogeneral/search", data, function (result) {
+				if(result.find){
+					console.log("check2");
+					if(confirm(result.mensaje)){
+						console.log("check3");
+						form.submit();
+					}
+				} else {
 					form.submit();
 				}
-			} else {
-				form.submit();
-			}
-		});
+			});
+		}
+		console.log("check final");
+		return false;
 		
+
 	});
 	
 	

@@ -147,41 +147,19 @@ class ParametroGeneralController extends Controller
     public function update(ParametroGeneralRequest $request, ParametroGeneral $parametrogeneral)
     {
        	$parametro = ParametroGeneral::where('nombre',$request->nombre)->latest()->first();
-		$bandera = 1;
-		if($parametro === $parametrogeneral){
-			if($request->fecha_inicio > $parametro->fecha_inicio){
-				if(is_null($parametro->fecha_fin) || $parametro->fecha_fin >= $request->fecha_inicio){
-					$fecha_fin = Carbon::parse($request->fecha_inicio);
-					$fecha_fin = $fecha_fin->subDays(1);
-					$parametro->fecha_fin = $fecha_fin->toDateString();
-					$parametro->save();
-				} 				 
-			} else {
-				$bandera = 0;
-			}
-		}
-		if($bandera==1){
-			$parametrogeneral->nombre = $request->nombre;
+		
+		if($parametro == $parametrogeneral){
 			$parametrogeneral->descripcion = $request->descripcion;
-			$parametrogeneral->fecha_inicio = $request->fecha_inicio;
 			$parametrogeneral->fecha_fin = $request->fecha_fin;
 			$parametrogeneral->valor = $request->valor;
-			$parametrogeneral->save();
-		
-			return redirect()->route('parametrogeneral.index')->with('success', "El parámetro fue modificado correctamente");
+			$parametrogeneral->save();			 
 			
-			return redirect()->route('parametrogeneral.index')->with('success', "El parámetro se creó correctamente");
+			return redirect()->route('parametrogeneral.index')->with('success', "El parámetro fue modificado correctamente");
+		
 		} else {
-			return back()->withInput()->withError('Error en la carga del parámetro. Verifique las fechas de vigencia');
+			
+			return back()->withInput()->withError('El parámetro seleccionado no puede ser modificado. Contáctese con el administrador');
 		}
-
-
-
-
-	
-		
-		
-		
     }
 
 	public function activar(Request $request)

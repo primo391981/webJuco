@@ -31,7 +31,7 @@
 			<div class="panel-body text-warning">
 				<form method="POST" action="{{ route('parametrogeneral.update', ['param' => $param]) }}" class="form-horizontal" enctype="multipart/form-data">
 				{{ method_field('PUT') }}
-				@include('contable.parametrogeneral.formParametroGral', ['textoBoton' => 'Confirmar'])
+				@include('contable.parametrogeneral.formParametroGral', ['textoBoton' => 'Confirmar', 'readonly' => 'readonly'])
 				</form>
 				
 			</div>
