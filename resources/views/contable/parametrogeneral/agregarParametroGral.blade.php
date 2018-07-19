@@ -42,22 +42,20 @@
 
 $(document).ready(function(){
 	var form = $('#form');
-	
-	
-	form.submit(function() {
+	var btnSubmit = $("#btnSubmit");
+	btnSubmit.click(function() {
+		//e.preventDefault();
 		var data = form.serialize();
 		$.get("/parametrogeneral/search", data, function (result) {
-			if(result.mensaje){
+			if(result.find){
 				if(confirm(result.mensaje)){
-					$.post(form.attr('action'), data, function (result) {
-						if(result.mensaje){
-							alert(result.mensaje);
-						}
-					});
+					form.submit();
 				}
+			} else {
+				form.submit();
 			}
 		});
-		return false; // return false to cancel form action
+		
 	});
 	
 	

@@ -44,7 +44,7 @@
 			<label for="archivo" class="control-label col-sm-3">Archivo:</label>
 
 			<div class="col-sm-9">
-				<a href="{{ asset($contenido->archivo) }}">{{ $contenido->nombre_archivo}}</a>
+				<a href="{{ isset($contenido) ? asset($contenido->archivo) : old('archivo') }}">{{ isset($contenido) ? $contenido->nombre_archivo : ""}}</a>
 				
 				<input id="archivo" type="file" class="form-control{{ $errors->has('archivo') ? ' is-invalid' : '' }}" name="archivo" value="{{ isset($contenido) ? $contenido->archivo : old('archivo') }}">
 				
@@ -74,7 +74,7 @@
 			<label for="imagen" class="control-label col-sm-3">Imagen:</label>
 			
 			<div class="col-sm-9">
-				<img src="{{ asset($contenido->imagen) }}" height="50px">
+				<img src="{{ isset($contenido) ? asset($contenido->imagen) : ""}}" height="50px">
 				<input id="imagen" type="file" class="form-control{{ $errors->has('imagen') ? ' is-invalid' : '' }}" name="imagen" value="{{ isset($contenido) ? $contenido->imagen : old('imagen') }}">
 				
 				@if ($errors->has('imagen'))

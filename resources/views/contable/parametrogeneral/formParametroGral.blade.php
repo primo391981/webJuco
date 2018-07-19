@@ -73,6 +73,6 @@
 		<div class="form-group row">
 		<br>
 		<div class="col-xs-12 text-center">
-			<button type="submit" class="btn btn-warning btn-lg"><i class="fas fa-check"></i>&nbsp;&nbsp;{{ $textoBoton }}</button>
+			<button type="button" class="btn btn-warning btn-lg" id="btnSubmit"><i class="fas fa-check"></i>&nbsp;&nbsp;{{ $textoBoton }}</button>
 		</div>
 </div>
