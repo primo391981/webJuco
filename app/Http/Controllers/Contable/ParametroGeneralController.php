@@ -149,17 +149,22 @@ class ParametroGeneralController extends Controller
        	$parametro = ParametroGeneral::where('nombre',$request->nombre)->latest()->first();
 		
 		if($parametro == $parametrogeneral){
-			$parametrogeneral->descripcion = $request->descripcion;
-			$parametrogeneral->fecha_fin = $request->fecha_fin;
-			$parametrogeneral->valor = $request->valor;
-			$parametrogeneral->save();			 
-			
-			return redirect()->route('parametrogeneral.index')->with('success', "El parámetro fue modificado correctamente");
-		
+			if($request->fecha_fin >= $parametrogeneral->fecha_inicio){
+				$parametrogeneral->descripcion = $request->descripcion;
+				$parametrogeneral->fecha_fin = $request->fecha_fin;
+				$parametrogeneral->valor = $request->valor;
+				$parametrogeneral->save();			 
+				
+				return redirect()->route('parametrogeneral.index')->with('success', "El parámetro fue modificado correctamente");
+			} else {
+				$mensaje = 'El parámetro seleccionado no pudo ser modificado. La Fecha Fin '. $request->fecha_fin.' no es válida.';
+			}
 		} else {
 			
-			return back()->withInput()->withError('El parámetro seleccionado no puede ser modificado. Contáctese con el administrador');
+			$mensaje = 'El parámetro seleccionado no puede ser modificado. Contáctese con el administrador';
 		}
+		
+		return back()->withInput()->withError($mensaje);
     }
 
 	public function activar(Request $request)
