@@ -57,22 +57,10 @@ class EmpresaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
-		
+    {	
         $empresa=Empresa::find($id);
-		
-		/*$empleados = DB::table('empresa')
-            ->join('empleados', 'empresa.id', '=', 'empleados.idempresa')
-            ->join('persona', 'empleados.idpersona', '=', 'persona.id')
-			->where('empresa.id', '=', $empresa->id)
-			->whereNull('empleados.deleted_at')
-            ->select('persona.*')
-            ->get();
-		*/
 		$tiposDocumentos=TipoDoc::All();
-		//return view('contable.empresa.verEmpresa',['empresa'=>$empresa,'empleados'=>$empleados,'tipoDoc'=>$tiposDocumentos]);
-		return view('contable.empresa.verEmpresa',['empresa'=>$empresa,'tipoDoc'=>$tiposDocumentos]);
-		
+		return view('contable.empresa.verEmpresa',['empresa'=>$empresa,'tipoDoc'=>$tiposDocumentos]);	
     }
 
     /**
@@ -110,11 +98,7 @@ class EmpresaController extends Controller
 		$empresa->telefono=$request->input('telefono');
 		$empresa->nomContacto=$request->input('nomContacto');
 		$empresa->save();
-		
 		return redirect()->route('empresa.index');
-		
-		
-		
     }
 
     /**
@@ -126,8 +110,7 @@ class EmpresaController extends Controller
     public function destroy($id)
     {
 		$empresa=Empresa::find($id);
-		$empresa->delete();
-		
+		$empresa->delete();		
 		return redirect()->route('empresa.index');
     }
 	

@@ -2,15 +2,11 @@
 
 @section('seccion', " - AGREGAR")
 
-@section('content')
-@if (Session::has('success'))
-	<div class="alert alert-success">
-		{{Session::get('success')}}
-	</div>
-@endif 
+@section('content') 
 @if (Session::has('error'))
+	<br>
 	<div class="alert alert-danger">
-		{{Session::get('error')}}
+	{{Session::get('error')}}
 	</div>
 @endif 
 <br>

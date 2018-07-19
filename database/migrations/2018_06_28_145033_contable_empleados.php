@@ -17,9 +17,14 @@ class ContableEmpleados extends Migration
             $table->increments('id');
 			$table->integer('idPersona')->unsigned();
 			$table->integer('idEmpresa')->unsigned();
+			$table->integer('idCargo')->unsigned();
+			$table->dateTime('fechaDesde');
+			$table->dateTime('fechaHasta');
+			$table->integer('monto');
 			
 			$table->foreign('idPersona')->references('id')->on('persona');
 			$table->foreign('idEmpresa')->references('id')->on('empresa');
+			$table->foreign('idCargo')->references('id')->on('contable_cargos');
 			
 			$table->softDeletes();
             $table->timestamps();

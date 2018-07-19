@@ -5,11 +5,13 @@
 @section('content')
 
 @if (Session::has('success'))
+<br>	
 	<div class="alert alert-success">
 		{{Session::get('success')}}
 	</div>
 @endif 
 @if (Session::has('error'))
+<br>	
 	<div class="alert alert-danger">
 		{{Session::get('error')}}
 	</div>
@@ -46,49 +48,40 @@
 							</tr>
 						</thead>
 						<tbody>
-						@foreach($personas as $persona)						
+							@foreach($personas as $per)
 							<tr>								
-								<td>{{$persona->documento}}</td>
-								<td>{{$persona->nombre}}</td>
-								<td>{{$persona->apellido}}</td>	
-								
-								@if($empleados->isEmpty())
-									<td></td>
+								<td>{{$per->tipoDoc->nombre}} - {{$per->documento}}</td>
+								<td>{{$per->nombre}}</td>
+								<td>{{$per->apellido}}</td>
+								@if (count($per->empresas)>0)
+									<td>
+									@foreach($per->empresas as $emp)
+										{{$emp->nombre}}
+									@endforeach
+									</td>
 								@else
-								<?php $i = 0; ?>
-										@foreach($empleados as $emp)
-											@if ($emp->idPersona == $persona->id)
-													<td>{{$emp->nombreFantasia}}</td>
-														<?php $i = 1; ?>
-														@break
-											@endif
-										@endforeach
-										@if($i==0)
-											<td></td>
-										@endif
-										
+									<td></td>
 								@endif
 								
-								
 								<td>
-									<form method="GET" action="{{route('persona.show', $persona->id)}}">																
+									<form method="GET" action="{{route('persona.show', $per->id)}}">																
 										<button type="submit"class="btn btn-info"><i class="fas fa-info-circle"></i></button>												
 									</form>
 								</td>	
 								<td>
-									<form method="GET" action="{{ route('persona.edit', $persona->id) }}">																
+									<form method="GET" action="{{ route('persona.edit', $per->id) }}">																
 										<button type="submit"class="btn btn-warning"><i class="far fa-edit"></i></button>												
 									</form>
 								</td>				
 								<td>
-									<form method="POST" action="{{ route('persona.destroy',$persona->id) }}">
+									<form method="POST" action="{{ route('persona.destroy',$per->id) }}">
 										{{ method_field('DELETE') }}
 										@csrf	
 										<button type="submit"class="btn btn-danger"><i class="far fa-trash-alt"></i></button>												
 									</form>
-								</td>
+								</td>								
 							</tr>
-						@endforeach
+							@endforeach
 						</tbody>
 						
 						</table>

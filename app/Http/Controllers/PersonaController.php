@@ -8,6 +8,7 @@ use App\Persona;
 use App\Empresa;
 use App\Contable\Empleado;
 use App\TipoDoc;
+use App\Contable\Cargo;
 use App\EstadoCivil;
 use Exception;
 
@@ -16,51 +17,23 @@ use App\Http\Controllers\Controller;
 
 class PersonaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $personas=Persona::All();
-		$empleados = DB::table('empleados')
-			->join('empresa','empleados.idempresa','=','empresa.id')
-            ->whereNull('empleados.deleted_at')
-            ->select('empleados.*','empresa.*')
-            ->get();		
-		return view('contable.persona.listaPersonas', ['personas' => $personas,'empleados'=>$empleados]);
+		$personas=Persona::All();
+		return view('contable.persona.listaPersonas', ['personas' => $personas]);
     }
-	
-	public function desactivado()
-    {
-       $personas=Persona::onlyTrashed()->get();
-	   return view('contable.persona.listaNoPersonas', ['personas' => $personas]);
-	   //este es el camino de las carpetas hasta llegar al blade correspondiente
-    }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function create()
     {
 		$tiposDocumentos=TipoDoc::All();
 		$estados = EstadoCivil::All();
 		return view('contable.persona.agregarPersona',['tiposdoc'=>$tiposDocumentos, 'estados'=>$estados]);
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(PersonaRequest $request)
-    {   
 	
+	
+    public function store(PersonaRequest $request)
+    {
 		$persona=new Persona;
-		
 		$persona->tipoDocumento = $request->input('tipodoc');		
 		$persona->documento=$request->input('documento');
 		$persona->nombre=$request->input('nombre');
@@ -70,43 +43,45 @@ class PersonaController extends Controller
 		$persona->email=$request->input('email');
 		$persona->cantHijos=$request->input('cantHijos');		
 		$persona->estadoCivil=$request->input('estadoCivil');		
-		try
-		{
+		try{
 			$persona->save();
-			
-			return redirect()->route('persona.index')->with('success', "El empleado ".$persona->tipoDocumento."-".$persona->documento." se recupero correctamente");				;
+			return redirect()->route('persona.index')->with('success', "El empleado ".$persona->tipoDoc->nombre." - ".$persona->documento." se agregó correctamente.");
 		}
 		catch(Exception $e){
-			return back()->withInput()->withError("El empleado no se pudo registrar, intente nuevamente o contacte al administrador.");				;
-		}
-		
+			
+			if($e->getCode()==23000){
+				return back()->withInput()->withError("Ya existe un empleado con ese tipo de documento y documento.");
+			}else{
+				return back()->withInput()->withError("El empleado no se pudo registrar, intente nuevamente o contacte al administrador.");
+			}
+		}		
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
-    {
-		$empleado = DB::table('empleados')->where([
-			['idpersona', '=', $id],
-			['deleted_at', '=', null],			
-		])->first();
-		//con first devulve uno solo, con get una coleccion de datos
-		
+    {		
         $persona=Persona::find($id);
 		$empresas=Empresa::All();
-		return view('contable.persona.verPersona',['persona'=>$persona,'empresas'=>$empresas,'empleado'=>$empleado]);
+		$emprAsociadas=$persona->empresas;
+		//me tira las empresas diferentes entre todas las empresas y empresas asociadas
+		$emprSinAsociar=$empresas->diff($emprAsociadas);
+		$cargos=Cargo::All();
+		
+		return view('contable.persona.verPersona',['persona'=>$persona,'emprSinAsociar'=>$emprSinAsociar,'emprAsociadas'=>$emprAsociadas,'cargos'=>$cargos]);
     }
+	public function asociarEmpresa(Request $request, $idper, $idempr)
+	{
+		try{
+		$empresa=Empresa::find($idempr);
+		$persona=Persona::find($idper);
+		$persona->empresas()->save($empresa, ['idCargo'=>$request->cargo,'fechaDesde'=>$request->fechaInicio,'fechaHasta'=>$request->fechaFin,'monto'=>$request->monto]);
+			return redirect()->route('persona.show',['id' => $idper]);
+		}
+		catch(Exception $e){
+			return back()->withInput()->withError($e->getMessage());
+		}
+	}
+	
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $persona=Persona::find($id);
@@ -116,13 +91,6 @@ class PersonaController extends Controller
 		return view('contable.persona.editarPersona',['persona'=>$persona, 'tiposdoc'=>$tiposDocumentos, 'estados'=>$estados]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(PersonaRequest $request, $id)
     {
         $persona=Persona::find($id);		
@@ -137,13 +105,7 @@ class PersonaController extends Controller
 		$persona->save();
 		return redirect()->route('persona.index');
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+	
     public function destroy($id)
     {
         $persona=Persona::find($id);
@@ -157,4 +119,11 @@ class PersonaController extends Controller
 		$persona->restore();
 		return redirect()->route('persona.index');
     }
+		public function desactivado()
+    {
+       $personas=Persona::onlyTrashed()->get();
+	   return view('contable.persona.listaNoPersonas', ['personas' => $personas]);
+	   //este es el camino de las carpetas hasta llegar al blade correspondiente
+    }
+
 }
