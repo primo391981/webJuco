@@ -3,7 +3,7 @@
 		<div class="form-group row">
 			<label for="nombre" class="control-label col-sm-3">NOMBRE</label>
 			<div class="col-sm-9">
-				<input id="nombre" type="text" class="form-control{{ $errors->has('nombre') ? ' is-invalid' : '' }}" name="nombre" value="{{ isset($param) ? $param->nombre : old('nombre') }}" required autofocus>
+				<input id="nombre" type="text" class="form-control{{ $errors->has('nombre') ? ' is-invalid' : '' }}" name="nombre" value="{{ isset($param) ? $param->nombre : old('nombre') }}" required autofocus {{ $readonly }}>
 				@if ($errors->has('nombre'))
 					<span class="invalid-feedback">
 						<strong>{{ $errors->first('nombre') }}</strong>
@@ -30,7 +30,7 @@
 			<label for="fecha_inicio" class="control-label col-sm-3">FECHA INICIO</label>
 
 			<div class="col-sm-9">
-				<input id="fecha_inicio" type="date" class="form-control{{ $errors->has('fecha_inicio') ? ' is-invalid' : '' }}" name="fecha_inicio" value="{{ isset($param) ? $param->fecha_inicio : old('fecha_inicio') }}" required autofocus>
+				<input id="fecha_inicio" type="date" class="form-control{{ $errors->has('fecha_inicio') ? ' is-invalid' : '' }}" name="fecha_inicio" value="{{ isset($param) ? $param->fecha_inicio : old('fecha_inicio') }}" required autofocus {{ $readonly }}>
 
 				@if ($errors->has('fecha_inicio'))
 					<span class="invalid-feedback">
@@ -44,7 +44,7 @@
 			<label for="fecha_fin" class="control-label col-sm-3">FECHA FIN</label>
 
 			<div class="col-sm-9">
-				<input id="fecha_fin" type="date" class="form-control{{ $errors->has('fecha_fin') ? ' is-invalid' : '' }}" name="fecha_fin" value="{{ isset($param) ? $param->fecha_fin : old('fecha_fin') }}" required autofocus>
+				<input id="fecha_fin" type="date" class="form-control{{ $errors->has('fecha_fin') ? ' is-invalid' : '' }}" name="fecha_fin" value="{{ isset($param) ? $param->fecha_fin : old('fecha_fin') }}" autofocus>
 
 				@if ($errors->has('fecha_fin'))
 					<span class="invalid-feedback">
@@ -73,6 +73,6 @@
 		<div class="form-group row">
 		<br>
 		<div class="col-xs-12 text-center">
-			<button type="submit" class="btn btn-warning btn-lg"><i class="fas fa-check"></i>&nbsp;&nbsp;{{ $textoBoton }}</button>
+			<button type="submit" class="btn btn-warning btn-lg" id="btnSubmit"><i class="fas fa-check"></i>&nbsp;&nbsp;{{ $textoBoton }}</button>
 		</div>
 </div>

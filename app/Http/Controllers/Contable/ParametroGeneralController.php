@@ -6,6 +6,7 @@ use App\Contable\ParametroGeneral;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ParametroGeneralRequest;
+use \Carbon\Carbon;
 
 class ParametroGeneralController extends Controller
 {
@@ -37,6 +38,8 @@ class ParametroGeneralController extends Controller
     {
 		return view('contable.parametrogeneral.agregarParametroGral');
     }
+	
+	
 
     /**
      * Store a newly created resource in storage.
@@ -46,19 +49,70 @@ class ParametroGeneralController extends Controller
      */
     public function store(ParametroGeneralRequest $request)
     {
-		$param = new ParametroGeneral();
-		$param->nombre = $request->nombre;
-		$param->descripcion = $request->descripcion;
-		$param->fecha_inicio = $request->fecha_inicio;
-		$param->fecha_fin = $request->fecha_fin;
-		$param->valor = $request->valor;
+		if(!is_null($request->fecha_fin) && $request->fecha_fin < $request->fecha_inicio){
+			return back()->withInput()->withError('Error en la carga del parámetro. Verifique las fechas de vigencia');
+		};
 		
-		$param->save();
+		$parametro = ParametroGeneral::where('nombre',$request->nombre)->latest()->first();
+		$bandera = 1;
 		
-		return redirect()->route('parametrogeneral.index')->with('success', "El parámetro se creó correctamente");
+		if(!is_null($parametro)){
+			if($request->fecha_inicio > $parametro->fecha_inicio){
+				if(is_null($parametro->fecha_fin) || $parametro->fecha_fin >= $request->fecha_inicio){
+					$fecha_fin = Carbon::parse($request->fecha_inicio);
+					$fecha_fin = $fecha_fin->subDays(1);
+					$parametro->fecha_fin = $fecha_fin->toDateString();
+					$parametro->save();
+				} 				 
+			} else {
+				$bandera = 0;
+			}
+		}
 		
-    }
+		if($bandera==1){
+			$param = new ParametroGeneral();
+			$param->nombre = $request->nombre;
+			$param->descripcion = $request->descripcion;
+			$param->fecha_inicio = $request->fecha_inicio;
+			$param->fecha_fin = $request->fecha_fin;
+			$param->valor = $request->valor;
+			
+			$param->save();
+			
+			return redirect()->route('parametrogeneral.index')->with('success', "El parámetro se creó correctamente");
+		} else {
+			return back()->withInput()->withError('Error en la carga del parámetro. Verifique las fechas de vigencia');
+		}
+	}
 
+	/**
+     * Search a created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function search(ParametroGeneralRequest $request)
+    {
+		$parametro = ParametroGeneral::where('nombre',$request->nombre)->latest()->first();
+		
+		if(!is_null($parametro)){
+			$mensaje = "El Parámetro ya existe en la base de datos. Desea sobreescribirlo?";
+			$find = true;
+		} else {
+			$mensaje = null;
+			$find = false;
+			
+		}
+		
+		if($request->ajax()) {
+			return response()->json([
+				'mensaje' => $mensaje,
+				'find' => $find
+				
+			]);	
+		}
+    }
+	
     /**
      * Display the specified resource.
      *
@@ -92,14 +146,25 @@ class ParametroGeneralController extends Controller
      */
     public function update(ParametroGeneralRequest $request, ParametroGeneral $parametrogeneral)
     {
-        $parametrogeneral->nombre = $request->nombre;
-		$parametrogeneral->descripcion = $request->descripcion;
-		$parametrogeneral->fecha_inicio = $request->fecha_inicio;
-		$parametrogeneral->fecha_fin = $request->fecha_fin;
-		$parametrogeneral->valor = $request->valor;
-		$parametrogeneral->save();
+       	$parametro = ParametroGeneral::where('nombre',$request->nombre)->latest()->first();
 		
-		return redirect()->route('parametrogeneral.index')->with('success', "El parámetro fue modificado correctamente");
+		if($parametro == $parametrogeneral){
+			if($request->fecha_fin >= $parametrogeneral->fecha_inicio){
+				$parametrogeneral->descripcion = $request->descripcion;
+				$parametrogeneral->fecha_fin = $request->fecha_fin;
+				$parametrogeneral->valor = $request->valor;
+				$parametrogeneral->save();			 
+				
+				return redirect()->route('parametrogeneral.index')->with('success', "El parámetro fue modificado correctamente");
+			} else {
+				$mensaje = 'El parámetro seleccionado no pudo ser modificado. La Fecha Fin '. $request->fecha_fin.' no es válida.';
+			}
+		} else {
+			
+			$mensaje = 'El parámetro seleccionado no puede ser modificado. Contáctese con el administrador';
+		}
+		
+		return back()->withInput()->withError($mensaje);
     }
 
 	public function activar(Request $request)

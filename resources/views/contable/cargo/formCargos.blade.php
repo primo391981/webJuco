@@ -34,7 +34,7 @@
 			<div class="col-sm-9">
 			<select name="id_remuneracion" class="form-control" id="id_remuneracion">
 				@foreach($remuneraciones as $key => $remuneracion)
-					<option value="{{ $remuneracion->id }}" {{ old('id_remuneracion', isset($contenedor) ? $cargo->id_remuneracion : '' ) == $key + 1 ? 'selected' : '' }}>{{ $remuneracion->nombre }}</option>  
+					<option value="{{ $remuneracion->id }}" {{ old('id_remuneracion', isset($cargo) ? $cargo->id_remuneracion : '' ) == $key + 1 ? 'selected' : '' }}>{{ $remuneracion->nombre }}</option>  
 				@endforeach
 			</select>
 			</div>	

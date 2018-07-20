@@ -3,7 +3,18 @@
 @section('seccion', " - AGREGAR")
 
 @section('content')
+
 <br>
+@if (Session::has('success'))
+	<div class="alert alert-success">
+		{{Session::get('success')}}
+	</div>
+@endif 
+@if (Session::has('error'))
+	<div class="alert alert-danger">
+		{{Session::get('error')}}
+	</div>
+@endif 
 <div class="row">
 	<!--solamente es visible en cel-->
 	<div class="col-xs-12 visible-xs"><a href="{{ route('cargo.index') }}" class="btn btn-warning" style="margin-bottom:5%;" role="button"><i class="fas fa-list-ul"></i> Listado cargos activos</a></div>				  

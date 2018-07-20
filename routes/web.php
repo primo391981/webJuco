@@ -81,6 +81,7 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::resource('cargo', 'Contable\CargoController')->middleware('role:contableAdmin');
 	
 	//parametros generales
+	Route::get('parametrogeneral/search', 'Contable\ParametroGeneralController@search')->name('parametrogeneral.search')->middleware('role:contableAdmin');
 	Route::get('parametrogeneral/inactivos', 'Contable\ParametroGeneralController@inactivos')->name('parametrogeneral.index.inactivos')->middleware('role:contableAdmin');
 	Route::post('parametrogeneral/activar', 'Contable\ParametroGeneralController@activar')->name('parametrogeneral.activar')->middleware('role:contableAdmin');
 	Route::resource('parametrogeneral', 'Contable\ParametroGeneralController')->middleware('role:contableAdmin');
