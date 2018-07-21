@@ -20,9 +20,6 @@ class ContableHrsDiasEmp extends Migration
 			$table->enum('tipoDia', ['libre', 'trabajo']);
 			$table->integer('cantHrs');
 			
-			$table->foreign('idDia')->references('id')->on('dias');
-			$table->foreign('idEmpleado')->references('id')->on('empleados');
-			
 			$table->softDeletes();
 			$table->timestamps();
         });

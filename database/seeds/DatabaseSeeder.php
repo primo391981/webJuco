@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
 		
         $this->call([
 		
-			DiasTableSeeder::class,
+			
 			TipodocTableSeeder::class,
 			TipoContenedorsTableSeeder::class,
 			ContenedorsTableSeeder::class,
