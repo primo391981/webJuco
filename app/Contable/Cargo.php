@@ -17,5 +17,8 @@ class Cargo extends Model
 		
 		return $this->belongsTo('App\Contable\Remuneracion','id_remuneracion');
 	}
+	public function empresas(){
+		return $this->hasMany('App\Empresa','empleados','idCargo');		
+	}
 	
 }

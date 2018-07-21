@@ -71,10 +71,21 @@ class PersonaController extends Controller
 	public function asociarEmpresa(Request $request, $idper, $idempr)
 	{
 		try{
-		$empresa=Empresa::find($idempr);
-		$persona=Persona::find($idper);
-		$persona->empresas()->save($empresa, ['idCargo'=>$request->cargo,'fechaDesde'=>$request->fechaInicio,'fechaHasta'=>$request->fechaFin,'monto'=>$request->monto]);
-			return redirect()->route('persona.show',['id' => $idper]);
+			
+			$fHasta =\Carbon\Carbon::parse($request->fechaHasta)->format('Y/m/d');
+			$fDesde =\Carbon\Carbon::parse($request->fechaDesde)->format('Y/m/d');
+			
+			
+			if($fHasta>$fDesde){
+				dd($request->input('fechaHasta'));
+				return back()->withInput()->withError("La fecha de fin debe ser mayor a la fecha de inicio.");
+			}else{
+			$empresa=Empresa::find($idempr);
+			dd($idempr);
+			$persona=Persona::find($idper);
+			$persona->empresas()->save($empresa, ['idCargo'=>$request->cargo,'fechaDesde'=>$request->fechaDesde,'fechaHasta'=>$request->fechaHasta,'monto'=>$request->monto]);
+				return redirect()->route('persona.show',['id' => $idper]);
+			}
 		}
 		catch(Exception $e){
 			return back()->withInput()->withError($e->getMessage());

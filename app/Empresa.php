@@ -19,4 +19,8 @@ class Empresa extends Model
 	public function empleados(){
 		return $this->belongsToMany('App\Persona','empleados','idPersona','idEmpresa')->withPivot('idCargo','fechaDesde','fechaHasta','monto');
 	}
+	
+	public function cargo(){
+		return $this->belongsTo('App\Contable\Cargo','contable_cargos','id');
+	}
 }
