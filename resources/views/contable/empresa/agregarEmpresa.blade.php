@@ -23,27 +23,27 @@
 					<form method="POST" action="{{ route('empresa.store') }}" class="form-horizontal">		
 						 @csrf
 						 <div class="form-group row">
-							<label for="rut" class="control-label col-sm-3">RUT</label>
+							<label for="rut" class="control-label col-sm-3">RUT *</label>
 							<div class="col-sm-9">
-								<input id="rut" type="number" class="form-control" name="rut" value="{{old('rut')}}"autofocus>
+								<input id="rut" type="number" class="form-control" name="rut" value="{{old('rut')}}"autofocus required>
 								@if ($errors->has('rut'))
 									<span style="color:red;">{{ $errors->first('rut') }}</span>
 								@endif
 							</div>	
 						 </div>
 						<div class="form-group row">
-							<label for="razonSocial" class="control-label col-sm-3">RAZÓN SOCIAL</label>
+							<label for="razonSocial" class="control-label col-sm-3">RAZÓN SOCIAL *</label>
 							<div class="col-sm-9">
-								<input id="razonSocial" type="text" class="form-control" name="razonSocial" value="{{old('razonSocial')}}">
+								<input id="razonSocial" type="text" class="form-control" name="razonSocial" value="{{old('razonSocial')}}" autofocus required>
 								@if ($errors->has('razonSocial'))
 									<span style="color:red;">{{ $errors->first('razonSocial') }}</span>
 								@endif
 							</div>	
 						 </div>
 						 <div class="form-group row">
-							<label for="nombreFantasia" class="control-label col-sm-3">NOMBRE FANTASIA</label>
+							<label for="nombreFantasia" class="control-label col-sm-3">NOMBRE FANTASIA *</label>
 							<div class="col-sm-9">
-								<input id="nombreFantasia" type="text" class="form-control" name="nombreFantasia" value="{{old('nombreFantasia')}}">
+								<input id="nombreFantasia" type="text" class="form-control" name="nombreFantasia" value="{{old('nombreFantasia')}}" required autofocus>
 								@if ($errors->has('nombreFantasia'))
 									<span style="color:red;">{{ $errors->first('nombreFantasia') }}</span>
 								@endif

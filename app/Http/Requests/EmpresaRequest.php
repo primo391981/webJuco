@@ -24,7 +24,7 @@ class EmpresaRequest extends FormRequest
     public function rules()
     {
         return [
-            'rut'=>'nullable|unique:empresa,rut,'.$this->empresa,
+            'rut'=>'required|unique:empresa,rut,'.$this->empresa,
 			'razonSocial'=>'required',
 			'nombreFantasia'=>'required|unique:empresa,nombreFantasia,'.$this->empresa,
 			'numBps'=>'nullable|unique:empresa,numBps,'.$this->empresa,
