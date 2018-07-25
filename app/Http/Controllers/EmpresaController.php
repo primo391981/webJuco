@@ -28,8 +28,7 @@ class EmpresaController extends Controller
         //return vista con FORM para add empresa
 		return view('contable.empresa.agregarEmpresa',[]);
     }
-
-   
+	
     public function store(EmpresaRequest $request)
     {
         $empresa = new Empresa;
@@ -49,13 +48,6 @@ class EmpresaController extends Controller
 		
 		return redirect()->route('empresa.index');
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {	
         $empresa=Empresa::find($id);
@@ -63,25 +55,12 @@ class EmpresaController extends Controller
 		return view('contable.empresa.verEmpresa',['empresa'=>$empresa,'tipoDoc'=>$tiposDocumentos]);	
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $empresa=Empresa::find($id);
 		return view('contable.empresa.editarEmpresa',['empresa'=>$empresa]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(EmpresaRequest $request, $id)
     {
 		$empresa=Empresa::find($id);
@@ -101,12 +80,6 @@ class EmpresaController extends Controller
 		return redirect()->route('empresa.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
 		$empresa=Empresa::find($id);
@@ -120,4 +93,10 @@ class EmpresaController extends Controller
 		$empresa->restore();
 		return redirect()->route('empresa.index');
     }
+	public function buscaEmpleado(Request $request){
+		
+	}
+	public function asociarEmpleado(Request $request, $idEmpr){
+		
+	}
 }
