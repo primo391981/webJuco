@@ -2,13 +2,9 @@
 
 namespace App\Contable;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class Empleado extends Model
+class Empleado extends Pivot
 {
-    protected $table="empleados";
 	
-	public function horasPorDia(){
-		return $this->hasMany('App\Contable\hrDiaEmp','horasDiasEmp');
-	}
 }

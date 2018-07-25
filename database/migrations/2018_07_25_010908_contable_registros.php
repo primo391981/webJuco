@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class ContableDias extends Migration
+class ContableRegistros extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class ContableDias extends Migration
      */
     public function up()
     {
-        Schema::create('dias', function (Blueprint $table) {
+        Schema::create('registros', function (Blueprint $table) {
             $table->increments('id');
 			$table->string('nombre');
+			$table->string('descripcion');
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ class ContableDias extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('dias');
+        Schema::dropIfExists('registros');
     }
 }

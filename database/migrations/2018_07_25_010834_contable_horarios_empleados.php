@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class ContableHrsDiasEmp extends Migration
+class ContableHorariosEmpleados extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,12 @@ class ContableHrsDiasEmp extends Migration
      */
     public function up()
     {
-        Schema::create('horasDiasEmp', function (Blueprint $table) {
+        Schema::create('horariosEmpleados', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('idDia');
 			$table->integer('idEmpleado');
-			$table->enum('tipoDia', ['libre', 'trabajo']);
-			$table->integer('cantHrs');
-			
-			$table->softDeletes();
-			$table->timestamps();
+			$table->date('fechaDesde');
+			$table->date('fechaHasta');
+            $table->timestamps();
         });
     }
 
@@ -32,6 +29,6 @@ class ContableHrsDiasEmp extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('horasDiasEmp');
+        Schema::dropIfExists('horariosEmpleados');
     }
 }

@@ -60,39 +60,9 @@ class PersonaController extends Controller
     public function show($id)
     {		
         $persona=Persona::find($id);
-		$empresas=Empresa::All();
 		$emprAsociadas=$persona->empresas;
-		//me tira las empresas diferentes entre todas las empresas y empresas asociadas
-		$emprSinAsociar=$empresas->diff($emprAsociadas);
-		$cargos=Cargo::All();
-		
-		return view('contable.persona.verPersona',['persona'=>$persona,'emprSinAsociar'=>$emprSinAsociar,'emprAsociadas'=>$emprAsociadas,'cargos'=>$cargos]);
+		return view('contable.persona.verPersona',['persona'=>$persona,'emprAsociadas'=>$emprAsociadas]);
     }
-	public function asociarEmpresa(Request $request, $idper, $idempr)
-	{
-		try{
-			
-			//$fHasta =\Carbon\Carbon::parse($request->fechaHasta)->format('Y/m/d');
-			//$fDesde =\Carbon\Carbon::parse($request->fechaDesde)->format('Y/m/d');
-			
-			
-			if($request->fechaInicio>$request->fechaFin){
-				
-				//dd($request->input('fechaHasta'));
-				return back()->withInput()->withError("La fecha de fin debe ser mayor a la fecha de inicio.");
-			} else {
-				$empresa=Empresa::find($idempr);
-				//dd($idempr);
-				$persona=Persona::find($idper);
-				$persona->empresas()->save($empresa, ['idCargo'=>$request->cargo,'fechaDesde'=>$request->fechaInicio,'fechaHasta'=>$request->fechaFin,'monto'=>$request->monto]);
-				return redirect()->route('persona.show',['id' => $idper]);
-			}
-		}
-		catch(Exception $e){
-			return back()->withInput()->withError($e->getMessage());
-		}
-	}
-	
 
     public function edit($id)
     {

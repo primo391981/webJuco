@@ -94,11 +94,18 @@ Route::group(['middleware' => ['auth']], function () {
 	//persona
 	Route::get('desactivado', 'PersonaController@desactivado')->name('persona.desactivado')->middleware('role:contableAdmin');
 	Route::get('restauraremp/{id}', 'PersonaController@restaurar')->name('persona.restaurar')->middleware('role:contableAdmin');
-	Route::post('asociarEmpresa/{idpersona}/{idempresa}', 'PersonaController@asociarEmpresa')->name('persona.asociarEmpresa')->middleware('role:contableAdmin');
 	Route::resource('persona', 'PersonaController')->middleware('role:contableAdmin');
 	
+	//empleado
+	Route::post('asociarEmpresa/{idpersona}', 'Contable\EmpleadoController@asociarEmpresa')->name('empleado.asociarEmpresa')->middleware('role:contableAdmin');
+	Route::post('desasociarEmpresa/{idpersona}/{idempresa}', 'Contable\EmpleadoController@asociarEmpresa')->name('empleado.desasociarEmpresa')->middleware('role:contableAdmin');
+	Route::post('horarioTrabajo/{idpersona}/{idempresa}', 'Contable\EmpleadoController@asociarEmpresa')->name('empleado.horarioTrabajo')->middleware('role:contableAdmin');
+	Route::get('formCrear/{idpersona}', 'Contable\EmpleadoController@formCrear')->name('empleado.formCrear')->middleware('role:contableAdmin');
+	
+	
+	
 	//JURIDICO
-	//dashboard contable
+	//dashboard juridico
 	Route::get('juridico', 'Juridico\JuridicoController@index')->name('juridico')->middleware('role:juridicoAdmin');
 	
 	//clientes

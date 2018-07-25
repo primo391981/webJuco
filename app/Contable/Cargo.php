@@ -13,12 +13,11 @@ class Cargo extends Model
 	 
     protected $dates = ['deleted_at'];
 	
-	public function remuneracion(){
-		
+	public function remuneracion(){		
 		return $this->belongsTo('App\Contable\Remuneracion','id_remuneracion');
 	}
-	public function empresas(){
-		return $this->hasMany('App\Empresa','empleados','idCargo');		
+	public function empleados(){
+		return $this->hasManyThrough('App\Empresa', 'App\Empleado');		
 	}
 	
 }
