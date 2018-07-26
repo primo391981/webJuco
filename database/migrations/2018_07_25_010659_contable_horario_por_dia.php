@@ -18,9 +18,8 @@ class ContableHorarioPorDia extends Migration
 			$table->integer('idHorarioEmpleado');
 			$table->integer('idRegistro');
 			$table->integer('idDia');
-			$table->string('descripcion');
 			$table->time('cantHoras');
-			//time o integer?
+			
 			$table->timestamps();
         });
     }

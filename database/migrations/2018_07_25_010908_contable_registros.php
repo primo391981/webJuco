@@ -16,7 +16,6 @@ class ContableRegistros extends Migration
         Schema::create('registros', function (Blueprint $table) {
             $table->increments('id');
 			$table->string('nombre');
-			$table->string('descripcion');
             $table->timestamps();
         });
     }

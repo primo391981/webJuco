@@ -17,6 +17,6 @@ class Empresa extends Model
     }
 	
 	public function empleados(){
-		return $this->belongsToMany('App\Persona','empleados','idPersona','idEmpresa')->withPivot('idCargo','fechaDesde','fechaHasta','monto');
+		return $this->belongsToMany('App\Persona','empleados','idPersona','idEmpresa')->withPivot('id','idCargo','fechaDesde','fechaHasta','monto','horarioCargado');
 	}
 }

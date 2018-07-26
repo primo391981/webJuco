@@ -62,7 +62,12 @@
 						</div>
 						<div class="col-xs-12 col-md-4">
 							<p class="hidden-md hidden-lg"><strong>DETALLE CONTRATO</strong></p>
-							<p>Cargo: {{$empr->pivot->idCargo}}</p>
+							@foreach($cargos as $cargo)
+								@if($cargo->id ===$empr->pivot->idCargo)
+									<p>Cargo: {{$cargo->nombre}}</p>
+									@break
+								@endif
+							@endforeach
 							<p>Inicio: {{$empr->pivot->fechaDesde}}</p>
 							<p>Fin: {{$empr->pivot->fechaHasta}}</p>
 							<p>Monto: {{$empr->pivot->monto}}</p>
@@ -70,6 +75,14 @@
 						</div>
 						<div class="col-xs-12 col-md-4">
 							<p class="hidden-md hidden-lg"><strong>DETALLE HORARIO</strong></p>
+							
+							@if($empr->pivot->horarioCargado==false)
+							<form method="GET" action="{{ route('empleado.formCargarHorario',$empr->pivot->id) }}">																
+								<button type="submit"class="btn btn-warning"><i class="far fa-clock"></i> Cargar horario</button>
+							</form>	
+							@else
+								<p>MOSTRAR HORARIO</p>
+							@endif
 							
 						</div>
 					</div>
@@ -82,7 +95,7 @@
 		           
       </div> 
       <div class="panel-footer"> 
-		<form method="GET" action="{{ route('empleado.formCrear', $persona->id) }}">																
+		<form method="GET" action="{{ route('empleado.formCrear', $persona->id) }}">
 			<button type="submit"class="btn btn-warning btn-block"><i class="far fa-handshake"></i> Asociar empresa</button>												
 		</form>
 	  </div>      

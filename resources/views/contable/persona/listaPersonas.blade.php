@@ -44,7 +44,6 @@
 								<th></th>
 								<th></th>
 								<th></th>
-								
 							</tr>
 						</thead>
 						<tbody>
@@ -62,7 +61,6 @@
 								@else
 									<td></td>
 								@endif
-								
 								<td>
 									<form method="GET" action="{{route('persona.show', $per->id)}}">																
 										<button type="submit"class="btn btn-info"><i class="fas fa-info-circle"></i></button>												
@@ -79,7 +77,7 @@
 										@csrf	
 										<button type="submit"class="btn btn-danger"><i class="far fa-trash-alt"></i></button>												
 									</form>
-								</td>								
+								</td>									
 							</tr>
 							@endforeach
 						</tbody>

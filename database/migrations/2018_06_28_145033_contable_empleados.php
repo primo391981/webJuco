@@ -21,6 +21,7 @@ class ContableEmpleados extends Migration
 			$table->dateTime('fechaDesde');
 			$table->dateTime('fechaHasta');
 			$table->integer('monto');
+			$table->boolean('horarioCargado')->default(false);
 			
 			$table->foreign('idPersona')->references('id')->on('persona');
 			$table->foreign('idEmpresa')->references('id')->on('empresa');

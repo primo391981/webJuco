@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class TipodocTableSeeder extends Seeder
+class DiasTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,25 +12,25 @@ class TipodocTableSeeder extends Seeder
     public function run()
     {
         DB::table('dias')->insert([
-            'nombreDias' => 'LUNES',
+            'nombre' => 'LUNES',
         ]);
 		DB::table('dias')->insert([
-            'nombreDias' => 'MARTES',
+            'nombre' => 'MARTES',
         ]);
 		DB::table('dias')->insert([
-            'nombreDias' => 'MIERCOLES',
+            'nombre' => 'MIERCOLES',
         ]);
 		DB::table('dias')->insert([
-            'nombreDias' => 'JUEVES',
+            'nombre' => 'JUEVES',
         ]);
 		DB::table('dias')->insert([
-            'nombreDias' => 'VIERNES',
+            'nombre' => 'VIERNES',
         ]);
 		DB::table('dias')->insert([
-            'nombreDias' => 'SABADO',
+            'nombre' => 'SABADO',
         ]);
 		DB::table('dias')->insert([
-            'nombreDias' => 'DOMINGO',
+            'nombre' => 'DOMINGO',
         ]);
 		
         

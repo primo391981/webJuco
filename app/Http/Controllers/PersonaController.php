@@ -57,11 +57,17 @@ class PersonaController extends Controller
 		}		
     }
 
+	public function horarioPorDia($idEmpleado){
+		//CONSEGUIR TODOS LOS HORARIOS DEL EMPLEADO EN UN ARRAY
+		/*$horarioEmpleado=DB::table('horariosEmpleados')=>where('idEmpleado')
+		DB::table('empleados')->where('id',$request->idEmpleado)->value('idPersona');*/
+	}
     public function show($id)
     {		
         $persona=Persona::find($id);
 		$emprAsociadas=$persona->empresas;
-		return view('contable.persona.verPersona',['persona'=>$persona,'emprAsociadas'=>$emprAsociadas]);
+		$cargos=Cargo::All();
+		return view('contable.persona.verPersona',['persona'=>$persona,'emprAsociadas'=>$emprAsociadas,'cargos'=>$cargos]);
     }
 
     public function edit($id)
