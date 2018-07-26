@@ -52,11 +52,6 @@ class TipoPasoTableSeeder extends Seeder
 		]);
 		
 		DB::table('juridico_tipo_paso')->insert([
-			'nombre'=>'Contestacion Apelacion',
-			'descripcion'=>'Contestacion Apelacion'
-		]);
-		
-		DB::table('juridico_tipo_paso')->insert([
 			'nombre'=>'Sentencia Primera Instancia',
 			'descripcion'=>'Sentencia Primera Instancia'
 		]);

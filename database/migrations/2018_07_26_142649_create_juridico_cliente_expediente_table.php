@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateJuridicoExpedientesTable extends Migration
+class CreateJuridicoClienteExpedienteTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,10 @@ class CreateJuridicoExpedientesTable extends Migration
      */
     public function up()
     {
-        Schema::create('juridico_expedientes', function (Blueprint $table) {
+        Schema::create('juridico_cliente_expediente', function (Blueprint $table) {
             $table->increments('id');
-			$table->text('iue');
-			$table->text('caratula');
-			$table->text('juzgado');
-			$table->date('fecha_inicio');
-			$table->integer('user_id');
-			$table->integer('tipo_id');
-			$table->integer('estado_id');
-			$table->integer('paso_actual');
-
+			$table->integer('id_cliente');
+			$table->integer('id_expediente');
             $table->timestamps();
         });
     }
@@ -35,6 +28,6 @@ class CreateJuridicoExpedientesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('juridico_expedientes');
+        Schema::dropIfExists('juridico_cliente_expediente');
     }
 }

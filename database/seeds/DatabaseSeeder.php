@@ -46,7 +46,8 @@ class DatabaseSeeder extends Seeder
 			TipoNotificacionTableSeeder::class,
 			EstadosTableSeeder::class,
 			RemuneracionesTableSeeder::class,
-			
+			TransicionTableSeeder::class,
+			ExpedientesTableSeeder::class,
 			
 			EstadoCivilTableSeeder::class,
 			
