@@ -15,4 +15,12 @@ class Expediente extends Model
 	public function tipo(){
 		return $this->belongsTo('App\Juridico\TipoExpediente','tipo_id');
 	}
+	
+	public function estado(){
+		return $this->belongsTo('App\Juridico\Estado','estado_id');
+	}
+	
+	public function usuarios(){
+		return $this->belongsTo('App\Administración\User','user_id');
+	}
 }
