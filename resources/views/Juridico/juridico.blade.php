@@ -13,7 +13,13 @@
 			<li><a href="{{ route('cliente.index.inactivos') }}"><i class="fas fa-list-ul"></i> Inactivos</a></li>
         </ul>
 </li>
-
+<li>
+    <a href="#"><i class="fas fa-users"></i> Expedientes <i class="fas fa-caret-down"></i></a>
+		<ul class="nav nav-second-level">
+			 <li><a href="{{ route('expediente.index') }}"><i class="fas fa-list-ul"></i> Activos</a></li>
+			 <li><a href="{{ route('expediente.create') }}"><i class="fas fa-plus"></i> Agregar nuevo</a></li>
+        </ul>
+</li>
 <li>
     <a href="#"><i class="fas fa-clipboard-list"></i> Reportes <i class="fas fa-caret-down"></i></a>
 		<ul class="nav nav-second-level">

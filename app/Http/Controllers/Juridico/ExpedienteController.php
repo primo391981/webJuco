@@ -16,13 +16,9 @@ class ExpedienteController extends Controller
      */
     public function index()
     {
-        $expediente = Expediente::find(1);
-		
-		echo $expediente->tipo_id;
-		
-		echo $expediente->tipo->transiciones->where('id_paso_inicial',$expediente->paso_actual);
-		
-		//echo $expediente->tipo->transiciones->where('id_tipo_expediente',$expediente->tipo_id);
+       $expedientes = Expediente::All();
+	   
+	   return view('juridico.expediente.listaExpediente', ['expedientes' => $expedientes]);
 		
 		
     }
@@ -34,7 +30,7 @@ class ExpedienteController extends Controller
      */
     public function create()
     {
-        //
+        return view('juridico.expediente.webserviceExpediente');
     }
 
     /**
@@ -56,7 +52,13 @@ class ExpedienteController extends Controller
      */
     public function show(Expediente $expediente)
     {
-        //
+        $expediente = Expediente::find(1);
+		
+		echo $expediente->tipo_id;
+		
+		echo $expediente->tipo->transiciones->where('id_paso_inicial',$expediente->paso_actual);
+		
+		//echo $expediente->tipo->transiciones->where('id_tipo_expediente',$expediente->tipo_id); 
     }
 
     /**
