@@ -122,6 +122,8 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('cliente/inactivos', 'Juridico\ClienteController@inactivos')->name('cliente.index.inactivos')->middleware('role:juridicoAdmin');
 	Route::post('cliente/activar', 'Juridico\ClienteController@activar')->name('cliente.activar')->middleware('role:juridicoAdmin');
 	*/
+	
+	Route::get('expediente/search', 'Juridico\ExpedienteController@search')->name('expediente.search')->middleware('role:juridicoAdmin');
 	Route::resource('expediente', 'Juridico\ExpedienteController')->middleware('role:juridicoAdmin');
 	
 	

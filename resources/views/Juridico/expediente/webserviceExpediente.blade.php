@@ -19,7 +19,8 @@
 				</div>
 			</div>
 			<div class="panel-body text-center">
-				<form method="GET" action="{{route('expediente.search')}}>
+
+				<form method="GET" action="{{route('expediente.search')}}">
 					@csrf
 						<div class="form-group row">
 							<label for="iue" class="control-label col-sm-3">IUE <br><small class="text-muted">(consulta en el Sistema del Poder Judicial)</small></label>
@@ -41,7 +42,7 @@
 				</form>
 								
 			</div>
-			<div class="panel-footer"><a href="{{ route('cliente.index') }}" class="btn btn-success btn-block" role="button"><i class="fas fa-list-ul"></i> Listado clientes activos</a></div>
+			<div class="panel-footer"><a href="{{ route('expediente.index') }}" class="btn btn-success btn-block" role="button"><i class="fas fa-list-ul"></i> Listado expedientes </a></div>
 		</div>
 	</div>
 	
