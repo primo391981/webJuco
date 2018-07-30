@@ -10,6 +10,9 @@ use App\Contable\Empleado;
 use App\TipoDoc;
 use App\Contable\Cargo;
 use App\EstadoCivil;
+use App\Contable\HorarioEmpleado;
+use App\Contable\HorarioPorDia;
+
 use Exception;
 
 use App\Http\Requests\PersonaRequest;
@@ -57,11 +60,6 @@ class PersonaController extends Controller
 		}		
     }
 
-	public function horarioPorDia($idEmpleado){
-		//CONSEGUIR TODOS LOS HORARIOS DEL EMPLEADO EN UN ARRAY
-		/*$horarioEmpleado=DB::table('horariosEmpleados')=>where('idEmpleado')
-		DB::table('empleados')->where('id',$request->idEmpleado)->value('idPersona');*/
-	}
     public function show($id)
     {		
         $persona=Persona::find($id);

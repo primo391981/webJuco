@@ -50,6 +50,7 @@
 					<div class="col-xs-12 col-md-4"><p><strong>DETALLE HORARIO</strong></p></div>
 				</div>
 			</div>
+			
 			@foreach($emprAsociadas as $empr) 
 				<div class="row">
 					<div class="col-xs-12">
@@ -74,14 +75,23 @@
 							
 						</div>
 						<div class="col-xs-12 col-md-4">
-							<p class="hidden-md hidden-lg"><strong>DETALLE HORARIO</strong></p>
-							
+							<p class="hidden-md hidden-lg"><strong>DETALLE HORARIO</strong></p>							
 							@if($empr->pivot->horarioCargado==false)
 							<form method="GET" action="{{ route('empleado.formCargarHorario',$empr->pivot->id) }}">																
 								<button type="submit"class="btn btn-warning"><i class="far fa-clock"></i> Cargar horario</button>
-							</form>	
+							</form>
 							@else
-								<p>MOSTRAR HORARIO</p>
+								<!--Mostrar detalle de horario por dia-->
+								@foreach($empr->pivot->horarios as $horario)
+									@if($empr->pivot->id == $horario->idEmpleado)
+										@foreach($horario->horariosPorDia as $horaPorDia)
+											<p>{{$horaPorDia->idRegistro}} {{$horaPorDia->idDia}} {{$horaPorDia->cantHoras}}</p>
+										@endforeach
+									@endif
+								@endforeach
+								<form method="GET" action="#">																
+									<button type="submit"class="btn btn-warning"><i class="far fa-edit"></i> Modificar horario principal</button>
+								</form>							
 							@endif
 							
 						</div>

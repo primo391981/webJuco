@@ -38,6 +38,7 @@ class EmpleadoController extends Controller
 				} else {
 					$empresa=Empresa::find($request->idempresa);
 					$persona=Persona::find($idPer);
+					
 					$persona->empresas()->save($empresa, ['idCargo'=>$request->cargo,'fechaDesde'=>$request->fechaInicio,'fechaHasta'=>$request->fechaFin,'monto'=>$request->monto]);
 					return redirect()->route('persona.show',['id' => $idPer]);
 				}
@@ -64,17 +65,17 @@ class EmpleadoController extends Controller
 				$horarioEmp->fechaDesde=$request->fechaDesde;
 				$horarioEmp->fechaHasta=$request->fechaHasta;
 				$horarioEmp->save();
-				$idHorarioEmp = DB::table('horariosEmpleados')->max('id');
-				
+				$idHorarioEmp = DB::table('horariosEmpleados')->max('id');				
 				$dias=Dia::All();
 				foreach($dias as $dia){
+					
 					$hrDia=new HorarioPorDia;
 					$hrDia->idHorarioEmpleado=$idHorarioEmp;
 					
 					$nomCantHora="hr".$dia->id;
 					$nomReg="reg".$dia->id;
 					
-					$hrDia->idRegistro=$request->$nomReg;					
+					$hrDia->idRegistro=$request->$nomReg;
 					$hrDia->idDia=$dia->id;
 					$hrDia->cantHoras=$request->$nomCantHora;
 					
@@ -82,7 +83,9 @@ class EmpleadoController extends Controller
 				}
 				$idPer = DB::table('empleados')->where('id',$request->idEmpleado)->value('idPersona');
 				DB::table('empleados')->where('id',$request->idEmpleado)->update(['horarioCargado' => true]);
-				return redirect()->route('persona.show',['id' => $idPer]);
+				return redirect()->action('PersonaController@show', ['id' => $idPer]);
+				//return redirect()->action('PersonaController@index');
+			
 			}
 		}
 		catch(Exception $e){			

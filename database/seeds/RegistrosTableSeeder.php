@@ -12,13 +12,13 @@ class RegistrosTableSeeder extends Seeder
     public function run()
     {
         DB::table('registros')->insert([
-            'nombre' => 'JORNADA COMPLETA'
+            'nombre' => 'JORNADA COMPLETA',
         ]);	
         DB::table('registros')->insert([
-            'nombre' => 'MEDIO DIA'
+            'nombre' => 'MEDIO DIA',
         ]);		
 		DB::table('registros')->insert([
-            'nombre' => 'DESCANSO'
+            'nombre' => 'DESCANSO',
         ]);	
     }
 }

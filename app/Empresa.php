@@ -16,7 +16,8 @@ class Empresa extends Model
         return $this->morphMany('\App\Contable\Cliente', 'persona');
     }
 	
-	public function empleados(){
-		return $this->belongsToMany('App\Persona','empleados','idPersona','idEmpresa')->withPivot('id','idCargo','fechaDesde','fechaHasta','monto','horarioCargado');
+	public function personas(){
+		//return $this->belongsToMany('App\Persona','empleados','idPersona','idEmpresa')->withPivot('id','idCargo','fechaDesde','fechaHasta','monto','horarioCargado');
+		return $this->belongsToMany('App\Empresa','empleados','idPersona','idEmpresa')->using('App\Contable\Empleado');
 	}
 }

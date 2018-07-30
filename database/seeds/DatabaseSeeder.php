@@ -50,6 +50,7 @@ class DatabaseSeeder extends Seeder
 			
 			
 			EstadoCivilTableSeeder::class,
+			PersonaTableSeeder::class,
 			DiasTableSeeder::class,
 			RegistrosTableSeeder::class
 			
