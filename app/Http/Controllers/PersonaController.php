@@ -65,6 +65,7 @@ class PersonaController extends Controller
         $persona=Persona::find($id);
 		$emprAsociadas=$persona->empresas;
 		$cargos=Cargo::All();
+		//traer el menor horario que es el horario principal del empleado
 		return view('contable.persona.verPersona',['persona'=>$persona,'emprAsociadas'=>$emprAsociadas,'cargos'=>$cargos]);
     }
 
