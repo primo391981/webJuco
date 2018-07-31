@@ -6,8 +6,14 @@
 <br>
 <div class="row">
 	<!--solamente es visible en cel-->
-	<div class="col-xs-12 visible-xs"><a href="{{ route('expediente.index') }}" class="btn btn-success" style="margin-bottom:5%;" role="button"><i class="fas fa-list-ul"></i> Listado clientes activos</a></div>				  
+	<div class="col-xs-12 visible-xs"><a href="{{ route('expediente.index') }}" class="btn btn-success" style="margin-bottom:5%;" role="button"><i class="fas fa-list-ul"></i> Listado expedientes</a></div>				  
 </div>
+
+@if (Session::has('error'))
+		<div class="alert alert-danger">
+			{{Session::get('error')}}
+		</div>
+@endif 
 
 <div class="row text-info">
 	<div class="col-xs-12 ">
@@ -15,7 +21,7 @@
 			<div class="panel-heading">
 				<div class="row">
 					<div class="col-sm-9"><h4>AGREGAR NUEVO EXPEDIENTE</h4></div>
-					<div class="col-sm-3 hidden-xs"><a href="{{ route('expediente.index') }}" class="btn btn-success" role="button"><i class="fas fa-list-ul"></i> Listado clientes activos</a></div>
+					<div class="col-sm-3 hidden-xs"><a href="{{ route('expediente.index') }}" class="btn btn-success" role="button"><i class="fas fa-list-ul"></i> Listado expedientes</a></div>
 				</div>
 			</div>
 			<div class="panel-body text-center">

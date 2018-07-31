@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Juridico;
 
 use App\Juridico\Expediente;
+use App\Juridico\Cliente;
 use App\Juridico\Transicion;
+use App\Juridico\TipoExpediente;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use SoapClient;
+
 
 class ExpedienteController extends Controller
 {
@@ -30,21 +33,23 @@ class ExpedienteController extends Controller
         $client = new SoapClient($wsdl);
           
 		 // ejemplo: 10-1/2010
-        $parameters = $request->iue;
+        $iue = $request->iue;
 
-        $values = $client->ConsultaIUE($parameters);
-		//dd($values);
-		/*
-		$xml = $values;
-		print "<pre>\n";
-        print_r($xml);
-        print "</pre>";
-		*/
-		dd($values);
-		foreach($values->movimientos as $movimiento){
+        $expediente = $client->ConsultaIUE($iue);
+		
+		//dd($expediente->caratula);
+		
+		if($expediente->estado === "EL EXPEDIENTE NO SE ENCUENTRA EN EL SISTEMA"){
+			return back()->withInput()->withError('El expediente no se encuentra en el sistema del Poder Judicial');
+		} else {
+			$tipoExpedientes = TipoExpediente::All();
+			$clientes = Cliente::All();
 			
+			//dd($clientes);
+			return view('juridico.expediente.agregarExpediente',['clientes' => $clientes, 'tipoExpedientes' => $tipoExpedientes, 'expediente' => $expediente]);
 		}
-		//dd($client);
+		
+		
 	}
 
     /**
