@@ -82,14 +82,30 @@
 							</form>
 							@else
 								<!--Mostrar detalle de horario por dia-->
-								@foreach($empr->pivot->horarios as $horario)
-									@if($empr->pivot->id == $horario->idEmpleado)
-										@foreach($horario->horariosPorDia as $horaPorDia)
-											<p>{{$horaPorDia->idRegistro}} {{$horaPorDia->idDia}} {{$horaPorDia->cantHoras}}</p>
+								@foreach($collectionHorariosPorDia as $key=> $horarioPorDia)
+									@if($empr->pivot->id == $key)
+										@foreach($horarioPorDia as $hr)
+											<?php $idHorarioEmp = $hr->idHorarioEmpleado; ?>
+											@foreach($dias as $dia)
+											@if($dia->id==$hr->idDia)
+												@switch($hr->idRegistro)
+																@case(1)
+																	<p>{{$dia->nombre}}: {{$hr->cantHoras}} - COMPLETO</p>
+																	@break
+																@case(2)
+																	<p>{{$dia->nombre}}: {{$hr->cantHoras}} - MEDIO DIA</p>
+																	@break
+																@case(3)
+																	<p>{{$dia->nombre}}: {{$hr->cantHoras}} - DESCANSO</p>
+																	@break
+												@endswitch
+											@endif
+											@endforeach
+										
 										@endforeach
-									@endif
+									@endif	
 								@endforeach
-								<form method="GET" action="#">																
+								<form method="GET" action="{{ route('empleado.formEditarHorario',[$empr->pivot->id,$empr->pivot->id]) }}">																
 									<button type="submit"class="btn btn-warning"><i class="far fa-edit"></i> Modificar horario principal</button>
 								</form>							
 							@endif

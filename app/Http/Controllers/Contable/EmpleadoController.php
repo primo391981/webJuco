@@ -27,6 +27,7 @@ class EmpleadoController extends Controller
 		return view('contable.empleado.asociarEmpresa',['cargos'=>$cargos,'emprSinAsociar'=>$emprSinAsociar,'persona'=>$persona]);
 		
 	}
+
     public function asociarEmpresa(Request $request,$idPer){
 		try{
 			if($request->idempresa==null){
@@ -87,6 +88,51 @@ class EmpleadoController extends Controller
 				//return redirect()->action('PersonaController@index');
 			
 			}
+		}
+		catch(Exception $e){			
+			return back()->withInput()->withError("Error en el sistema.");
+		}
+	}
+	
+	public function formEditarHorario($idEmpleado,$idHorarioEmp){
+		try{
+			$dias=Dia::All();
+			$registros=Registro::All();
+			$horarios=DB::table('horariosPorDia')->where ('idHorarioEmpleado','=',$idHorarioEmp)->get();
+			$fechas=DB::table('horariosEmpleados')->where ('id','=',$idHorarioEmp)->first();
+			return view('contable.empleado.editarHorario',['dias'=>$dias,'registros'=>$registros,'horarios'=>$horarios,'fechas'=>$fechas,'idHorarioEmp'=>$idHorarioEmp]);
+		}
+		catch(Exception $e){
+			return back()->withInput()->withError("Error en el sistema");
+		}
+	}
+	public function editarHorario(Request $request){
+		
+		try{
+			if($request->fechaDesde>$request->fechaHasta){
+				return back()->withInput()->withError("La fecha de fin debe ser mayor a la fecha de inicio.");
+			}
+			else{				
+				DB::table('horariosEmpleados')->where('id','=',$request->idHorarioEmp)->update(['fechaDesde' =>$request->fechaDesde,'fechaHasta'=>$request->fechaHasta]);
+				//recorro por dia y hago update where idHorarioEmp and dia=dia foreach
+				$dias=Dia::All();
+				foreach($dias as $dia){
+					$nomCantHora="hr".$dia->id;
+					$nomReg="reg".$dia->id;
+					DB::table('horariosPorDia')
+					->where('idHorarioEmpleado','=',$request->idHorarioEmp)
+					->where('idDia','=',$dia->id)
+					->update(['idRegistro'=>$request->$nomReg,'cantHoras'=>$request->$nomCantHora]);				
+				}
+				
+				$idPer=DB::table('horariosEmpleados')
+				->join('empleados','horariosEmpleados.idEmpleado','=','empleados.id')
+				->where('horariosEmpleados.idEmpleado','=',$request->idHorarioEmp)
+				->value('empleados.idPersona');
+				
+				return redirect()->action('PersonaController@show', ['id' => $idPer]);
+			}
+			
 		}
 		catch(Exception $e){			
 			return back()->withInput()->withError("Error en el sistema.");

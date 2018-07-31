@@ -9,6 +9,7 @@ use App\Empresa;
 use App\Contable\Empleado;
 use App\TipoDoc;
 use App\Contable\Cargo;
+use App\Contable\Dia;
 use App\EstadoCivil;
 use App\Contable\HorarioEmpleado;
 use App\Contable\HorarioPorDia;
@@ -62,12 +63,33 @@ class PersonaController extends Controller
 
     public function show($id)
     {		
-        $persona=Persona::find($id);
-		$emprAsociadas=$persona->empresas;
-		$cargos=Cargo::All();
-		//traer el menor horario que es el horario principal del empleado
-		return view('contable.persona.verPersona',['persona'=>$persona,'emprAsociadas'=>$emprAsociadas,'cargos'=>$cargos]);
-    }
+		try{
+			$persona=Persona::find($id);
+			$emprAsociadas=$persona->empresas;
+			$cargos=Cargo::All();
+			$dias=Dia::All();
+			$collectionHorariosPorDia = collect([]);
+			if($emprAsociadas->isNotEmpty()){
+				foreach($emprAsociadas as $empr){
+					if($empr->pivot->horarioCargado==true){
+						$menorId = DB::table('horariosEmpleados')->where('idEmpleado',$empr->id)->min('id');
+						//con el menor id join horariosPorDia
+						$horariosPorDIa=DB::table('horariosEmpleados')
+						->join('horariosPorDia','horariosEmpleados.id','horariosPorDia.idHorarioEmpleado')
+						->where('horariosPorDia.idHorarioEmpleado','=',$menorId)
+						->select('horariosPorDia.*')
+						->get();
+						$collectionHorariosPorDia->put($empr->pivot->id,$horariosPorDIa);
+						//dd($collectionHorariosPorDia);
+					}
+				}
+			}
+			return view('contable.persona.verPersona',['persona'=>$persona,'emprAsociadas'=>$emprAsociadas,'cargos'=>$cargos,'dias'=>$dias,'collectionHorariosPorDia'=>$collectionHorariosPorDia]);
+		}
+		catch(Exception $e){
+			return back()->withInput()->withError("Problemas en el sistema, intente nuevamente o contacte al administrador.");
+		}
+	}
 
     public function edit($id)
     {
