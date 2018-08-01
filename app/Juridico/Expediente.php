@@ -23,4 +23,8 @@ class Expediente extends Model
 	public function usuarios(){
 		return $this->belongsTo('App\Administración\User','user_id');
 	}
+	
+	public function clientes(){
+		return $this->belongsToMany('App\Juridico\Cliente','juridico_cliente_expediente','id_expediente','id_cliente');
+	}
 }

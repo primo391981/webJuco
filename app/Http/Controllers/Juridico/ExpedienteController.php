@@ -46,7 +46,7 @@ class ExpedienteController extends Controller
 			$clientes = Cliente::All();
 			
 			//dd($clientes);
-			return view('juridico.expediente.agregarExpediente',['clientes' => $clientes, 'tipoExpedientes' => $tipoExpedientes, 'expediente' => $expediente]);
+			return view('juridico.expediente.agregarExpediente',['clientes' => $clientes, 'tipoExpedientes' => $tipoExpedientes, 'expediente' => $expediente, 'tipoDocumento' => 'DEMANDA' ]);
 		}
 		
 		
@@ -70,7 +70,7 @@ class ExpedienteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request);
     }
 
     /**

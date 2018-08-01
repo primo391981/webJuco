@@ -39,6 +39,7 @@
 <script>
 
 $(document).ready(function(){
+	$('.js-example-responsive').select2();
 	
 	$("#documento").each(function() {
 		var elem = $(this);
