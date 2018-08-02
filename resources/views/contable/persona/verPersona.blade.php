@@ -72,6 +72,7 @@
 							<p>Inicio: {{$empr->pivot->fechaDesde}}</p>
 							<p>Fin: {{$empr->pivot->fechaHasta}}</p>
 							<p>Monto: {{$empr->pivot->monto}}</p>
+							<p>Valor Hora: {{$empr->pivot->valorHora}}</p>
 							
 						</div>
 						<div class="col-xs-12 col-md-4">

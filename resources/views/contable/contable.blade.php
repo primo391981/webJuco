@@ -22,6 +22,9 @@
 		</ul>
 </li>
 <li>
+    <a href="{{ route('reloj.index') }}"><i class="far fa-clock"></i> Marcas reloj </a>
+</li>
+<li>
     <a href="#"><i class="fas fa-briefcase"></i> Cargos <i class="fas fa-caret-down"></i></a>
 		<ul class="nav nav-second-level">
 			 <li><a href="{{ route('cargo.index') }}"><i class="fas fa-list-ul"></i> Activos</a></li>

@@ -92,6 +92,12 @@
 						</div>	
 					</div>
 					<div class="form-group row">
+						<label for="valorhr" class="control-label col-sm-3">VALOR HORA </label>
+						<div class="col-sm-6">
+							<input type="number" name="valorhr" id="valorhr" class="form-control" value="{{ old('valorhr') }}" min="1" required>
+						</div>	
+					</div>
+					<div class="form-group row">
 						<div class="col-xs-12 text-center">
 							<button type="submit" class="btn btn-warning"><i class="fas fa-check"></i> Confirmar asosiación</button>
 						</div>

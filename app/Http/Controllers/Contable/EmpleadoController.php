@@ -40,7 +40,7 @@ class EmpleadoController extends Controller
 					$empresa=Empresa::find($request->idempresa);
 					$persona=Persona::find($idPer);
 					
-					$persona->empresas()->save($empresa, ['idCargo'=>$request->cargo,'fechaDesde'=>$request->fechaInicio,'fechaHasta'=>$request->fechaFin,'monto'=>$request->monto]);
+					$persona->empresas()->save($empresa, ['idCargo'=>$request->cargo,'fechaDesde'=>$request->fechaInicio,'fechaHasta'=>$request->fechaFin,'monto'=>$request->monto,'valorHora'=>$request->valorhr]);
 					return redirect()->route('persona.show',['id' => $idPer]);
 				}
 			}
@@ -59,6 +59,9 @@ class EmpleadoController extends Controller
 		try{			
 			if($request->fechaDesde>$request->fechaHasta){
 				return back()->withInput()->withError("La fecha de fin debe ser mayor a la fecha de inicio.");
+				//if($request->fechaDesde==null or $request->fechaHasta==null){
+					
+				
 			}
 			else{
 				$horarioEmp=new HorarioEmpleado;
