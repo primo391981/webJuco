@@ -14,13 +14,9 @@
 							<div class="col-sm-9">
 								<div class="well well-sm">{{isset($exp) ? $exp->iue : $expediente->expediente }}</div>
 								<input id="IUE" type="hidden" name="IUE" value="{{isset($exp) ? $exp->iue : $expediente->expediente }}">
-							</div>	
-						 </div>
-						 <div class="form-group row">
-							<label for="juzgado" class="control-label col-sm-3">JUZGADO *</label>
-							<div class="col-sm-9">
-								<div class="well well-sm">{{isset($exp) ? $exp->juzgado : $expediente->origen }}</div>
-								<input id="juzgado" type="hidden" name="juzgado" value="{{isset($exp) ? $exp->juzgado : $expediente->origen }}">
+								@if ($errors->has('iue'))
+									<span style="color:red;">{{ $errors->first('iue') }}</span>
+								@endif
 							</div>	
 						 </div>
 						 <div class="form-group row">
@@ -28,6 +24,9 @@
 							<div class="col-sm-9">
 								<div class="well well-sm">{{isset($exp) ? $exp->iue : $expediente->caratula }}</div>
 								<input id="caratula" type="hidden" name="caratula" value="{{isset($exp) ? $exp->iue : $expediente->caratula }}">
+								@if ($errors->has('caratula'))
+									<span style="color:red;">{{ $errors->first('caratula') }}</span>
+								@endif
 							</div>	
 						 </div>
 						 
@@ -43,24 +42,42 @@
 						</div>
 						
 						<div class="form-group row">
-							<label for="fecha_inicio" class="control-label col-sm-3">FECHA CREACION</label>
+							<label for="fecha_creacion" class="control-label col-sm-3">FECHA CREACION</label>
 
 							<div class="col-sm-9">
-								<input id="fecha_inicio" type="date" class="form-control{{ $errors->has('fecha_creacion') ? ' is-invalid' : '' }}" name="fecha_inicio" value="{{ isset($exp) ? $exp->fecha_inicio : old('fecha_inicio') }}" autofocus>
+								<input id="fecha_creacion" type="date" class="form-control{{ $errors->has('fecha_creacion') ? ' is-invalid' : '' }}" name="fecha_creacion" value="{{ isset($exp) ? $exp->fecha_creacion : old('fecha_creacion') }}" autofocus>
 
-								@if ($errors->has('fecha_inicio'))
+								@if ($errors->has('fecha_creacion'))
 									<span class="invalid-feedback">
-										<strong>{{ $errors->first('fecha_inicio') }}</strong>
+										<strong>{{ $errors->first('fecha_creacion') }}</strong>
 									</span>
 								@endif
 							</div>
 						</div>
 						
+						<div class="panel panel-default">
+							  <div class="panel-body">
+									<div class="form-group row">
+										<label for="archivo" class="control-label col-sm-3">DOCUMENTO {{ $tipoDocumento}}</label>
+
+										<div class="col-sm-9">
+											<input id="" type="file" class="form-control{{ $errors->has('archivo') ? ' is-invalid' : '' }}" name="archivo" autofocus>
+											@if ($errors->has('archivo'))
+												<span class="invalid-feedback">
+													<strong>{{ $errors->first('archivo') }}</strong>
+												</span>
+											@endif
+										</div>
+									</div>
+							  </div>
+						</div>
 						
+						
+		
 						<div class="form-group row">
 								<br>
 								<div class="col-xs-12 text-center">
-									<button type="submit" class="btn btn-success btn-lg"><i class="fas fa-check"></i> Siguiente</button>
+									<button type="submit" class="btn btn-success btn-lg"><i class="fas fa-check"></i> Confirmar</button>
 								</div>
 						</div>
 					

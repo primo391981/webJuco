@@ -9,13 +9,11 @@
 	<div class="col-xs-12 visible-xs"><a href="{{ route('expediente.index') }}" class="btn btn-success" style="margin-bottom:5%;" role="button"><i class="fas fa-list-ul"></i> Listado expediente</a></div>				  
 </div>
 
-@if ($errors->any())
-    <div class="alert alert-danger">
-           @foreach ($errors->all() as $error)
-                {{ $error }}
-           @endforeach
-    </div>
-@endif
+@if (Session::has('error'))
+		<div class="alert alert-danger">
+			{{Session::get('error')}}
+		</div>
+@endif 
 
 <div class="row">
 	<div class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2">
@@ -27,7 +25,7 @@
 				</div>
 			</div>
 			 <div class="panel-body text-success"> 
-				<form method="POST" action="{{ route('expediente.store') }}" class="form-horizontal" id="formPersona"> 
+				<form method="POST" action="{{ route('expediente.store') }}" class="form-horizontal" enctype="multipart/form-data" id="formPersona"> 
 					@include('juridico.expediente.formExpediente', ['textoBoton' => 'Confirmar']) 
 				</form>
 			</div>

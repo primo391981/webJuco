@@ -9,7 +9,7 @@ use App\Juridico\TipoExpediente;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use SoapClient;
-
+use Auth;
 
 class ExpedienteController extends Controller
 {
@@ -70,7 +70,30 @@ class ExpedienteController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+        //dd(Auth::user()->id);
+		$request->validate([
+			'IUE' => 'required|unique:juridico_expedientes',
+		]);
+		
+		$expediente = new Expediente();
+		$expediente->iue = $request->IUE;
+		$expediente->tipo_id = $request->tipoexp;
+		$expediente->caratula = $request->caratula;
+		$expediente->fecha_inicio = $request->fecha_inicio;
+		$expediente->fecha_inicio = $request->fecha_inicio;
+		$expediente->juzgado = $request->juzgado;
+		$expediente->estado_id = 1;
+		$expediente->paso_actual = 1;
+		$expediente->user_id = Auth::user()->id;
+		
+		$expediente->save();
+		foreach($request->clientes as $cliente){
+			$expediente->clientes()->attach($cliente);
+		}
+				
+		return view('juridico.expediente.agregarPaso', ['expediente' => $expediente])->with('success', "El expediente se creó correctamente.");
+		
+		
     }
 
     /**

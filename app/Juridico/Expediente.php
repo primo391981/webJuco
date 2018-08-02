@@ -8,7 +8,7 @@ class Expediente extends Model
 {
     protected $table = 'juridico_expedientes';
 	
-	public function pasos(){
+	public function Pasos(){
 		return $this->hasMany('App\Juridico\Paso','id_expediente');
 	}
 	
