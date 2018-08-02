@@ -18,6 +18,6 @@ class Empresa extends Model
 	
 	public function personas(){
 		//return $this->belongsToMany('App\Persona','empleados','idPersona','idEmpresa')->withPivot('id','idCargo','fechaDesde','fechaHasta','monto','horarioCargado');
-		return $this->belongsToMany('App\Empresa','empleados','idPersona','idEmpresa')->using('App\Contable\Empleado');
+		return $this->belongsToMany('App\Persona','empleados','idEmpresa','idPersona')->using('App\Contable\Empleado')->withPivot('id','idCargo','fechaDesde','fechaHasta','monto','horarioCargado','valorHora');
 	}
 }

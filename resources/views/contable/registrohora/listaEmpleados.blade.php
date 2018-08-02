@@ -41,16 +41,13 @@
 								<th>NOMBRE</th>
 								<th>APELLIDO</th>
 								<th>EMPRESA</th>
-								<th>MES</th>
-								<th>AÑO</th>
-								<th></th>
-								
+								<th>MES - AÑO</th>
+								<th></th>								
 							</tr>
 						</thead>
 						<tbody>
 							@foreach($empleados as $emp)
-							<tr>
-								
+							<tr>								
 								<td>{{$emp->persona->tipoDoc->nombre}} - {{$emp->persona->documento}}</td>
 								<td>{{$emp->persona->nombre}}</td>
 								<td>{{$emp->persona->apellido}}</td>
@@ -59,12 +56,9 @@
 								<form id="form{{$emp->id}}" method="GET" action="#">
 									<td>
 										<div class="form-group">											
-											<select class="form-control" id="" name="">
-													<option value="1"></option>
-											</select>											
+											<input type="month" class="form-control" id="month{{$emp->id}}" placeholder="fabian">									
 										</div>
 									</td>
-									<td></td>
 									<td><button type="submit"class="btn btn-warning"><i class="far fa-clock"></i> Cargar marcas</button></td>
 								</form>
 							</tr>

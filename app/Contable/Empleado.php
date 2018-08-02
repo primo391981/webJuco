@@ -6,15 +6,14 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class Empleado extends Pivot
 {
-    protected $table='empleados';
-	
+    protected $table='empleados';	
 	
 	public function persona() {
-        return $this->belongsTo('App\Persona','id');
+        return $this->belongsTo('App\Persona','idPersona');
     }
 
     public function empresa() {
-        return $this->belongsTo('App\Empresa','id');
+        return $this->belongsTo('App\Empresa','idEmpresa');
     }
 
     public function horarios() {
