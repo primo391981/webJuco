@@ -126,5 +126,8 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('expediente/search', 'Juridico\ExpedienteController@search')->name('expediente.search')->middleware('role:juridicoAdmin');
 	Route::resource('expediente', 'Juridico\ExpedienteController')->middleware('role:juridicoAdmin');
 	
+	//Pasos expediente
+	Route::resource('paso', 'Juridico\PasoController')->middleware('role:juridicoAdmin');
+	
 	
 });

@@ -71,10 +71,10 @@ class ExpedienteController extends Controller
     public function store(Request $request)
     {
         //dd(Auth::user()->id);
-		$request->validate([
+		/*$request->validate([
 			'IUE' => 'required|unique:juridico_expedientes',
 		]);
-		
+		*/
 		$expediente = new Expediente();
 		$expediente->iue = $request->IUE;
 		$expediente->tipo_id = $request->tipoexp;
@@ -90,8 +90,11 @@ class ExpedienteController extends Controller
 		foreach($request->clientes as $cliente){
 			$expediente->clientes()->attach($cliente);
 		}
-				
-		return view('juridico.expediente.agregarPaso', ['expediente' => $expediente])->with('success', "El expediente se creó correctamente.");
+			
+		//dd($expediente->clientes);
+		//setting varables a mostrar en el formulario de creación de paso
+		
+		return view('juridico.expediente.agregarPaso', ['expediente' => $expediente, 'numero_paso' => 1, 'nombre_paso' => "Adjuntar Demanda"])->with('success', "El expediente se creó correctamente.");
 		
 		
     }
