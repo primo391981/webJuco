@@ -1,102 +1,134 @@
-@extends('contable.contable')
-
-@section('seccion', " - DETALLE")
-
-@section('content')
-<br>
-<div class="row">
-	<!--solamente es visible en cel-->
-	<div class="col-xs-12 visible-xs"><a href="{{ route('persona.index') }}" class="btn btn-warning" style="margin-bottom:5%;" role="button"><i class="fas fa-list-ul"></i> Listado empleados</a></div>				  
-</div>
-<div class="row text-info">
-	<div class="col-xs-12 col-md-offset-2 col-md-8">
-		<div class="panel panel-warning">
-				  <div class="panel-heading">
-					<div class="row">
-						<div class="col-sm-9"><h4>DETALLE EMPLEADO</h4></div>
-						<div class="col-sm-3 hidden-xs"><a href="{{ route('persona.index') }}" class="btn btn-warning pull-right" role="button"><i class="fas fa-list-ul"></i> Listado empleados</a></div>	
-					</div>
-				  </div>
-					<div class="panel-body text-warning">					
-					<h1>{{$persona->nombre}} {{$persona->apellido}}</h1>
-					<hr>
-					
-								<h3><strong><em>TIPO DOCUMENTO :</em></strong> {{$persona->tipoDoc->nombre}}</h3>
-								<h3><strong><em>DOCUMENTO :</em></strong> {{$persona->documento}}</h3>
-								<h3><strong><em>TELÉFONO :</em></strong> {{$persona->telefono}}</h3>
-								<h3><strong><em>CORREO ELECTRÓNICO :</em></strong> {{$persona->email}}</h3>
-								<h3><strong><em>DOMICILIO :</em></strong> {{$persona->domicilio}}</h3>
-								<h3><strong><em>ESTADO CIVIL :</em></strong> {{$persona->eCivil->nombre}}</h3>
-								<h3><strong><em>CANTIDAD DE HIJOS :</em></strong> {{$persona->cantHijos}}</h3>
-					</div>
-					
-				@if ($empleado)	
-				<div class="panel-footer">				
-					<form method="POST" action="{{ route('empleado.destroy',$empleado->id) }}">
-					{{ method_field('DELETE') }}
-					@csrf	
-					<button type="submit"class="btn btn-danger btn-block"><i class="fas fa-sign-out-alt"></i> Desvincular de la empresa</button>	
-					</form>
-				</div>
-				@else
-				<div class="panel-footer">	
-							<button type="button" class="btn btn-warning btn-block" data-toggle="modal" data-target="#myModal"><i class="fas fa-handshake"></i> Asociar a empresa</button>
-				</div>
-				@endif
-			
-	</div>
-</div>							
-						
-						
-					
-
-
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <!--<div class="modal-header">
-        <h3 class="modal-title text-warning" id="exampleModalLabel">SELECCIONE UNA EMPRESA</h3>
-      </div>-->
-      <div class="modal-body">
-		<div class="table-responsive">
-						<table class="table table-sm">
-							
-							<thead>
-							<tr>
-								<th>RAZON SOCIAL</th>
-								<th>NOMBRE FANTASIA</th>
-								<th></th>								
-							</tr>
-						</thead>
-						<tbody>
-						@foreach($empresas as $emp)						
-							<tr>								
-								<td>{{$emp->razonSocial}}</td>
-								<td>{{$emp->nombreFantasia}}</td>
-												
-								<td>
-									<form method="POST" action="{{route('empleado.altaAsociacion',[$emp->id,$persona->id]) }}">																
-									@csrf
-										<button type="submit"class="btn btn-warning"><i class="fas fa-check"></i> Confirmar</button>												
-									</form>
-								</td>
-							</tr>
-						@endforeach
-						</tbody>
-						
-						</table>
-					</div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fas fa-times"></i> Cerrar</button>
-        
-      </div>
-    </div>
+@extends('contable.contable') 
+@section('seccion', " - DETALLE") 
+ 
+@section('content') 
+@if (Session::has('error')) 
+<br>   
+  <div class="alert alert-danger"> 
+    {{Session::get('error')}} 
+  </div> 
+@endif 
+<br> 
+ <div class="row">
+ <div class="col-xs-12 col-md-3"> 
+    <div class="panel panel-warning"> 
+      <div class="panel-heading"> 
+        <h4>DETALLE EMPLEADO</h4>           
+      </div> 
+      <div class="panel-body text-warning">   
+		<p>{{$persona->nombre}} {{$persona->apellido}}</p> 
+        <hr>
+		
+			<p><strong>TIPO DOCUMENTO :</strong> {{$persona->tipoDoc->nombre}}</p> 
+			<p><strong>DOCUMENTO :</strong> {{$persona->documento}}</p> 
+			<p><strong>TELÉFONO :</strong> {{$persona->telefono}}</p> 
+			<p><strong>EMAIL :</strong> {{$persona->email}}</p> 
+			<p><strong>DOMICILIO :</strong> {{$persona->domicilio}}</p> 
+			<p><strong>ESTADO CIVIL :</strong> {{$persona->eCivil->nombre}}</p> 
+		    <p><strong>CANTIDAD DE HIJOS :</strong> {{$persona->cantHijos}}</p>
+	
+      </div> 
+      <div class="panel-footer"> 
+        <form method="GET" action="{{ route('persona.edit', $persona->id) }}">																
+			<button type="submit"class="btn btn-warning btn-block"><i class="far fa-edit"></i> Modificar datos</button>												
+		</form>
+      </div> 
+    </div> 
   </div>
-</div>
-
-
-
-@endsection
-
+  
+  <div class="col-xs-12 col-md-9"> 
+    <div class="panel panel-warning"> 
+      <div class="panel-heading"> 
+        <h4>EMPRESAS ASOCIADAS AL EMPLEADO</h4>           
+      </div> 
+      <div class="panel-body text-warning">
+		@if (count($emprAsociadas) >0)
+			<div class="row hidden-xs hidden-sm">
+				<div class="col-xs-12">
+					<div class="col-xs-12 col-md-4"><p><strong>DETALLE EMPRESA</strong></p></div>
+					<div class="col-xs-12 col-md-4"><p><strong>DETALLE CONTRATO</strong></p></div>
+					<div class="col-xs-12 col-md-4"><p><strong>DETALLE HORARIO</strong></p></div>
+				</div>
+			</div>
+			
+			@foreach($emprAsociadas as $empr) 
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="col-xs-12 col-md-4">
+							<p class="hidden-md hidden-lg"><strong>DETALLE EMPRESA</strong></p>
+							<p>{{$empr->razonSocial}}</p>
+							<p>{{$empr->nombreFantasia}}</p>
+							<p>{{$empr->nomContacto}}</p>
+							<p>{{$empr->telefono}}</p>
+						</div>
+						<div class="col-xs-12 col-md-4">
+							<p class="hidden-md hidden-lg"><strong>DETALLE CONTRATO</strong></p>
+							@foreach($cargos as $cargo)
+								@if($cargo->id ===$empr->pivot->idCargo)
+									<p>Cargo: {{$cargo->nombre}}</p>
+									@break
+								@endif
+							@endforeach
+							<p>Inicio: {{$empr->pivot->fechaDesde}}</p>
+							<p>Fin: {{$empr->pivot->fechaHasta}}</p>
+							<p>Monto: {{$empr->pivot->monto}}</p>
+							<p>Valor Hora: {{$empr->pivot->valorHora}}</p>
+							
+						</div>
+						<div class="col-xs-12 col-md-4">
+							<p class="hidden-md hidden-lg"><strong>DETALLE HORARIO</strong></p>							
+							@if($empr->pivot->horarioCargado==false)
+							<form method="GET" action="{{ route('empleado.formCargarHorario',$empr->pivot->id) }}">																
+								<button type="submit"class="btn btn-warning"><i class="far fa-clock"></i> Cargar horario</button>
+							</form>
+							@else
+								<!--Mostrar detalle de horario por dia-->
+								@foreach($collectionHorariosPorDia as $key=> $horarioPorDia)
+									@if($empr->pivot->id == $key)
+										@foreach($horarioPorDia as $hr)
+											<?php $idHorarioEmp = $hr->idHorarioEmpleado; ?>
+											@foreach($dias as $dia)
+											@if($dia->id==$hr->idDia)
+												@switch($hr->idRegistro)
+																@case(1)
+																	<p>{{$dia->nombre}}: {{$hr->cantHoras}} - COMPLETO</p>
+																	@break
+																@case(2)
+																	<p>{{$dia->nombre}}: {{$hr->cantHoras}} - MEDIO DIA</p>
+																	@break
+																@case(3)
+																	<p>{{$dia->nombre}}: {{$hr->cantHoras}} - DESCANSO</p>
+																	@break
+												@endswitch
+											@endif
+											@endforeach
+										
+										@endforeach
+									@endif	
+								@endforeach
+								<form method="GET" action="{{ route('empleado.formEditarHorario',[$empr->pivot->id,$empr->pivot->id]) }}">																
+									<button type="submit"class="btn btn-warning"><i class="far fa-edit"></i> Modificar horario principal</button>
+								</form>							
+							@endif
+							
+						</div>
+					</div>
+				</div>
+				<hr>
+			@endforeach
+		@else
+			<p>La persona NO esta asociada a ninguna empresa.</p>
+		@endif
+		           
+      </div> 
+      <div class="panel-footer"> 
+		<form method="GET" action="{{ route('empleado.formCrear', $persona->id) }}">
+			<button type="submit"class="btn btn-warning btn-block"><i class="far fa-handshake"></i> Asociar empresa</button>												
+		</form>
+	  </div>      
+    </div> 
+  </div>    
+</div> 
+	 
+@endsection 
+ 

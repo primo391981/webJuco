@@ -1,6 +1,6 @@
 @extends('contable.contable')
 
-@section('seccion', " - ACTIVOS")
+@section('seccion', " - MARCA RELOJ")
 
 @section('content')
 
@@ -27,11 +27,12 @@
 		<div class="panel panel-warning">
 				  <div class="panel-heading">
 					<div class="row">
-						<div class="col-sm-9"><h4>LISTADO EMPLEADOS ACTIVOS</h4></div>
+						<div class="col-sm-9"><h4>GESTIÓN MARCAS RELOJ</h4></div>
 						<div class="col-sm-3 hidden-xs"><a href="{{ route('persona.create') }}" class="btn btn-warning pull-right" role="button"><i class="fas fa-plus"></i> Agregar nuevo empleado</a></div>				  
 					</div>
 				  </div>
-				  <div class="panel-body text-warning">					
+				  <div class="panel-body text-warning">	
+					<p>falta comprobar que tenga horario principal cargado para listarlo</p>
 					<div class="table-responsive">
 						<table id="tablePersonas" class="table">
 							
@@ -41,50 +42,29 @@
 								<th>NOMBRE</th>
 								<th>APELLIDO</th>
 								<th>EMPRESA</th>
-								<th></th>
-								<th></th>
-								<th></th>
+								<th>MES - AÑO</th>
+								<th></th>								
 							</tr>
 						</thead>
 						<tbody>
-							@foreach($personas as $per)
+							@foreach($empleados as $emp)
 							<tr>								
-								<td>{{$per->tipoDoc->nombre}} - {{$per->documento}}</td>
-								<td>{{$per->nombre}}</td>
-								<td>{{$per->apellido}}</td>
-								@if (count($per->empresas)>0)
-									<td>
-									@foreach($per->empresas as $emp)
-										{{$emp->nombre}}
-									@endforeach
-									</td>
-								@else
-									<td></td>
-								@endif
-								<td>
-									<form method="GET" action="{{route('persona.show', $per->id)}}">																
-										<button type="submit"class="btn btn-info"><i class="fas fa-info-circle"></i></button>												
-									</form>
-								</td>	
-								<td>
-									<form method="GET" action="{{ route('persona.edit', $per->id) }}">																
-										<button type="submit"class="btn btn-warning"><i class="far fa-edit"></i></button>												
-									</form>
-								</td>				
-								<td>
-									<form method="POST" action="{{ route('persona.destroy',$per->id) }}">
-										{{ method_field('DELETE') }}
-										@csrf	
-										<button type="submit"class="btn btn-danger"><i class="far fa-trash-alt"></i></button>												
-									</form>
-								</td>									
+								<td>{{$emp->persona->tipoDoc->nombre}} - {{$emp->persona->documento}}</td>
+								<td>{{$emp->persona->nombre}}</td>
+								<td>{{$emp->persona->apellido}}</td>
+								<td>{{$emp->empresa->nombreFantasia}}</td>
+								<form>
+								@csrf
+								<input id="empId" name="empId" type="hidden" value="{{$emp->id}}">
+								<td><div class="form-group"><input type="month" class="form-control" id="mes" name="mes" value="{{old('mes')}}"required></div></td>
+								<td><button type="submit"class="btn btn-success" formaction="{{route('reloj.compruebaMes')}}" formmethod="post"><i class="fas fa-clock"></i></button></td>
+								
+								</form>
 							</tr>
 							@endforeach
-						</tbody>
-						
+						</tbody>						
 						</table>
-					</div>
-					
+					</div>					
 				  </div>
 				  <div class="panel-footer"><a href="{{ route('persona.create') }}" class="btn btn-warning btn-block" role="button"><i class="fas fa-plus"></i> Agregar nuevo empleado</a></div>
 		</div>

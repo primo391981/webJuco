@@ -12,23 +12,23 @@ class RemuneracionesTableSeeder extends Seeder
     public function run()
     {
         DB::table('contable_remuneraciones')->insert([
-			'nombre'=>'Mensual',
-			'descripcion'=>'Mensual'
+			'nombre'=>'MENSUAL',
+			'descripcion'=>'MENSUAL'
 		]);
 		
 		DB::table('contable_remuneraciones')->insert([
-			'nombre'=>'Jornelero',
-			'descripcion'=>'Jornelero'
+			'nombre'=>'JORNALERO',
+			'descripcion'=>'JORNALERO'
 		]);
 		
 		DB::table('contable_remuneraciones')->insert([
-			'nombre'=>'Destajista',
-			'descripcion'=>'Destajista'
+			'nombre'=>'DESTAJISTA',
+			'descripcion'=>'DESTAJISTA'
 		]);
 		
 		DB::table('contable_remuneraciones')->insert([
-			'nombre'=>'Zafral',
-			'descripcion'=>'Zafral'
+			'nombre'=>'ZAFRAL',
+			'descripcion'=>'ZAFRAL'
 		]);
     }
 }

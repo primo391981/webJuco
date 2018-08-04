@@ -2,11 +2,25 @@
 
 namespace App\Contable;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class Empleado extends Model
+class Empleado extends Pivot
 {
-    use SoftDeletes;
-	protected $table = 'empleados';
+    protected $table='empleados';	
+	
+	public function persona() {
+        return $this->belongsTo('App\Persona','idPersona');
+    }
+
+    public function empresa() {
+        return $this->belongsTo('App\Empresa','idEmpresa');
+    }
+
+    public function horarios() {
+        return $this->hasMany('App\Contable\HorarioEmpleado','idEmpleado'); // example relationship on a pivot model
+    }
+	
+	public function registrosHoras(){
+		return $this->hasMany('App\Contable\RegistroHora','idEmpleado');
+	}
 }

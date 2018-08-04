@@ -28,8 +28,7 @@ class EmpresaController extends Controller
         //return vista con FORM para add empresa
 		return view('contable.empresa.agregarEmpresa',[]);
     }
-
-   
+	
     public function store(EmpresaRequest $request)
     {
         $empresa = new Empresa;
@@ -49,51 +48,19 @@ class EmpresaController extends Controller
 		
 		return redirect()->route('empresa.index');
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
-    {
-		
+    {	
         $empresa=Empresa::find($id);
-		
-		/*$empleados = DB::table('empresa')
-            ->join('empleados', 'empresa.id', '=', 'empleados.idempresa')
-            ->join('persona', 'empleados.idpersona', '=', 'persona.id')
-			->where('empresa.id', '=', $empresa->id)
-			->whereNull('empleados.deleted_at')
-            ->select('persona.*')
-            ->get();
-		*/
 		$tiposDocumentos=TipoDoc::All();
-		//return view('contable.empresa.verEmpresa',['empresa'=>$empresa,'empleados'=>$empleados,'tipoDoc'=>$tiposDocumentos]);
-		return view('contable.empresa.verEmpresa',['empresa'=>$empresa,'tipoDoc'=>$tiposDocumentos]);
-		
+		return view('contable.empresa.verEmpresa',['empresa'=>$empresa,'tipoDoc'=>$tiposDocumentos]);	
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $empresa=Empresa::find($id);
 		return view('contable.empresa.editarEmpresa',['empresa'=>$empresa]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(EmpresaRequest $request, $id)
     {
 		$empresa=Empresa::find($id);
@@ -110,24 +77,13 @@ class EmpresaController extends Controller
 		$empresa->telefono=$request->input('telefono');
 		$empresa->nomContacto=$request->input('nomContacto');
 		$empresa->save();
-		
 		return redirect()->route('empresa.index');
-		
-		
-		
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
 		$empresa=Empresa::find($id);
-		$empresa->delete();
-		
+		$empresa->delete();		
 		return redirect()->route('empresa.index');
     }
 	
@@ -137,4 +93,10 @@ class EmpresaController extends Controller
 		$empresa->restore();
 		return redirect()->route('empresa.index');
     }
+	public function buscaEmpleado(Request $request){
+		
+	}
+	public function asociarEmpleado(Request $request, $idEmpr){
+		
+	}
 }

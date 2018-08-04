@@ -26,7 +26,11 @@
 					</form>
 			</div>
 			
-			<div class="panel-footer"><a href="{{ route('persona.index') }}" class="btn btn-warning btn-block" role="button"><i class="fas fa-list-ul"></i> Listado empleados</a></div>
+			<div class="panel-footer">
+				<form method="GET" action="{{route('persona.show', $persona->id)}}">																
+					<button type="submit"class="btn btn-warning btn-block"><i class="fas fa-info-circle"></i> Detalle persona</button>												
+				</form>
+			</div>
 		</div>
 	</div>
 	

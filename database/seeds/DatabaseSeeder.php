@@ -46,9 +46,13 @@ class DatabaseSeeder extends Seeder
 			TipoNotificacionTableSeeder::class,
 			EstadosTableSeeder::class,
 			RemuneracionesTableSeeder::class,
+			CargosTableSeeder::class,
 			
-			
+			TipoHoraTableSeeder::class,
 			EstadoCivilTableSeeder::class,
+			PersonaTableSeeder::class,
+			DiasTableSeeder::class,
+			RegistrosTableSeeder::class
 			
 		]);	
     }
