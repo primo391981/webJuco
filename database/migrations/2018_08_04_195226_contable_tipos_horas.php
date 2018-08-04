@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class ContableMarcasReloj extends Migration
+class ContableTiposHoras extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,9 @@ class ContableMarcasReloj extends Migration
      */
     public function up()
     {
-        Schema::create('contable_registros_horas', function (Blueprint $table) {
+        Schema::create('contable_tipos_hora', function (Blueprint $table) {
             $table->increments('id');
-			$table->integer('idEmpleado');
-			$table->integer('idTipoHora');
-			$table->time('cantHoras');
-			$table->date('fecha');
+			$table->string('nombre');
             $table->timestamps();
         });
     }
@@ -30,6 +27,6 @@ class ContableMarcasReloj extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('contable_registros_horas');
+        Schema::dropIfExists('contable_tipos_hora');
     }
 }

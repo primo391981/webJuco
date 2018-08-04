@@ -24,10 +24,10 @@ class RegistroHoraController extends Controller
 			else{
 				//si ya lo tiene cargado advertir
 				$fecha=$request->mes."-01";
-				$regHora=DB::table('registrosHoras')
+				$regHora=DB::table('contable_registros_horas')
 				->where('idEmpleado','=',$request->empId)
 				->where('fecha','=',$fecha)
-				->select('registrosHoras.*')
+				->select('contable_registros_horas.*')
 				->first();
 				if($regHora==null){
 					$empleado=Empleado::find($request->empId);

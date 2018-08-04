@@ -48,7 +48,7 @@ class DatabaseSeeder extends Seeder
 			RemuneracionesTableSeeder::class,
 			CargosTableSeeder::class,
 			
-			
+			TipoHoraTableSeeder::class,
 			EstadoCivilTableSeeder::class,
 			PersonaTableSeeder::class,
 			DiasTableSeeder::class,
