@@ -22,7 +22,7 @@
 		</ul>
 </li>
 <li>
-    <a href="{{ route('reloj.index') }}"><i class="far fa-clock"></i> Marcas reloj </a>
+    <a href="{{ route('reloj.listaEmpleados') }}"><i class="fas fa-clock"></i> Marcas reloj </a>
 </li>
 <li>
     <a href="#"><i class="fas fa-briefcase"></i> Cargos <i class="fas fa-caret-down"></i></a>

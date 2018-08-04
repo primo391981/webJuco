@@ -108,7 +108,8 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::post('editarHorario', 'Contable\EmpleadoController@editarHorario')->name('empleado.editarHorario')->middleware('role:contableAdmin');
 	
 	//registro horas reloj
-	Route::resource('reloj', 'Contable\RegistroHoraController')->middleware('role:contableAdmin');
+	Route::get('listaEmpleados', 'Contable\RegistroHoraController@listaEmpleados')->name('reloj.listaEmpleados')->middleware('role:contableAdmin');
+	Route::post('compruebaMes', 'Contable\RegistroHoraController@compruebaMes')->name('reloj.compruebaMes')->middleware('role:contableAdmin');
 	
 	
 	//JURIDICO

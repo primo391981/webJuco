@@ -27,11 +27,12 @@
 		<div class="panel panel-warning">
 				  <div class="panel-heading">
 					<div class="row">
-						<div class="col-sm-9"><h4>LISTADO EMPLEADOS ACTIVOS</h4></div>
+						<div class="col-sm-9"><h4>GESTIÓN MARCAS RELOJ</h4></div>
 						<div class="col-sm-3 hidden-xs"><a href="{{ route('persona.create') }}" class="btn btn-warning pull-right" role="button"><i class="fas fa-plus"></i> Agregar nuevo empleado</a></div>				  
 					</div>
 				  </div>
-				  <div class="panel-body text-warning">					
+				  <div class="panel-body text-warning">	
+					<p>falta comprobar que tenga horario principal cargado para listarlo</p>
 					<div class="table-responsive">
 						<table id="tablePersonas" class="table">
 							
@@ -52,22 +53,18 @@
 								<td>{{$emp->persona->nombre}}</td>
 								<td>{{$emp->persona->apellido}}</td>
 								<td>{{$emp->empresa->nombreFantasia}}</td>
-								<!--FORM CON MES, ANIO Y IDEMPLEADO-->
-								<form id="form{{$emp->id}}" method="GET" action="#">
-									<td>
-										<div class="form-group">											
-											<input type="month" class="form-control" id="month{{$emp->id}}" placeholder="fabian">									
-										</div>
-									</td>
-									<td><button type="submit"class="btn btn-warning"><i class="far fa-clock"></i> Cargar marcas</button></td>
+								<form>
+								@csrf
+								<input id="empId" name="empId" type="hidden" value="{{$emp->id}}">
+								<td><div class="form-group"><input type="month" class="form-control" id="mes" name="mes" value="{{old('mes')}}"required></div></td>
+								<td><button type="submit"class="btn btn-success" formaction="{{route('reloj.compruebaMes')}}" formmethod="post"><i class="fas fa-clock"></i></button></td>
+								
 								</form>
 							</tr>
 							@endforeach
-						</tbody>
-						
+						</tbody>						
 						</table>
-					</div>
-					
+					</div>					
 				  </div>
 				  <div class="panel-footer"><a href="{{ route('persona.create') }}" class="btn btn-warning btn-block" role="button"><i class="fas fa-plus"></i> Agregar nuevo empleado</a></div>
 		</div>

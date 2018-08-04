@@ -11,82 +11,36 @@ use Carbon\Carbon;
 
 class RegistroHoraController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function listaEmpleados()
     {	
 		$empleados=Empleado::All();
-		//dd($empleados[0]->empresa);
-		//dd($empleados[2]->empresa);
 		return view('contable.registrohora.listaEmpleados',['empleados'=>$empleados]);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+	public function compruebaMes(Request $request){
+		try{
+			if($request->mes==null){
+				return back()->withInput()->withError("Debe seleccionar un mes y año.");
+			}
+			else{
+				//si ya lo tiene cargado advertir
+				$fecha=$request->mes."-01";
+				$regHora=DB::table('registrosHoras')
+				->where('idEmpleado','=',$request->empId)
+				->where('fecha','=',$fecha)
+				->select('registrosHoras.*')
+				->first();
+				if($regHora==null){
+					$empleado=Empleado::find($request->empId);
+					dd($empleado);
+					return view('contable.registrohora.formCargarHoras',[]);
+				}else{
+					return back()->withInput()->withError("Ya existen horas cargadas para ese mes y año.");
+				}
+			}
+		}
+		catch(Exception $e){
+			return back()->withInput()->withError("Error en el sistema.");
+		}
+	}
+	
 }
