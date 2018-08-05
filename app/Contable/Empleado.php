@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class Empleado extends Pivot
 {
-    protected $table='empleados';	
+    protected $table='contable_empleados';	
 	
 	public function persona() {
         return $this->belongsTo('App\Persona','idPersona');

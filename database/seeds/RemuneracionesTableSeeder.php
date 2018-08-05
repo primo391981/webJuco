@@ -20,15 +20,5 @@ class RemuneracionesTableSeeder extends Seeder
 			'nombre'=>'JORNALERO',
 			'descripcion'=>'JORNALERO'
 		]);
-		
-		DB::table('contable_remuneraciones')->insert([
-			'nombre'=>'DESTAJISTA',
-			'descripcion'=>'DESTAJISTA'
-		]);
-		
-		DB::table('contable_remuneraciones')->insert([
-			'nombre'=>'ZAFRAL',
-			'descripcion'=>'ZAFRAL'
-		]);
-    }
+	}
 }

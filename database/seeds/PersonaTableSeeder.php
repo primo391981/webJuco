@@ -23,26 +23,48 @@ class PersonaTableSeeder extends Seeder
 			'estadoCivil'=>1
 		]);
 		DB::table('persona')->insert([
-			'tipoDocumento'=>2,
-			'documento'=>1111111,
-			'nombre'=>'NOMBRE1',
-			'apellido'=>'APELLIDO1',
-			'domicilio'=>'DOMICILIO1',
-			'telefono'=>'TEL1',
+			'tipoDocumento'=>1,
+			'documento'=>35736454,
+			'nombre'=>'FABIAN',
+			'apellido'=>'SELLANES',
+			'domicilio'=>'Belvedere',
+			'telefono'=>'091987653',
+			'email'=>'fsellanes@gmail.com',
+			'cantHijos'=>2,
+			'estadoCivil'=>1
+		]);
+		DB::table('persona')->insert([
+			'tipoDocumento'=>1,
+			'documento'=>11111111,
+			'nombre'=>'PEPE',
+			'apellido'=>'GUERRA',
+			'domicilio'=>'Colonia N° 1254',
+			'telefono'=>'2901 8759',
 			'email'=>'email1@email1.com',
 			'cantHijos'=>1,
 			'estadoCivil'=>1
 		]);
 		DB::table('persona')->insert([
-			'tipoDocumento'=>2,
-			'documento'=>222222,
-			'nombre'=>'NOMBRE2',
-			'apellido'=>'APELLIDO2',
-			'domicilio'=>'DOMICILIO2',
-			'telefono'=>'TEL2',
+			'tipoDocumento'=>1,
+			'documento'=>22222222,
+			'nombre'=>'EDUARDO',
+			'apellido'=>'LARBANOIS',
+			'domicilio'=>'Guatemala N° 235',
+			'telefono'=>'2908 2546',
 			'email'=>'email1@email1.com',
-			'cantHijos'=>1,
+			'cantHijos'=>2,
 			'estadoCivil'=>1
+		]);
+		DB::table('persona')->insert([
+			'tipoDocumento'=>2,
+			'documento'=>15875782,
+			'nombre'=>'JORGE',
+			'apellido'=>'LANATA',
+			'domicilio'=>'Av. Agraciada N° 3233',
+			'telefono'=>'2908 2546',
+			'email'=>'email1@email1.com',
+			'cantHijos'=>0,
+			'estadoCivil'=>2
 		]);
     }
 }

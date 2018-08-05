@@ -52,8 +52,10 @@ class DatabaseSeeder extends Seeder
 			EstadoCivilTableSeeder::class,
 			PersonaTableSeeder::class,
 			DiasTableSeeder::class,
-			RegistrosTableSeeder::class
-			
+			RegistrosTableSeeder::class,
+			TipoPagoTableSeeder::class,
+			//Prueba PAGOS
+			//EmpleadosSeeder::class			
 		]);	
     }
 }

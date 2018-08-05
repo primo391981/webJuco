@@ -60,8 +60,6 @@ class EmpleadoController extends Controller
 			if($request->fechaDesde>$request->fechaHasta){
 				return back()->withInput()->withError("La fecha de fin debe ser mayor a la fecha de inicio.");
 				//if($request->fechaDesde==null or $request->fechaHasta==null){
-					
-				
 			}
 			else{
 				$horarioEmp=new HorarioEmpleado;
@@ -85,8 +83,8 @@ class EmpleadoController extends Controller
 					
 					$hrDia->save();
 				}
-				$idPer = DB::table('empleados')->where('id',$request->idEmpleado)->value('idPersona');
-				DB::table('empleados')->where('id',$request->idEmpleado)->update(['horarioCargado' => true]);
+				$idPer = DB::table('contable_empleados')->where('id',$request->idEmpleado)->value('idPersona');
+				DB::table('contable_empleados')->where('id',$request->idEmpleado)->update(['horarioCargado' => true]);
 				return redirect()->action('PersonaController@show', ['id' => $idPer]);
 				//return redirect()->action('PersonaController@index');
 			
@@ -129,9 +127,9 @@ class EmpleadoController extends Controller
 				}
 				
 				$idPer=DB::table('horariosEmpleados')
-				->join('empleados','horariosEmpleados.idEmpleado','=','empleados.id')
+				->join('contable_empleados','horariosEmpleados.idEmpleado','=','contable_empleados.id')
 				->where('horariosEmpleados.idEmpleado','=',$request->idHorarioEmp)
-				->value('empleados.idPersona');
+				->value('contable_empleados.idPersona');
 				
 				return redirect()->action('PersonaController@show', ['id' => $idPer]);
 			}

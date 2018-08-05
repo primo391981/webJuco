@@ -13,7 +13,7 @@ class ContableEmpleados extends Migration
      */
     public function up()
     {
-        Schema::create('empleados', function (Blueprint $table) {
+        Schema::create('contable_empleados', function (Blueprint $table) {
             $table->increments('id');
 			$table->integer('idPersona')->unsigned();
 			$table->integer('idEmpresa')->unsigned();
