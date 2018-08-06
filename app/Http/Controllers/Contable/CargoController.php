@@ -19,7 +19,7 @@ class CargoController extends Controller
     public function index()
     {
         $cargos = Cargo::All();
-		
+	
 		return view('contable.cargo.listaCargos', ['cargos' => $cargos]);
     }
 	

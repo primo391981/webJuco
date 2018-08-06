@@ -50,7 +50,7 @@
 								<td>{{$cargo->id}}</td>
 								<td>{{$cargo->nombre}}</td>
 								<td>{{$cargo->descripcion}}</td>
-								<td>{{$cargo->remuneracion->nombre}}</td>
+								<td>{{--$cargo->remuneracion->nombre--}}</td>
 								<td>
 									<form method="GET" action="{{ route('cargo.edit', $cargo) }}">																
 										<button type="submit"class="btn btn-warning"><i class="far fa-edit"></i></button>												

@@ -34,6 +34,16 @@
 </li>
 
 <li>
+    <a href="#"><i class="fas fa-briefcase"></i> Pagos <i class="fas fa-caret-down"></i></a>
+		<ul class="nav nav-second-level">
+			 <li><a href="{{ route('pago.index') }}"><i class="fas fa-list-ul"></i> Pagos</a></li>
+			 <li><a href="{{--route('cargo.create')--}}"><i class="fas fa-plus"></i>--</a></li>
+			 <li><a href="{{--route('cargo.index.inactivos')--}}"><i class="fas fa-list-ul"></i>--</a></li>
+        </ul>
+</li>
+
+
+<li>
     <a href="#"><i class="fas fa-cogs"></i> Parametros Generales<i class="fas fa-caret-down"></i></a>
 		<ul class="nav nav-second-level">
 			 <li><a href="{{ route('parametrogeneral.index') }}"><i class="fas fa-list-ul"></i> Activos</a></li>
