@@ -85,12 +85,12 @@ class ExpedienteController extends Controller
 		$expediente->estado_id = 1;
 		$expediente->paso_actual = 1;
 		$expediente->user_id = Auth::user()->id;
-		
+		/*
 		$expediente->save();
 		foreach($request->clientes as $cliente){
 			$expediente->clientes()->attach($cliente);
 		}
-			
+		*/
 		//dd($expediente->clientes);
 		//setting varables a mostrar en el formulario de creación de paso
 		

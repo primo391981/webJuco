@@ -34,7 +34,7 @@
 						 <div class="form-group row">
 								<label for="clientes" class="control-label col-sm-3">CLIENTES (seleccione todos)</label>
 								<div class="col-sm-9">
-									 <select class="js-example-responsive" name="clientes[]" multiple="multiple" style="width: 100%">
+									 <select class="js-example-responsive" name="clientes[]" multiple="multiple" style="width: 100%" required>
 										@foreach($clientes as $key => $cliente)
 											<option value="{{ $cliente->id }}" {{ old('clientes', isset($exp) ? $exp->clientes : '' ) == $key + 1 ? 'selected' : '' }}>{{ $cliente->persona->tipodoc->nombre }} {{ $cliente->persona->documento }} - {{ $cliente->persona->apellido }}, {{ $cliente->persona->nombre }} </option>  
 										@endforeach
@@ -46,7 +46,7 @@
 							<label for="fecha_inicio" class="control-label col-sm-3">FECHA CREACION</label>
 
 							<div class="col-sm-9">
-								<input id="fecha_inicio" type="date" class="form-control{{ $errors->has('fecha_creacion') ? ' is-invalid' : '' }}" name="fecha_inicio" value="{{ isset($exp) ? $exp->fecha_inicio : old('fecha_inicio') }}" autofocus>
+								<input id="fecha_inicio" type="date" class="form-control{{ $errors->has('fecha_creacion') ? ' is-invalid' : '' }}" name="fecha_inicio" value="{{ isset($exp) ? $exp->fecha_inicio : old('fecha_inicio') }}" autofocus required>
 
 								@if ($errors->has('fecha_inicio'))
 									<span class="invalid-feedback">
