@@ -26,7 +26,7 @@
 					<div class="col-sm-3 hidden-xs"><a href="{{ route('expediente.index') }}" class="btn btn-success" role="button"><i class="fas fa-list-ul"></i> Listado expedientes</a></div>
 				</div>
 			</div>
-			<div class="panel panel-primary">
+			<div class="panel panel-default">
 						<div class="panel-heading">
 							<h4>Datos del expediente</h4>
 						</div>

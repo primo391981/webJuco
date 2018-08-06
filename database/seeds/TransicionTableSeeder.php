@@ -13,6 +13,12 @@ class TransicionTableSeeder extends Seeder
     {
         DB::table('juridico_transicion')->insert([
             'id_tipo_expediente' => 3,
+            'id_paso_inicial' => 0,
+            'id_paso_siguiente' => 1,
+		]);
+		
+		DB::table('juridico_transicion')->insert([
+            'id_tipo_expediente' => 3,
             'id_paso_inicial' => 1,
             'id_paso_siguiente' => 2,
 		]);

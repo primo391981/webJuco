@@ -70,11 +70,13 @@ class ExpedienteController extends Controller
      */
     public function store(Request $request)
     {
+		
         //dd(Auth::user()->id);
-		/*$request->validate([
+		$request->validate([
 			'IUE' => 'required|unique:juridico_expedientes',
 		]);
-		*/
+		
+		
 		$expediente = new Expediente();
 		$expediente->iue = $request->IUE;
 		$expediente->tipo_id = $request->tipoexp;
@@ -83,18 +85,24 @@ class ExpedienteController extends Controller
 		$expediente->fecha_inicio = $request->fecha_inicio;
 		$expediente->juzgado = $request->juzgado;
 		$expediente->estado_id = 1;
-		$expediente->paso_actual = 1;
+		$expediente->paso_actual = 0;
 		$expediente->user_id = Auth::user()->id;
-		/*
+		
 		$expediente->save();
 		foreach($request->clientes as $cliente){
 			$expediente->clientes()->attach($cliente);
 		}
-		*/
+		
 		//dd($expediente->clientes);
 		//setting varables a mostrar en el formulario de creación de paso
 		
-		return view('juridico.expediente.agregarPaso', ['expediente' => $expediente, 'numero_paso' => 1, 'nombre_paso' => "Adjuntar Demanda"])->with('success', "El expediente se creó correctamente.");
+		if ($request->exists('nextExpediente')){
+			return view('juridico.expediente.agregarPaso', ['expediente' => $expediente, 'numero_paso' => 1, 'nombre_paso' => "Adjuntar Demanda"])->with('success', "El expediente se creó correctamente.");
+		} else {
+			return redirect()->route('expediente.index')->with('success', "El expediente se creó correctamente.");
+		}
+		
+		
 		
 		
     }

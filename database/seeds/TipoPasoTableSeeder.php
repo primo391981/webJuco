@@ -12,6 +12,12 @@ class TipoPasoTableSeeder extends Seeder
     public function run()
     {
         DB::table('juridico_tipo_paso')->insert([
+			'id' => 0,
+			'nombre'=>'Creación',
+			'descripcion'=>'Creación'
+		]);
+		
+		DB::table('juridico_tipo_paso')->insert([
 			'nombre'=>'Demanda',
 			'descripcion'=>'Demanda'
 		]);
