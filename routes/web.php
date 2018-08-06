@@ -114,6 +114,7 @@ Route::group(['middleware' => ['auth']], function () {
 	
 	//pagos
 	Route::resource('pago', 'Contable\PagoController')->middleware('role:contableAdmin');
+	Route::get('pago/viaticos', 'Contable\PagoController@viaticos')->name('pago.index.viaticos')->middleware('role:contableAdmin');
 	
 	//JURIDICO
 	//dashboard juridico

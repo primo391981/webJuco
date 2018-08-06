@@ -22,6 +22,13 @@ class PagoController extends Controller
     {
         //
     }
+	
+	public function viaticos()
+    {
+        $viaticos = Pago::where(["idTipoPago", "=", "VIATICO"])->get();
+		dd($viaticos);
+		return view('contable.pago.listaClientesInactivos', ['clientes' => $clientes]);
+    }
 
     /**
      * Show the form for creating a new resource.
