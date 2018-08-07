@@ -22,6 +22,9 @@ class TipoHoraTableSeeder extends Seeder
         ]);
 		DB::table('contable_tipos_hora')->insert([
             'nombre' => 'HORA ESPERA',
-        ]);			
+        ]);
+		DB::table('contable_tipos_hora')->insert([
+            'nombre' => 'HORA NOCTURNA',
+        ]);		
     }
 }

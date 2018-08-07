@@ -17,58 +17,42 @@
 	</div>
 @endif 
 <br>
-
-<div class="row">
-	<!--solamente es visible en cel-->
-	<div class="col-xs-12 visible-xs"><a href="{{ route('persona.create') }}" class="btn btn-warning" role="button" style="margin-bottom:5%;"><i class="fas fa-plus"></i> Agregar nuevo empleado</a></div>				  
-</div>
-<div class="row text-info">
+<div class="row text-warning">
 	<div class="col-xs-12">
-		<div class="panel panel-warning">
-				  <div class="panel-heading">
-					<div class="row">
-						<div class="col-sm-9"><h4>GESTIÓN MARCAS RELOJ</h4></div>
-						<div class="col-sm-3 hidden-xs"><a href="{{ route('persona.create') }}" class="btn btn-warning pull-right" role="button"><i class="fas fa-plus"></i> Agregar nuevo empleado</a></div>				  
-					</div>
-				  </div>
-				  <div class="panel-body text-warning">	
-					<p>falta comprobar que tenga horario principal cargado para listarlo</p>
-					<div class="table-responsive">
-						<table id="tablePersonas" class="table">
-							
-							<thead>
-							<tr>
-								<th>DOCUMENTO</th>
-								<th>NOMBRE</th>
-								<th>APELLIDO</th>
-								<th>EMPRESA</th>
-								<th>MES - AÑO</th>
-								<th></th>								
-							</tr>
-						</thead>
-						<tbody>
-							@foreach($empleados as $emp)
-							<tr>								
-								<td>{{$emp->persona->tipoDoc->nombre}} - {{$emp->persona->documento}}</td>
-								<td>{{$emp->persona->nombre}}</td>
-								<td>{{$emp->persona->apellido}}</td>
-								<td>{{$emp->empresa->nombreFantasia}}</td>
-								<form>
-								@csrf
-								<input id="empId" name="empId" type="hidden" value="{{$emp->id}}">
-								<td><div class="form-group"><input type="month" class="form-control" id="mes" name="mes" value="{{old('mes')}}"required></div></td>
-								<td><button type="submit"class="btn btn-success" formaction="{{route('reloj.compruebaMes')}}" formmethod="post"><i class="fas fa-clock"></i></button></td>
-								
-								</form>
-							</tr>
-							@endforeach
-						</tbody>						
-						</table>
-					</div>					
-				  </div>
-				  <div class="panel-footer"><a href="{{ route('persona.create') }}" class="btn btn-warning btn-block" role="button"><i class="fas fa-plus"></i> Agregar nuevo empleado</a></div>
-		</div>
+		<h3><i class="far fa-clock"></i> GESTIÓN MARCAS RELOJ</h3>
+		<hr>
 	</div>
+	<div class="col-xs-12">
+		<div class="table-responsive">
+			<table id="tablePersonas" class="table">
+				<thead>
+					<tr>
+						<th>DOCUMENTO</th>
+						<th>NOMBRE</th>
+						<th>APELLIDO</th>
+						<th>EMPRESA</th>
+						<th>MES - AÑO</th>
+						<th></th>								
+					</tr>
+				</thead>
+				<tbody>
+					@foreach($empleados as $emp)
+					<tr>								
+						<td>{{$emp->persona->tipoDoc->nombre}} - {{$emp->persona->documento}}</td>
+						<td>{{$emp->persona->nombre}}</td>
+						<td>{{$emp->persona->apellido}}</td>
+						<td>{{$emp->empresa->nombreFantasia}}</td>
+						<form>
+							@csrf
+							<input id="empId" name="empId" type="hidden" value="{{$emp->id}}">
+							<td><div class="form-group"><input type="month" class="form-control" id="mes" name="mes" value="{{old('mes')}}"required></div></td>
+							<td><button type="submit"class="btn btn-success" formaction="{{route('reloj.compruebaMes')}}" formmethod="post"><i class="fas fa-clock"></i></button></td>
+						</form>
+					</tr>
+					@endforeach
+				</tbody>						
+			</table>
+		</div>
 </div>
 <script>
 $(document).ready(function() {
@@ -76,7 +60,8 @@ $(document).ready(function() {
 		"pagingType": "numbers",
 		"pageLength": 5,
 		"language": {
-		"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"},
+		"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json",
+		},
 		dom: "<'row'<'col-sm-6'><'col-sm-6'f>>" +
 "<'row'<'col-sm-12'tr>>" +
 "<'row'<'col-sm-6'B><'col-sm-6'p>>",
