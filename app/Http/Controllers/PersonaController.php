@@ -70,17 +70,21 @@ class PersonaController extends Controller
 			$dias=Dia::All();
 			$collectionHorariosPorDia = collect([]);
 			if($emprAsociadas->isNotEmpty()){
-				foreach($emprAsociadas as $empr){
+
+			foreach($emprAsociadas as $empr){
+
 					if($empr->pivot->horarioCargado==true){
-						$menorId = DB::table('horariosEmpleados')->where('idEmpleado',$empr->id)->min('id');
-						//con el menor id join horariosPorDia
-						$horariosPorDIa=DB::table('horariosEmpleados')
-						->join('horariosPorDia','horariosEmpleados.id','horariosPorDia.idHorarioEmpleado')
-						->where('horariosPorDia.idHorarioEmpleado','=',$menorId)
-						->select('horariosPorDia.*')
+
+						$menorId = DB::table('contable_horarios_empleados')->where('idEmpleado', '=', $empr->id)->min('id');
+
+						//con el menor id join contable_horarios_por_dia
+						$horariosPorDIa=DB::table('contable_horarios_empleados')
+						->join('contable_horarios_por_dia','contable_horarios_empleados.id','contable_horarios_por_dia.idHorarioEmpleado')
+						->where('contable_horarios_por_dia.idHorarioEmpleado', $menorId)
+						->select('contable_horarios_por_dia.*')
 						->get();
+						
 						$collectionHorariosPorDia->put($empr->pivot->id,$horariosPorDIa);
-						//dd($collectionHorariosPorDia);
 					}
 				}
 			}

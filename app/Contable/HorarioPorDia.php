@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class HorarioPorDia extends Model
 {
-	protected $table='horariosPorDia';
+	protected $table='contable_horarios_por_dia';
 	
 	public function horarioEmpleado(){
 		return $this->belongsTo('\App\Contable\HorarioEmpleado','id');

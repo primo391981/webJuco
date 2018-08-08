@@ -13,7 +13,7 @@ class ContableHorariosEmpleados extends Migration
      */
     public function up()
     {
-        Schema::create('horariosEmpleados', function (Blueprint $table) {
+        Schema::create('contable_horarios_empleados', function (Blueprint $table) {
             $table->increments('id');
 			$table->integer('idEmpleado');
 			$table->date('fechaDesde');
@@ -29,6 +29,6 @@ class ContableHorariosEmpleados extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('horariosEmpleados');
+        Schema::dropIfExists('contable_horarios_empleados');
     }
 }

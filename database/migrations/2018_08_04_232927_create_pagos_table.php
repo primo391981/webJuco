@@ -13,7 +13,7 @@ class CreatePagosTable extends Migration
      */
     public function up()
     {
-        Schema::create('pagos', function (Blueprint $table) {
+        Schema::create('contable_pagos', function (Blueprint $table) {
             $table->increments('id');
 			$table->integer('idEmpleado')->unsigned();
 			$table->integer('idTipoPago')->unsigned();
@@ -36,6 +36,6 @@ class CreatePagosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pagos');
+        Schema::dropIfExists('contable_pagos');
     }
 }

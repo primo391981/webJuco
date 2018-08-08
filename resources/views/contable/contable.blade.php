@@ -32,7 +32,12 @@
 			 <li><a href="{{ route('cargo.index.inactivos') }}"><i class="fas fa-list-ul"></i> Inactivos</a></li>
         </ul>
 </li>
-
+<li>
+    <a href="#"><i class="fas fa-money-bill-alt"></i> Pagos <i class="fas fa-caret-down"></i></a>
+		<ul class="nav nav-second-level">
+			<li><a href="{{ route('pago.viaticos') }}"><i class="fas fa-list-ul"></i> Viáticos</a></li>			
+        </ul>
+</li>
 <li>
     <a href="#"><i class="fas fa-cogs"></i> Parametros Generales<i class="fas fa-caret-down"></i></a>
 		<ul class="nav nav-second-level">
