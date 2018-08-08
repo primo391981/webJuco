@@ -1,6 +1,6 @@
 @extends('contable.contable')
 
-@section('seccion', " - ACTIVAS")
+@section('seccion', " - VIATICOS")
 
 @section('content')
 
@@ -12,33 +12,42 @@
 				  <div class="panel-heading">
 					<div class="row">
 						<div class="col-sm-9"><h4>LISTADO VIATICOS</h4></div>
-						<div class="col-sm-3 hidden-xs"><a href="#" class="btn btn-warning pull-right" role="button"><i class="fas fa-plus"></i> Agregar nueva empresa</a></div>				  
+						<div class="col-sm-3 hidden-xs"><a href="#" class="btn btn-warning pull-right" role="button"><i class="fas fa-plus"></i> Agregar nuevo viático</a></div>				  
 					</div>
 				  </div>
 				  <div class="panel-body text-warning">					
 					<div class="table-responsive">
-						<table id="tableEmpresas" class="table" style="width:100%" >
-							
+						<table id="tableViaticos" class="table" style="width:100%" >
 							<thead>
-							<tr>
-								<th>NOMBRE FANTASIA</th>
-								<th>CONTACTO</th>
-								<th>TELEFONO</th>
-								<th></th>
-								<th></th>
-								<th></th>
-								
-							</tr>
-						</thead>
-						<tbody>
-						
-						</tbody>
-						
+								<tr>
+									<th>DOCUMENTO</th>
+									<th>EMPLEADO</th>
+									<th>EMPRESA</th>
+									<th>MONTO</th>
+									<th>FECHA</th>
+									<th></th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								@foreach($viaticos as $pago)
+								<tr>								
+									<td>{{$pago->id}}</td>
+									<td></td>
+									<td></td>
+									<td>{{$pago->monto}}</td>
+									
+									<td>{{$pago->fecha}}</td>	
+									<td> </td>				
+									<td> </td>									
+								</tr>
+								@endforeach
+							</tbody>						
 						</table>
 					</div>
 					
 				  </div>
-				  <div class="panel-footer"><a href="#" class="btn btn-warning btn-block" role="button"><i class="fas fa-plus"></i> Agregar nueva empresa</a></div>
+				  <div class="panel-footer"><a href="#" class="btn btn-warning btn-block" role="button"><i class="fas fa-plus"></i> Agregar nuevo viático</a></div>
 		</div>
 	</div>
 </div>
