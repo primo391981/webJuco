@@ -54,10 +54,12 @@ class DatabaseSeeder extends Seeder
 			DiasTableSeeder::class,
 			RegistrosTableSeeder::class,
 			TipoPagoTableSeeder::class,
-			//Prueba PAGOS
+			//Prueba Horarios
 			EmpleadosTableSeeder::class,
 			HorariosEmpleadoTableSeeder::class,
-			HorariosPorDiaTableSeeder::class
+			HorariosPorDiaTableSeeder::class,
+			//Prueba PAGOS
+			PagosViaticosTableSeeder::class
 		]);	
     }
 }
