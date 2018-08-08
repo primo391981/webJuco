@@ -72,10 +72,10 @@ class PersonaController extends Controller
 			if($emprAsociadas->isNotEmpty()){
 
 			foreach($emprAsociadas as $empr){
-
+					
 					if($empr->pivot->horarioCargado==true){
 
-						$menorId = DB::table('contable_horarios_empleados')->where('idEmpleado',$empr->id)->min('id');
+						$menorId = DB::table('contable_horarios_empleados')->where('idEmpleado','=',$empr->pivot->id)->min('id');
 
 						//con el menor id join contable_horarios_por_dia
 						$horariosPorDIa=DB::table('contable_horarios_empleados')
