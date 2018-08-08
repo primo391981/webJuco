@@ -75,13 +75,12 @@ class PersonaController extends Controller
 
 					if($empr->pivot->horarioCargado==true){
 
-						$menorId = DB::table('contable_horarios_empleados')->where('idEmpleado',$empr->id)->min('id');
+						$menorId = DB::table('contable_horarios_empleados')->where('idEmpleado', '=', $empr->id)->min('id');
 
 						//con el menor id join contable_horarios_por_dia
 						$horariosPorDIa=DB::table('contable_horarios_empleados')
 						->join('contable_horarios_por_dia','contable_horarios_empleados.id','contable_horarios_por_dia.idHorarioEmpleado')
-						->where('contable_horarios_por_dia.idHorarioEmpleado','=',$menorId)
-						//->where('horariosPorDia.idHorarioEmpleado','=',$menorId)
+						->where('contable_horarios_por_dia.idHorarioEmpleado', $menorId)
 						->select('contable_horarios_por_dia.*')
 						->get();
 						
