@@ -25,7 +25,7 @@ class RegistroHoraController extends Controller
 	public function compruebaMes(Request $request){
 		try{
 			if($request->mes==null){
-				return back()->withInpush()->withError("Debe seleccionar un mes y año.");
+				return back()->withInput()->withError("Debe seleccionar un mes y año.");
 			}
 			else{
 				//si ya lo tiene cargado advertir
@@ -68,12 +68,12 @@ class RegistroHoraController extends Controller
 					}
 					return view('contable.registrohora.formCargarHoras',['total'=>$total,'idEmpleado'=>$request->empId,'fecha'=>$dt]);
 				}else{
-					return back()->withInpush()->withError("Ya existen horas cargadas para ese mes y año.");
+					return back()->withInput()->withError("Ya existen horas cargadas para ese mes y año.");
 				}
 			}
 		}
 		catch(Exception $e){
-			return back()->withInpush()->withError("Error en el sistema.");
+			return back()->withInput()->withError("Error en el sistema.");
 		}
 	}
 	
@@ -83,10 +83,13 @@ class RegistroHoraController extends Controller
 			$fecha=new Carbon($request->fecha);
 			foreach($tiposHoras as $th){
 				for($i=1;$i<=$fecha->daysInMonth;$i++){
-				$fechaNueva=$fecha->year.'-'.$fecha->month.'-'.$i;
-				DB::table('contable_registros_horas')->insert(['idEmpleado'=>$request->idEmpleado,'idTipoHora'=>$th->id,'cantHoras'=>$request->input($th->id.$i.'/'.$fecha->month),'fecha'=>$fechaNueva]);
-					//$regHora=new RegistroHora(['idEmpleado'=>$empleado->idEmpleado,'idTipoHora'=>$th->id,'cantHoras'=>$request->input($th->id.$i.'/'.$fecha->month),'fecha'=>$fecha]);
-					//$empleado->registrosHoras()->save($regHora);					
+					//si tiene un valor nuevo lo cargo, sino que siga de largo.
+					if($request->input($th->id.$i.'/'.$fecha->month)!="00:00:00"){
+						$fechaNueva=$fecha->year.'-'.$fecha->month.'-'.$i;
+						DB::table('contable_registros_horas')->insert(['idEmpleado'=>$request->idEmpleado,'idTipoHora'=>$th->id,'cantHoras'=>$request->input($th->id.$i.'/'.$fecha->month),'fecha'=>$fechaNueva]);
+						//$regHora=new RegistroHora(['idEmpleado'=>$empleado->idEmpleado,'idTipoHora'=>$th->id,'cantHoras'=>$request->input($th->id.$i.'/'.$fecha->month),'fecha'=>$fecha]);
+						//$empleado->registrosHoras()->save($regHora);		
+					}				
 				}
 			}
 			$todo=DB::table('contable_registros_horas')->where('idEmpleado','=',$request->idEmpleado)->get();
@@ -94,7 +97,7 @@ class RegistroHoraController extends Controller
 			return 'todo ok';
 		}
 		catch(Exception $e){
-			return back()->withInpush()->withError("Error en el sistema.");
+			return back()->withInput()->withError("Error en el sistema.");
 		}
 	}
 }
