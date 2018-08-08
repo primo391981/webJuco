@@ -13,7 +13,7 @@ class ContableHorarioPorDia extends Migration
      */
     public function up()
     {
-        Schema::create('horariosPorDia', function (Blueprint $table) {
+        Schema::create('contable_horarios_por_dia', function (Blueprint $table) {
             $table->increments('id');
 			$table->integer('idHorarioEmpleado');
 			$table->integer('idRegistro');
@@ -31,6 +31,6 @@ class ContableHorarioPorDia extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('horariosPorDia');
+        Schema::dropIfExists('contable_horarios_por_dia');
     }
 }

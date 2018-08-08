@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Contable;
 
-
+use App\Contable\Pago;
 use App\Persona;
 use App\Empresa;
 use App\Contable\Empleado;
@@ -25,9 +25,10 @@ class PagoController extends Controller
 	
 	public function viaticos()
     {
-        $viaticos = Pago::where(["idTipoPago", "=", "VIATICO"])->get();
-		dd($viaticos);
-		return view('contable.pago.listaClientesInactivos', ['clientes' => $clientes]);
+        $viaticos = Pago::where("idTipoPago", "=", 1)->get();
+		//dd($viaticos);
+		
+		return view('contable.pago.listaViaticos', ['viaticos' => $viaticos]);
     }
 
     /**
