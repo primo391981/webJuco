@@ -24,12 +24,12 @@ class CargosTableSeeder extends Seeder
         DB::table('contable_cargos')->insert([
             'nombre' => 'CARGO TRES',
 			'descripcion'=>'DESC CARGO TRES',
-			'id_remuneracion'=>'3'
+			'id_remuneracion'=>'2'
         ]);
 		DB::table('contable_cargos')->insert([
             'nombre' => 'CARGO CUATRO',
 			'descripcion'=>'DESC CARGO CUATRO',
-			'id_remuneracion'=>'4'
+			'id_remuneracion'=>'1'
         ]);
 		DB::table('contable_cargos')->insert([
             'nombre' => 'CARGO CINCO',
