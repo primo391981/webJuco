@@ -15,7 +15,7 @@ class Pago extends Model
 	protected $table='contable_pagos';
    
 	public function empleado() {
-        return $this->belongsTo('App\Empleado','idEmpleado');
+        return $this->belongsTo('App\Contable\Empleado','idEmpleado');
     }
 	
 	public function tiposPagos(){

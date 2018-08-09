@@ -30,11 +30,11 @@
 								</tr>
 							</thead>
 							<tbody>
-								@foreach($viaticos as $pago)
+								@foreach($viaticos->sortBy('empleado.empresa.razonSocial') as $pago)
 								<tr>								
 									<td>{{$pago->id}}</td>
-									<td></td>
-									<td></td>
+									<td>{{$pago->empleado->persona->apellido}} {{$pago->empleado->persona->nombre}}</td>
+									<td>{{$pago->empleado->empresa->razonSocial}}</td>
 									<td>{{$pago->monto}}</td>
 									
 									<td>{{$pago->fecha}}</td>	

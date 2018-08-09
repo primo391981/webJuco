@@ -25,8 +25,10 @@ class PagoController extends Controller
 	
 	public function viaticos()
     {
-        $viaticos = Pago::where("idTipoPago", "=", 1)->get();
-		//dd($viaticos);
+        //$viaticos = Pago::where("idTipoPago", 1)->get();
+		$viaticos = Pago::where("idTipoPago", 1)->with('empleado')->get();
+		
+		//dd($viaticos->sortByDesc('empleado.apellido'));
 		
 		return view('contable.pago.listaViaticos', ['viaticos' => $viaticos]);
     }
