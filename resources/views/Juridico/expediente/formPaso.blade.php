@@ -1,9 +1,9 @@
 	@csrf
+						<input type="hidden" name="expediente_id" value="1"
 						<div class="form-group row">
 							<label for="documentos" class="control-label col-sm-3">DOCUMENTO</label>
-
 							<div class="col-sm-9">
-								<input id="documentos" type="file" class="form-control{{ $errors->has('documentos') ? ' is-invalid' : '' }}" name="fecha_creacion" value="{{ isset($exp) ? $exp->documentos : old('documentos') }}" autofocus required multiple>
+								<input id="documentos" type="file" class="form-control{{ $errors->has('documentos') ? ' is-invalid' : '' }}" name="documentos" value="{{ isset($exp) ? $exp->documentos : old('documentos') }}" autofocus required multiple>
 
 								@if ($errors->has('documentos'))
 									<span class="invalid-feedback">

@@ -85,7 +85,7 @@ class ExpedienteController extends Controller
 		$expediente->fecha_inicio = $request->fecha_inicio;
 		$expediente->juzgado = $request->juzgado;
 		$expediente->estado_id = 1;
-		$expediente->paso_actual = 0;
+		$expediente->paso_actual = 1;
 		$expediente->user_id = Auth::user()->id;
 		
 		$expediente->save();
@@ -115,11 +115,11 @@ class ExpedienteController extends Controller
      */
     public function show(Expediente $expediente)
     {
-        $expediente = Expediente::find(1);
+        $transiciones = $expediente->tipo->transiciones->where('id_paso_inicial',$expediente->paso_actual);
 		
-		echo $expediente->tipo_id;
+		return view('juridico.expediente.verExpediente', ['expediente' => $expediente, 'transiciones' =>$transiciones]);
 		
-		echo $expediente->tipo->transiciones->where('id_paso_inicial',$expediente->paso_actual);
+		
 		
 		//echo $expediente->tipo->transiciones->where('id_tipo_expediente',$expediente->tipo_id); 
     }

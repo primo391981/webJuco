@@ -8,8 +8,12 @@ class Expediente extends Model
 {
     protected $table = 'juridico_expedientes';
 	
-	public function Pasos(){
+	public function pasos(){
 		return $this->hasMany('App\Juridico\Paso','id_expediente');
+	}
+	
+	public function actual(){
+		return $this->belongsTo('App\Juridico\TipoPaso','paso_actual');
 	}
 	
 	public function tipo(){
@@ -20,8 +24,8 @@ class Expediente extends Model
 		return $this->belongsTo('App\Juridico\Estado','estado_id');
 	}
 	
-	public function usuarios(){
-		return $this->belongsTo('App\Administración\User','user_id');
+	public function usuario(){
+		return $this->belongsTo('App\Administracion\User','user_id');
 	}
 	
 	public function clientes(){

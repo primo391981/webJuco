@@ -11,10 +11,7 @@ class TipoExpedienteTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('juridico_tipo_expediente')->insert([
-			'nombre'=>'Familia',
-			'descripcion'=>'Expediente de tipo Familia. Características'
-		]);
+ 
 		
 		DB::table('juridico_tipo_expediente')->insert([
 			'nombre'=>'Civil',
@@ -25,7 +22,10 @@ class TipoExpedienteTableSeeder extends Seeder
 			'nombre'=>'Laboral - Mayor Cuantía',
 			'descripcion'=>'Expediente de tipo Laboral de Mayor Cuantía. Implica montos mayores o iguales a $U 120.000. Otras características'
 		]);
-		
+		DB::table('juridico_tipo_expediente')->insert([
+			'nombre'=>'Familia',
+			'descripcion'=>'Expediente de tipo Familia. Características'
+		]);
 		DB::table('juridico_tipo_expediente')->insert([
 			'nombre'=>'Laboral - Menor Cuantía',
 			'descripcion'=>'Expediente de tipo Laboral de Mayor Cuantía. Implica montos menores a $U 120.000. Otras características'

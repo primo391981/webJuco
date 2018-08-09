@@ -13,12 +13,6 @@ class TransicionTableSeeder extends Seeder
     {
         DB::table('juridico_transicion')->insert([
             'id_tipo_expediente' => 3,
-            'id_paso_inicial' => 0,
-            'id_paso_siguiente' => 1,
-		]);
-		
-		DB::table('juridico_transicion')->insert([
-            'id_tipo_expediente' => 3,
             'id_paso_inicial' => 1,
             'id_paso_siguiente' => 2,
 		]);
@@ -32,19 +26,25 @@ class TransicionTableSeeder extends Seeder
 		DB::table('juridico_transicion')->insert([
             'id_tipo_expediente' => 3,
             'id_paso_inicial' => 3,
-            'id_paso_siguiente' => 6,
+            'id_paso_siguiente' => 4,
 		]);
 		
 		DB::table('juridico_transicion')->insert([
             'id_tipo_expediente' => 3,
-            'id_paso_inicial' => 3,
-            'id_paso_siguiente' => 9,
+            'id_paso_inicial' => 4,
+            'id_paso_siguiente' => 7,
 		]);
 		
 		DB::table('juridico_transicion')->insert([
             'id_tipo_expediente' => 3,
-            'id_paso_inicial' => 9,
-            'id_paso_siguiente' => 11,
+            'id_paso_inicial' => 4,
+            'id_paso_siguiente' => 10,
+		]);
+		
+		DB::table('juridico_transicion')->insert([
+            'id_tipo_expediente' => 3,
+            'id_paso_inicial' => 10,
+            'id_paso_siguiente' => 12,
 		]);
     }
 }

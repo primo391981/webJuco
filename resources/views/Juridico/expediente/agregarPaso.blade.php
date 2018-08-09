@@ -79,7 +79,7 @@
 						
 			 <div class="panel-body text-success"> 
 				<form method="POST" action="{{ route('paso.store') }}" class="form-horizontal" enctype="multipart/form-data" id="formPersona"> 
-					@include('juridico.expediente.formPaso', ['textoBoton' => 'Confirmar']) 
+					@include('juridico.expediente.formPaso', ['textoBoton' => 'Confirmar', 'id_expediente' =>$expediente->id]) 
 				</form>
 			</div>
 			<div class="panel-footer"><a href="{{ route('expediente.index') }}" class="btn btn-success btn-block" role="button"><i class="fas fa-list-ul"></i> Listado expediente</a></div>
