@@ -53,7 +53,7 @@
 </div>
 <script>
 $(document).ready(function() {
-    $('#tableEmpresas').DataTable( {        
+    $('#tableViaticos').DataTable( {        
 		"pagingType": "numbers",
 		"pageLength": 5,
 		"language": {
