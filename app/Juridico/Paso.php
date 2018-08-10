@@ -44,5 +44,9 @@ class Paso extends Model
 	
 	}
 	
+	public function usuario(){
+		
+		return $this->belongsTo('App\Administracion\User','id_user');
 	
+	}
 }

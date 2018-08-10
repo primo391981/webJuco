@@ -7,6 +7,7 @@ use App\Juridico\TipoPaso;
 use App\Juridico\Expediente;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Auth;
 
 class PasoController extends Controller
 {
@@ -40,9 +41,26 @@ class PasoController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+        
+		$paso = new Paso();
+		$paso->id_expediente = $request->expediente_id;
+		$paso->id_tipo = $request->tipoPaso_id;
+		$paso->id_usuario = Auth::user()->id;
+		$paso->fecha_fin = null;
 		
+		$expediente = Expediente::find($request->expediente_id);
+		$expediente->paso_actual = $request->tipoPaso_id;
 		
+		$paso->save();
+		$expediente->save();
+		
+		return redirect()->route('expediente.show',$expediente);
+		
+		/*if ($request->hasFile('documentos')) {
+			foreach($request->documentos as $documento){
+				var_dump($documento);
+			}
+		}*/	
     }
 
     /**
