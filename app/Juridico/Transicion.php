@@ -9,7 +9,6 @@ class Transicion extends Model
     protected $table = 'juridico_transicion';
 	
 	public function siguiente(){
-		return $this->hasMany('App\Juridico\Paso')
-		
+		return $this->belongsTo('App\Juridico\TipoPaso','id_paso_siguiente');
 	}
 }

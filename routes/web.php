@@ -127,7 +127,8 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::resource('expediente', 'Juridico\ExpedienteController')->middleware('role:juridicoAdmin');
 	
 	//Pasos expediente
-	Route::resource('paso', 'Juridico\PasoController')->middleware('role:juridicoAdmin');
+	Route::get('paso/create/{expediente}/{paso}', 'Juridico\PasoController@create')->name('paso.create')->middleware('role:juridicoAdmin');
+	Route::resource('paso', 'Juridico\PasoController',['except' => ['create']])->middleware('role:juridicoAdmin');
 	
 	
 });

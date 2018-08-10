@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Juridico;
 
 use App\Juridico\Paso;
+use App\Juridico\TipoPaso;
+use App\Juridico\Expediente;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -23,9 +25,11 @@ class PasoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($expediente, $paso)
     {
-        //
+        $exp = Expediente::find($expediente);
+		$tipoPaso = TipoPaso::find($paso);
+		return view('juridico.expediente.agregarPaso',['expediente' => $exp, 'tipoPaso' => $tipoPaso]);
     }
 
     /**
@@ -37,6 +41,8 @@ class PasoController extends Controller
     public function store(Request $request)
     {
         dd($request);
+		
+		
     }
 
     /**

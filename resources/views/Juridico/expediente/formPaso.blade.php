@@ -1,5 +1,6 @@
 	@csrf
-						<input type="hidden" name="expediente_id" value="1"
+						<input type="hidden" name="expediente_id" value="{{ $expediente }}">
+						<input type="hidden" name="tipoPaso_id" value="{{ $tipoPaso }}">
 						<div class="form-group row">
 							<label for="documentos" class="control-label col-sm-3">DOCUMENTO</label>
 							<div class="col-sm-9">
@@ -30,7 +31,6 @@
 						
 		
 						<div class="form-group row">
-								<br>
 								<div class="col-xs-12 text-center">
 									<button type="submit" class="btn btn-success btn-lg"><i class="fas fa-check"></i> Confirmar</button>
 								</div>
