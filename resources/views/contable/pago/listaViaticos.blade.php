@@ -12,7 +12,7 @@
 				  <div class="panel-heading">
 					<div class="row">
 						<div class="col-sm-9"><h4>LISTADO VIATICOS</h4></div>
-						<div class="col-sm-3 hidden-xs"><a href="#" class="btn btn-warning pull-right" role="button"><i class="fas fa-plus"></i> Agregar nuevo viático</a></div>				  
+						<div class="col-sm-3 hidden-xs"><a href="{{ route('pago.create') }}" class="btn btn-warning pull-right" role="button"><i class="fas fa-plus"></i> Agregar nuevo viático</a></div>				  
 					</div>
 				  </div>
 				  <div class="panel-body text-warning">					
@@ -47,7 +47,7 @@
 					</div>
 					
 				  </div>
-				  <div class="panel-footer"><a href="#" class="btn btn-warning btn-block" role="button"><i class="fas fa-plus"></i> Agregar nuevo viático</a></div>
+				  <div class="panel-footer"><a href="{{ route('pago.create') }}" class="btn btn-warning btn-block" role="button"><i class="fas fa-plus"></i> Agregar nuevo viático</a></div>
 		</div>
 	</div>
 </div>

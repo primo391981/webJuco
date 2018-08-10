@@ -21,4 +21,10 @@ class Pago extends Model
 	public function tiposPagos(){
 		return $this->hasMany('App\Contable\TipoPago','idTipoPago');
 	}
+	
+	/*public function empresas(){
+		//VER ESTO
+		return $this->belongsTo('App\Empresa','contable_empleados','idPersona','idEmpresa')->using('App\Contable\Empleado')->withPivot('id','idCargo','fechaDesde','fechaHasta','monto','horarioCargado','valorHora');
+	}
+	*/
 }
