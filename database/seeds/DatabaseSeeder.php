@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
 		
         $this->call([
 		
+			TipodocTableSeeder::class,
 			TipoContenedorsTableSeeder::class,
 			ContenedorsTableSeeder::class,
 			
@@ -36,7 +37,18 @@ class DatabaseSeeder extends Seeder
 			MenuitemsTableSeeder::class,
 			
 			ContenidosContenedorsTableSeeder::class,
-			EmpresaTableSeeder::class
+			EmpresaTableSeeder::class,
+			
+			TipoArchivoTableSeeder::class,
+			TipoExpedienteTableSeeder::class,
+			TipoPasoTableSeeder::class,
+			TipoPermisoTableSeeder::class,
+			TipoNotificacionTableSeeder::class,
+			EstadosTableSeeder::class,
+			RemuneracionesTableSeeder::class,
+			
+			
+			EstadoCivilTableSeeder::class,
 			
 		]);	
     }

@@ -75,8 +75,43 @@ Route::group(['middleware' => ['auth']], function () {
 	//dashboard contable
 	Route::get('contable', 'Contable\ContableController@index')->name('contable')->middleware('role:contableAdmin');
 	
+	//cargos
+	Route::get('cargo/inactivos', 'Contable\CargoController@inactivos')->name('cargo.index.inactivos')->middleware('role:contableAdmin');
+	Route::post('cargo/activar', 'Contable\CargoController@activar')->name('cargo.activar')->middleware('role:contableAdmin');
+	Route::resource('cargo', 'Contable\CargoController')->middleware('role:contableAdmin');
+	
+	//parametros generales
+	Route::get('parametrogeneral/search', 'Contable\ParametroGeneralController@search')->name('parametrogeneral.search')->middleware('role:contableAdmin');
+	Route::get('parametrogeneral/inactivos', 'Contable\ParametroGeneralController@inactivos')->name('parametrogeneral.index.inactivos')->middleware('role:contableAdmin');
+	Route::post('parametrogeneral/activar', 'Contable\ParametroGeneralController@activar')->name('parametrogeneral.activar')->middleware('role:contableAdmin');
+	Route::resource('parametrogeneral', 'Contable\ParametroGeneralController')->middleware('role:contableAdmin');
+	
 	//empresa
+	Route::get('desactivada', 'EmpresaController@desactivada')->name('empresa.desactivada')->middleware('role:contableAdmin');
+	//primero lo que aparece en la barra,segundo la ubicacion en carpetas del controlador, tres el nombre que se le da al metodo.
+	Route::get('restaurar/{id}', 'EmpresaController@restaurar')->name('empresa.restaurar')->middleware('role:contableAdmin');	
 	Route::resource('empresa', 'EmpresaController')->middleware('role:contableAdmin');
 	
+	//persona
+	Route::get('desactivado', 'PersonaController@desactivado')->name('persona.desactivado')->middleware('role:contableAdmin');
+	Route::get('restauraremp/{id}', 'PersonaController@restaurar')->name('persona.restaurar')->middleware('role:contableAdmin');
+	Route::resource('persona', 'PersonaController')->middleware('role:contableAdmin');
+	
+	//empleado
+	Route::post('altaAsociacion/{idempresa}/{idpersona}', 'Contable\EmpleadoController@altaAsociacion')->name('empleado.altaAsociacion')->middleware('role:contableAdmin');
+	Route::post('altaEmpleadoEmpresa/{idempresa}', 'Contable\EmpleadoController@altaEmpleadoEmpresa')->name('empleado.altaEmpleadoEmpresa')->middleware('role:contableAdmin');	
+	Route::resource('empleado', 'Contable\EmpleadoController')->middleware('role:contableAdmin');
+	
+	//JURIDICO
+	//dashboard contable
+	Route::get('juridico', 'Juridico\JuridicoController@index')->name('juridico')->middleware('role:juridicoAdmin');
+	
+	//clientes
+	Route::get('cliente/search', 'Juridico\ClienteController@search')->name('cliente.search')->middleware('role:juridicoAdmin');
+	Route::get('cliente/fisica', 'Juridico\ClienteController@createFisica')->name('cliente.create.fisica')->middleware('role:juridicoAdmin');
+	Route::get('cliente/juridica', 'Juridico\ClienteController@createJuridica')->name('cliente.create.juridica')->middleware('role:juridicoAdmin');
+	Route::get('cliente/inactivos', 'Juridico\ClienteController@inactivos')->name('cliente.index.inactivos')->middleware('role:juridicoAdmin');
+	Route::post('cliente/activar', 'Juridico\ClienteController@activar')->name('cliente.activar')->middleware('role:juridicoAdmin');
+	Route::resource('cliente', 'Juridico\ClienteController')->middleware('role:juridicoAdmin');
 	
 });

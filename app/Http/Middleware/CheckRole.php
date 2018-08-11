@@ -16,6 +16,7 @@ class CheckRole
     public function handle($request, Closure $next, $role)
     {
 		if (! $request->user()->hasRole($role)) {
+			//return redirect('/home');
 			return redirect('/notAuthorized');
 			//hacer una vista que diga que no tiene los permisos correspondientes para acceder a esa ruta
 		}
