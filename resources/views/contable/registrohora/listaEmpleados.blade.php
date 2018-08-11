@@ -32,7 +32,8 @@
 						<th>APELLIDO</th>
 						<th>EMPRESA</th>
 						<th>MES - AÑO</th>
-						<th></th>								
+						<th></th>
+						<th></th>						
 					</tr>
 				</thead>
 				<tbody>
@@ -46,7 +47,8 @@
 							@csrf
 							<input id="empId" name="empId" type="hidden" value="{{$emp->id}}">
 							<td><div class="form-group"><input type="month" class="form-control" id="mes" name="mes" value="{{old('mes')}}"required></div></td>
-							<td><button type="submit"class="btn btn-success" formaction="{{route('reloj.compruebaMes')}}" formmethod="post"><i class="fas fa-clock"></i></button></td>
+							<td><button type="submit"class="btn btn-link btn-lg" formaction="{{route('reloj.compruebaMes')}}" formmethod="post" ><i class="far fa-clock"></i></button></td>
+							<td><button type="submit"class="btn btn-link btn-lg" formaction="{{route('reloj.editarMes')}}" formmethod="post" ><i class="far fa-edit"></i></button></td>							
 						</form>
 					</tr>
 					@endforeach
@@ -64,7 +66,7 @@ $(document).ready(function() {
 		},
 		dom: "<'row'<'col-sm-6'><'col-sm-6'f>>" +
 "<'row'<'col-sm-12'tr>>" +
-"<'row'<'col-sm-6'B><'col-sm-6'p>>",
+"<'row'<'col-sm-6'><'col-sm-6'p>>",
         buttons: [
            { extend: 'print', text: 'IMPRIMIR' },
 		   { extend: 'pdf', text: 'PDF' },		   
