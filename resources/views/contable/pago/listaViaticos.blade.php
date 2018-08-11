@@ -12,7 +12,7 @@
 				  <div class="panel-heading">
 					<div class="row">
 						<div class="col-sm-9"><h4>LISTADO VIATICOS</h4></div>
-						<div class="col-sm-3 hidden-xs"><a href="#" class="btn btn-warning pull-right" role="button"><i class="fas fa-plus"></i> Agregar nuevo viático</a></div>				  
+						<div class="col-sm-3 hidden-xs"><a href="{{ route('pago.create') }}" class="btn btn-warning pull-right" role="button"><i class="fas fa-plus"></i> Agregar nuevo viático</a></div>				  
 					</div>
 				  </div>
 				  <div class="panel-body text-warning">					
@@ -30,11 +30,11 @@
 								</tr>
 							</thead>
 							<tbody>
-								@foreach($viaticos as $pago)
+								@foreach($viaticos->sortBy('empleado.empresa.razonSocial') as $pago)
 								<tr>								
-									<td>{{$pago->id}}</td>
-									<td></td>
-									<td></td>
+									<td>{{$pago->empleado->persona->tipoDoc->nombre}} - {{$pago->empleado->persona->documento}}</td>
+									<td>{{$pago->empleado->persona->nombre}} {{$pago->empleado->persona->apellido}}</td>
+									<td>{{$pago->empleado->empresa->nombreFantasia}}</td>
 									<td>{{$pago->monto}}</td>
 									
 									<td>{{$pago->fecha}}</td>	
@@ -47,13 +47,13 @@
 					</div>
 					
 				  </div>
-				  <div class="panel-footer"><a href="#" class="btn btn-warning btn-block" role="button"><i class="fas fa-plus"></i> Agregar nuevo viático</a></div>
+				  <div class="panel-footer"><a href="{{ route('pago.create') }}" class="btn btn-warning btn-block" role="button"><i class="fas fa-plus"></i> Agregar nuevo viático</a></div>
 		</div>
 	</div>
 </div>
 <script>
 $(document).ready(function() {
-    $('#tableEmpresas').DataTable( {        
+    $('#tableViaticos').DataTable( {        
 		"pagingType": "numbers",
 		"pageLength": 5,
 		"language": {

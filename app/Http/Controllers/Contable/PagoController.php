@@ -25,8 +25,8 @@ class PagoController extends Controller
 	
 	public function viaticos()
     {
-        $viaticos = Pago::where("idTipoPago", "=", 1)->get();
-		//dd($viaticos);
+      	$viaticos = Pago::where("idTipoPago", 1)->with('empleado')->get();
+		//dd($viaticos->sortByDesc('empleado.apellido'));
 		
 		return view('contable.pago.listaViaticos', ['viaticos' => $viaticos]);
     }
@@ -38,8 +38,13 @@ class PagoController extends Controller
      */
     public function create()
     {
-        //
+		$empleados = Empleado::all();
+		
+		dd($empleados);
+        //return vista con FORM para add viatico
+		return view('contable.pago.agregarViatico',['empleados' => $empleados]);
     }
+	
 
     /**
      * Store a newly created resource in storage.

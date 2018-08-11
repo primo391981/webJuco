@@ -15,10 +15,16 @@ class Pago extends Model
 	protected $table='contable_pagos';
    
 	public function empleado() {
-        return $this->belongsTo('App\Empleado','idEmpleado');
+        return $this->belongsTo('App\Contable\Empleado','idEmpleado');
     }
 	
 	public function tiposPagos(){
 		return $this->hasMany('App\Contable\TipoPago','idTipoPago');
 	}
+	
+	/*public function empresas(){
+		//VER ESTO
+		return $this->belongsTo('App\Empresa','contable_empleados','idPersona','idEmpresa')->using('App\Contable\Empleado')->withPivot('id','idCargo','fechaDesde','fechaHasta','monto','horarioCargado','valorHora');
+	}
+	*/
 }
