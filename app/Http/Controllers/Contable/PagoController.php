@@ -38,11 +38,10 @@ class PagoController extends Controller
      */
     public function create()
     {
-		$empleados = Empleado::all();
+		$empresas = Empresa::with('personas')->get();
 		
-		dd($empleados);
-        //return vista con FORM para add viatico
-		return view('contable.pago.agregarViatico',['empleados' => $empleados]);
+		//return vista con FORM para add viatico
+		return view('contable.pago.agregarViatico',['empresas' => $empresas]);
     }
 	
 

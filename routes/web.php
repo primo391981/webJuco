@@ -114,8 +114,9 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::post('editarMes', 'Contable\RegistroHoraController@editarMes')->name('reloj.editarMes')->middleware('role:contableAdmin');
 	
 	//pagos
-	Route::resource('pago', 'Contable\PagoController')->middleware('role:contableAdmin');
 	Route::get('viaticos', 'Contable\PagoController@viaticos')->name('pago.viaticos')->middleware('role:contableAdmin');
+	Route::resource('pago', 'Contable\PagoController')->middleware('role:contableAdmin');
+	
 	
 	//JURIDICO
 	//dashboard juridico
