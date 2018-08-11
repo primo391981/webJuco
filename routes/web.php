@@ -111,6 +111,8 @@ Route::group(['middleware' => ['auth']], function () {
 	//registro horas reloj
 	Route::get('listaEmpleados', 'Contable\RegistroHoraController@listaEmpleados')->name('reloj.listaEmpleados')->middleware('role:contableAdmin');
 	Route::post('compruebaMes', 'Contable\RegistroHoraController@compruebaMes')->name('reloj.compruebaMes')->middleware('role:contableAdmin');
+	Route::post('guardarMarcas', 'Contable\RegistroHoraController@guardarMarcas')->name('reloj.guardarMarcas')->middleware('role:contableAdmin');
+	Route::post('editarMes', 'Contable\RegistroHoraController@editarMes')->name('reloj.editarMes')->middleware('role:contableAdmin');
 	
 	//pagos
 	Route::resource('pago', 'Contable\PagoController')->middleware('role:contableAdmin');
