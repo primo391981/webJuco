@@ -19,7 +19,10 @@
 <br>
 <div class="row text-warning">
 	<div class="col-xs-12">
-		<h3><i class="far fa-clock"></i> INGRESO MARCAS RELOJ</h3>
+		<h3><i class="far fa-clock"></i> INGRESO MARCAS RELOJ </h3>
+		<hr>
+		<p>Empresa: {{$empleado->empresa->nombreFantasia}}</p>
+		<p>Empleado: {{$empleado->persona->tipoDoc->nombre}} {{$empleado->persona->documento}} - {{$empleado->persona->nombre}} {{$empleado->persona->apellido}}</p>
 		<hr>
 	</div>
 	<div class="col-xs-12">

@@ -66,8 +66,9 @@ class RegistroHoraController extends Controller
 						}				
 						$total->push($calendario);
 					}
-				
-					return view('contable.registrohora.formCargarHoras',['total'=>$total,'idEmpleado'=>$request->empId,'fecha'=>$dt]);
+					$empleado=Empleado::find($request->empId);
+					
+					return view('contable.registrohora.formCargarHoras',['total'=>$total,'idEmpleado'=>$request->empId,'fecha'=>$dt,'empleado'=>$empleado]);
 				}else{
 					$empleado=Empleado::find($request->empId);
 					$per=Persona::find($empleado->idPersona);			
