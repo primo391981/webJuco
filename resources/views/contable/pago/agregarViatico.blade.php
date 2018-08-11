@@ -49,19 +49,7 @@
 								@endif
 							</div>	
 						</div>
-						
-						@foreach($emprSinAsociar as $empresa)						
-							<tr>
-								<td><label><input type="radio" name="rb" value="{{$empresa->id}}" onclick="darValor(this)"></label></td>
-								<td>{{$empresa->rut}}</td>
-								<td>{{$empresa->razonSocial}}</td>
-								<td>{{$empresa->nombreFantasia}}</td>
-								<td>{{$empresa->nomContacto}}</td>
-								<td>{{$empresa->telefono}}</td>	
-								<td>{{$empresa->domicilio}}</td>
-							</tr>
-						@endforeach
-						
+							
 						<!-- Datos del Empleado -->
 						<br>Empleado
 						
