@@ -21,35 +21,30 @@
 			
 			<div class="panel-body text-warning">
 					<form method="POST" action="{{ route('pago.store') }}" class="form-horizontal">		
-						 @csrf
-						 <div class="form-group row">
+						@csrf
+						<div class="form-group row">
+							<label for="nombreFantasia" class="control-label col-sm-3">NOMBRE FANTASIA</label>
+							<div class="col-sm-9">
+								<select id="nombreFantasia" class="form-control" name="nombreFantasia" required autofocus>
+								@foreach ($empresas as $emp)
+									<option value="{{$emp->nombreFantasia}}">{{$emp->nombreFantasia}}</option>
+								@endforeach
+								</select>
+							</div>	
+						</div>
+						<div class="form-group row">
 							<label for="rut" class="control-label col-sm-3">RUT</label>
 							<div class="col-sm-9">
-								<input id="rut" type="number" class="form-control" name="rut" value="{{old('rut')}}"autofocus required>
-								@if ($errors->has('rut'))
-									<span style="color:red;">{{ $errors->first('rut') }}</span>
-								@endif
+								<input id="rut" type="number" class="form-control" name="rut" value="">
 							</div>	
 						</div>
 						<div class="form-group row">
 							<label for="razonSocial" class="control-label col-sm-3">RAZÓN SOCIAL *</label>
 							<div class="col-sm-9">
-								<input id="razonSocial" type="text" class="form-control" name="razonSocial" value="{{old('razonSocial')}}" autofocus required>
-								@if ($errors->has('razonSocial'))
-									<span style="color:red;">{{ $errors->first('razonSocial') }}</span>
-								@endif
+								<input id="razonSocial" type="text" class="form-control" name="razonSocial" value="{{old('razonSocial')}}" >
 							</div>	
 						</div>
-						<div class="form-group row">
-							<label for="nombreFantasia" class="control-label col-sm-3">NOMBRE FANTASIA</label>
-							<div class="col-sm-9">
-								<input id="nombreFantasia" type="text" class="form-control" name="nombreFantasia" value="{{old('nombreFantasia')}}" required autofocus>
-								@if ($errors->has('nombreFantasia'))
-									<span style="color:red;">{{ $errors->first('nombreFantasia') }}</span>
-								@endif
-							</div>	
-						</div>
-							
+													
 						<!-- Datos del Empleado -->
 						<br>Empleado
 						
@@ -70,6 +65,24 @@
 	</div>
 	
 </div>
-			
+
+<script>
+$(document).ready(function(){
+	
+	$("#nombreFantasia").each(function() {
+		var elem = $(this);
+		$("#rut").val({{$empresas->rut}});
+		$("#razonSocial").val("{{$emp->nombreFantasia}}");
+});   
+	}).keydown(function( event ) {
+	 	if ( event.which == 13 ) {
+			event.preventDefault();
+		}
+	});
+});
+
+
+
+</script>	
 @endsection
 
