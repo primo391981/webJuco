@@ -54,7 +54,7 @@ class PasoController extends Controller
 		$paso->save();
 		$expediente->save();
 		
-		return redirect()->route('expediente.show',$expediente);
+		return redirect()->route('expediente.show',$expediente)->with("success","El expediente fue modificado correctamente.");
 		
 		/*if ($request->hasFile('documentos')) {
 			foreach($request->documentos as $documento){
@@ -71,7 +71,7 @@ class PasoController extends Controller
      */
     public function show(Paso $paso)
     {
-        //
+       dd($paso);
     }
 
     /**

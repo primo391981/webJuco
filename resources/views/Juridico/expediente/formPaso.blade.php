@@ -1,6 +1,8 @@
 	@csrf
 						<input type="hidden" name="expediente_id" value="{{ $expediente }}">
 						<input type="hidden" name="tipoPaso_id" value="{{ $tipoPaso }}">
+						
+						@if($tipoPaso != 12)
 						<div class="form-group row">
 							<label for="documentos" class="control-label col-sm-3">DOCUMENTO</label>
 							<div class="col-sm-9">
@@ -13,7 +15,7 @@
 								@endif
 							</div>
 						</div>
-						
+						@endif
 						<div class="form-group row">
 							<label for="comentarios" class="control-label col-sm-3">COMENTARIOS</label>
 

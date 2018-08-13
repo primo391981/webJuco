@@ -28,6 +28,8 @@
     <script src="{{ asset('js/sb-admin-2.js')}}"></script>
     <!-- Morris Charts CSS utilizado para graficas-->
     <link href="{{ asset('css/morris.css')}}" rel="stylesheet">
+	<!-- Timeline-->
+    <link href="{{ asset('css/timeline.css')}}" rel="stylesheet">
     <!-- Iconos -->
 	<script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl" crossorigin="anonymous"></script>
 	<!-- Morris Charts JavaScript se utiliza para graficos
