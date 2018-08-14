@@ -23,48 +23,48 @@
 						<div class="col-sm-3 hidden-xs"><a href="{{ route('expediente.create') }}" class="btn btn-success pull-right" role="button"><i class="fas fa-plus"></i> Agregar nuevo expediente</a></div>				  
 					</div>
 				  </div>
-				  <div class="panel-body text-muted">					
+				<div class="panel-body text-muted">					
 					<div class="table-responsive">
 						<table id="tableExp" class="table table-bordered">
 							
 							<thead>
-							<tr class='active'>
-								<th class="scope">ID</th>
-								<th>TIPO</th>
-								<th>IUE</th>
-								<th>CARATULA</th>
-								<th>PASO</th>
-								<th></th>
-								
-							</tr>
-						</thead>
-						<tbody>
-						@foreach($expedientes as $expediente)						
-							<tr>
-								<td>{{$expediente->id}}</td>
-								<td>{{$expediente->tipo->nombre}}</td>
-								<td>{{$expediente->iue}}</td>
-								<td>{{$expediente->caratula}}</td>
-								<td>{{$expediente->actual->nombre}}</td>
-								<td>
-									<form method="GET" action="{{route('expediente.show', $expediente)}}">																
-										<button type="submit"class="btn btn-info"><i class="fas fa-info-circle"></i></button>												
-									</form>
-								</td>				
-								<td>
-									<form method="GET" action="{{ route('expediente.edit', $expediente) }}">																
-										<button type="submit"class="btn btn-warning"><i class="far fa-edit"></i></button>												
-									</form>
-								</td>
-							</tr>
-						@endforeach
-						</tbody>
+								<tr class='active'>
+									<th class="scope">ID</th>
+									<th>TIPO</th>
+									<th>IUE</th>
+									<th>CARATULA</th>
+									<th>PASO</th>
+									<th></th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+							@foreach($expedientes as $expediente)						
+								<tr>
+									<td>{{$expediente->id}}</td>
+									<td>{{$expediente->tipo->nombre}}</td>
+									<td>{{$expediente->iue}}</td>
+									<td>{{$expediente->caratula}}</td>
+									<td>{{$expediente->actual->nombre}}</td>
+									<td>
+										<form method="GET" action="{{route('expediente.show', $expediente)}}">																
+											<button type="submit"class="btn btn-info"><i class="fas fa-info-circle"></i></button>												
+										</form>
+									</td>				
+									<td>
+										<form method="GET" action="{{ route('expediente.edit', $expediente) }}">																
+											<button type="submit"class="btn btn-warning"><i class="far fa-edit"></i></button>												
+										</form>
+									</td>
+								</tr>
+							@endforeach
+							</tbody>
 						
 						</table>
 					</div>
 					
-				  </div>
-				  <div class="panel-footer"><a href="{{ route('expediente.create') }}" class="btn btn-success btn-block" role="button"><i class="fas fa-plus"></i> Agregar expediente</a></div>
+				</div>
+				<div class="panel-footer"><a href="{{ route('expediente.create') }}" class="btn btn-success btn-block" role="button"><i class="fas fa-plus"></i> Agregar expediente</a></div>
 		</div>
 	</div>
 </div>

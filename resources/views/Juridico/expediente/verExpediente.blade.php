@@ -82,9 +82,12 @@
 				</div>
 				<div class="row">
 					<div class="col-sm-9">
-						<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Transiciones de expediente <i class="fas fa-info"></i></button>
+						<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">Transiciones del expediente <i class="fas fa-info"></i></button>
+						
+						<button type="button" class="btn btn-info btn-md" >Actualizaciones del Expediente <i class="fas fa-sync-alt"></i></button>
 					</div>
 				</div>
+				<br>
 				@if(count($transiciones) > 0)
 				<div class="panel panel-default">
 					<div class="panel-body">
@@ -128,8 +131,11 @@
 							<div class="timeline-marker"></div>
 							<div class="timeline-content">
 								<h3 class="timeline-title">{{$paso->tipo->nombre}}</h3>
-								<p>{{$paso->comentario}}</p>
-								<p>{{$paso->usuario->name}} ({{$paso->usuario->nombre}} {{$paso->usuario->apellido}})</p>
+								{{$paso->usuario->name}}
+										({{$paso->usuario->nombre}} {{$paso->usuario->apellido}})
+								<a class="btn btn-link btn-xs"><i class="fas fa-info-circle"></i> ver</a>
+								
+								<p> </p>
 							</div>
 						</li>
 						@endforeach

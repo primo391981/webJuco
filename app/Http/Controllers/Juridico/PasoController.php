@@ -46,6 +46,7 @@ class PasoController extends Controller
 		$paso->id_expediente = $request->expediente_id;
 		$paso->id_tipo = $request->tipoPaso_id;
 		$paso->id_usuario = Auth::user()->id;
+		$paso->comentario = $request->comentarios;
 		$paso->fecha_fin = null;
 		
 		$expediente = Expediente::find($request->expediente_id);

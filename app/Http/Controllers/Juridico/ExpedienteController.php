@@ -6,6 +6,8 @@ use App\Juridico\Expediente;
 use App\Juridico\Cliente;
 use App\Juridico\Transicion;
 use App\Juridico\TipoExpediente;
+use App\Juridico\Paso;
+
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use SoapClient;
@@ -95,6 +97,16 @@ class ExpedienteController extends Controller
 		
 		//dd($expediente->clientes);
 		//setting varables a mostrar en el formulario de creación de paso
+		$paso = new Paso();
+		$paso->id_expediente = $expediente->id;
+		$paso->id_tipo = 1;
+		$paso->id_usuario = Auth::user()->id;
+		$paso->comentario = "Expediente creado";
+		$paso->fecha_fin = null;
+		
+		$paso->save();
+		
+		
 		
 		if ($request->exists('nextExpediente')){
 			return view('juridico.expediente.agregarPaso', ['expediente' => $expediente, 'numero_paso' => 1, 'nombre_paso' => "Adjuntar Demanda"])->with('success', "El expediente se creó correctamente.");
