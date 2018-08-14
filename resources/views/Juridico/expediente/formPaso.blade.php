@@ -15,6 +15,17 @@
 								@endif
 							</div>
 						</div>
+						
+						<div class="form-group row">
+								<label for="tipoexp" class="control-label col-sm-3">TIPO DOCUMENTO</label>
+								<div class="col-sm-9">
+									<select name="tipoarchivo" class="form-control" id="tipoarchivo">
+										@foreach($tiposArchivo as $key => $tipo)
+											<option value="{{ $tipo->id }}" {{ old('tipoarchivo', isset($exp) ? $exp->tipo_id : '' ) == $key + 1 ? 'selected' : '' }}>{{ $tipo->nombre }}</option>  
+										@endforeach
+									</select>
+								</div>			
+						</div>
 						@endif
 						<div class="form-group row">
 							<label for="comentarios" class="control-label col-sm-3">COMENTARIOS</label>

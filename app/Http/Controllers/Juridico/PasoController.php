@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Juridico;
 use App\Juridico\Paso;
 use App\Juridico\TipoPaso;
 use App\Juridico\Expediente;
+use App\Juridico\ArchivoPaso;
+use App\Juridico\TipoArchivo;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
@@ -30,7 +32,9 @@ class PasoController extends Controller
     {
         $exp = Expediente::find($expediente);
 		$tipoPaso = TipoPaso::find($paso);
-		return view('juridico.expediente.agregarPaso',['expediente' => $exp, 'tipoPaso' => $tipoPaso]);
+		$tiposArchivo = TipoArchivo::All();
+		
+		return view('juridico.expediente.agregarPaso',['expediente' => $exp, 'tipoPaso' => $tipoPaso, 'tiposArchivo' => $tiposArchivo]);
     }
 
     /**
@@ -55,13 +59,21 @@ class PasoController extends Controller
 		$paso->save();
 		$expediente->save();
 		
+		if ($request->hasFile('documentos')) {
+			/*$num = 1;
+			$fileName = $expediente->iue."_".$expediente->actual->nombre;
+			dd(str_slug($fileName,'-'));*/
+			foreach($request->documentos as $documento){
+				/*$file = new ArchivoPaso();
+				$file*/
+				var_dump($documento->hashName());
+				var_dump($documento->getClientOriginalName());
+			}
+		}	
+		die;
 		return redirect()->route('expediente.show',$expediente)->with("success","El expediente fue modificado correctamente.");
 		
-		/*if ($request->hasFile('documentos')) {
-			foreach($request->documentos as $documento){
-				var_dump($documento);
-			}
-		}*/	
+		
     }
 
     /**
@@ -72,7 +84,12 @@ class PasoController extends Controller
      */
     public function show(Paso $paso)
     {
-       dd($paso);
+	   $expediente = $paso->expediente;
+	   $transiciones = $expediente->tipo->transiciones->where('id_paso_inicial',$expediente->paso_actual);
+
+	  
+       return view('juridico.expediente.verPaso', ['paso' => $paso, 'expediente' => $expediente, 'transiciones' =>$transiciones]);
+	   
     }
 
     /**

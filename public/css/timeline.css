@@ -48,6 +48,10 @@
 .timeline h1, .timeline h2, .timeline h3, .timeline h4, .timeline h5, .timeline h6 {
   line-height: inherit;
 }
+
+.timeline h3 a:hover {
+   text-decoration:none;
+}
 /*----- TIMELINE ITEM -----*/
 .timeline-item {
   padding-left: 20px;

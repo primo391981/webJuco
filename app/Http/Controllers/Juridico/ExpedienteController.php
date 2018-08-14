@@ -128,7 +128,6 @@ class ExpedienteController extends Controller
     public function show(Expediente $expediente)
     {
         $transiciones = $expediente->tipo->transiciones->where('id_paso_inicial',$expediente->paso_actual);
-		
 		return view('juridico.expediente.verExpediente', ['expediente' => $expediente, 'transiciones' =>$transiciones]);
 		
 		

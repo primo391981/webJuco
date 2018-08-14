@@ -10,6 +10,6 @@ class ArchivoPaso extends Model
 	
 	public function tipo(){
 		
-		return $this->belongsTo('App\Juridico\TipoArchivo','id_tipo')
+		return $this->belongsTo('App\Juridico\TipoArchivo','id_tipo');
 	}
 }
