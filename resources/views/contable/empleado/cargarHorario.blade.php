@@ -36,7 +36,7 @@
 					<div class="form-group">
 						<label class="control-label col-sm-3" for="hr{{$dia->id}}">{{$dia->nombre}} *</label>
 						<div class="col-sm-5">
-							<input type="time" class="form-control" id="hr{{$dia->id}}" name="hr{{$dia->id}}" value="{{old('$dia->nombre')}}"/>
+							<input type="time" class="form-control" id="hr{{$dia->id}}" name="hr{{$dia->id}}" value="{{old('$dia->nombre')}}"required />
 						</div>
 						<div class="col-sm-4">
 							<select class="form-control" id="reg{{$dia->id}}" name="reg{{$dia->id}}">

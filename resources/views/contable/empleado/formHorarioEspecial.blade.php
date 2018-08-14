@@ -18,16 +18,17 @@
 		  <div class="panel-body text-warning">   
 				<form class="form-horizontal" method="post" action="{{ route('empleado.guardarHorarioEsp')}}">
 					@csrf
+					 <input type="hidden" id="idEmpleado" name="idEmpleado" value="{{$idEmpleado}}">
 					<div class="form-group">
 						<label class="control-label col-sm-3" for="fechaDesde">FECHA DE INICIO *</label>
 						<div class="col-sm-9">
-							<input type="date" class="form-control" id="fechaDesde" name="fechaDesde" />
+							<input type="date" class="form-control" id="fechaDesde" name="fechaDesde" value="{{$fechaDesde}}" readonly />
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="control-label col-sm-3" for="fechaHasta">FECHA DE FIN *</label>
 						<div class="col-sm-9">
-							<input type="date" class="form-control" id="fechaHasta" name="fechaHasta" />
+							<input type="date" class="form-control" id="fechaHasta" name="fechaHasta" value="{{$fechaHasta}}" readonly/>
 						</div>
 					</div>
 					<hr>

@@ -17,9 +17,15 @@
 	</div>
 @endif 
 <br>
- <div class="row">
+<ul class="nav nav-tabs">
+    <li class=" text-warning"><a data-toggle="tab" href="#dtempleado">DETALLE EMPLEADO</a></li>
+    <li class="active text-warning"><a data-toggle="tab" href="#emp">EMPRESAS ASOCIADAS</a></li>
+    <li class=" text-warning"><a data-toggle="tab" href="#hrespecial">INGRESO DE HORARIO ESPECIAL</a></li>    
+</ul>
+<br>
+ <div class="tab-content">
   
-  <div class="col-xs-12"> <!--ABRE DIV EMPRESAS-->
+  <div id="emp" class="col-xs-12 tab-pane fade in active"> <!--ABRE DIV EMPRESAS-->
     <div class="panel panel-warning"> 
       <div class="panel-heading"> 
         <h4>EMPRESAS ASOCIADAS AL EMPLEADO</h4>           
@@ -106,11 +112,9 @@
      	 
 	</div>
 	</div><!--CIERRE DIV EMPRESAS-->
-</div><!--CIERRE row EMPRESAS-->
-	
-<div class="row">	
 
-	<div class="col-xs-12 col-md-4"><!--ABRE DIV DATOS--> 
+	
+	<div id="dtempleado" class="col-xs-12 col-md-4 tab-pane fade"><!--ABRE DIV DATOS--> 
     <div class="panel panel-warning"> 
       <div class="panel-heading"> 
         <h4>DETALLE EMPLEADO</h4>           
@@ -137,7 +141,7 @@
   </div><!--CIERRE DIV DATOS-->
   
   
-  <div class="col-xs-12 col-md-8"><!--ABRE DIV INGRESO HORARIO ESPECIAL--> 
+  <div id="hrespecial" class="col-xs-12 col-md-8 tab-pane fade"><!--ABRE DIV INGRESO HORARIO ESPECIAL--> 
     <div class="panel panel-warning"> 
       <div class="panel-heading"> 
         <h4>INGRESO DE HORARIO ESPECIAL</h4>           
@@ -181,6 +185,6 @@
   
 	
 	
-</div> <!--CIERRE ROW 2-->
+</div> <!--CIERRE tab content-->
 @endsection 
  
