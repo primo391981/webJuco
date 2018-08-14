@@ -167,11 +167,6 @@ class ClienteController extends Controller
 			return back()->withInput()->withError('El cliente ya se encuentra regsitrado');
 		}
 		
-		
-		
-		
-		
-		
 	   
     }
 

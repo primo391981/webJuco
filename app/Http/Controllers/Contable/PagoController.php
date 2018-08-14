@@ -26,20 +26,14 @@ class PagoController extends Controller
 	public function viaticos()
     {
       	$viaticos = Pago::where("idTipoPago", 1)->with('empleado')->get();
-		//dd($viaticos->sortByDesc('empleado.apellido'));
 		
 		return view('contable.pago.listaViaticos', ['viaticos' => $viaticos]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
 		$empresas = Empresa::with('personas')->get();
-		
+		//dd($empresas);
 		//return vista con FORM para add viatico
 		return view('contable.pago.agregarViatico',['empresas' => $empresas]);
     }
