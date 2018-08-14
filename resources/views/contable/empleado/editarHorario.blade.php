@@ -16,45 +16,45 @@
 			<h4>EDITAR HORARIO POR DIA DEL EMPLEADO</h4>           
 		  </div> 
 		  <div class="panel-body text-warning">   
-				<form class="form-horizontal" method="POST" action="{{ route('empleado.editarHorario')}}">
+				<form class="form-horizontal" method="POST" action="{{ route('empleado.guardarHorarioPrin') }}">
 				@csrf	
-					<input id="idHorarioEmp" name="idHorarioEmp" type="hidden" value="{{$idHorarioEmp}}">
+					<input id="idHorarioEmp" name="idHorarioEmp" type="hidden" value="{{$horarioPrincipal->id}}">
 					<div class="form-group">
-						<label class="control-label col-sm-3" for="fechaDesde">FECHA DE INICIO *</label>
-						<div class="col-sm-9">
-							<input type="date" class="form-control" id="fechaDesde" name="fechaDesde" value="{{$fechas->fechaDesde}}"/>
+						<label class="control-label col-sm-2" for="fechaDesde">FECHA DE INICIO *</label>
+						<div class="col-sm-8">
+							<input type="date" class="form-control" id="fechaDesde" name="fechaDesde" value="{{$horarioPrincipal->fechaDesde}}" readonly/>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="control-label col-sm-3" for="fechaHasta">FECHA DE FIN *</label>
-						<div class="col-sm-9">
-							<input type="date" class="form-control" id="fechaHasta" name="fechaHasta" value="{{$fechas->fechaHasta}}"/>
+						<label class="control-label col-sm-2" for="fechaHasta">FECHA DE FIN *</label>
+						<div class="col-sm-8">
+							<input type="date" class="form-control" id="fechaHasta" name="fechaHasta" value="{{$horarioPrincipal->fechaHasta}}"readonly/>
 						</div>
 					</div>
 					<hr>
-					@foreach($horarios as $hr)
-						@foreach($dias as $dia)
-							@if($dia->id==$hr->idDia)
-							<div class="form-group">
-								<label class="control-label col-sm-3" for="hr{{$dia->id}}">{{$dia->nombre}} *</label>
-								<div class="col-sm-5">
-									<input type="time" class="form-control" id="hr{{$dia->id}}" name="hr{{$dia->id}}" value="{{$hr->cantHoras}}"/>
-								</div>
-								<div class="col-sm-4">
-									<select class="form-control" id="reg{{$dia->id}}" name="reg{{$dia->id}}">
-									@foreach($registros as $reg)
-										@if($reg->id==$hr->idRegistro)
-											<option selected value="{{$reg->id}}">{{$reg->nombre}}</option>
-										@else
-											<option value="{{$reg->id}}">{{$reg->nombre}}</option>
-										@endif										
-									@endforeach
-									</select>
-								</div>
-							</div>
-						@endif
-					@endforeach
-					@endforeach
+						@foreach($horarioPrincipal->horariosPorDia as $hd)
+							@foreach($dias as $d)
+								@if($d->id==$hd->idDia)
+									<div class=" form-group">
+										<label class="control-label col-sm-2" >{{$d->nombre}}</label>
+										<div class="col-sm-4">
+											<input type="time" class="form-control" id="{{$d->id}}" name="{{$d->id}}" value="{{$hd->cantHoras}}"/>
+										</div>
+										<div class="col-sm-4">
+											<select class="form-control" id="reg{{$d->id}}" name="reg{{$d->id}}">
+												@foreach($registros as $reg)	
+													@if($reg->id==$hd->idRegistro)
+													<option selected value="{{$reg->id}}">{{$reg->nombre}}</option>
+													@else
+														<option value="{{$reg->id}}">{{$reg->nombre}}</option>
+													@endif
+												@endforeach
+											</select>
+										</div>
+									</div>
+								@endif
+							@endforeach
+						@endforeach
 					<hr>
 					<div class="form-group">
 						<div class="col-sm-12 text-center">

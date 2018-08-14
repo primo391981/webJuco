@@ -10,33 +10,9 @@
 @endif 
 <br> 
  <div class="row">
- <div class="col-xs-12 col-md-3"> 
-    <div class="panel panel-warning"> 
-      <div class="panel-heading"> 
-        <h4>DETALLE EMPLEADO</h4>           
-      </div> 
-      <div class="panel-body text-warning">   
-		<p>{{$persona->nombre}} {{$persona->apellido}}</p> 
-        <hr>
-		
-			<p><strong>TIPO DOCUMENTO :</strong> {{$persona->tipoDoc->nombre}}</p> 
-			<p><strong>DOCUMENTO :</strong> {{$persona->documento}}</p> 
-			<p><strong>TELÉFONO :</strong> {{$persona->telefono}}</p> 
-			<p><strong>EMAIL :</strong> {{$persona->email}}</p> 
-			<p><strong>DOMICILIO :</strong> {{$persona->domicilio}}</p> 
-			<p><strong>ESTADO CIVIL :</strong> {{$persona->eCivil->nombre}}</p> 
-		    <p><strong>CANTIDAD DE HIJOS :</strong> {{$persona->cantHijos}}</p>
-	
-      </div> 
-      <div class="panel-footer"> 
-        <form method="GET" action="{{ route('persona.edit', $persona->id) }}">																
-			<button type="submit"class="btn btn-warning btn-block"><i class="far fa-edit"></i> Modificar datos</button>												
-		</form>
-      </div> 
-    </div> 
-  </div>
+ 
   
-  <div class="col-xs-12 col-md-9"> 
+  <div class="col-xs-12"> <!--ABRE DIV EMPRESAS-->
     <div class="panel panel-warning"> 
       <div class="panel-heading"> 
         <h4>EMPRESAS ASOCIADAS AL EMPLEADO</h4>           
@@ -82,53 +58,120 @@
 								<button type="submit"class="btn btn-warning"><i class="far fa-clock"></i> Cargar horario</button>
 							</form>
 							@else
-								<!--Mostrar detalle de horario por dia-->
-								@foreach($collectionHorariosPorDia as $key=> $horarioPorDia)
-									@if($empr->pivot->id == $key)
-										@foreach($horarioPorDia as $hr)
-											<?php $idHorarioEmp = $hr->idHorarioEmpleado; ?>
-											@foreach($dias as $dia)
-											@if($dia->id==$hr->idDia)
-												@switch($hr->idRegistro)
-																@case(1)
-																	<p>{{$dia->nombre}}: {{$hr->cantHoras}} - COMPLETO</p>
-																	@break
-																@case(2)
-																	<p>{{$dia->nombre}}: {{$hr->cantHoras}} - MEDIO DIA</p>
-																	@break
-																@case(3)
-																	<p>{{$dia->nombre}}: {{$hr->cantHoras}} - DESCANSO</p>
-																	@break
-												@endswitch
-											@endif
+								@if(count($horariosPrincipales) >0)
+									
+									@foreach($horariosPrincipales as $hr)
+										@if($empr->pivot->id == $hr->empleado->id)
+											@foreach($hr->horariosPorDia as $hd)
+												@foreach($dias as $d)
+													@if($d->id==$hd->idDia)
+														@foreach($registros as $r)
+															@if($r->id==$hd->idRegistro)
+															<p>{{$d->nombre}}: {{$hd->cantHoras}} - {{$r->nombre}}</p>
+															@endif
+														@endforeach
+													@endif
+												@endforeach
 											@endforeach
-										
-										@endforeach
-									@endif	
-								@endforeach
-								<form method="GET" action="{{ route('empleado.formEditarHorario',[$empr->pivot->id,$empr->pivot->id]) }}">																
-									<button type="submit"class="btn btn-warning"><i class="far fa-edit"></i> Modificar horario principal</button>
-								</form>							
-							@endif
-							
+											<form method="GET" action="{{ route('empleado.editHorarioPrincipal', [$empr->pivot->id,$hr->id]) }}">
+												<button type="submit"class="btn btn-warning btn-block"><i class="far fa-edit"></i> Modificar horario principal</button>												
+											</form>
+										@endif
+									@endforeach
+								@endif
+							@endif							
 						</div>
 					</div>
 				</div>
-				<hr>
+				@if(count($emprAsociadas) >1)
+					<hr>
+				@endif
 			@endforeach
-		@else
-			<p>La persona NO esta asociada a ninguna empresa.</p>
-		@endif
-		           
-      </div> 
+			@else
+				<p>La persona NO esta asociada a ninguna empresa.</p>
+			@endif
+		</div>
       <div class="panel-footer"> 
 		<form method="GET" action="{{ route('empleado.formCrear', $persona->id) }}">
 			<button type="submit"class="btn btn-warning btn-block"><i class="far fa-handshake"></i> Asociar empresa</button>												
 		</form>
 	  </div>      
-    </div> 
-  </div>    
-</div> 
-	 
+     	 
+	</div>
+	</div><!--CIERRE DIV EMPRESAS-->
+</div><!--CIERRE row EMPRESAS-->
+	
+<div class="row">	
+
+	<div class="col-xs-12 col-md-4"><!--ABRE DIV DATOS--> 
+    <div class="panel panel-warning"> 
+      <div class="panel-heading"> 
+        <h4>DETALLE EMPLEADO</h4>           
+      </div> 
+      <div class="panel-body text-warning">   
+		<p>{{$persona->nombre}} {{$persona->apellido}}</p> 
+        <hr>
+		
+			<p><strong>TIPO DOCUMENTO :</strong> {{$persona->tipoDoc->nombre}}</p> 
+			<p><strong>DOCUMENTO :</strong> {{$persona->documento}}</p> 
+			<p><strong>TELÉFONO :</strong> {{$persona->telefono}}</p> 
+			<p><strong>EMAIL :</strong> {{$persona->email}}</p> 
+			<p><strong>DOMICILIO :</strong> {{$persona->domicilio}}</p> 
+			<p><strong>ESTADO CIVIL :</strong> {{$persona->eCivil->nombre}}</p> 
+		    <p><strong>CANTIDAD DE HIJOS :</strong> {{$persona->cantHijos}}</p>
+	
+      </div> 
+      <div class="panel-footer"> 
+        <form method="GET" action="{{ route('persona.edit', $persona->id) }}">																
+			<button type="submit"class="btn btn-warning btn-block"><i class="far fa-edit"></i> Modificar datos</button>												
+		</form>
+      </div> 
+    </div>
+  </div><!--CIERRE DIV DATOS-->
+  
+  
+  <div class="col-xs-12 col-md-8"><!--ABRE DIV INGRESO HORARIO ESPECIAL--> 
+    <div class="panel panel-warning"> 
+      <div class="panel-heading"> 
+        <h4>INGRESO DE HORARIO ESPECIAL</h4>           
+      </div> 
+      <div class="panel-body text-warning">  
+		@if (count($emprAsociadas) >0)
+			@foreach($emprAsociadas as $emp)
+				<form>
+				<div class="form-group row">
+					<label class="col-sm-3 col-form-label">{{$emp->nombreFantasia}}</label>
+					@if($emp->pivot->horarioCargado==true)
+						<div class="col-sm-3">
+							<input type="date" class="form-control" id="fechaDesde" name="fechaDesde" >
+						</div>
+						<div class="col-sm-3">
+						  <input type="date" class="form-control" id="fechaHasta" name="fechaHasta" >
+						</div>
+						<div class="col-sm-3">
+						  <button type="submit"class="btn btn-warning btn-block"><i class="far fa-clock"></i> Cargar horario</button>	
+						</div>
+						
+					@else
+						<div class="col-sm-9">
+							<p>Debe ingresar un horario principal.</p>
+						</div>	
+					@endif
+				</div>
+				</form>
+				@if(count($emprAsociadas) >1)
+					<hr>
+				@endif
+			@endforeach
+		@else
+			<p>La persona NO esta asociada a ninguna empresa.</p>
+		@endif
+      </div>       
+    </div>
+  </div><!--CIERRE DIV HORARIO ESPECIAL-->
+  
+	
+	
+</div> <!--CIERRE ROW 2-->
 @endsection 
  

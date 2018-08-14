@@ -104,8 +104,9 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('formCrear/{idpersona}', 'Contable\EmpleadoController@formCrear')->name('empleado.formCrear')->middleware('role:contableAdmin');
 	Route::get('formCargarHorario/{idempleado}', 'Contable\EmpleadoController@formCargarHorario')->name('empleado.formCargarHorario')->middleware('role:contableAdmin');
 	Route::post('cargarHorario', 'Contable\EmpleadoController@cargarHorario')->name('empleado.cargarHorario')->middleware('role:contableAdmin');
-	Route::get('editarHorario/{idempleado}/{idhorario}', 'Contable\EmpleadoController@formEditarHorario')->name('empleado.formEditarHorario')->middleware('role:contableAdmin');
-	Route::post('editarHorario', 'Contable\EmpleadoController@editarHorario')->name('empleado.editarHorario')->middleware('role:contableAdmin');
+	Route::get('editHorarioPrincipal/{idempleado}/{idHorarioModificar}', 'Contable\EmpleadoController@editHorarioPrincipal')->name('empleado.editHorarioPrincipal')->middleware('role:contableAdmin');
+	Route::post('guardarHorarioPrin', 'Contable\EmpleadoController@guardarHorarioPrin')->name('empleado.guardarHorarioPrin')->middleware('role:contableAdmin');
+	
 	
 	//registro horas reloj
 	Route::get('listaEmpleados', 'Contable\RegistroHoraController@listaEmpleados')->name('reloj.listaEmpleados')->middleware('role:contableAdmin');
