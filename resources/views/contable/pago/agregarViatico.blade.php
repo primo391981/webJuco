@@ -22,37 +22,52 @@
 					<form method="POST" action="{{ route('pago.store') }}" class="form-horizontal" enctype="multipart/form-data" id="formViatico">		
 						@csrf
 						<div class="form-group row">
-							<label for="rut" class="control-label col-sm-3">RUT</label>
+							<label for="rut" class="control-label col-sm-3">NOMBRE FANTASIA *</label>
 							<div class="col-sm-9">
-								<select name="rut">
+								<select id="nombreFantasia" class="form-control" name="nombreFantasia" onChange="" required autofocus>
+									<option value="">-- Seleccione empresa --</option>
 								@foreach($empresas as $emp)
-									<option value="{{$emp->rut}}">{{$emp->rut}}</option>
+									<option value="{{$emp->nombreFantasia}}">{{$emp->nombreFantasia}}</option>
 								@endforeach
 								</select>							
 							</div>	
 						</div>
 						<div class="form-group row">
-							<label for="nombreFantasia" class="control-label col-sm-3">NOMBRE FANTASIA</label>
+							<label for="nombreFantasia" class="control-label col-sm-3">RUT</label>
 							<div class="col-sm-9">
-								<input id="nombreFantasia" type="text" class="form-control" name="nombreFantasia" value="{{old('nombreFantasia')}}"autofocus required>
-								@if ($errors->has('nombreFantasia'))
-									<span style="color:red;">{{ $errors->first('nombreFantasia') }}</span>
-								@endif
+								<input id="rut" type="text" class="form-control" name="rut" value="" disabled>
 							</div>	
 						</div>
 						<div class="form-group row">
-							<label for="razonSocial" class="control-label col-sm-3">RAZÓN SOCIAL *</label>
+							<label for="razonSocial" class="control-label col-sm-3">RAZÓN SOCIAL</label>
 							<div class="col-sm-9">
-								<input id="razonSocial" type="text" class="form-control" name="razonSocial" value="{{old('razonSocial')}}" autofocus required>
-								@if ($errors->has('razonSocial'))
-									<span style="color:red;">{{ $errors->first('razonSocial') }}</span>
-								@endif
+								<input id="razonSocial" type="text" class="form-control" name="razonSocial" value="" disabled>
 							</div>	
 						</div>
 
 							
 						<!-- Datos del Empleado -->
 						<br>Empleado
+						<div class="form-group row">
+							<label for="rut" class="control-label col-sm-3">NOMBRE EMPLEADO *</label>
+							<div class="col-sm-9">
+								<select id="nombreEmpleado" class="form-control" name="nombreEmpleado" onChange="" required disabled>
+									<option value=""></option>
+								</select>							
+							</div>	
+						</div>
+						<div class="form-group row">
+							<label for="tipoDoc" class="control-label col-sm-3">TIPO DOCUMENTO</label>
+							<div class="col-sm-9">
+								<input id="tipoDoc" type="text" class="form-control" name="tipoDoc" value="" disabled>
+							</div>	
+						</div>
+						<div class="form-group row">
+							<label for="numeroDoc" class="control-label col-sm-3">NÚMERO</label>
+							<div class="col-sm-9">
+								<input id="numeroDoc" type="text" class="form-control" name="numeroDoc" value="" disabled>
+							</div>	
+						</div>
 						
 						<!-- Datos del Viático -->
 						<br>Viático
@@ -73,61 +88,61 @@
 </div>
 
 <script>
-<script>
-$(document).ready(function(){
+
+$(function() 
+{
+	var empresa = @json($empresas);
 	
-	$("#rut").each(function() {
-		var elem = $(this);
-
-	   // Save current value of element
-		elem.data('oldVal', elem.val());
-
-	   // Look for changes in the value
-		//elem.bind("propertychange change click keyup input paste", function(event){
-		elem.bind("propertychange change click keyup input paste", function(event){
-		  // If value has changed...
-			if (elem.data('oldVal') != elem.val()) {
-			// Updated stored value
-				elem.data('oldVal', elem.val());
-				check();
-			}
-		});
-	}).keydown(function( event ) {
-	 	if ( event.which == 13 ) {
-			event.preventDefault();
+	$('#nombreFantasia').on('change', function() 
+	{
+		$("#tipoDoc").val("");
+		$("#numeroDoc").val("");
+		
+		if (this.value ==  "")
+		{
+			$("#rut").val("");
+			$("#razonSocial").val("");
+			$('#nombreEmpleado').prop('disabled', 'disabled');
+			document.getElementById("nombreEmpleado").innerHTML = "<option value=''></option>";			
 		}
-	});
+		else
+		{
+			encontre = false;
+			i = 0;
+			while (i < empresa.length && !encontre) {
+			
+				if (empresa[i].nombreFantasia == this.value){
+					$("#rut").val(empresa[i].rut);
+					$("#razonSocial").val(empresa[i].razonSocial);   
+					$("#nombreFantasia").val(empresa[i].nombreFantasia);
+					j = 0;	
+					document.getElementById("nombreEmpleado").innerHTML = "<option value=''>-- Seleccione empleado --</option>"; 
+					
+					while (j < empresa[i].personas.length)
+					{
+						document.getElementById("nombreEmpleado").innerHTML += "<option value='"+empresa[i].personas[j].tipoDocumento+" "+empresa[i].personas[j].documento+"'>"+empresa[i].personas[j].nombre+" "+empresa[i].personas[j].apellido+"</option>"; 
+						j++;
+					}
+					
+					$('#nombreEmpleado').prop('disabled', false);
+					
+					encontre = true;
+				}			
+				i++;
+			}
+		}
+	})
+	
+	$('#nombreEmpleado').on('change', function() 
+	{	
+		separador = " ";
+		documentoEmpl = this.value.split(separador);
+		
+		$("#tipoDoc").val(documentoEmpl[0]);
+		$("#numeroDoc").val(documentoEmpl[1]); 
+	})
 });
 
-function check()
-{
-	var form = $("#formViatico");
-	var url = "/cliente/search";
-	var data = form.serialize();
-		  
-	$.get(url, data, function (result) {
-	
-		if(result.personas != null){
-			$("#rut").val(result.personas.rut);
-			$("#razonSocial").val(result.personas.razonSocial);   
-			$("#nombreFantasia").val(result.personas.nombreFantasia); 
-		} else {
-			$("#razonSocial").val("");   
-			$("#nombreFantasia").val(""); 
-		}
-			   
-	});
-}
-
-function datosEmpresa(val){
-    $.ajax({
-      function(){
-        $("#rut").val("pepe");
-		$("#razonSocial").val(emp.razonSocial);   
-		$("#nombreFantasia").val(emp.nombreFantasia);  
-      }
-    })
-}
 </script>	
 @endsection
 
