@@ -102,8 +102,16 @@
 							<div class="row">
 							<label for="comentarios" class="control-label col-sm-3">COMENTARIOS</label>
 								<div class="col-sm-9">
-									{{$paso->comentario}}
+									{!!$paso->comentario!!}
 								</div>
+							</div>
+							<div class="row">
+							<label for="archivos" class="control-label col-sm-3">Archivos</label>
+							@foreach($paso->archivos as $archivo)
+								
+								<div class="col-sm-9">{{$archivo->archivo}}</div>
+							
+							@endforeach
 							</div>
 							<div class="row">
 							<label for="comentarios" class="control-label col-sm-3">PASO REGISTRADO POR</label>

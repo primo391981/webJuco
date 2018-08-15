@@ -64,13 +64,15 @@ class PasoController extends Controller
 			$fileName = $expediente->iue."_".$expediente->actual->nombre;
 			dd(str_slug($fileName,'-'));*/
 			foreach($request->documentos as $documento){
-				/*$file = new ArchivoPaso();
-				$file*/
-				var_dump($documento->hashName());
-				var_dump($documento->getClientOriginalName());
+				$file = new ArchivoPaso();
+				$file->id_paso = $paso->id;
+				$file->id_tipo = $request->tipoarchivo;
+				$file->archivo = $documento->store('expedientes');
+				$file->nombre_archivo = $file->archivo;
+				$file->save();
 			}
 		}	
-		die;
+		//dd($file);
 		return redirect()->route('expediente.show',$expediente)->with("success","El expediente fue modificado correctamente.");
 		
 		
