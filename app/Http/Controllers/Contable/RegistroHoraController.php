@@ -17,66 +17,79 @@ use Carbon\Carbon;
 
 class RegistroHoraController extends Controller
 {
-    public function listaEmpleados()
-    {	
-		$empleados=Empleado::where("horarioCargado","=",true)->get();
-		return view('contable.registrohora.listaEmpleados',['empleados'=>$empleados]);
-    }
-	public function compruebaMes(Request $request){
+    public function listaEmpleados(){	
+		try{
+			$empleados=Empleado::where("horarioCargado","=",true)->get();
+			return view('contable.registrohora.listaEmpleados',['empleados'=>$empleados]);
+		}
+		catch(Exception $e){
+			return back()->withInput()->withError("Error en el sistema.");
+		}		
+	}
+	
+	public function formMarcas(Request $request){
 		try{
 			if($request->mes==null){
 				return back()->withInput()->withError("Debe seleccionar un mes y año.");
 			}
 			else{
-				//si ya lo tiene cargado advertir
-				$fecha=$request->mes."-01";		
-				$regHora=RegistroHora::where([['idEmpleado','=',$request->empId],['fecha','=',$fecha]])->first();
-				if($regHora==null){
-					$idHorario=HorarioEmpleado::where('idEmpleado','=',$request->empId)->min('id');
-					$horariosPorDia=HorarioPorDia::where('idHorarioEmpleado','=',$idHorario)->get();
-					
-					$dt=new Carbon($fecha);
-					$dias=Dia::All();
-					
-					$total=collect([]);
-					for($i=1;$i<=$dt->daysInMonth;$i++){
-						$calendario =collect([]);
-						$aux=new Carbon($fecha=$request->mes."-".$i);
-						foreach($dias as $dia){
-							if($dia->id==$aux->dayOfWeekIso){
-								foreach($horariosPorDia as $hr){
-									if($dia->id==$hr->idDia){
-										$calendario->push($dia->nombre);
-										$calendario->push($i."/".$aux->month);
-										$calendario->push($hr->cantHoras);
-										switch($hr->idRegistro){
-											case 1:		
-												$calendario->push(" ");
-												break;
-											case 2:
-												$calendario->push("info");
-												break;
-											case 3:
-												$calendario->push("danger");
-												break;
-										}
-									}
+				//ver si esta dentro del contrato del empleado.
+				$empleado=Empleado::where('id','=',$request->idEmpleado)->first();
+				$fecha=new Carbon($request->mes."-01");
+				$fDesde=new Carbon($empleado->fechaDesde);
+				$fHasta=new Carbon($empleado->fechaHasta);
+				if($fecha->between($fDesde,$fHasta)){
+					//advertir si ya tiene cargado ese mes
+					$regHora=RegistroHora::where([['idEmpleado','=',$request->idEmpleado],['fecha','=',$fecha]])->first();
+					if($regHora==null){
+						//1- obtener todos los horairos del empleado, 2- dia a dia ver si esta dentro de cada horario, 3- agregar a una coleccion con datos
+						$dias=Dia::All();
+						$total=collect([]);
+						$horarios=HorarioEmpleado::where('idEmpleado','=',$empleado->id)->orderBy('id', 'desc')->get();
+						//dd($horarios);
+						for($i=1;$i<=$fecha->daysInMonth;$i++){
+							$calendario =collect([]);
+							$cargoDia=false;
+							foreach($horarios as $hr){
+								$hrFechaDesde=new Carbon($hr->fechaDesde);$hrFechaHasta=new Carbon($hr->fechaHasta);$fechaActual=new Carbon($request->mes."-".$i);
+								if($cargoDia==false && $fechaActual->between($hrFechaDesde,$hrFechaHasta)){
+									foreach($dias as $dia){
+										if($dia->id==$fechaActual->dayOfWeekIso){
+											foreach($hr->horariosPorDia as $hd){
+												if($dia->id==$hd->idDia){
+													$calendario->push($dia->nombre);
+													$calendario->push($i."/".$fechaActual->month);
+													$calendario->push($hd->cantHoras);
+													switch($hd->idRegistro){
+														case 1:		
+															$calendario->push(" ");
+															break;
+														case 2:
+															$calendario->push("info");
+															break;
+														case 3:
+															$calendario->push("danger");
+															break;
+													}
+												}
+											}
+										}							
+									}				
+									$total->push($calendario);
+									$cargoDia=true;
 								}
-							}							
-						}				
-						$total->push($calendario);
+							}
+						}
+						//retorno la vista
+						return view('contable.registrohora.formCargarHoras',['total'=>$total,'idEmpleado'=>$request->idEmpleado,'fecha'=>$fecha,'empleado'=>$empleado]);					
 					}
-					$empleado=Empleado::find($request->empId);
-					
-					return view('contable.registrohora.formCargarHoras',['total'=>$total,'idEmpleado'=>$request->empId,'fecha'=>$dt,'empleado'=>$empleado]);
-				}else{
-					$empleado=Empleado::find($request->empId);
-					$per=Persona::find($empleado->idPersona);			
-					$faux=new Carbon($request->mes);
-					$mes=$faux->month;
-					$anio=$faux->year;
-					return back()->withInput()->withError("Ya existen horas cargadas de ".$per->nombre." ".$per->apellido." para la fecha ".$mes." / ".$anio.".");
+					else{
+						return back()->withInput()->withError("Ya existen horas cargadas de ".$empleado->persona->nombre." ".$empleado->persona->apellido." para la fecha ".$fecha->month." / ".$fecha->year.".");
+					}
 				}
+				else{
+					return back()->withInput()->withError("Debe elegir una fecha que este dentro del contrato del empleado. Contrato vigente desde ".$fDesde->toDateString()." hasta ".$fHasta->toDateString());
+				}				
 			}
 		}
 		catch(Exception $e){
@@ -173,5 +186,11 @@ class RegistroHoraController extends Controller
 		catch(Exception $e){
 			return back()->withInput()->withError("Error en el sistema.");
 		}
+	}
+
+	public function compruebaMeses($idEmpleado,$fecha){
+		
+		
+		
 	}
 }
