@@ -17,4 +17,7 @@ class Cliente extends Model
         return $this->morphTo();
     }
 	
+	public function expedientes(){
+		return $this->belongsToMany('App\Juridico\Cliente','juridico_cliente_expediente','id_cliente','id_expediente');
+	}
 }

@@ -19,17 +19,21 @@ class WebServiceController extends Controller
 		$wsdl = "http://www.expedientes.poderjudicial.gub.uy/wsConsultaIUE.php?wsdl";    
         $client = new SoapClient($wsdl);
           
-		 
+		 // ejemplo: 10-1/2010
         $parameters = $request->iue;
 
         $values = $client->ConsultaIUE($parameters);
 		//dd($values);
+		/*
 		$xml = $values;
 		print "<pre>\n";
         print_r($xml);
         print "</pre>";
-		
-		
+		*/
+		dd($values);
+		foreach($values->movimientos as $movimiento){
+			
+		}
 		//dd($client);
 	}
 }

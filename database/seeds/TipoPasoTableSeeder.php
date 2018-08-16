@@ -12,79 +12,79 @@ class TipoPasoTableSeeder extends Seeder
     public function run()
     {
         DB::table('juridico_tipo_paso')->insert([
+			'nombre'=>'Creación',
+			'descripcion'=>'Creación'
+		]); //1
+		
+		DB::table('juridico_tipo_paso')->insert([
 			'nombre'=>'Demanda',
 			'descripcion'=>'Demanda'
-		]);
+		]); //2
 		
 		DB::table('juridico_tipo_paso')->insert([
 			'nombre'=>'Contestación Demanda',
 			'descripcion'=>'Contestación Demanda'
-		]);
+		]); //3
 		
 		DB::table('juridico_tipo_paso')->insert([
 			'nombre'=>'Audiencia',
 			'descripcion'=>'Audiencia'
-		]);
+		]); //4
 		
 		DB::table('juridico_tipo_paso')->insert([
 			'nombre'=>'Audiencia preliminar',
 			'descripcion'=>'Audiencia preliminar'
-		]);
+		]); //5
 		
 		DB::table('juridico_tipo_paso')->insert([
 			'nombre'=>'Audiencia complementaria',
 			'descripcion'=>'Audiencia complementaria'
-		]);
+		]); //6
 		
 		DB::table('juridico_tipo_paso')->insert([
 			'nombre'=>'Alegatos',
 			'descripcion'=>'Alegatos'
-		]);
+		]); //7
 		
 		DB::table('juridico_tipo_paso')->insert([
 			'nombre'=>'Apelacion',
 			'descripcion'=>'Apelacion'
-		]);
+		]); //8
 		
 		DB::table('juridico_tipo_paso')->insert([
 			'nombre'=>'Contestacion Apelacion',
 			'descripcion'=>'Contestacion Apelacion'
-		]);
-		
-		DB::table('juridico_tipo_paso')->insert([
-			'nombre'=>'Contestacion Apelacion',
-			'descripcion'=>'Contestacion Apelacion'
-		]);
+		]); //9
 		
 		DB::table('juridico_tipo_paso')->insert([
 			'nombre'=>'Sentencia Primera Instancia',
 			'descripcion'=>'Sentencia Primera Instancia'
-		]);
+		]); //10
 		
 		DB::table('juridico_tipo_paso')->insert([
 			'nombre'=>'Sentencia Segunda Instancia',
 			'descripcion'=>'Sentencia Segunda Instancia'
-		]);
+		]); //11
 		
 		DB::table('juridico_tipo_paso')->insert([
 			'nombre'=>'Archivado',
 			'descripcion'=>'Archivado'
-		]);
+		]); //12
 		
 		DB::table('juridico_tipo_paso')->insert([
 			'nombre'=>'Denuncia',
 			'descripcion'=>'Denuncia'
-		]);
+		]); //13
 		
 		DB::table('juridico_tipo_paso')->insert([
 			'nombre'=>'Informe de Fiscalia',
 			'descripcion'=>'Informe de Fiscalia y pruebas'
-		]);
+		]); //14
 		
 		DB::table('juridico_tipo_paso')->insert([
 			'nombre'=>'Audiencia con Fiscalia',
 			'descripcion'=>'Audiencia con Fiscalia'
-		]);
+		]); //15
 		
 		DB::table('juridico_tipo_paso')->insert([
 			'nombre'=>'Audiencia Control de Pruebas',
