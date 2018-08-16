@@ -112,6 +112,7 @@ class EmpleadoController extends Controller
 			return back()->withInput()->withError("Error en el sistema");
 		}
 	}
+	
 	public function editarHorario(Request $request){
 		
 		try{

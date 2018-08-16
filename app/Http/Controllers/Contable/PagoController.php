@@ -10,6 +10,8 @@ use App\Contable\Empleado;
 use Exception;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PagoRequest;
+use \Carbon\Carbon;
 
 class PagoController extends Controller
 {
@@ -33,7 +35,6 @@ class PagoController extends Controller
     public function create()
     {
 		$empresas = Empresa::with('personas.tipoDoc')->get();
-		//dd($empresas);
 		//return vista con FORM para add viatico
 		return view('contable.pago.agregarViatico',['empresas' => $empresas]);
     }
@@ -45,9 +46,12 @@ class PagoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PagoRequest $request)
     {
-        //
+        $cargo = new Cargo;
+		$cargo->nombre = $request->nombre;
+		$cargo->descripcion = $request->descripcion;
+		$cargo->id_remuneracion = $request->id_remuneracion;
     }
 
     /**
