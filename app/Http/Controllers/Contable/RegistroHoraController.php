@@ -101,17 +101,20 @@ class RegistroHoraController extends Controller
 		try{
 			$tiposHoras=TipoHora::All();
 			$fecha=new Carbon($request->fecha);
-			foreach($tiposHoras as $th){
-				for($i=1;$i<=$fecha->daysInMonth;$i++){
-					if($request->input($th->id.$i.'/'.$fecha->month)!="00:00:00"){
-						$fechaNueva=$fecha->year.'-'.$fecha->month.'-'.$i;
-						DB::table('contable_registros_horas')->insert(['idEmpleado'=>$request->idEmpleado,'idTipoHora'=>$th->id,'cantHoras'=>$request->input($th->id.$i.'/'.$fecha->month),'fecha'=>$fechaNueva]);
-						//$regHora=new RegistroHora(['idEmpleado'=>$empleado->idEmpleado,'idTipoHora'=>$th->id,'cantHoras'=>$request->input($th->id.$i.'/'.$fecha->month),'fecha'=>$fecha]);
-						//$empleado->registrosHoras()->save($regHora);		
-					}
-					elseif($th->id==1 && $request->input($th->id.$i.'/'.$fecha->month)=="00:00:00"){
-						$fechaNueva=$fecha->year.'-'.$fecha->month.'-'.$i;
-						DB::table('contable_registros_horas')->insert(['idEmpleado'=>$request->idEmpleado,'idTipoHora'=>$th->id,'cantHoras'=>$request->input($th->id.$i.'/'.$fecha->month),'fecha'=>$fechaNueva]);
+			$aux=1;
+			foreach($tiposHoras as $th){				
+				if($request->input($th->id.$aux.'/'.$fecha->month)!=null){//por si es null el valor nocturnidad pernocte espera
+					for($i=1;$i<=$fecha->daysInMonth;$i++){
+						if($request->input($th->id.$i.'/'.$fecha->month)!="00:00:00"){
+							$fechaNueva=$fecha->year.'-'.$fecha->month.'-'.$i;
+							DB::table('contable_registros_horas')->insert(['idEmpleado'=>$request->idEmpleado,'idTipoHora'=>$th->id,'cantHoras'=>$request->input($th->id.$i.'/'.$fecha->month),'fecha'=>$fechaNueva]);
+							//$regHora=new RegistroHora(['idEmpleado'=>$empleado->idEmpleado,'idTipoHora'=>$th->id,'cantHoras'=>$request->input($th->id.$i.'/'.$fecha->month),'fecha'=>$fecha]);
+							//$empleado->registrosHoras()->save($regHora);		
+						}
+						elseif($th->id==1 && $request->input($th->id.$i.'/'.$fecha->month)=="00:00:00"){
+							$fechaNueva=$fecha->year.'-'.$fecha->month.'-'.$i;
+							DB::table('contable_registros_horas')->insert(['idEmpleado'=>$request->idEmpleado,'idTipoHora'=>$th->id,'cantHoras'=>$request->input($th->id.$i.'/'.$fecha->month),'fecha'=>$fechaNueva]);
+						}
 					}
 				}
 			}
@@ -134,52 +137,58 @@ class RegistroHoraController extends Controller
 				return back()->withInput()->withError("Debe seleccionar un mes y año.");
 			}
 			else{
-				$fecha=new Carbon($request->mes."-1");
-				$registrosHoras=DB::table('contable_registros_horas')
-					->where('idEmpleado','=',$request->empId)
-					->whereBetween('fecha',[$fecha->year.'-'.$fecha->month.'-1',$fecha->year.'-'.$fecha->month.'-'.$fecha->daysInMonth])
-					->get();				
-				if($registrosHoras->isNotEmpty()){
-					$idHorario=HorarioEmpleado::where('idEmpleado','=',$request->empId)->min('id');
-					$horariosPorDia=HorarioPorDia::where('idHorarioEmpleado','=',$idHorario)->get();
+				$fechaaux=$request->mes."-01";
+				$hrReg=RegistroHora::where('idEmpleado','=',$request->idEmpleado)->where('fecha','=',$fechaaux)->first();
+				if($hrReg!=null){
 					
-					$dias=Dia::All();
-					
-					$total=collect([]);
-					foreach($registrosHoras as $rh){
-						$calendario =collect([]);
-						$fechaBd=new Carbon($rh->fecha);
-						foreach($dias as $dia){
-							if($dia->id==$fechaBd->dayOfWeekIso){
-								foreach($horariosPorDia as $hr){
-									if($dia->id==$hr->idDia){
-										$calendario->push($dia->nombre);
-										switch($hr->idRegistro){
-											case 1:		
-												$calendario->push(" ");
-												break;
-											case 2:
-												$calendario->push("info");
-												break;
-											case 3:
-												$calendario->push("danger");
-												break;
-										}
-										$calendario->push($rh);
-									}
+					//1- obtener todos los horairos del empleado, 2- dia a dia ver si esta dentro de cada horario, 3- agregar a una coleccion con datos
+						$dias=Dia::All();
+						$total=collect([]);
+						$horarios=HorarioEmpleado::where('idEmpleado','=',$request->idEmpleado)->orderBy('id', 'desc')->get();
+						$fecha=new Carbon($request->mes."-01");
+						for($i=1;$i<=$fecha->daysInMonth;$i++){
+							$calendario =collect([]);
+							$cargoDia=false;
+							foreach($horarios as $hr){
+								$hrFechaDesde=new Carbon($hr->fechaDesde);$hrFechaHasta=new Carbon($hr->fechaHasta);$fechaActual=new Carbon($request->mes."-".$i);
+								if($cargoDia==false && $fechaActual->between($hrFechaDesde,$hrFechaHasta)){
+									foreach($dias as $dia){
+										if($dia->id==$fechaActual->dayOfWeekIso){
+											foreach($hr->horariosPorDia as $hd){
+												if($dia->id==$hd->idDia){
+													$calendario->push($dia->nombre);
+													$calendario->push($i."/".$fechaActual->month);
+													//$calendario->push($hd->cantHoras);
+													//NO VOY A TENER UNA SOLA HR REGISTRO EN ESA FECHA, necesito hacer un foreach ya que en es afecha puedo tener noc , per, extra, 
+													$hrReg=RegistroHora::where('idEmpleado','=',$request->idEmpleado)->where('fecha','=',$request->mes."-".$i)->get();
+													$calendario->push($hrReg->cantHoras);
+													switch($hd->idRegistro){
+														case 1:		
+															$calendario->push(" ");
+															break;
+														case 2:
+															$calendario->push("info");
+															break;
+														case 3:
+															$calendario->push("danger");
+															break;
+													}
+													$calendario->push($hrReg->idTipoHora);
+												}
+											}
+										}							
+									}				
+									$total->push($calendario);
+									$cargoDia=true;
 								}
-							}							
+							}
 						}
-						$total->push($calendario);
-					}
-					//dd($total);
-					//return view('contable.registrohora.formEditarHoras',['total'=>$total,'idEmpleado'=>$request->empId]);
+						//retorno la vista
+						$empleado=Empleado::where('id','=',$request->idEmpleado)->first();
+						return view('contable.registrohora.formEditarHoras',['total'=>$total,'idEmpleado'=>$request->idEmpleado,'fecha'=>$fecha,'empleado'=>$empleado]);
 				}
 				else{
-					$empleado=Empleado::where('id','=',$request->empId)->first();
-					$per=Persona::find($empleado->idPersona);
-					return back()->withInput()->withError("No hay marcas reloj ingresadas para ".$per->nombre." ".$per->apellido." en la fecha: ".$fecha->month." / ".$fecha->year);
-			
+					return back()->withInput()->withError("Todavía NO ingreso maracas reloj para la fecha ".$request->mes);
 				}
 			}
 		}
