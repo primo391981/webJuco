@@ -19,7 +19,7 @@
 				</div>
 			</div>
 			<div class="panel-body text-warning">
-					<form method="POST" action="{{ route('pago.store') }}" class="form-horizontal" enctype="multipart/form-data" id="formViatico">		
+					<form method="POST" action="{{ route('pago.store') }}" class="form-horizontal" enctype="multipart/form-data">		
 						@csrf
 						<!-- Datos del Empresa -->
 						<div class="form-group row">
