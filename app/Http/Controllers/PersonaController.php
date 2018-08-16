@@ -10,6 +10,7 @@ use App\Contable\Empleado;
 use App\TipoDoc;
 use App\Contable\Cargo;
 use App\Contable\Dia;
+use App\Contable\Registro;
 use App\EstadoCivil;
 use App\Contable\HorarioEmpleado;
 use App\Contable\HorarioPorDia;
@@ -68,28 +69,20 @@ class PersonaController extends Controller
 			$emprAsociadas=$persona->empresas;
 			$cargos=Cargo::All();
 			$dias=Dia::All();
-			$collectionHorariosPorDia = collect([]);
+			$registros=Registro::All();
+			$horariosPrincipales=collect([]);
 			if($emprAsociadas->isNotEmpty()){
-
-			foreach($emprAsociadas as $empr){
-					
-					if($empr->pivot->horarioCargado==true){
-
-						$menorId = DB::table('contable_horarios_empleados')->where('idEmpleado','=',$empr->pivot->id)->min('id');
-
-						//con el menor id join contable_horarios_por_dia
-						$horariosPorDIa=DB::table('contable_horarios_empleados')
-						->join('contable_horarios_por_dia','contable_horarios_empleados.id','contable_horarios_por_dia.idHorarioEmpleado')
-						->where('contable_horarios_por_dia.idHorarioEmpleado','=',$menorId)
-						//->where('horariosPorDia.idHorarioEmpleado','=',$menorId)
-						->select('contable_horarios_por_dia.*')
-						->get();
-						
-						$collectionHorariosPorDia->put($empr->pivot->id,$horariosPorDIa);
+				foreach($emprAsociadas as $empr){
+						$hrEmp=collect([]);
+						if($empr->pivot->horarioCargado==true){
+							$horarioPrincipal=HorarioEmpleado::where('idEmpleado','=',$empr->pivot->id)->first();
+							$horariosPrincipales->push($horarioPrincipal);
+							//dd($horarioPrincipal->empleado);
+						}
 					}
-				}
-			}
-			return view('contable.persona.verPersona',['persona'=>$persona,'emprAsociadas'=>$emprAsociadas,'cargos'=>$cargos,'dias'=>$dias,'collectionHorariosPorDia'=>$collectionHorariosPorDia]);
+			}			
+			
+			return view('contable.persona.verPersona',['persona'=>$persona,'emprAsociadas'=>$emprAsociadas,'cargos'=>$cargos,'dias'=>$dias,'horariosPrincipales'=>$horariosPrincipales,'registros'=>$registros]);
 		}
 		catch(Exception $e){
 			return back()->withInput()->withError("Problemas en el sistema, intente nuevamente o contacte al administrador.");

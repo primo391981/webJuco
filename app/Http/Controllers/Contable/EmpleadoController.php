@@ -9,9 +9,12 @@ use App\Contable\Dia;
 use App\Contable\Registro;
 use App\Persona;
 use App\Empresa;
+use App\Contable\Empleado;
+
 use App\Contable\HorarioEmpleado;
 use App\Contable\HorarioPorDia;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 
 class EmpleadoController extends Controller
@@ -40,7 +43,15 @@ class EmpleadoController extends Controller
 					$empresa=Empresa::find($request->idempresa);
 					$persona=Persona::find($idPer);
 					
-					$persona->empresas()->save($empresa, ['idCargo'=>$request->cargo,'fechaDesde'=>$request->fechaInicio,'fechaHasta'=>$request->fechaFin,'monto'=>$request->monto,'valorHora'=>$request->valorhr]);
+					$noc=false;
+					$per=false;
+					if($request->per=='on'){
+						$per=true;
+					}
+					if($request->noc=='on'){
+						$noc=true;
+					}
+					$persona->empresas()->save($empresa, ['idCargo'=>$request->cargo,'fechaDesde'=>$request->fechaInicio,'fechaHasta'=>$request->fechaFin,'monto'=>$request->monto,'valorHora'=>$request->valorhr,'nocturnidad'=>$noc,'pernocte'=>$per]);
 					return redirect()->route('persona.show',['id' => $idPer]);
 				}
 			}
@@ -49,13 +60,15 @@ class EmpleadoController extends Controller
 			return back()->withInput()->withError($e->getMessage());
 		}
 		
-	}	
+	}
+	
 	public function formCargarHorario($idEmpleado){
 		$dias=Dia::All();
 		$registros=Registro::All();
-		return view('contable.empleado.cargarHorario',['dias'=>$dias,'idEmpleado'=>$idEmpleado,'registros'=>$registros]);
+		$empleado=Empleado::find($idEmpleado);
+		//dd($empleado->fechaDesde);
+		return view('contable.empleado.cargarHorario',['dias'=>$dias,'idEmpleado'=>$idEmpleado,'registros'=>$registros,'empleado'=>$empleado]);
 	}
-	
 	
 	public function cargarHorario(Request $request){
 		try{
@@ -69,7 +82,9 @@ class EmpleadoController extends Controller
 				$horarioEmp->fechaDesde=$request->fechaDesde;
 				$horarioEmp->fechaHasta=$request->fechaHasta;
 				$horarioEmp->save();
-				$idHorarioEmp = DB::table('contable_horarios_empleados')->max('id');				
+				
+				$idHorarioEmp = DB::table('contable_horarios_empleados')->max('id');	
+				
 				$dias=Dia::All();
 				foreach($dias as $dia){
 					
@@ -100,57 +115,115 @@ class EmpleadoController extends Controller
 		}
 	}
 	
-	public function formEditarHorario($idEmpleado,$idHorarioEmp){
+	public function editHorarioPrincipal($idEmpleado,$idHorarioPrincipal){
 		try{
+			//return $idEmpleado." / ".$idHorarioPrincipal;
+			$horarioPrincipal=HorarioEmpleado::where('id','=',$idHorarioPrincipal)->where('idEmpleado','=',$idEmpleado)->first();
+			$registros =Registro::All();
 			$dias=Dia::All();
-			$registros=Registro::All();
-			$horarios=DB::table('contable_horarios_por_dia')->where ('idHorarioEmpleado','=',$idHorarioEmp)->get();
-			$fechas=DB::table('contable_horarios_empleados')->where ('id','=',$idHorarioEmp)->first();
-			return view('contable.empleado.editarHorario',['dias'=>$dias,'registros'=>$registros,'horarios'=>$horarios,'fechas'=>$fechas,'idHorarioEmp'=>$idHorarioEmp]);
+			return view('contable.empleado.editarHorario',['registros'=>$registros,'horarioPrincipal'=>$horarioPrincipal,'dias'=>$dias]);
 		}
 		catch(Exception $e){
 			return back()->withInput()->withError("Error en el sistema");
 		}
 	}
-	public function editarHorario(Request $request){
-		
+	
+	public function guardarHorarioPrin(Request $request){
 		try{
-			if($request->fechaDesde>$request->fechaHasta){
-				return back()->withInput()->withError("La fecha de fin debe ser mayor a la fecha de inicio.");
+			//dd($request);
+			$dias=Dia::All();
+			foreach($dias as $dia){
+				HorarioPorDia::where('idHorarioEmpleado','=',$request->idHorarioEmp)
+				->where('idDia','=',$dia->id)
+				->update(['idRegistro' =>$request->input('reg'.$dia->id),'cantHoras'=>$request->input($dia->id)]);
 			}
-			else{				
-				DB::table('contable_horarios_empleados')->where('id','=',$request->idHorarioEmp)->update(['fechaDesde' =>$request->fechaDesde,'fechaHasta'=>$request->fechaHasta]);
-				//recorro por dia y hago update where idHorarioEmp and dia=dia foreach
-				$dias=Dia::All();
-				foreach($dias as $dia){
-					$nomCantHora="hr".$dia->id;
-					$nomReg="reg".$dia->id;
-					DB::table('contable_horarios_por_dia')
-					->where('idHorarioEmpleado','=',$request->idHorarioEmp)
-					->where('idDia','=',$dia->id)
-					->update(['idRegistro'=>$request->$nomReg,'cantHoras'=>$request->$nomCantHora]);				
-				}
-				
-				$idPer=DB::table('contable_horarios_empleados')
-				->join('contable_empleados','contable_horarios_empleados.idEmpleado','=','contable_empleados.id')
-				->where('contable_horarios_empleados.idEmpleado','=',$request->idHorarioEmp)
-				->value('contable_empleados.idPersona');
-				
-				return redirect()->action('PersonaController@show', ['id' => $idPer]);
-			}
+			$hrEmp=HorarioEmpleado::where('id','=',$request->idHorarioEmp)->first();
+			$per=$hrEmp->empleado->persona;
+			return redirect()->action('PersonaController@show', ['id' => $per->id]);
 			
 		}
-		catch(Exception $e){			
-			return back()->withInput()->withError("Error en el sistema.");
+		catch(Exception $e){
+			return back()->withInput()->withError("Error en el sistema");
 		}
 	}
 	
-	public function desasociarEmpresa(Request $request,$idPer,$idEmp){
-		dd($request);
-		
+	public function formHorarioEspecial(Request $request){
+		try{
+			if($request->fechaDesde>=$request->fechaHasta){
+				return back()->withInput()->withError("Fecha de inicio debe ser menor a la fecha final.");
+			}
+			else{
+				$fechaDesde=new Carbon($request->fechaDesde);
+				$fechaHasta=new Carbon($request->fechaHasta);
+				if($fechaDesde->diffInDays($fechaHasta)>=6){
+					
+					//me fijo si tiene contrato entre esas fechas
+					$empleado=Empleado::where('id','=',$request->idEmpleado)->first();
+					$fInicioContrato=new Carbon($empleado->fechaDesde);
+					$fFinContrato=new Carbon($empleado->fechaHasta);
+					if($fechaDesde->between($fInicioContrato,$fFinContrato) && $fechaHasta->between($fInicioContrato,$fFinContrato)){
+						$horarioPrincipal=$empleado->horarios->first();
+						$registros =Registro::All();
+						$dias=Dia::All();
+						return view('contable.empleado.formHorarioEspecial',['registros'=>$registros,'horarioPrincipal'=>$horarioPrincipal,'dias'=>$dias,'fechaDesde'=>$request->fechaDesde,'fechaHasta'=>$request->fechaHasta,'idEmpleado'=>$empleado->id]);
+					}
+					else{
+						return back()->withInput()->withError("Las fechas seleccionadas deben estar dentro del contrato del empleado ".$fInicioContrato->toDateString()." y ".$fFinContrato->toDateString());
+					}
+				}
+				else{
+					return back()->withInput()->withError("Debe existir una mínima difernecia de 6 días.");
+				}
+			}
+		}
+		catch(Exception $e){
+			return back()->withInput()->withError("Error en el sistema");
+		}
 	}
-	
-	public function horarioTrabajo(Request $request,$idPer,$idEmp){
-		dd($request);
+
+	public function guardarHorarioEsp(Request $request){
+		try{
+			$dias=Dia::All();
+			$empleado=Empleado::find($request->idEmpleado);
+			$horariosEmpleado=$empleado->horarios;
+			$editar=false;
+			foreach($horariosEmpleado as $horario){
+				if($horario->fechaDesde== $request->fechaDesde && $horario->fechaHasta== $request->fechaHasta){
+					$editar=true;
+					foreach($dias as $dia){					
+						$nomCantHora="hr".$dia->id;
+						$nomReg="reg".$dia->id;
+						HorarioPorDia::where('idDia','=',$dia->id)->where('idHorarioEmpleado','=',$horario->id)
+						->update(['idRegistro' =>$request->$nomReg,'cantHoras'=>$request->$nomCantHora]);
+					}
+				}
+			}			
+			if($editar==false){
+				$horarioEmpleado= new HorarioEmpleado;				
+				$horarioEmpleado->idEmpleado=$request->idEmpleado;
+				$horarioEmpleado->fechaDesde= $request->fechaDesde;
+				$horarioEmpleado->fechaHasta=$request->fechaHasta;
+				$horarioEmpleado->save();
+				$idHorarioEmp = DB::table('contable_horarios_empleados')->max('id');	
+				
+				foreach($dias as $dia){
+					
+					$hrDia=new HorarioPorDia;
+					$hrDia->idHorarioEmpleado=$idHorarioEmp;
+					
+					$nomCantHora="hr".$dia->id;
+					$nomReg="reg".$dia->id;
+					
+					$hrDia->idRegistro=$request->$nomReg;
+					$hrDia->idDia=$dia->id;
+					$hrDia->cantHoras=$request->$nomCantHora;					
+					$hrDia->save();
+				}								
+    		}
+			return redirect()->action('PersonaController@show', ['id' => $empleado->idPersona])->withInput()->with('success',"El horario especial en ".$empleado->empresa->nombreFantasia." en las fechas ".$request->fechaDesde." y ".$request->fechaHasta." fue ingresado correctamente.");
+		}
+		catch(Exception $e){
+			return back()->withInput()->withError("Error en el sistema");
+		}		
 	}
 }

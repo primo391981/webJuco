@@ -18,11 +18,14 @@ class ContableEmpleados extends Migration
 			$table->integer('idPersona')->unsigned();
 			$table->integer('idEmpresa')->unsigned();
 			$table->integer('idCargo')->unsigned();
-			$table->dateTime('fechaDesde');
-			$table->dateTime('fechaHasta');
+			$table->date('fechaDesde');
+			$table->date('fechaHasta');
 			$table->integer('monto');
 			$table->boolean('horarioCargado')->default(false);
 			$table->integer('valorHora');
+			$table->boolean('nocturnidad')->default(false);
+			$table->boolean('pernocte')->default(false);
+			
 			
 			$table->foreign('idPersona')->references('id')->on('persona');
 			$table->foreign('idEmpresa')->references('id')->on('empresa');

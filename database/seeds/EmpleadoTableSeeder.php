@@ -16,11 +16,14 @@ class EmpleadosTableSeeder extends Seeder
 			'idPersona'=>3,
 			'idEmpresa'=>1,
 			'idCargo'=>1,
-			'fechaDesde'=>Carbon::parse('2018-08-01'),
-			'fechaHasta'=>Carbon::parse('2018-12-31'),
+			'fechaDesde'=>Carbon::parse('2018-01-01'),
+			'fechaHasta'=>Carbon::parse('2019-01-01'),
 			'monto'=>'24000',
 			'horarioCargado'=>1,
-			'valorHora'=>160
+			'valorHora'=>160,
+			'nocturnidad'=>1,
+			'pernocte'=>0
+			
 		]);	
 
 		DB::table('contable_empleados')->insert([
@@ -31,7 +34,9 @@ class EmpleadosTableSeeder extends Seeder
 			'fechaHasta'=>Carbon::parse('2019-07-31'),
 			'monto'=>'28000',
 			'horarioCargado'=>1,
-			'valorHora'=>180
+			'valorHora'=>180,
+			'nocturnidad'=>0,
+			'pernocte'=>0
 		]);
 		
 		DB::table('contable_empleados')->insert([
@@ -42,7 +47,9 @@ class EmpleadosTableSeeder extends Seeder
 			'fechaHasta'=>Carbon::parse('2019-05-31'),
 			'monto'=>'18000',
 			'horarioCargado'=>1,
-			'valorHora'=>100
+			'valorHora'=>100,
+			'nocturnidad'=>0,
+			'pernocte'=>0
 		]);
     }
 }

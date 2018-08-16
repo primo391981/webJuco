@@ -18,17 +18,17 @@
 		  <div class="panel-body text-warning">   
 				<form class="form-horizontal" method="POST" action="{{ route('empleado.cargarHorario')}}">
 				@csrf	
-					<input id="idEmpleado" name="idEmpleado" type="hidden" value="{{$idEmpleado}}">
+					<input id="idEmpleado" name="idEmpleado" type="hidden" value="{{$empleado->id}}">
 					<div class="form-group">
 						<label class="control-label col-sm-3" for="fechaDesde">FECHA DE INICIO *</label>
 						<div class="col-sm-9">
-							<input type="date" class="form-control" id="fechaDesde" name="fechaDesde" value="{{old('fechaDesde')}}"/>
+							<input type="date" class="form-control" id="fechaDesde" name="fechaDesde" value="{{$empleado->fechaDesde}}" readonly/>
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="control-label col-sm-3" for="fechaHasta">FECHA DE FIN *</label>
 						<div class="col-sm-9">
-							<input type="date" class="form-control" id="fechaHasta" name="fechaHasta" value="{{old('fechaHasta')}}"/>
+							<input type="date" class="form-control" id="fechaHasta" name="fechaHasta" value="{{$empleado->fechaHasta}}" readonly/>
 						</div>
 					</div>
 					<hr>
@@ -36,7 +36,7 @@
 					<div class="form-group">
 						<label class="control-label col-sm-3" for="hr{{$dia->id}}">{{$dia->nombre}} *</label>
 						<div class="col-sm-5">
-							<input type="time" class="form-control" id="hr{{$dia->id}}" name="hr{{$dia->id}}" value="{{old('$dia->nombre')}}"/>
+							<input type="time" class="form-control" id="hr{{$dia->id}}" name="hr{{$dia->id}}" value="{{old('$dia->nombre')}}"required />
 						</div>
 						<div class="col-sm-4">
 							<select class="form-control" id="reg{{$dia->id}}" name="reg{{$dia->id}}">

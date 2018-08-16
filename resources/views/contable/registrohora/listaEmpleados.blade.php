@@ -45,9 +45,9 @@
 						<td>{{$emp->empresa->nombreFantasia}}</td>
 						<form>
 							@csrf
-							<input id="empId" name="empId" type="hidden" value="{{$emp->id}}">
+							<input id="idEmpleado" name="idEmpleado" type="hidden" value="{{$emp->id}}">
 							<td><div class="form-group"><input type="month" class="form-control" id="mes" name="mes" value="{{old('mes')}}"required></div></td>
-							<td><button type="submit"class="btn btn-link btn-lg" formaction="{{route('reloj.compruebaMes')}}" formmethod="post" ><i class="far fa-clock"></i></button></td>
+							<td><button type="submit"class="btn btn-link btn-lg" formaction="{{route('reloj.formMarcas')}}" formmethod="post" ><i class="far fa-clock"></i></button></td>
 							<td><button type="submit"class="btn btn-link btn-lg" formaction="{{route('reloj.editarMes')}}" formmethod="post" ><i class="far fa-edit"></i></button></td>							
 						</form>
 					</tr>

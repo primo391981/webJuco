@@ -99,17 +99,18 @@ Route::group(['middleware' => ['auth']], function () {
 	
 	//empleado
 	Route::post('asociarEmpresa/{idpersona}', 'Contable\EmpleadoController@asociarEmpresa')->name('empleado.asociarEmpresa')->middleware('role:contableAdmin');
-	Route::post('desasociarEmpresa/{idpersona}/{idempresa}', 'Contable\EmpleadoController@asociarEmpresa')->name('empleado.desasociarEmpresa')->middleware('role:contableAdmin');
-	Route::post('horarioTrabajo/{idpersona}/{idempresa}', 'Contable\EmpleadoController@asociarEmpresa')->name('empleado.horarioTrabajo')->middleware('role:contableAdmin');
 	Route::get('formCrear/{idpersona}', 'Contable\EmpleadoController@formCrear')->name('empleado.formCrear')->middleware('role:contableAdmin');
 	Route::get('formCargarHorario/{idempleado}', 'Contable\EmpleadoController@formCargarHorario')->name('empleado.formCargarHorario')->middleware('role:contableAdmin');
 	Route::post('cargarHorario', 'Contable\EmpleadoController@cargarHorario')->name('empleado.cargarHorario')->middleware('role:contableAdmin');
-	Route::get('editarHorario/{idempleado}/{idhorario}', 'Contable\EmpleadoController@formEditarHorario')->name('empleado.formEditarHorario')->middleware('role:contableAdmin');
-	Route::post('editarHorario', 'Contable\EmpleadoController@editarHorario')->name('empleado.editarHorario')->middleware('role:contableAdmin');
+	Route::get('editHorarioPrincipal/{idempleado}/{idHorarioModificar}', 'Contable\EmpleadoController@editHorarioPrincipal')->name('empleado.editHorarioPrincipal')->middleware('role:contableAdmin');
+	Route::post('guardarHorarioPrin', 'Contable\EmpleadoController@guardarHorarioPrin')->name('empleado.guardarHorarioPrin')->middleware('role:contableAdmin');
+	Route::post('formHorarioEspecial', 'Contable\EmpleadoController@formHorarioEspecial')->name('empleado.formHorarioEspecial')->middleware('role:contableAdmin');
+	Route::post('guardarHorarioEsp', 'Contable\EmpleadoController@guardarHorarioEsp')->name('empleado.guardarHorarioEsp')->middleware('role:contableAdmin');
+	
 	
 	//registro horas reloj
 	Route::get('listaEmpleados', 'Contable\RegistroHoraController@listaEmpleados')->name('reloj.listaEmpleados')->middleware('role:contableAdmin');
-	Route::post('compruebaMes', 'Contable\RegistroHoraController@compruebaMes')->name('reloj.compruebaMes')->middleware('role:contableAdmin');
+	Route::post('formMarcas', 'Contable\RegistroHoraController@formMarcas')->name('reloj.formMarcas')->middleware('role:contableAdmin');
 	Route::post('guardarMarcas', 'Contable\RegistroHoraController@guardarMarcas')->name('reloj.guardarMarcas')->middleware('role:contableAdmin');
 	Route::post('editarMes', 'Contable\RegistroHoraController@editarMes')->name('reloj.editarMes')->middleware('role:contableAdmin');
 	
