@@ -45,13 +45,17 @@ class EmpleadoController extends Controller
 					
 					$noc=false;
 					$per=false;
+					$esp=false;
 					if($request->per=='on'){
 						$per=true;
 					}
 					if($request->noc=='on'){
 						$noc=true;
 					}
-					$persona->empresas()->save($empresa, ['idCargo'=>$request->cargo,'fechaDesde'=>$request->fechaInicio,'fechaHasta'=>$request->fechaFin,'monto'=>$request->monto,'valorHora'=>$request->valorhr,'nocturnidad'=>$noc,'pernocte'=>$per]);
+					if($request->esp=='on'){
+						$esp=true;
+					}
+					$persona->empresas()->save($empresa, ['idCargo'=>$request->cargo,'fechaDesde'=>$request->fechaInicio,'fechaHasta'=>$request->fechaFin,'monto'=>$request->monto,'valorHora'=>$request->valorhr,'nocturnidad'=>$noc,'pernocte'=>$per,'espera'=>$esp]);
 					return redirect()->route('persona.show',['id' => $idPer]);
 				}
 			}

@@ -97,6 +97,12 @@
 							<input type="number" name="valorhr" id="valorhr" class="form-control" value="{{ old('valorhr') }}" min="1" required>
 						</div>	
 					</div>
+					<div class="form-group row">
+						<label for="esp" class="control-label col-sm-3">HORAS DE ESPERA </label>
+						<div class="col-sm-6">
+							 <input class="checkbox" type="checkbox" name="esp" id="esp">
+						 </div>
+					</div>
 					
 					<div class="form-group row">
 						<label for="noc" class="control-label col-sm-3">HORA NOCTURNIDAD </label>
