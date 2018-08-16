@@ -36,7 +36,7 @@
 						<div class="form-group row">
 							<label for="rut" class="control-label col-sm-3">RUT</label>
 							<div class="col-sm-9">
-								<input id="rut" type="text" class="form-control" name="rut" value="" required disabled>
+								<input id="rut" type="text" class="form-control" name="rut" value="" required readonly>
 							</div>	
 						</div>
 						<div class="form-group row">
@@ -65,12 +65,11 @@
 						<div class="form-group row">
 							<label for="numeroDoc" class="control-label col-sm-3">NÚMERO</label>
 							<div class="col-sm-9">
-								<input id="numeroDoc" type="text" class="form-control" name="numeroDoc" value="" required disabled>
+								<input id="numeroDoc" type="text" class="form-control" name="numeroDoc" value="" required readonly>
 							</div>	
 						</div>
 						
 						<!-- Datos del Viático -->
-						<br>Viático
 						<input id="tipoPago" type="hidden" class="form-control" name="tipoPago" value="1">
 						<div class="form-group row">
 							<label for="fecha" class="control-label col-sm-3">FECHA</label>
@@ -147,8 +146,7 @@ $(function()
 					
 					while (j < empresa[i].personas.length)
 					{			
-						//document.getElementById("nombreEmpleado").innerHTML += "<option value='"+empresa[i].personas[j].tipoDoc.nombre+" "+empresa[i].personas[j].documento+"'>"+empresa[i].personas[j].nombre+" "+empresa[i].personas[j].apellido+"</option>"; 
-					document.getElementById("nombreEmpleado").innerHTML += "<option value='"+empresa[i].personas[j].tipoDocumento+" "+empresa[i].personas[j].tipo_doc.nombre+" "+empresa[i].personas[j].documento+"'>"+empresa[i].personas[j].nombre+" "+empresa[i].personas[j].apellido+"</option>"; 
+						document.getElementById("nombreEmpleado").innerHTML += "<option value='"+empresa[i].personas[j].tipoDocumento+" "+empresa[i].personas[j].tipo_doc.nombre+" "+empresa[i].personas[j].documento+"'>"+empresa[i].personas[j].nombre+" "+empresa[i].personas[j].apellido+"</option>"; 
 						j++;
 					}
 					
@@ -165,7 +163,7 @@ $(function()
 	{	
 		separador = " ";
 		documentoEmpl = this.value.split(separador);
-		alert(documentoEmpl);
+	
 		$("#tipoDocId").val(documentoEmpl[0]);
 		$("#tipoDoc").val(documentoEmpl[1]);
 		$("#numeroDoc").val(documentoEmpl[2]); 

@@ -47,11 +47,17 @@ class PagoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(PagoRequest $request)
-    {
-        $cargo = new Cargo;
+    {	
+		//dd($request);	
+        $empresa = Empresa::where("rut","=",$request->rut)->get();
+		$persona = Persona::where([["tipoDocumento",'=',$request->tipoDocId], ["documento",'=',$request->numeroDoc]])->get();
+		$empleado = Empleado::where([["idEmpresa",'=',$empresa->id], ["idPersona",'=',$persona->id]])->get();
+		//dd($empleado);
+		
+		/*new Cargo;
 		$cargo->nombre = $request->nombre;
 		$cargo->descripcion = $request->descripcion;
-		$cargo->id_remuneracion = $request->id_remuneracion;
+		$cargo->id_remuneracion = $request->id_remuneracion;*/
     }
 
     /**
