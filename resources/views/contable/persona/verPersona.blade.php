@@ -56,7 +56,7 @@
 							<p>Fin: {{$empr->pivot->fechaHasta}}</p>
 							<p>Monto: {{$empr->pivot->monto}}</p>
 							<p>Valor Hora: {{$empr->pivot->valorHora}}</p>
-							
+							<p>noc: {{$empr->pivot->nocturnidad}}</p>							
 						</div>
 						<div class="col-xs-12 col-md-4">
 							<p class="hidden-md hidden-lg"><strong>DETALLE HORARIO</strong></p>							

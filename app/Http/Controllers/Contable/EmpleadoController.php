@@ -43,7 +43,15 @@ class EmpleadoController extends Controller
 					$empresa=Empresa::find($request->idempresa);
 					$persona=Persona::find($idPer);
 					
-					$persona->empresas()->save($empresa, ['idCargo'=>$request->cargo,'fechaDesde'=>$request->fechaInicio,'fechaHasta'=>$request->fechaFin,'monto'=>$request->monto,'valorHora'=>$request->valorhr]);
+					$noc=false;
+					$per=false;
+					if($request->per=='on'){
+						$per=true;
+					}
+					if($request->noc=='on'){
+						$noc=true;
+					}
+					$persona->empresas()->save($empresa, ['idCargo'=>$request->cargo,'fechaDesde'=>$request->fechaInicio,'fechaHasta'=>$request->fechaFin,'monto'=>$request->monto,'valorHora'=>$request->valorhr,'nocturnidad'=>$noc,'pernocte'=>$per]);
 					return redirect()->route('persona.show',['id' => $idPer]);
 				}
 			}

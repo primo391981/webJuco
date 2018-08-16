@@ -23,6 +23,9 @@ class ContableEmpleados extends Migration
 			$table->integer('monto');
 			$table->boolean('horarioCargado')->default(false);
 			$table->integer('valorHora');
+			$table->boolean('nocturnidad')->default(false);
+			$table->boolean('pernocte')->default(false);
+			
 			
 			$table->foreign('idPersona')->references('id')->on('persona');
 			$table->foreign('idEmpresa')->references('id')->on('empresa');

@@ -97,6 +97,20 @@
 							<input type="number" name="valorhr" id="valorhr" class="form-control" value="{{ old('valorhr') }}" min="1" required>
 						</div>	
 					</div>
+					
+					<div class="form-group row">
+						<label for="noc" class="control-label col-sm-3">HORA NOCTURNIDAD </label>
+						<div class="col-sm-6">
+							 <input class="checkbox" type="checkbox" name="noc" id="noc">
+						 </div>
+					</div>
+					<div class="form-group row">
+						<label for="per" class="control-label col-sm-3">HORA PERNOCTE </label>
+						<div class="col-sm-6">
+							 <input class="checkbox" type="checkbox" name="per" id="per">
+						 </div>
+					</div>
+					
 					<div class="form-group row">
 						<div class="col-xs-12 text-center">
 							<button type="submit" class="btn btn-warning"><i class="fas fa-check"></i> Confirmar asosiación</button>
