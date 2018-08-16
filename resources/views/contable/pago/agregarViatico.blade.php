@@ -91,6 +91,8 @@ $(function()
 {
 	var empresa = @json($empresas);
 	
+	console.log(empresa[0].personas);
+	
 	$('#nombreFantasia').on('change', function() 
 	{
 		$("#tipoDoc").val("");
@@ -119,7 +121,7 @@ $(function()
 					while (j < empresa[i].personas.length)
 					{			
 						//document.getElementById("nombreEmpleado").innerHTML += "<option value='"+empresa[i].personas[j].tipoDoc.nombre+" "+empresa[i].personas[j].documento+"'>"+empresa[i].personas[j].nombre+" "+empresa[i].personas[j].apellido+"</option>"; 
-					document.getElementById("nombreEmpleado").innerHTML += "<option value='"+empresa[i].personas[j].tipoDocumento+" "+empresa[i].personas[j].documento+"'>"+empresa[i].personas[j].nombre+" "+empresa[i].personas[j].apellido+"</option>"; 
+					document.getElementById("nombreEmpleado").innerHTML += "<option value='"+empresa[i].personas[j].tipo_doc.nombre+" "+empresa[i].personas[j].documento+"'>"+empresa[i].personas[j].nombre+" "+empresa[i].personas[j].apellido+"</option>"; 
 						j++;
 					}
 					
@@ -136,7 +138,7 @@ $(function()
 	{	
 		separador = " ";
 		documentoEmpl = this.value.split(separador);
-		alert (documentoEmpl);
+		//alert (documentoEmpl);
 		$("#tipoDoc").val(documentoEmpl[0]);
 		$("#numeroDoc").val(documentoEmpl[1]); 
 	})
