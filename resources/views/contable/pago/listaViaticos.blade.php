@@ -5,7 +5,21 @@
 @section('content')
 
 <br>
-
+<div class="row">
+	<!--solamente es visible en cel-->
+	<div class="col-xs-12 visible-xs"><a href="{{ route('pago.create') }}" class="btn btn-warning" role="button" style="margin-bottom:5%;"><i class="fas fa-plus"></i> Agregar nuevo cargo</a></div>				  
+</div>
+@if (Session::has('success'))
+		<div class="alert alert-success">
+			{{Session::get('success')}}
+			
+		</div>
+@endif 
+@if (Session::has('error'))
+		<div class="alert alert-danger">
+			{{Session::get('error')}}
+		</div>
+@endif 
 <div class="row text-info">
 	<div class="col-xs-12">
 		<div class="panel panel-warning">

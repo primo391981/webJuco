@@ -23,13 +23,12 @@ class PagoRequest extends FormRequest
      */
     public function rules()
     {
-		dd($this->request);
         return [
             'rut'=>'required',
 			'tipoDocId'=>'required|numeric',
 			'numeroDoc'=>'required',
 			'tipoPago'=>'required|numeric',
-			'valor'=>'required|numeric',
+			'monto'=>'required|numeric',
 			'fecha'=>'required|date'			
         ];
     }

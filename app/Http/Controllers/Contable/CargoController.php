@@ -49,6 +49,7 @@ class CargoController extends Controller
      */
     public function store(CargoRequest $request)
     {
+		dd($request->nombre);
         $cargo = new Cargo;
 		$cargo->nombre = $request->nombre;
 		$cargo->descripcion = $request->descripcion;

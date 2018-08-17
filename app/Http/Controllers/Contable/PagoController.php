@@ -6,11 +6,10 @@ use App\Contable\Pago;
 use App\Persona;
 use App\Empresa;
 use App\Contable\Empleado;
-
-use Exception;
+use App\Http\Requests\PagoRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\PagoRequest;
+use Exception;
 use \Carbon\Carbon;
 
 class PagoController extends Controller
@@ -48,16 +47,24 @@ class PagoController extends Controller
      */
     public function store(PagoRequest $request)
     {	
-		//dd($request);	
-        $empresa = Empresa::where("rut","=",$request->rut)->get();
-		$persona = Persona::where([["tipoDocumento",'=',$request->tipoDocId], ["documento",'=',$request->numeroDoc]])->get();
-		$empleado = Empleado::where([["idEmpresa",'=',$empresa->id], ["idPersona",'=',$persona->id]])->get();
-		//dd($empleado);
-		
-		/*new Cargo;
-		$cargo->nombre = $request->nombre;
-		$cargo->descripcion = $request->descripcion;
-		$cargo->id_remuneracion = $request->id_remuneracion;*/
+	    $empresa = Empresa::where("rut","=",$request->rut)->first();
+		$persona = Persona::where([["tipoDocumento",'=',$request->tipoDocId], ["documento",'=',$request->numeroDoc]])->first();
+		$empleado = Empleado::where([["idEmpresa",'=',$empresa->id], ["idPersona",'=',$persona->id]])->first();
+	
+		$viatico = new Pago;
+		$viatico->idEmpleado = $empleado->id;
+		$viatico->idTipoPago = $request->tipoPago;
+		$viatico->fecha = $request->fecha;
+		$viatico->monto = $request->monto;
+		$viatico->descripcion = $request->descripcion;
+			
+		try {
+			$viatico->save();
+			return redirect()->route('pago.viaticos')->with('success', "El viático se cargo correctamente.");				;
+		} 
+		catch(Exception $e){
+			return back()->withInput()->withError("El viático no se pudo registrar, intente nuevamente o contacte al administrador.");				;
+		};
     }
 
     /**
