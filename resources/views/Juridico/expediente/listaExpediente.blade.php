@@ -20,7 +20,7 @@
 				  <div class="panel-heading">
 					<div class="row">
 						<div class="col-sm-9"><h4>LISTADO EXPEDIENTES</h4></div>
-						<div class="col-sm-3 hidden-xs"><a href="{{ route('expediente.create') }}" class="btn btn-success pull-right" role="button"><i class="fas fa-plus"></i> Agregar nuevo expediente</a></div>				  
+						<div class="col-sm-3 hidden-xs"><a href="{{ route('expediente.create') }}" class="btn btn-success pull-right" role="button"><i class="fas fa-plus"></i> nuevo expediente</a></div>				  
 					</div>
 				  </div>
 				<div class="panel-body text-muted">					
@@ -64,7 +64,7 @@
 					</div>
 					
 				</div>
-				<div class="panel-footer"><a href="{{ route('expediente.create') }}" class="btn btn-success btn-block" role="button"><i class="fas fa-plus"></i> Agregar expediente</a></div>
+				<div class="panel-footer"><a href="{{ route('expediente.create') }}" class="btn btn-success btn-block" role="button"><i class="fas fa-plus"></i> nuevo expediente</a></div>
 		</div>
 	</div>
 </div>

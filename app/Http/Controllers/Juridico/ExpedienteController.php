@@ -11,6 +11,7 @@ use App\Juridico\Paso;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use SoapClient;
+use SoapFault;
 use Auth;
 
 class ExpedienteController extends Controller
@@ -30,15 +31,22 @@ class ExpedienteController extends Controller
     }
 	
 	public function search(Request $request){
-				
-		$wsdl = "http://www.expedientes.poderjudicial.gub.uy/wsConsultaIUE.php?wsdl";    
-        $client = new SoapClient($wsdl);
-          
-		 // ejemplo: 10-1/2010
-        $iue = $request->iue;
-
-        $expediente = $client->ConsultaIUE($iue);
 		
+		$wsdl = "http://www.expedientes.poderjudicial.gub.uy/wsConsultaIUE.php?wsdl";    
+		$client = new SoapClient($wsdl); 
+		$iue = $request->iue;
+		
+		try { 
+			$expediente = $client->ConsultaIUE($iue);
+        } catch (SoapFault $e) { 
+			return back()->withInput()->withError('El sistema del Poder Judicial no se encuentra disponible en este momento. Haga click <a href="">aquí</a> para ingresar un iue de forma manual.');
+		} 		
+		
+          
+		
+		
+
+       
 		//dd($expediente->caratula);
 		
 		if($expediente->estado === "EL EXPEDIENTE NO SE ENCUENTRA EN EL SISTEMA"){
@@ -46,7 +54,6 @@ class ExpedienteController extends Controller
 		} else {
 			$tipoExpedientes = TipoExpediente::All();
 			$clientes = Cliente::All();
-			
 			//dd($clientes);
 			return view('juridico.expediente.agregarExpediente',['clientes' => $clientes, 'tipoExpedientes' => $tipoExpedientes, 'expediente' => $expediente, 'tipoDocumento' => 'DEMANDA' ]);
 		}

@@ -127,4 +127,9 @@ class PasoController extends Controller
     {
         //
     }
+	
+	public function download($file)
+	{
+		return response()->download($file);
+	}
 }
