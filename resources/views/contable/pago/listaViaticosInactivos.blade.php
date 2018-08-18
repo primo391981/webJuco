@@ -25,7 +25,7 @@
 		<div class="panel panel-warning">
 				  <div class="panel-heading">
 					<div class="row">
-						<div class="col-sm-9"><h4>LISTADO VIATICOS</h4></div>
+						<div class="col-sm-9"><h4>LISTADO VIATICOS INACTIVOS</h4></div>
 						<div class="col-sm-3 hidden-xs"><a href="{{ route('pago.create') }}" class="btn btn-warning pull-right" role="button"><i class="fas fa-plus"></i> Agregar nuevo viático</a></div>				  
 					</div>
 				  </div>
@@ -40,7 +40,6 @@
 									<th>MONTO</th>
 									<th>FECHA</th>
 									<th></th>
-									<th></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -49,21 +48,15 @@
 									<td>{{$pago->empleado->persona->tipoDoc->nombre}} - {{$pago->empleado->persona->documento}}</td>
 									<td>{{$pago->empleado->persona->nombre}} {{$pago->empleado->persona->apellido}}</td>
 									<td>{{$pago->empleado->empresa->nombreFantasia}}</td>
-									<td>{{$pago->monto}}</td>
-									
+									<td>{{$pago->monto}}</td>									
 									<td>{{$pago->fecha}}</td>	
-									<td>
-										<form method="GET" action="{{ route('pago.edit', $pago) }}">																
-											<button type="submit"class="btn btn-warning"><i class="far fa-edit"></i></button>												
+									<td> 
+										<form method="POST" action="{{ route('pago.activar') }}">
+											@csrf	
+											<input type="hidden" name="pago_id" value="{{$pago->id}}">
+											<button type="submit"class="btn btn-primary"><i class="fas fa-recycle"></i></button>												
 										</form>
-									</td>				
-									<td>
-										<form method="POST" action="{{ route('pago.destroy',$pago) }}">
-										{{ method_field('DELETE') }}
-										@csrf	
-										<button type="submit"class="btn btn-danger"><i class="far fa-trash-alt"></i></button>												
-									</form>
-									</td>									
+									</td>																	
 								</tr>
 								@endforeach
 							</tbody>						

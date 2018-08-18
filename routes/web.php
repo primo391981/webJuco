@@ -115,6 +115,8 @@ Route::group(['middleware' => ['auth']], function () {
 	
 	//pagos
 	Route::get('viaticos', 'Contable\PagoController@viaticos')->name('pago.viaticos')->middleware('role:contableAdmin');
+	Route::get('viaticos/inactivos', 'Contable\PagoController@viaticosInactivos')->name('pago.viaticos.inactivos')->middleware('role:contableAdmin');
+	Route::post('pago/activar', 'Contable\PagoController@activar')->name('pago.activar')->middleware('role:contableAdmin');
 	Route::resource('pago', 'Contable\PagoController')->middleware('role:contableAdmin');
 	
 	

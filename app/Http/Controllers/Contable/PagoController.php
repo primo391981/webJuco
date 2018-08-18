@@ -31,7 +31,15 @@ class PagoController extends Controller
 		return view('contable.pago.listaViaticos', ['viaticos' => $viaticos]);
     }
 
-    public function create()
+	public function viaticosInactivos()
+    {
+        $viaticos  = Pago::onlyTrashed()->where("idTipoPago", 1)->with('empleado')->get();
+		
+		//dd($viaticos=);
+		return view('contable.pago.listaViaticosInactivos', ['viaticos' => $viaticos]);
+    }
+    
+	public function create()
     {
 		$empresas = Empresa::with('personas.tipoDoc')->get();
 		//return vista con FORM para add viatico
@@ -51,19 +59,21 @@ class PagoController extends Controller
 		$persona = Persona::where([["tipoDocumento",'=',$request->tipoDocId], ["documento",'=',$request->numeroDoc]])->first();
 		$empleado = Empleado::where([["idEmpresa",'=',$empresa->id], ["idPersona",'=',$persona->id]])->first();
 	
-		$viatico = new Pago;
-		$viatico->idEmpleado = $empleado->id;
-		$viatico->idTipoPago = $request->tipoPago;
-		$viatico->fecha = $request->fecha;
-		$viatico->monto = $request->monto;
-		$viatico->descripcion = $request->descripcion;
+		$pago = new Pago;
+		$pago ->idEmpleado = $empleado->id;
+		$pago ->idTipoPago = $request->tipoPago;
+		$pago ->fecha = $request->fecha;
+		$pago ->monto = $request->monto;
+		$pago ->descripcion = $request->descripcion;
 			
 		try {
-			$viatico->save();
-			return redirect()->route('pago.viaticos')->with('success', "El viático se cargo correctamente.");				;
+			$pago ->save();
+			
+			if ($pago ->idTipoPago == 1)
+				return redirect()->route('pago.viaticos')->with('success', "El viático se cargo correctamente.");				;
 		} 
 		catch(Exception $e){
-			return back()->withInput()->withError("El viático no se pudo registrar, intente nuevamente o contacte al administrador.");				;
+			return back()->withInput()->withError("El pago no se pudo registrar, intente nuevamente o contacte al administrador.");				;
 		};
     }
 
@@ -84,9 +94,18 @@ class PagoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Pago $pago)
     {
-        //
+		$empresas = Empresa::with('personas.tipoDoc')->get();
+		if ($pago ->idTipoPago == 1)
+		{
+			$subtitulo = 'Editar Viático';
+			return view('contable.pago.editarViaticos', ['subtitulo' => $subtitulo, 'empresas' => $empresas, 'pago' => $pago]);
+		}
+		else
+		{
+			$subtitulo = 'Editar Adelanto';
+		}		
     }
 
     /**
@@ -96,19 +115,44 @@ class PagoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PagoRequest $request, Pago $pago)
     {
-        //
+        $pago ->fecha = $request->fecha;
+		$pago ->monto = $request->monto;
+		$pago ->descripcion = $request->descripcion;
+		
+		try {
+			$pago ->save();
+			
+			if ($pago ->idTipoPago == 1)
+				return redirect()->route('pago.viaticos')->with('success', "El viático se editó correctamente");				;
+			
+		} catch(Exception $e){
+			return back()->withInput()->withError("El pago no se pudo registrar, intente nuevamente o contacte al administrador.");				;
+		};
     }
 
+	
+	public function activar(Request $request)
+    {		
+		$pago = Pago::onlyTrashed()->where('id', $request->pago_id)->first();
+		
+		$pago->restore();
+		
+		if ($pago ->idTipoPago == 1)
+			return redirect()->route('pago.viaticos.inactivos')->with('success', "El viático fue restaurado correctamente");
+    }
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Pago $pago)
     {
-        //
+        $pago->delete();
+		
+		if ($pago ->idTipoPago == 1)
+			return redirect()->route('pago.viaticos')->with('success', "El viáticoo fue eliminado correctamente");
     }
 }
