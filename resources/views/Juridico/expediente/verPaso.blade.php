@@ -54,11 +54,13 @@
 							</div>
 							<div class="row">
 							<label for="archivos" class="control-label col-sm-3">Archivos</label>
+							<div class="col-sm-9">
 							@foreach($paso->archivos as $archivo)
 								
-								<div class="col-sm-9">{{$archivo->archivo}}</div>
+								<a href="{{route('paso.download',$archivo)}}">{{$archivo->archivo}}</a>
 							
 							@endforeach
+							</div>
 							</div>
 							<div class="row">
 							<label for="comentarios" class="control-label col-sm-3">PASO REGISTRADO POR</label>

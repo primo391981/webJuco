@@ -10,6 +10,7 @@ use App\Juridico\TipoArchivo;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
+use Storage;
 
 class PasoController extends Controller
 {
@@ -128,8 +129,10 @@ class PasoController extends Controller
         //
     }
 	
-	public function download($file)
+	public function download(ArchivoPaso $archivo)
 	{
-		return response()->download($file);
+		$url = Storage::url($archivo->archivo);
+		
+		return response()->download(storage_path('app/' . $archivo->archivo));
 	}
 }
