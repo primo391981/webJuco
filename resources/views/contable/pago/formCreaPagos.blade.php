@@ -48,7 +48,7 @@
 </div>
 
 <!-- Datos del Viático -->
-<input id="tipoPago" type="hidden" class="form-control" name="tipoPago" value="1">
+<input id="tipoPago" type="hidden" class="form-control" name="tipoPago" value="{{ isset($tipoPago) ? $tipoPago : old('tipoPago') }}">
 <div class="form-group row">
 	<label for="fecha" class="control-label col-sm-3">FECHA</label>
 	<div class="col-sm-6">

@@ -14,11 +14,6 @@ use \Carbon\Carbon;
 
 class PagoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         //
@@ -30,21 +25,35 @@ class PagoController extends Controller
 		
 		return view('contable.pago.listaViaticos', ['viaticos' => $viaticos]);
     }
-
+	
 	public function viaticosInactivos()
     {
         $viaticos  = Pago::onlyTrashed()->where("idTipoPago", 1)->with('empleado')->get();
 		
-		//dd($viaticos=);
 		return view('contable.pago.listaViaticosInactivos', ['viaticos' => $viaticos]);
     }
     
-	public function create()
+	public function adelantos()
+    {
+      	$adelantos = Pago::where("idTipoPago", 2)->with('empleado')->get();
+		
+		return view('contable.pago.listaAdelantos', ['adelantos' => $adelantos]);
+    }
+	
+	public function adelantosInactivos()
+    {
+        $adelantos  = Pago::onlyTrashed()->where("idTipoPago", 2)->with('empleado')->get();
+		
+		return view('contable.pago.listaAdelantosInactivos', ['adelantos' => $adelantos]);
+	}	
+		
+	public function create(Request $request)
     {
 		$empresas = Empresa::with('personas.tipoDoc')->get();
-		//return vista con FORM para add viatico
-		return view('contable.pago.agregarViatico',['empresas' => $empresas]);
-    }
+		
+		//return vista con FORM para add pago
+		return view('contable.pago.agregarPago',['empresas' => $empresas, 'tipoPago' => $request->idTipo]);
+	}
 	
 
     /**
@@ -70,7 +79,9 @@ class PagoController extends Controller
 			$pago ->save();
 			
 			if ($pago ->idTipoPago == 1)
-				return redirect()->route('pago.viaticos')->with('success', "El viático se cargo correctamente.");				;
+				return redirect()->route('pago.viaticos')->with('success', "El viático se cargo correctamente.");
+			else
+				return redirect()->route('pago.adelantos')->with('success', "El adelanto se cargo correctamente.");
 		} 
 		catch(Exception $e){
 			return back()->withInput()->withError("El pago no se pudo registrar, intente nuevamente o contacte al administrador.");				;
@@ -102,15 +113,12 @@ class PagoController extends Controller
 		$persona = Persona::where("id", $empleado->idPersona)->with('tipoDoc')->first();
 		
 		//dd($persona);
-		if ($pago ->idTipoPago == 1)
-		{
+		if ($pago->idTipoPago == 1)
 			$subtitulo = 'Editar Viático';
-			return view('contable.pago.editarViaticos', ['subtitulo' => $subtitulo, 'empresa' => $empresa, 'persona' => $persona, 'pago' => $pago]);
-		}
 		else
-		{
 			$subtitulo = 'Editar Adelanto';
-		}		
+		
+		return view('contable.pago.editarPagos', ['subtitulo' => $subtitulo, 'empresa' => $empresa, 'persona' => $persona, 'pago' => $pago]);	
     }
 
     /**
@@ -131,8 +139,8 @@ class PagoController extends Controller
 			
 			if ($pago ->idTipoPago == 1)
 				return redirect()->route('pago.viaticos')->with('success', "El viático se editó correctamente");
-			//else
-			//	return redirect()->route('pago.adelantos')->with('success', "El adelanto se editó correctamente");
+			else
+				return redirect()->route('pago.adelantos')->with('success', "El adelanto se editó correctamente");
 				
 		} catch(Exception $e){
 			return back()->withInput()->withError("El pago no se pudo registrar, intente nuevamente o contacte al administrador.");				;
@@ -146,8 +154,10 @@ class PagoController extends Controller
 		
 		$pago->restore();
 		
-		if ($pago ->idTipoPago == 1)
+		if ($pago->idTipoPago == 1)
 			return redirect()->route('pago.viaticos.inactivos')->with('success', "El viático fue restaurado correctamente");
+		else
+			return redirect()->route('pago.adelantos.inactivos')->with('success', "El adelanto fue restaurado correctamente");
     }
     /**
      * Remove the specified resource from storage.
@@ -159,7 +169,9 @@ class PagoController extends Controller
     {
         $pago->delete();
 		
-		if ($pago ->idTipoPago == 1)
-			return redirect()->route('pago.viaticos')->with('success', "El viáticoo fue eliminado correctamente");
+		if ($pago->idTipoPago == 1)
+			return redirect()->route('pago.viaticos')->with('success', "El viático fue eliminado correctamente");
+		else
+			return redirect()->route('pago.adelantos')->with('success', "El adelanto fue eliminado correctamente");
     }
 }

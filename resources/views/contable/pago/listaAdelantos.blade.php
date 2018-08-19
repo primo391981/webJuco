@@ -1,13 +1,13 @@
 @extends('contable.contable')
 
-@section('seccion', " - VIATICOS")
+@section('seccion', " - ADELANTOS")
 
 @section('content')
 
 <br>
 <div class="row">
 	<!--solamente es visible en cel-->
-	<div class="col-xs-12 visible-xs"><a href="{{ route('pago.create', ['idTipo' => 1]) }}" class="btn btn-warning" role="button" style="margin-bottom:5%;"><i class="fas fa-plus"></i> Agregar nuevo viático</a></div>				  
+	<div class="col-xs-12 visible-xs"><a href="{{ route('pago.create', ['idTipo' => 2]) }}" class="btn btn-warning" role="button" style="margin-bottom:5%;"><i class="fas fa-plus"></i> Agregar nuevo adelanto</a></div>				  
 </div>
 @if (Session::has('success'))
 		<div class="alert alert-success">
@@ -25,13 +25,13 @@
 		<div class="panel panel-warning">
 				  <div class="panel-heading">
 					<div class="row">
-						<div class="col-sm-9"><h4>LISTADO VIATICOS INACTIVOS</h4></div>
-						<div class="col-sm-3 hidden-xs"><a href="{{ route('pago.create', ['idTipo' => 1]) }}" class="btn btn-warning pull-right" role="button"><i class="fas fa-plus"></i> Agregar nuevo viático</a></div>				  
+						<div class="col-sm-9"><h4>LISTADO ADELANTOS</h4></div>
+						<div class="col-sm-3 hidden-xs"><a href="{{ route('pago.create', ['idTipo' => 2]) }}" class="btn btn-warning pull-right" role="button"><i class="fas fa-plus"></i> Agregar nuevo adelanto</a></div>				  
 					</div>
 				  </div>
 				  <div class="panel-body text-warning">					
 					<div class="table-responsive">
-						<table id="tableViaticos" class="table" style="width:100%" >
+						<table id="tableAdelantos" class="table" style="width:100%" >
 							<thead>
 								<tr>
 									<th>DOCUMENTO</th>
@@ -40,23 +40,30 @@
 									<th>MONTO</th>
 									<th>FECHA</th>
 									<th></th>
+									<th></th>
 								</tr>
 							</thead>
 							<tbody>
-								@foreach($viaticos->sortBy('empleado.empresa.razonSocial') as $pago)
+								@foreach($adelantos->sortBy('empleado.empresa.razonSocial') as $pago)
 								<tr>								
 									<td>{{$pago->empleado->persona->tipoDoc->nombre}} - {{$pago->empleado->persona->documento}}</td>
 									<td>{{$pago->empleado->persona->nombre}} {{$pago->empleado->persona->apellido}}</td>
 									<td>{{$pago->empleado->empresa->nombreFantasia}}</td>
-									<td>{{$pago->monto}}</td>									
+									<td>{{$pago->monto}}</td>
+									
 									<td>{{$pago->fecha}}</td>	
-									<td> 
-										<form method="POST" action="{{ route('pago.activar') }}">
-											@csrf	
-											<input type="hidden" name="pago_id" value="{{$pago->id}}">
-											<button type="submit"class="btn btn-primary"><i class="fas fa-recycle"></i></button>												
+									<td>
+										<form method="GET" action="{{ route('pago.edit', $pago) }}">																
+											<button type="submit"class="btn btn-warning"><i class="far fa-edit"></i></button>												
 										</form>
-									</td>																	
+									</td>				
+									<td>
+										<form method="POST" action="{{ route('pago.destroy',$pago) }}">
+										{{ method_field('DELETE') }}
+										@csrf	
+										<button type="submit"class="btn btn-danger"><i class="far fa-trash-alt"></i></button>												
+									</form>
+									</td>									
 								</tr>
 								@endforeach
 							</tbody>						
@@ -64,13 +71,13 @@
 					</div>
 					
 				  </div>
-				  <div class="panel-footer"><a href="{{ route('pago.create', ['idTipo' => 1]) }}" class="btn btn-warning btn-block" role="button"><i class="fas fa-plus"></i> Agregar nuevo viático</a></div>
+				  <div class="panel-footer"><a href="{{ route('pago.create', ['idTipo' => 2]) }}" class="btn btn-warning btn-block" role="button"><i class="fas fa-plus"></i> Agregar nuevo adelanto</a></div>
 		</div>
 	</div>
 </div>
 <script>
 $(document).ready(function() {
-    $('#tableViaticos').DataTable( {        
+    $('#tableAdelantos').DataTable( {        
 		"pagingType": "numbers",
 		"pageLength": 5,
 		"language": {

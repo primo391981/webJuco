@@ -7,7 +7,7 @@
 <br>
 <div class="row">
 	<!--solamente es visible en cel-->
-	<div class="col-xs-12 visible-xs"><a href="{{ route('pago.create') }}" class="btn btn-warning" role="button" style="margin-bottom:5%;"><i class="fas fa-plus"></i> Agregar nuevo cargo</a></div>				  
+	<div class="col-xs-12 visible-xs"><a href="{{ route('pago.create', ['idTipo' => 1]) }}" class="btn btn-warning" role="button" style="margin-bottom:5%;"><i class="fas fa-plus"></i> Agregar nuevo viático</a></div>				  
 </div>
 @if (Session::has('success'))
 		<div class="alert alert-success">
@@ -26,7 +26,7 @@
 				  <div class="panel-heading">
 					<div class="row">
 						<div class="col-sm-9"><h4>LISTADO VIATICOS</h4></div>
-						<div class="col-sm-3 hidden-xs"><a href="{{ route('pago.create') }}" class="btn btn-warning pull-right" role="button"><i class="fas fa-plus"></i> Agregar nuevo viático</a></div>				  
+						<div class="col-sm-3 hidden-xs"><a href="{{ route('pago.create', ['idTipo' => 1]) }}" class="btn btn-warning pull-right" role="button"><i class="fas fa-plus"></i> Agregar nuevo viático</a></div>				  
 					</div>
 				  </div>
 				  <div class="panel-body text-warning">					
@@ -71,7 +71,7 @@
 					</div>
 					
 				  </div>
-				  <div class="panel-footer"><a href="{{ route('pago.create') }}" class="btn btn-warning btn-block" role="button"><i class="fas fa-plus"></i> Agregar nuevo viático</a></div>
+				  <div class="panel-footer"><a href="{{ route('pago.create', ['idTipo' => 1]) }}" class="btn btn-warning btn-block" role="button"><i class="fas fa-plus"></i> Agregar nuevo viático</a></div>
 		</div>
 	</div>
 </div>
