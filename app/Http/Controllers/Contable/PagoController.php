@@ -96,11 +96,16 @@ class PagoController extends Controller
      */
     public function edit(Pago $pago)
     {
-		$empresas = Empresa::with('personas.tipoDoc')->get();
+		//dd($pago);
+		$empleado = Empleado::find($pago->idEmpleado);
+		$empresa = Empresa::find($empleado->idEmpresa);
+		$persona = Persona::where("id", $empleado->idPersona)->with('tipoDoc')->first();
+		
+		//dd($persona);
 		if ($pago ->idTipoPago == 1)
 		{
 			$subtitulo = 'Editar Viático';
-			return view('contable.pago.editarViaticos', ['subtitulo' => $subtitulo, 'empresas' => $empresas, 'pago' => $pago]);
+			return view('contable.pago.editarViaticos', ['subtitulo' => $subtitulo, 'empresa' => $empresa, 'persona' => $persona, 'pago' => $pago]);
 		}
 		else
 		{
@@ -125,8 +130,10 @@ class PagoController extends Controller
 			$pago ->save();
 			
 			if ($pago ->idTipoPago == 1)
-				return redirect()->route('pago.viaticos')->with('success', "El viático se editó correctamente");				;
-			
+				return redirect()->route('pago.viaticos')->with('success', "El viático se editó correctamente");
+			//else
+			//	return redirect()->route('pago.adelantos')->with('success', "El adelanto se editó correctamente");
+				
 		} catch(Exception $e){
 			return back()->withInput()->withError("El pago no se pudo registrar, intente nuevamente o contacte al administrador.");				;
 		};

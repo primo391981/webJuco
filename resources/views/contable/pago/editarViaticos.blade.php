@@ -31,7 +31,7 @@
 			<div class="panel-body text-warning">
 				<form method="POST" action="{{ route('pago.update', ['pago' => $pago]) }}" class="form-horizontal" enctype="multipart/form-data">
 				{{ method_field('PUT') }}
-				@include('contable.pago.formPagos', ['textoBoton' => 'Confirmar'])
+				@include('contable.pago.formEditPagos', ['textoBoton' => 'Confirmar'])
 				</form>
 				
 			</div>
