@@ -89,8 +89,8 @@
 													@endif
 												@endforeach
 											@endforeach
-											<form method="GET" action="{{ route('empleado.editHorarioPrincipal', [$empr->pivot->id,$hr->id]) }}">
-												<button type="submit"class="btn btn-warning btn-block"><i class="far fa-edit"></i> Modificar horario principal</button>												
+											<form style="margin-bottom:5px;">
+												<button type="submit"class="btn btn-warning btn-block" formaction="{{ route('empleado.editHorarioPrincipal', [$empr->pivot->id,$hr->id]) }}" formmethod="get"><i class="far fa-edit"></i> Modificar horario principal</button>												
 											</form>
 										@endif
 									@endforeach
@@ -169,7 +169,6 @@
 						<div class="col-sm-3">
 						  <button type="submit"class="btn btn-warning btn-block" formaction="{{route('empleado.formHorarioEspecial')}}" formmethod="post"><i class="far fa-clock"></i> Cargar horario</button>	
 						</div>
-						
 					@else
 						<div class="col-sm-9">
 							<p>Debe ingresar un horario principal.</p>

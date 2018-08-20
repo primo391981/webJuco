@@ -202,4 +202,5 @@ class RegistroHoraController extends Controller
 		
 		
 	}
+	
 }
