@@ -29,11 +29,13 @@
 				@include('juridico.expediente.detalleExpediente')
 				<div class="row">
 					<div class="col-sm-9">
-						<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">Transiciones del expediente <i class="fas fa-sitemap"></i></button>
+						<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">Transiciones <i class="fas fa-sitemap"></i></button>
 						
-						<button type="button" class="btn btn-info btn-md" >Actualizaciones del Expediente <i class="fas fa-sync-alt"></i></button>
+						<button type="button" class="btn btn-info btn-md" >Actualizaciones <i class="fas fa-sync-alt"></i></button>
 						
-						<button type="button" class="btn btn-warning btn-md" >Asignar usuarios al Expediente <i class="fas fa-user-plus"></i></button>
+						<button type="button" class="btn btn-warning btn-md" >usuarios <i class="fas fa-user-plus"></i></button>
+						
+						<button type="button" class="btn btn-danger btn-md" >notificaciones <i class="fas fa-bell"></i></button>
 					</div>
 				</div>
 				<br>

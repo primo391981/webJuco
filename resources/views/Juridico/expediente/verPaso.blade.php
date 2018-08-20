@@ -29,11 +29,13 @@
 				@include('juridico.expediente.detalleExpediente')
 				<div class="row">
 					<div class="col-sm-9">
-						<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">Transiciones del expediente <i class="fas fa-info"></i></button>
+						<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">Transiciones <i class="fas fa-info"></i></button>
 						
-						<button type="button" class="btn btn-info btn-md" >Actualizaciones del Expediente <i class="fas fa-sync-alt"></i></button>
+						<button type="button" class="btn btn-info btn-md" >Actualizaciones <i class="fas fa-sync-alt"></i></button>
 						
-						<a type="button" class="btn btn-warning btn-md" href="{{route('expediente.show',$paso->expediente)}}">volver a Expediente <i class="fas fa-undo-alt"></i></i></a>
+						<button type="button" class="btn btn-danger btn-md" >notificaciones <i class="fas fa-bell"></i></button>
+						
+						<a type="button" class="btn btn-warning btn-md" href="{{route('expediente.show',$paso->expediente)}}">volver <i class="fas fa-undo-alt"></i></i></a>
 					</div>
 				</div>
 				<br>

@@ -48,7 +48,7 @@
 						<div class="row">
 							<label for="fecha_inicio" class="control-label col-sm-3">PASO ACTUAL</label>
 							<div class="col-sm-9">
-								<span class="label label-default">{{$expediente->actual->nombre}}</span>
+								<a class="label label-success" href="{{route('paso.show',$expediente->pasos->last())}}">{{$expediente->actual->nombre}}</a>
 							</div>
 						</div>
 						<div class="row">

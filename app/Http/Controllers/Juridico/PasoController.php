@@ -7,6 +7,7 @@ use App\Juridico\TipoPaso;
 use App\Juridico\Expediente;
 use App\Juridico\ArchivoPaso;
 use App\Juridico\TipoArchivo;
+use App\Juridico\Notificacion;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
@@ -62,18 +63,32 @@ class PasoController extends Controller
 		
 		if ($request->hasFile('documentos')) {
 			/*$num = 1;
-			$fileName = $expediente->iue."_".$expediente->actual->nombre;
+			
 			dd(str_slug($fileName,'-'));*/
-			foreach($request->documentos as $documento){
+			$directorio = $expediente->iue;
+			$directorio = str_slug($directorio);
+			foreach($request->documentos as $key => $documento){
+				
 				$file = new ArchivoPaso();
 				$file->id_paso = $paso->id;
 				$file->id_tipo = $request->tipoarchivo;
-				$file->archivo = $documento->store('expedientes');
+				$file->archivo = $documento->storeAs('expedientes/'.$directorio, $expediente->actual->nombre."_".$key.".".$documento->extension());
 				$file->nombre_archivo = $file->archivo;
+				//dd(Storage::mimeType($file->nombre_archivo));
 				$file->save();
 			}
 		}	
-		//dd($file);
+		
+		$notificacion = new Notificacion();
+		$notificacion->id_paso = $paso->id;
+		$notificacion->id_user = $paso->id_usuario;
+		$notificacion->id_tipo = 1; //tipo info
+		$notificacion->fecha_envío = now();
+		$notificacion->estado = 1; //se programa para enviar cuanto antes.
+		$notificacion->mensaje = "El expediente ".$expediente->iue." ha sido modificado.";
+		
+		$notificacion->save();
+		 					
 		return redirect()->route('expediente.show',$expediente)->with("success","El expediente fue modificado correctamente.");
 		
 		
@@ -129,6 +144,7 @@ class PasoController extends Controller
         //
     }
 	
+	// inicia descarga del archivo indicado como parámetro
 	public function download(ArchivoPaso $archivo)
 	{
 		$url = Storage::url($archivo->archivo);
