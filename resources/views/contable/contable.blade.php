@@ -54,6 +54,13 @@
         </ul>
 </li>
 <li>
+    <a href="#"><i class="fas fa-hand-holding-usd"></i> Liquidación de Haberes<i class="fas fa-caret-down"></i></a>
+		<ul class="nav nav-second-level">
+			<li><a href="#"><i class="fas fa-list-ul"></i> Sueldos</a></li>	
+			
+        </ul>
+</li>
+<li>
     <a href="#"><i class="fas fa-cogs"></i> Parametros Generales<i class="fas fa-caret-down"></i></a>
 		<ul class="nav nav-second-level">
 			 <li><a href="{{ route('parametrogeneral.index') }}"><i class="fas fa-list-ul"></i> Activos</a></li>
