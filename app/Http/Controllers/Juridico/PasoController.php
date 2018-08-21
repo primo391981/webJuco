@@ -14,6 +14,7 @@ use Auth;
 use Storage;
 use Carbon\Carbon;
 use Mail;
+use App\Mail\SendMailable;
 
 class PasoController extends Controller
 {
@@ -92,10 +93,8 @@ class PasoController extends Controller
 		$notificacion->save();
 		
 		// envío de mail, pruebas	
-		Mail::send('juridico.mail.mail', array('nombre' => "Martin Ghiglia",'email' => "primo39@gmail.com",'asunto' => "Prueba de mail de juco",'mensaje' => $notificacion->mensaje), function($message)
-        {
-			$message->to('mghiglia@mercosur.int', 'CRPM')->subject('Prueba de mail de juco2');
-        });
+		$mensaje = "mail de prueba de juco";
+        Mail::to('primo39@gmail.com')->send(new SendMailable($mensaje));
 		
 		// fin envío de mail
 	

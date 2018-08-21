@@ -1,3 +1,3 @@
 <div>
-{{$mensaje}}
+	{{$mensaje}}
 </div>
