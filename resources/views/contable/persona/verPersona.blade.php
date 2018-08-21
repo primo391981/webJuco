@@ -2,6 +2,7 @@
 @section('seccion', " - DETALLE") 
  
 @section('content') 
+@inject('horarios', 'App\Http\Controllers\Contable\EmpleadoController')
 @if (Session::has('error')) 
 <br>   
   <div class="alert alert-danger alert-dismissible"> 
@@ -18,8 +19,35 @@
 @endif 
 <br>
  <div class="row">
+ 
+		<div class="col-xs-12 col-md-3"><!--ABRE DIV DATOS--> 
+		<div class="panel panel-warning"> 
+		  <div class="panel-heading"> 
+			<h4>DETALLE EMPLEADO</h4>           
+		  </div> 
+		  <div class="panel-body text-warning">   
+			<p>{{$persona->nombre}} {{$persona->apellido}}</p> 
+			<hr>
+			
+				<p><strong>TIPO DOCUMENTO :</strong> {{$persona->tipoDoc->nombre}}</p> 
+				<p><strong>DOCUMENTO :</strong> {{$persona->documento}}</p> 
+				<p><strong>TELÉFONO :</strong> {{$persona->telefono}}</p> 
+				<p><strong>EMAIL :</strong> {{$persona->email}}</p> 
+				<p><strong>DOMICILIO :</strong> {{$persona->domicilio}}</p> 
+				<p><strong>ESTADO CIVIL :</strong> {{$persona->eCivil->nombre}}</p> 
+				<p><strong>CANTIDAD DE HIJOS :</strong> {{$persona->cantHijos}}</p>
+		
+		  </div> 
+		  <div class="panel-footer"> 
+			<form method="GET" action="{{ route('persona.edit', $persona->id) }}">																
+				<button type="submit"class="btn btn-warning btn-block"><i class="far fa-edit"></i> Modificar datos</button>												
+			</form>
+		  </div> 
+		</div>
+	  </div><!--CIERRE DIV DATOS-->
   
-  <div class="col-xs-12"> <!--ABRE DIV EMPRESAS-->
+  
+  <div class="col-xs-12 col-md-9"> <!--ABRE DIV EMPRESAS-->
     <div class="panel panel-warning"> 
       <div class="panel-heading"> 
         <h4>EMPRESAS ASOCIADAS AL EMPLEADO</h4>           
@@ -28,23 +56,23 @@
 		@if (count($emprAsociadas) >0)
 			<div class="row hidden-xs hidden-sm">
 				<div class="col-xs-12">
-					<div class="col-xs-12 col-md-4"><p><strong>DETALLE EMPRESA</strong></p></div>
-					<div class="col-xs-12 col-md-4"><p><strong>DETALLE CONTRATO</strong></p></div>
-					<div class="col-xs-12 col-md-4"><p><strong>DETALLE HORARIO</strong></p></div>
+					<div class="col-xs-12 col-md-3"><p><strong>DETALLE EMPRESA</strong></p></div>
+					<div class="col-xs-12 col-md-3"><p><strong>DETALLE CONTRATO</strong></p></div>
+					<div class="col-xs-12 col-md-6"><p><strong>DETALLE HORARIO</strong></p></div>
 				</div>
 			</div>
 			
 			@foreach($emprAsociadas as $empr) 
 				<div class="row">
 					<div class="col-xs-12">
-						<div class="col-xs-12 col-md-4">
+						<div class="col-xs-12 col-md-3">
 							<p class="hidden-md hidden-lg"><strong>DETALLE EMPRESA</strong></p>
 							<p>{{$empr->razonSocial}}</p>
 							<p>{{$empr->nombreFantasia}}</p>
 							<p>{{$empr->nomContacto}}</p>
 							<p>{{$empr->telefono}}</p>
 						</div>
-						<div class="col-xs-12 col-md-4">
+						<div class="col-xs-12 col-md-3">
 							<p class="hidden-md hidden-lg"><strong>DETALLE CONTRATO</strong></p>
 							@foreach($cargos as $cargo)
 								@if($cargo->id ===$empr->pivot->idCargo)
@@ -67,7 +95,7 @@
 							@endif						
 							
 						</div>
-						<div class="col-xs-12 col-md-4">
+						<div class="col-xs-12 col-md-6">
 							<p class="hidden-md hidden-lg"><strong>DETALLE HORARIO</strong></p>							
 							@if($empr->pivot->horarioCargado==false)
 							<form method="GET" action="{{ route('empleado.formCargarHorario',$empr->pivot->id) }}">																
@@ -119,34 +147,10 @@
 	
 <div class="row">	
 
-	<div class="col-xs-12 col-md-4"><!--ABRE DIV DATOS--> 
-    <div class="panel panel-warning"> 
-      <div class="panel-heading"> 
-        <h4>DETALLE EMPLEADO</h4>           
-      </div> 
-      <div class="panel-body text-warning">   
-		<p>{{$persona->nombre}} {{$persona->apellido}}</p> 
-        <hr>
-		
-			<p><strong>TIPO DOCUMENTO :</strong> {{$persona->tipoDoc->nombre}}</p> 
-			<p><strong>DOCUMENTO :</strong> {{$persona->documento}}</p> 
-			<p><strong>TELÉFONO :</strong> {{$persona->telefono}}</p> 
-			<p><strong>EMAIL :</strong> {{$persona->email}}</p> 
-			<p><strong>DOMICILIO :</strong> {{$persona->domicilio}}</p> 
-			<p><strong>ESTADO CIVIL :</strong> {{$persona->eCivil->nombre}}</p> 
-		    <p><strong>CANTIDAD DE HIJOS :</strong> {{$persona->cantHijos}}</p>
 	
-      </div> 
-      <div class="panel-footer"> 
-        <form method="GET" action="{{ route('persona.edit', $persona->id) }}">																
-			<button type="submit"class="btn btn-warning btn-block"><i class="far fa-edit"></i> Modificar datos</button>												
-		</form>
-      </div> 
-    </div>
-  </div><!--CIERRE DIV DATOS-->
   
   
-  <div class="col-xs-12 col-md-8"><!--ABRE DIV INGRESO HORARIO ESPECIAL--> 
+  <div class="col-xs-12"><!--ABRE DIV INGRESO HORARIO ESPECIAL--> 
     <div class="panel panel-warning"> 
       <div class="panel-heading"> 
         <h4>INGRESO DE HORARIO ESPECIAL</h4>           
@@ -158,7 +162,7 @@
 				@csrf
 				<input type="hidden" id="idEmpleado" name="idEmpleado" value="{{$emp->pivot->id}}">
 				<div class="form-group row">
-					<label class="col-sm-3 col-form-label">{{$emp->nombreFantasia}}</label>
+					<label class="col-sm-2 col-form-label">{{$emp->nombreFantasia}}</label>
 					@if($emp->pivot->horarioCargado==true)
 						<div class="col-sm-3">
 							<input type="date" class="form-control" id="fechaDesde" name="fechaDesde" value="{{old('fechaDesde')}}" required >
@@ -166,9 +170,13 @@
 						<div class="col-sm-3">
 						  <input type="date" class="form-control" id="fechaHasta" name="fechaHasta" value="{{old('fechaHasta')}}" required>
 						</div>
-						<div class="col-sm-3">
-						  <button type="submit"class="btn btn-warning btn-block" formaction="{{route('empleado.formHorarioEspecial')}}" formmethod="post"><i class="far fa-clock"></i> Cargar horario</button>	
+						<div class="col-sm-2">
+						  <button type="submit"class="btn btn-warning btn-block" formaction="{{route('empleado.formHorarioEspecial')}}" formmethod="post"><i class="far fa-clock"></i> Nuevo</button>	
 						</div>
+						<div class="col-sm-2">
+						  <button type="button" class="btn btn-warning btn-block" data-toggle="collapse" data-target="#horarios{{$emp->id}}"><i class="fas fa-info"></i> Horarios</button>	
+						</div>
+						
 					@else
 						<div class="col-sm-9">
 							<p>Debe ingresar un horario principal.</p>
@@ -179,6 +187,54 @@
 				@if(count($emprAsociadas) >1)
 					<hr>
 				@endif
+				<div id="horarios{{$emp->id}}" class="row collapse">
+					@php $horariosEmp=$horarios->verHorariosEsp($emp->id); @endphp
+							<div class="col-xs-12">
+						<div class="table-responsive">
+						<table class="table">
+							<thead>
+							  <tr>
+								<th>FECHA DESDE</th>
+								<th>FECHA HASTA</th>
+								<th>LUNES</th>
+								<th>MARTES</th>
+								<th>MIERCOLES</th>
+								<th>JUEVES</th>
+								<th>VIERNES</th>
+								<th>SABADO</th>
+								<th>DOMINGO</th>
+								<th></th>
+							  </tr>
+							</thead>
+							<tbody>
+							@foreach($horariosEmp as $horario)
+								
+							  <tr>
+								<td>{{$horario->fechaDesde}}</td>
+								<td>{{$horario->fechaHasta}}</td>
+								@foreach($horario->horariosPorDia as $hd)
+									@switch($hd->idRegistro)
+										@case(1)
+										<td>{{$hd->cantHoras}}</td>
+										@break
+										@case(2)
+										<td class="info">{{$hd->cantHoras}}</td>
+										@break
+										@case(3)
+										<td class="danger">{{$hd->cantHoras}}</td>
+										@break
+									@endswitch
+								@endforeach
+								<td>
+									<button type="submit"class="btn btn-danger btn-xs" formaction="#" method="posts"><i class="fas fa-trash-alt"></i></button>	
+								</td>
+							</tr>
+							@endforeach  
+							</tbody>
+						  </table>
+						</div>
+					</div>
+				</div>
 			@endforeach
 		@else
 			<p>La persona NO esta asociada a ninguna empresa.</p>

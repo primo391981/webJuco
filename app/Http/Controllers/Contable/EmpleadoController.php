@@ -236,8 +236,7 @@ class EmpleadoController extends Controller
 		catch(Exception $e){
 			return back()->withInput()->withError("Error en el sistema");
 		}		
-	}
-	
+	}	
 	/*Listado de los horarios especiales por empleado en la empresa*/
 	public function verHorariosEsp($idEmpleado){
 		try{
@@ -247,7 +246,15 @@ class EmpleadoController extends Controller
 		catch(Exception $e){
 			return back()->withInput()->withError("Error en el sistema");
 		}
-		
+	}
+	
+	public function eliminarHorarioEsp($idEmpleado,$idHorario){
+		try{
+			
+		}
+		catch(Exception $e){
+			return back()->withInput()->withError("Error en el sistema");
+		}
 		
 	}
 }
