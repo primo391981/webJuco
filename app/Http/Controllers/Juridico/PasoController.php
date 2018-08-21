@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
 use Storage;
+use Carbon\Carbon;
+use Mail;
 
 class PasoController extends Controller
 {
@@ -83,11 +85,20 @@ class PasoController extends Controller
 		$notificacion->id_paso = $paso->id;
 		$notificacion->id_user = $paso->id_usuario;
 		$notificacion->id_tipo = 1; //tipo info
-		$notificacion->fecha_envío = now();
+		$notificacion->fecha_envio = Carbon::now();
 		$notificacion->estado = 1; //se programa para enviar cuanto antes.
 		$notificacion->mensaje = "El expediente ".$expediente->iue." ha sido modificado.";
 		
 		$notificacion->save();
+		
+		// envío de mail, pruebas	
+		Mail::send('juridico.mail.mail', array('nombre' => "Martin Ghiglia",'email' => "primo39@gmail.com",'asunto' => "Prueba de mail de juco",'mensaje' => $notificacion->mensaje), function($message)
+        {
+			$message->to('mghiglia@mercosur.int', 'CRPM')->subject('Prueba de mail de juco2');
+        });
+		
+		// fin envío de mail
+	
 		 					
 		return redirect()->route('expediente.show',$expediente)->with("success","El expediente fue modificado correctamente.");
 		
