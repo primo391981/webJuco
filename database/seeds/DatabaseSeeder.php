@@ -56,6 +56,7 @@ class DatabaseSeeder extends Seeder
 			DiasTableSeeder::class,
 			RegistrosTableSeeder::class,
 			TipoPagoTableSeeder::class,
+			ParametrosGeneralesTableSeeder::class,
 			//Prueba Horarios
 			EmpleadosTableSeeder::class,
 			HorariosEmpleadoTableSeeder::class,
