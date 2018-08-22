@@ -17,14 +17,22 @@
 	</div>
 @endif 
 <br>
-<div class="row text-warning">
+
+<div class="row">
 	<div class="col-xs-12">
-		<h3><i class="far fa-clock"></i> INGRESO MARCAS RELOJ</h3>
-		<hr>
-	</div>
-	<div class="col-xs-12">
-		<div class="table-responsive">
-			<table id="" class="table table-condensed table-hover">
+		
+		<div class="panel panel-warning text-warning">
+			<div class="panel-heading"><h4><i class="far fa-clock"></i> EDICIÓN MARCAS RELOJ </h4></div>
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-xs-12"><p><i class="far fa-calendar-alt"></i> {{$mes}}/{{$anio}}</p></div>
+					<div class="col-xs-12"><p><i class="fas fa-building"></i> {{$empleado->empresa->nombreFantasia}}</p></div>
+					<div class="col-xs-12"><p><i class="fas fa-user"></i> {{$empleado->persona->tipoDoc->nombre}} {{$empleado->persona->documento}} - {{$empleado->persona->nombre}} {{$empleado->persona->apellido}}</p></p></div>
+				</div>
+				<hr>
+				
+				<div class="table-responsive">
+				<table id="" class="table table-condensed table-hover">
 				<thead>
 					<tr>
 						<th>DÍA</th>
@@ -42,47 +50,65 @@
 					</tr>
 				</thead>
 				<tbody>
-					<form action="{{route('reloj.guardarMarcas')}}" method="post">
+					<form action="{{route('reloj.guardarMarcasEdit')}}" method="post">
 					@csrf
 					<input id="idEmpleado" name="idEmpleado" type="hidden" value="{{$idEmpleado}}"/>
 					<input id="fecha" name="fecha" type="hidden" value="{{$fecha}}"/>
 					
 					@foreach ($total as $t)					
-					<tr class="{{$t[3]}}">
-						<td><strong>{{$t[0]}} - {{$t[1]}}</strong></td>
-						@if({{$t[4]}})
-								<td><input type="time" class="form-control" id="1{{$t[1]}}" name="1{{$t[1]}}" value="{{$t[2]}}"/></td>
-								<td><input type="time" class="form-control" id="2{{$t[1]}}" name="2{{$t[1]}}" value="{{$t[2]}}"/></td>
-								<td><input type="time" class="form-control" id="4{{$t[1]}}" name="4{{$t[1]}}"value="{{$t[2]}}"/></td>
-								<td><input type="time" class="form-control" id="5{{$t[1]}}" name="5{{$t[1]}}" value="{{$t[2]}}" /></td>
-								<td><input type="time" class="form-control" id="3{{$t[1]}}" name="3{{$t[1]}}" value="{{$t[2]}}" /></td>
-												
+					<tr class="{{$t[2]}}">
+						<td>{{$t[0]}} - {{$t[1]}}</td>							
+							@foreach($tiposHoras as $th)
+								@php $dibujo=false; @endphp
+								@foreach($t[3] as $reg)										
+										@if($th->id==$reg->idTipoHora)
+											@if($th->id!=1)
+												<td  bgcolor="#bababa"><input type="time" class="form-control" id="{{$th->id}}{{$t[1]}}" name="{{$th->id}}{{$t[1]}}" value="{{$reg->cantHoras}}"/></td>
+											@else
+												<td><input type="time" class="form-control" id="{{$th->id}}{{$t[1]}}" name="{{$th->id}}{{$t[1]}}" value="{{$reg->cantHoras}}"/></td>
+											@endif
+											@php $dibujo=true; @endphp
+											@break;
+										@endif
+								@endforeach
+								@if($dibujo==false)
+									@switch($th->id)
+										@case(2)
+											<td><input type="time" class="form-control" id="{{$th->id}}{{$t[1]}}" name="{{$th->id}}{{$t[1]}}" value="00:00:00" /></td>
+											@break
+										@case(3)
+											@if($empleado->espera==true)
+											<td><input type="time" class="form-control" id="{{$th->id}}{{$t[1]}}" name="{{$th->id}}{{$t[1]}}" value="00:00:00"/></td>
+											@endif
+											@break
+										@case(4)
+											@if($empleado->nocturnidad==true)
+											<td><input type="time" class="form-control" id="{{$th->id}}{{$t[1]}}" name="{{$th->id}}{{$t[1]}}" value="00:00:00"/></td>
+											@endif
+											@break
+										@case(5)
+											@if($empleado->pernocte==true)
+											<td><input type="time" class="form-control" id="{{$th->id}}{{$t[1]}}" name="{{$th->id}}{{$t[1]}}" value="00:00:00"/></td>
+											@endif
+											@break	
+									@endswitch		
+								@endif	
+							@endforeach							
 					</tr>
 					@endforeach
-					
-				</tbody>						
-			
+				</tbody>
 			</table>
-			<div class="col-sm-12 text-center">
-				<button type="submit"class="btn btn-warning"><i class="fas fa-check"></i> Confirmar marcas</button>
-			</div>
-			</form>
-		</div>
+			</div><!--cierra div table responsive-->
+				
+			</div><!--CIERRE DIV PANELBODY-->
+			<div class="panel-footer">
+				<button type="submit"class="btn btn-warning btn-block"><i class="fas fa-check"></i> Confirmar marcas</button>
+				</form>
+			</div><!--CIERRE DIV PANELFOOTER-->
+			
+		</div><!--CIERRE DIV PANEL-->
+	</div>
 </div>
-<script>
-$(document).ready(function() {
-    $('#tablePersonas').DataTable( {        
-		"language": {
-		"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"},
-		buttons: [
-           { extend: 'print', text: 'IMPRIMIR' },
-		   { extend: 'pdf', text: 'PDF' },		   
-		   { extend: 'excel', text: 'EXCEL' },
-		   { extend: 'copy', text: 'COPIAR' }
-        ],
-		
-    } );
-} );
-</script>
+
 @endsection
 

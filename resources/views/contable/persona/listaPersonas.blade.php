@@ -28,7 +28,7 @@
 				  <div class="panel-heading">
 					<div class="row">
 						<div class="col-sm-9"><h4>LISTADO EMPLEADOS ACTIVOS</h4></div>
-						<div class="col-sm-3 hidden-xs"><a href="{{ route('persona.create') }}" class="btn btn-warning pull-right" role="button"><i class="fas fa-plus"></i> Agregar nuevo empleado</a></div>				  
+						<div class="col-sm-3 hidden-xs"><a href="{{ route('persona.create') }}" class="btn btn-success pull-right" role="button"><i class="fas fa-plus"></i></a></div>				  
 					</div>
 				  </div>
 				  <div class="panel-body text-warning">					
@@ -93,13 +93,11 @@
 <script>
 $(document).ready(function() {
     $('#tablePersonas').DataTable( {        
-		"pagingType": "numbers",
-		"pageLength": 5,
 		"language": {
 		"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"},
 		dom: "<'row'<'col-sm-6'><'col-sm-6'f>>" +
 "<'row'<'col-sm-12'tr>>" +
-"<'row'<'col-sm-6'B><'col-sm-6'p>>",
+"<'row'<'col-sm-6'B><'col-sm-6'>>",
         buttons: [
            { extend: 'print', text: 'IMPRIMIR' },
 		   { extend: 'pdf', text: 'PDF' },		   

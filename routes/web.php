@@ -106,14 +106,17 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::post('guardarHorarioPrin', 'Contable\EmpleadoController@guardarHorarioPrin')->name('empleado.guardarHorarioPrin')->middleware('role:contableAdmin');
 	Route::post('formHorarioEspecial', 'Contable\EmpleadoController@formHorarioEspecial')->name('empleado.formHorarioEspecial')->middleware('role:contableAdmin');
 	Route::post('guardarHorarioEsp', 'Contable\EmpleadoController@guardarHorarioEsp')->name('empleado.guardarHorarioEsp')->middleware('role:contableAdmin');
-	Route::get('empleado/horarios/{idEmpleado}', 'Contable\EmpleadoController@verHorariosEsp')->name('empleado.verHorariosEsp')->middleware('role:contableAdmin');
+	Route::post('empleado/horario/borrar', 'Contable\EmpleadoController@borrarHorarioEsp')->name('empleado.borrarHorarioEsp')->middleware('role:contableAdmin');
 		
-	
+		
 	//registro horas reloj
-	Route::get('listaEmpleados', 'Contable\RegistroHoraController@listaEmpleados')->name('reloj.listaEmpleados')->middleware('role:contableAdmin');
-	Route::post('formMarcas', 'Contable\RegistroHoraController@formMarcas')->name('reloj.formMarcas')->middleware('role:contableAdmin');
-	Route::post('guardarMarcas', 'Contable\RegistroHoraController@guardarMarcas')->name('reloj.guardarMarcas')->middleware('role:contableAdmin');
-	Route::post('editarMes', 'Contable\RegistroHoraController@editarMes')->name('reloj.editarMes')->middleware('role:contableAdmin');
+	Route::get('reloj/lista', 'Contable\RegistroHoraController@listaEmpleados')->name('reloj.listaEmpleados')->middleware('role:contableAdmin');
+	Route::post('reloj/crear', 'Contable\RegistroHoraController@formMarcas')->name('reloj.formMarcas')->middleware('role:contableAdmin');
+	Route::post('reloj/crear/guardar', 'Contable\RegistroHoraController@guardarMarcas')->name('reloj.guardarMarcas')->middleware('role:contableAdmin');
+	Route::post('reloj/editar', 'Contable\RegistroHoraController@editarMes')->name('reloj.editarMes')->middleware('role:contableAdmin');
+	Route::post('reloj/editar/guardar', 'Contable\RegistroHoraController@guardarMarcasEdit')->name('reloj.guardarMarcasEdit')->middleware('role:contableAdmin');
+	Route::post('reloj/borrar', 'Contable\RegistroHoraController@eliminarMarcas')->name('reloj.eliminarMarcas')->middleware('role:contableAdmin');
+	Route::post('reloj/ver', 'Contable\RegistroHoraController@verMarcas')->name('reloj.verMarcas')->middleware('role:contableAdmin');
 	
 	//pagos
 	Route::resource('pago', 'Contable\PagoController')->middleware('role:contableAdmin');

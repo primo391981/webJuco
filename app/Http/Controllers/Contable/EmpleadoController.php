@@ -248,9 +248,18 @@ class EmpleadoController extends Controller
 		}
 	}
 	
-	public function eliminarHorarioEsp($idEmpleado,$idHorario){
+	public function borrarHorarioEsp(Request $request){
 		try{
-			
+			$horario=HorarioEmpleado::where('idEmpleado','=',$request->idEmpleado)->first();
+			if($horario->id==$request->idHorario){
+				return back()->withInput()->withError("El horario principal no se puede eliminar.");
+			}
+			else{
+				 HorarioPorDia::where('idHorarioEmpleado', $request->idHorario)->delete();
+				 HorarioEmpleado::where('id', $request->idHorario)->delete();
+				 $empleado=Empleado::find($request->idEmpleado);
+				 return redirect()->action('PersonaController@show', ['id' => $empleado->idPersona])->withInput()->with('success',"El horario especial fue borrado correctamente.");
+			}
 		}
 		catch(Exception $e){
 			return back()->withInput()->withError("Error en el sistema");

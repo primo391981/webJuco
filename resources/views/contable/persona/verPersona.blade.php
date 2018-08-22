@@ -188,7 +188,8 @@
 					<hr>
 				@endif
 				<div id="horarios{{$emp->id}}" class="row collapse">
-					@php $horariosEmp=$horarios->verHorariosEsp($emp->id); @endphp
+				
+					@php $horariosEmp=$horarios->verHorariosEsp($emp->pivot->id); @endphp
 							<div class="col-xs-12">
 						<div class="table-responsive">
 						<table class="table">
@@ -208,8 +209,9 @@
 							</thead>
 							<tbody>
 							@foreach($horariosEmp as $horario)
-								
-							  <tr>
+							<form method="post">
+							@csrf
+								<tr>
 								<td>{{$horario->fechaDesde}}</td>
 								<td>{{$horario->fechaHasta}}</td>
 								@foreach($horario->horariosPorDia as $hd)
@@ -226,9 +228,12 @@
 									@endswitch
 								@endforeach
 								<td>
-									<button type="submit"class="btn btn-danger btn-xs" formaction="#" method="posts"><i class="fas fa-trash-alt"></i></button>	
+									<input id="idEmpleado" name="idEmpleado" type="hidden" value="{{$horario->idEmpleado}}">
+									<input id="idHorario" name="idHorario" type="hidden" value="{{$horario->id}}">
+									<button type="submit"class="btn btn-danger btn-xs" formaction="{{route('empleado.borrarHorarioEsp')}}"><i class="fas fa-trash-alt"></i></button>	
 								</td>
-							</tr>
+								</tr>
+							</form>
 							@endforeach  
 							</tbody>
 						  </table>

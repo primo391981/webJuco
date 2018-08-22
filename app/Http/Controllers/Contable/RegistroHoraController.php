@@ -17,6 +17,7 @@ use Carbon\Carbon;
 
 class RegistroHoraController extends Controller
 {
+	/*listado de todos los empleados por empresa (debe tener el horario principal cargado) para el manejo de marcas reloj*/
     public function listaEmpleados(){	
 		try{
 			$empleados=Empleado::where("horarioCargado","=",true)->get();
@@ -27,6 +28,7 @@ class RegistroHoraController extends Controller
 		}		
 	}
 	
+	/*formulario para el ingreso de marcas de reloj de un empleado en un mes y anio dado*/
 	public function formMarcas(Request $request){
 		try{
 			if($request->mes==null){
@@ -81,7 +83,9 @@ class RegistroHoraController extends Controller
 							}
 						}
 						//retorno la vista
-						return view('contable.registrohora.formCargarHoras',['total'=>$total,'idEmpleado'=>$request->idEmpleado,'fecha'=>$fecha,'empleado'=>$empleado]);					
+						$mes=$fecha->month;
+						$anio=$fecha->year;
+						return view('contable.registrohora.formCargarHoras',['total'=>$total,'idEmpleado'=>$request->idEmpleado,'fecha'=>$fecha,'empleado'=>$empleado,'mes'=>$mes,'anio'=>$anio]);					
 					}
 					else{
 						return back()->withInput()->withError("Ya existen horas cargadas de ".$empleado->persona->nombre." ".$empleado->persona->apellido." para la fecha ".$fecha->month." / ".$fecha->year.".");
@@ -97,6 +101,7 @@ class RegistroHoraController extends Controller
 		}
 	}
 	
+	/*guarda ingreso de marcas de reloj de un empleado en un mes y anio dado*/
 	public function guardarMarcas(Request $request){
 		try{
 			$tiposHoras=TipoHora::All();
@@ -131,6 +136,7 @@ class RegistroHoraController extends Controller
 		}
 	}
 	
+	/*muestra formulario de edicion de maracas de reloj de un empleado en un mes y anio dado*/
 	public function editarMes(Request $request){
 		try{
 			if($request->mes==null){
@@ -158,10 +164,6 @@ class RegistroHoraController extends Controller
 												if($dia->id==$hd->idDia){
 													$calendario->push($dia->nombre);
 													$calendario->push($i."/".$fechaActual->month);
-													//$calendario->push($hd->cantHoras);
-													//NO VOY A TENER UNA SOLA HR REGISTRO EN ESA FECHA, necesito hacer un foreach ya que en es afecha puedo tener noc , per, extra, 
-													$hrReg=RegistroHora::where('idEmpleado','=',$request->idEmpleado)->where('fecha','=',$request->mes."-".$i)->get();
-													$calendario->push($hrReg->cantHoras);
 													switch($hd->idRegistro){
 														case 1:		
 															$calendario->push(" ");
@@ -173,7 +175,10 @@ class RegistroHoraController extends Controller
 															$calendario->push("danger");
 															break;
 													}
-													$calendario->push($hrReg->idTipoHora);
+													//$calendario->push($hd->cantHoras);
+													//NO VOY A TENER UNA SOLA HR REGISTRO EN ESA FECHA, necesito hacer un foreach ya que en es afecha puedo tener noc , per, extra,espera 
+													$horasReg=RegistroHora::where('idEmpleado','=',$request->idEmpleado)->where('fecha','=',$request->mes."-".$i)->get();
+													$calendario->push($horasReg);
 												}
 											}
 										}							
@@ -184,8 +189,12 @@ class RegistroHoraController extends Controller
 							}
 						}
 						//retorno la vista
+						//dd($total);
+						$tiposHoras=TipoHora::All();
 						$empleado=Empleado::where('id','=',$request->idEmpleado)->first();
-						return view('contable.registrohora.formEditarHoras',['total'=>$total,'idEmpleado'=>$request->idEmpleado,'fecha'=>$fecha,'empleado'=>$empleado]);
+						$mes=$fecha->month;
+						$anio=$fecha->year;
+						return view('contable.registrohora.formEditarHoras',['total'=>$total,'idEmpleado'=>$request->idEmpleado,'fecha'=>$fecha,'empleado'=>$empleado,'tiposHoras'=>$tiposHoras,'mes'=>$mes,'anio'=>$anio]);
 				}
 				else{
 					return back()->withInput()->withError("Todavía NO ingreso maracas reloj para la fecha ".$request->mes);
@@ -197,10 +206,68 @@ class RegistroHoraController extends Controller
 		}
 	}
 
-	public function compruebaMeses($idEmpleado,$fecha){
-		
-		
+	/*Guarda las marcas de reloj editadas para un empleado en un mes y anio dado*/
+	public function guardarMarcasEdit(Request $request){
+		DB::beginTransaction();
+		try{
+			$tiposHoras=TipoHora::All();
+			$fecha=new Carbon($request->fecha);
+			$aux=1;
+			foreach($tiposHoras as $th){				
+				if($request->input($th->id.$aux.'/'.$fecha->month)!=null){//por si es null el valor nocturnidad pernocte espera
+					for($i=1;$i<=$fecha->daysInMonth;$i++){
+						$horasReg=RegistroHora::where('idEmpleado','=',$request->idEmpleado)->where('fecha','=',$fecha->year.'-'.$fecha->month.'-'.$i)->where('idTipoHora','=',$th->id)->first();
+						if($horasReg!=null){
+							//si existe actualizo
+							$fechaNueva=$fecha->year.'-'.$fecha->month.'-'.$i;
+							if($request->input($th->id.$i.'/'.$fecha->month)!="00:00:00"){
+								RegistroHora::where('idEmpleado','=',$request->idEmpleado)->where('fecha','=',$fechaNueva)->where('idTipoHora','=',$th->id)->update(['cantHoras'=>$request->input($th->id.$i.'/'.$fecha->month)]);		
+							}
+							else{
+								if($horasReg->idTipoHora==1 && $request->input($th->id.$i.'/'.$fecha->month)=="00:00:00"){
+								RegistroHora::where('idEmpleado','=',$request->idEmpleado)->where('fecha','=',$fechaNueva)->where('idTipoHora','=',$th->id)->update(['cantHoras'=>$request->input($th->id.$i.'/'.$fecha->month)]);
+								}
+								else{
+									if($request->input($th->id.$i.'/'.$fecha->month)=="00:00:00"){
+									//existe pero le puso valor 00 entonces lo tengo que eliminar 
+									RegistroHora::where('idEmpleado','=',$request->idEmpleado)->where('fecha','=',$fechaNueva)->where('idTipoHora','=',$th->id)->delete();
+									}									
+								}
+							}						
+						}
+						else{
+							//sino la creo
+							$fechaNueva=$fecha->year.'-'.$fecha->month.'-'.$i;
+							if($request->input($th->id.$i.'/'.$fecha->month)!="00:00:00"){
+								DB::table('contable_registros_horas')->insert(['idEmpleado'=>$request->idEmpleado,'idTipoHora'=>$th->id,'cantHoras'=>$request->input($th->id.$i.'/'.$fecha->month),'fecha'=>$fechaNueva]);
+							}
+							elseif($th->id==1 && $request->input($th->id.$i.'/'.$fecha->month)=="00:00:00"){
+								DB::table('contable_registros_horas')->insert(['idEmpleado'=>$request->idEmpleado,'idTipoHora'=>$th->id,'cantHoras'=>$request->input($th->id.$i.'/'.$fecha->month),'fecha'=>$fechaNueva]);							
+							}
+						}
+					}
+				}
+			}
+			DB::commit();
+			$empleado=Empleado::find($request->idEmpleado);
+			$per=Persona::find($empleado->idPersona);			
+			$mes=$fecha->month;
+			$anio=$fecha->year;
+			return redirect()->route('reloj.listaEmpleados')->with('success', "Las marcas reloj de ".$per->nombre." ".$per->apellido." para la fecha ".$mes." / ".$anio." fueron editadas correctamente.");
+		}
+		catch(Exception $e){
+			DB::rollBack();
+			return back()->withInput()->withError("Error en el sistema.");
+		}
 		
 	}
 	
+	/*Elimina las marca de reloj de un empleado en un mes y anio dado*/
+	public function eliminarMarcas(Request $request){
+		dd($request);
+	}
+	/*listado de marcas de reloj de un empleado en un mes y anio*/
+	public function verMarcas(Request $request){
+		dd($request);
+	}
 }
