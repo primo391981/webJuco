@@ -128,7 +128,7 @@ class PasoController extends Controller
      */
     public function edit(Paso $paso)
     {
-        //
+        dd($paso);
     }
 
     /**

@@ -18,6 +18,7 @@ class CreateJuridicoTransicionTable extends Migration
 			$table->integer('id_tipo_expediente');
 			$table->integer('id_paso_inicial');
 			$table->integer('id_paso_siguiente');
+			$table->integer('tipo_transicion'); //0 - camino principal, 1 - camino opcional
             $table->timestamps();
         });
     }

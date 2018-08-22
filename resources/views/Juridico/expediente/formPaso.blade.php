@@ -6,7 +6,7 @@
 						<div class="form-group row">
 							<label for="documentos" class="control-label col-sm-3">DOCUMENTO</label>
 							<div class="col-sm-9">
-								<input id="documentos" type="file" class="form-control{{ $errors->has('documentos') ? ' is-invalid' : '' }}" name="documentos[]" value="{{ isset($exp) ? $exp->documentos : old('documentos') }}" autofocus required multiple>
+								<input id="documentos" type="file" class="form-control{{ $errors->has('documentos') ? ' is-invalid' : '' }}" name="documentos[]" autofocus required multiple>
 
 								@if ($errors->has('documentos'))
 									<span class="invalid-feedback">
@@ -16,7 +16,7 @@
 							</div>
 						</div>
 						
-						<div class="form-group row">
+						<!--<div class="form-group row">
 								<label for="tipoexp" class="control-label col-sm-3">TIPO DOCUMENTO</label>
 								<div class="col-sm-9">
 									<select name="tipoarchivo" class="form-control" id="tipoarchivo">
@@ -26,6 +26,7 @@
 									</select>
 								</div>			
 						</div>
+						-->
 						@endif
 						<div class="form-group row">
 							<label for="comentarios" class="control-label col-sm-3">COMENTARIOS</label>

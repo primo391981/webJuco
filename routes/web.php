@@ -129,7 +129,8 @@ Route::group(['middleware' => ['auth']], function () {
 	//Pasos expediente
 	Route::get('paso/download/{archivo}', 'Juridico\PasoController@download')->name('paso.download')->middleware('role:juridicoAdmin');
 	Route::get('paso/create/{expediente}/{paso}', 'Juridico\PasoController@create')->name('paso.create')->middleware('role:juridicoAdmin');
-	Route::resource('paso', 'Juridico\PasoController',['except' => ['create']])->middleware('role:juridicoAdmin');
+	Route::post('paso/edit/{expediente}/{paso}', 'Juridico\PasoController@edit')->name('paso.edit')->middleware('role:juridicoAdmin');
+	Route::resource('paso', 'Juridico\PasoController',['except' => ['create','edit']])->middleware('role:juridicoAdmin');
 	
 	
 });
