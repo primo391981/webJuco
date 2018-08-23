@@ -11,16 +11,6 @@ class TipoArchivoTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('juridico_tipo_archivo')->insert([
-			'nombre'=>'documento',
-			'descripcion'=>'Documento en formato word o pdf'
-		]);
-		
-		DB::table('juridico_tipo_archivo')->insert([
-			'nombre'=>'planilla',
-			'descripcion'=>'planilla de cálculo en formato Excel o similar'
-		]);
-		
 		DB::table('juridico_tipo_archivo')->insert([
 			'nombre'=>'texto plano',
 			'descripcion'=>'archivo de texto plano'
@@ -34,6 +24,16 @@ class TipoArchivoTableSeeder extends Seeder
 		DB::table('juridico_tipo_archivo')->insert([
 			'nombre'=>'video',
 			'descripcion'=>'archivo de video en cualquier formato'
+		]);
+		
+		DB::table('juridico_tipo_archivo')->insert([
+			'nombre'=>'audio',
+			'descripcion'=>'archivo de audio en cualquier formato'
+		]);
+		
+		 DB::table('juridico_tipo_archivo')->insert([
+			'nombre'=>'documento',
+			'descripcion'=>'Documento en formato word, excel, pdf y cualquier otro'
 		]);
 
     }

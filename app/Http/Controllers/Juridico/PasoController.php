@@ -37,9 +37,8 @@ class PasoController extends Controller
     {
         $exp = Expediente::find($expediente);
 		$tipoPaso = TipoPaso::find($paso);
-		$tiposArchivo = TipoArchivo::All();
 		
-		return view('juridico.expediente.agregarPaso',['expediente' => $exp, 'tipoPaso' => $tipoPaso, 'tiposArchivo' => $tiposArchivo]);
+		return view('juridico.expediente.agregarPaso',['expediente' => $exp, 'tipoPaso' => $tipoPaso]);
     }
 
     /**
@@ -74,10 +73,24 @@ class PasoController extends Controller
 				
 				$file = new ArchivoPaso();
 				$file->id_paso = $paso->id;
-				$file->id_tipo = $request->tipoarchivo;
+				
 				$file->archivo = $documento->storeAs('expedientes/'.$directorio, $expediente->actual->nombre."_".$key.".".$documento->extension());
 				$file->nombre_archivo = $file->archivo;
-				//dd(Storage::mimeType($file->nombre_archivo));
+				$tipoArchivo = Storage::mimeType($file->nombre_archivo);
+				
+				switch(substr($tipoArchivo,0,4)){
+				case "text": $file->id_tipo = 1;
+						break;
+				case "imag": $file->id_tipo = 2;
+						break;
+				case "vide": $file->id_tipo = 3;
+						break;
+				case "audi": $file->id_tipo = 4;
+						break;
+				default: $file->id_tipo = 5;
+						break;
+				}
+				
 				$file->save();
 			}
 		}	
@@ -87,14 +100,14 @@ class PasoController extends Controller
 		$notificacion->id_user = $paso->id_usuario;
 		$notificacion->id_tipo = 1; //tipo info
 		$notificacion->fecha_envio = Carbon::now();
-		$notificacion->estado = 1; //se programa para enviar cuanto antes.
+		$notificacion->estado = 0; //se envía una notificación por mail.
 		$notificacion->mensaje = "El expediente ".$expediente->iue." ha sido modificado.";
 		
 		$notificacion->save();
 		
 		// envío de mail, pruebas	
 		$mensaje = "mail de prueba de juco";
-        Mail::to('primo39@gmail.com')->send(new SendMailable($mensaje));
+        Mail::to($expediente->usuario->email)->send(new SendMailable($notificacion->mensaje));
 		
 		// fin envío de mail
 	
@@ -128,7 +141,10 @@ class PasoController extends Controller
      */
     public function edit(Paso $paso)
     {
-        dd($paso);
+        
+		$exp = $paso->expediente;
+	
+		return view('juridico.expediente.editarPaso',['expediente' => $exp, 'paso' => $paso]);
     }
 
     /**

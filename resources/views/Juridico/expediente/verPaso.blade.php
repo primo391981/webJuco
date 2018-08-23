@@ -76,7 +76,10 @@
 				<div class="row">
 				@if($expediente->pasos->last()->id == $paso->id)
 					<div class="col-sm-9">
-						<a href="{{route('paso.edit', $paso)}}" class="btn btn-success btn-md">Editar paso <i class="fas fa-edit"></i></a>
+						<form action="{{route('paso.edit', $paso)}}" method="POST">
+							@csrf
+							<button class="btn btn-success btn-md" type="submit">Editar paso <i class="fas fa-edit"></i></button>
+						</form>
 					</div>
 				@endif
 				</div>
