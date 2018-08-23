@@ -63,9 +63,9 @@
 								@foreach($t[3] as $reg)										
 										@if($th->id==$reg->idTipoHora)
 											@if($th->id!=1)
-												<td  bgcolor="#bababa"><input type="time" class="form-control" id="{{$th->id}}{{$t[1]}}" name="{{$th->id}}{{$t[1]}}" value="{{$reg->cantHoras}}"/></td>
+												<td  bgcolor="#bababa"><input type="time" class="form-control" id="{{$th->id}}{{$t[1]}}" name="{{$th->id}}{{$t[1]}}" value="{{$reg->cantHoras}}" /></td>
 											@else
-												<td><input type="time" class="form-control" id="{{$th->id}}{{$t[1]}}" name="{{$th->id}}{{$t[1]}}" value="{{$reg->cantHoras}}"/></td>
+												<td> <input type="time" class="form-control" id="{{$th->id}}{{$t[1]}}" name="{{$th->id}}{{$t[1]}}" value="{{$reg->cantHoras}}" /></td>
 											@endif
 											@php $dibujo=true; @endphp
 											@break;
