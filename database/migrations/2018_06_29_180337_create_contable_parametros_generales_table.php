@@ -19,7 +19,7 @@ class CreateContableParametrosGeneralesTable extends Migration
 			$table->text('descripcion');
 			$table->date('fecha_inicio');
 			$table->date('fecha_fin')->nullable();
-			$table->decimal('valor', 6, 3);
+			$table->decimal('valor', 9, 3);
 			$table->timestamps();
             $table->softDeletes();
         });

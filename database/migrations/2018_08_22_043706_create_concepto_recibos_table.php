@@ -16,7 +16,7 @@ class CreateConceptoRecibosTable extends Migration
         Schema::create('contable_conceptos_recibo', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nombre');
-			$table->string('descripcion');
+			$table->string('descripcion');			
 			$table->timestamps();
         });
     }

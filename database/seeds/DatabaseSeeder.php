@@ -63,6 +63,7 @@ class DatabaseSeeder extends Seeder
 			HorariosPorDiaTableSeeder::class,
 			//Prueba PAGOS
 			PagosViaticosTableSeeder::class,
+			PagosAdelantosTableSeeder::class,
 			TipoRecibosTableSeeder::class,
 			ConceptoRecibosTableSeeder::class
 		]);	
