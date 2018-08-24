@@ -56,8 +56,7 @@
 <li>
     <a href="#"><i class="fas fa-hand-holding-usd"></i> Liquidación de Haberes<i class="fas fa-caret-down"></i></a>
 		<ul class="nav nav-second-level">
-			<li><a href="#"><i class="fas fa-dollar-sign"></i> Sueldos</a></li>	
-			
+			<li><a href="#"><i class="fas fa-dollar-sign"></i> Haberes</a></li>				
         </ul>
 </li>
 <li>
