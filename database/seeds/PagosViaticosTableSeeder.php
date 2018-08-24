@@ -36,5 +36,13 @@ class PagosViaticosTableSeeder extends Seeder
 			'descripcion'=>'Pasajes.'
 		]);	
 		
+		DB::table('contable_pagos')->insert([
+			'idEmpleado'=>3,
+			'idTipoPago'=>1,
+			'fecha'=>Carbon::parse('2018-08-7'),
+			'monto'=>800,
+			'descripcion'=>'Para pagar UTE'
+		]);	
+		
     }
 }

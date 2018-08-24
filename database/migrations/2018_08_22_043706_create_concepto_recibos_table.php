@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateContableParametrosGeneralesTable extends Migration
+class CreateConceptoRecibosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,11 @@ class CreateContableParametrosGeneralesTable extends Migration
      */
     public function up()
     {
-        Schema::create('contable_parametros_generales', function (Blueprint $table) {
+        Schema::create('contable_conceptos_recibo', function (Blueprint $table) {
             $table->increments('id');
-			$table->text('nombre');
-			$table->text('descripcion');
-			$table->date('fecha_inicio');
-			$table->date('fecha_fin')->nullable();
-			$table->decimal('valor', 9, 3);
+            $table->string('nombre');
+			$table->string('descripcion');			
 			$table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -32,6 +28,6 @@ class CreateContableParametrosGeneralesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('contable_parametros_generales');
+        Schema::dropIfExists('contable_conceptos_recibo');
     }
 }

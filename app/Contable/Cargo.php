@@ -6,8 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Cargo extends Model
-{
-    //
+{    
 	use SoftDeletes;
 	protected $table = 'contable_cargos';
 	 
@@ -16,6 +15,7 @@ class Cargo extends Model
 	public function remuneracion(){		
 		return $this->belongsTo('App\Contable\Remuneracion','id_remuneracion');
 	}
+	
 	public function empleados(){
 		return $this->hasManyThrough('App\Empresa', 'App\Empleado');		
 	}

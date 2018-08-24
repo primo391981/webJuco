@@ -36,21 +36,28 @@
     <a href="#"><i class="fas fa-money-bill-alt"></i> Pagos <i class="fas fa-caret-down"></i></a>
 		<ul class="nav nav-second-level">
 			<li>
-				<a href="#"><i class="fas fa-money-bill-alt"></i> Viáticos <i class="fas fa-caret-down"></i></a>
-					<ul class="nav nav-second-level nav-second-level">
-						<li><a href="{{ route('pago.viaticos') }}"><i class="fas fa-list-ul"></i> Activos</a></li>	
-						<li><a href="{{ route('pago.create', ['idTipo' => 1]) }}"><i class="fas fa-plus"></i> Agregar nuevo</a></li>
-						<li><a href="{{ route('pago.viaticos.inactivos') }}"><i class="fas fa-list-ul"></i> Inactivos</a></li>
-					</ul>
-			</li>
-			<li>
-				<a href="#"><i class="fas fa-money-bill-alt"></i> Adelantos <i class="fas fa-caret-down"></i></a>
+				<a href="#"><i class="fas fa-credit-card"></i> Adelantos <i class="fas fa-caret-down"></i></a>
 					<ul class="nav nav-second-level nav-second-level">
 						<li><a href="{{ route('pago.adelantos') }}"><i class="fas fa-list-ul"></i> Activos</a></li>	
 						<li><a href="{{ route('pago.create',['idTipo' => 2]) }}"><i class="fas fa-plus"></i> Agregar nuevo</a></li>
 						<li><a href="{{ route('pago.adelantos.inactivos') }}"><i class="fas fa-list-ul"></i> Inactivos</a></li>
 					</ul>					
 			</li>
+			<li>
+				<a href="#"><i class="fas fa-book"></i> Viáticos <i class="fas fa-caret-down"></i></a>
+					<ul class="nav nav-second-level nav-second-level">
+						<li><a href="{{ route('pago.viaticos') }}"><i class="fas fa-list-ul"></i> Activos</a></li>	
+						<li><a href="{{ route('pago.create', ['idTipo' => 1]) }}"><i class="fas fa-plus"></i> Agregar nuevo</a></li>
+						<li><a href="{{ route('pago.viaticos.inactivos') }}"><i class="fas fa-list-ul"></i> Inactivos</a></li>
+					</ul>
+			</li>
+        </ul>
+</li>
+<li>
+    <a href="#"><i class="fas fa-hand-holding-usd"></i> Liquidación de Haberes<i class="fas fa-caret-down"></i></a>
+		<ul class="nav nav-second-level">
+			<li><a href="#"><i class="fas fa-dollar-sign"></i> Sueldos</a></li>	
+			
         </ul>
 </li>
 <li>

@@ -56,12 +56,16 @@ class DatabaseSeeder extends Seeder
 			DiasTableSeeder::class,
 			RegistrosTableSeeder::class,
 			TipoPagoTableSeeder::class,
+			ParametrosGeneralesTableSeeder::class,
 			//Prueba Horarios
 			EmpleadosTableSeeder::class,
 			HorariosEmpleadoTableSeeder::class,
 			HorariosPorDiaTableSeeder::class,
 			//Prueba PAGOS
-			PagosViaticosTableSeeder::class
+			PagosViaticosTableSeeder::class,
+			PagosAdelantosTableSeeder::class,
+			TipoRecibosTableSeeder::class,
+			ConceptoRecibosTableSeeder::class
 		]);	
     }
 }
