@@ -19,8 +19,8 @@ use Carbon\Carbon;
 
 class EmpleadoController extends Controller
 {
+	/*formulario para la asociacion de un empleado a una empresa junto con los datos de contrato*/
 	public function formCrear($idPer){
-		
 		$persona=Persona::find($idPer);
 		$empresas=Empresa::All();
 		$emprAsociadas=$persona->empresas;
@@ -31,6 +31,7 @@ class EmpleadoController extends Controller
 		
 	}
 
+	/*Guarda la asociacion de un empleado a una empresa junto con sus datos contrato*/
     public function asociarEmpresa(Request $request,$idPer){
 		try{
 			if($request->idempresa==null){
@@ -45,13 +46,17 @@ class EmpleadoController extends Controller
 					
 					$noc=false;
 					$per=false;
+					$esp=false;
 					if($request->per=='on'){
 						$per=true;
 					}
 					if($request->noc=='on'){
 						$noc=true;
 					}
-					$persona->empresas()->save($empresa, ['idCargo'=>$request->cargo,'fechaDesde'=>$request->fechaInicio,'fechaHasta'=>$request->fechaFin,'monto'=>$request->monto,'valorHora'=>$request->valorhr,'nocturnidad'=>$noc,'pernocte'=>$per]);
+					if($request->esp=='on'){
+						$esp=true;
+					}
+					$persona->empresas()->save($empresa, ['idCargo'=>$request->cargo,'fechaDesde'=>$request->fechaInicio,'fechaHasta'=>$request->fechaFin,'monto'=>$request->monto,'valorHora'=>$request->valorhr,'nocturnidad'=>$noc,'pernocte'=>$per,'espera'=>$esp]);
 					return redirect()->route('persona.show',['id' => $idPer]);
 				}
 			}
@@ -62,6 +67,7 @@ class EmpleadoController extends Controller
 		
 	}
 	
+	/*formulario de creacion de un horario principal de un empleado en la empresa*/
 	public function formCargarHorario($idEmpleado){
 		$dias=Dia::All();
 		$registros=Registro::All();
@@ -70,6 +76,7 @@ class EmpleadoController extends Controller
 		return view('contable.empleado.cargarHorario',['dias'=>$dias,'idEmpleado'=>$idEmpleado,'registros'=>$registros,'empleado'=>$empleado]);
 	}
 	
+	/*Guarada el horario principal de un empleado en la empresa*/
 	public function cargarHorario(Request $request){
 		try{
 			if($request->fechaDesde>$request->fechaHasta){
@@ -115,6 +122,7 @@ class EmpleadoController extends Controller
 		}
 	}
 	
+	/*formulario de edicion del horario principal de un empelado en la empresa*/
 	public function editHorarioPrincipal($idEmpleado,$idHorarioPrincipal){
 		try{
 			//return $idEmpleado." / ".$idHorarioPrincipal;
@@ -128,6 +136,7 @@ class EmpleadoController extends Controller
 		}
 	}
 	
+	/*Guarada horario principal de un empleado en la empresa*/
 	public function guardarHorarioPrin(Request $request){
 		try{
 			//dd($request);
@@ -147,6 +156,7 @@ class EmpleadoController extends Controller
 		}
 	}
 	
+	/*formulario para la creacion de un horario especual de un empleado en la empresa*/
 	public function formHorarioEspecial(Request $request){
 		try{
 			if($request->fechaDesde>=$request->fechaHasta){
@@ -181,6 +191,7 @@ class EmpleadoController extends Controller
 		}
 	}
 
+	/*Guardar horario especial de un empleado en empresa*/
 	public function guardarHorarioEsp(Request $request){
 		try{
 			$dias=Dia::All();
@@ -225,5 +236,34 @@ class EmpleadoController extends Controller
 		catch(Exception $e){
 			return back()->withInput()->withError("Error en el sistema");
 		}		
+	}	
+	/*Listado de los horarios especiales por empleado en la empresa*/
+	public function verHorariosEsp($idEmpleado){
+		try{
+			$horarios=HorarioEmpleado::where('idEmpleado','=',$idEmpleado)->orderBy('id', 'desc')->get();
+			return $horarios;
+		}
+		catch(Exception $e){
+			return back()->withInput()->withError("Error en el sistema");
+		}
+	}
+	
+	public function borrarHorarioEsp(Request $request){
+		try{
+			$horario=HorarioEmpleado::where('idEmpleado','=',$request->idEmpleado)->first();
+			if($horario->id==$request->idHorario){
+				return back()->withInput()->withError("El horario principal no se puede eliminar.");
+			}
+			else{
+				 HorarioPorDia::where('idHorarioEmpleado', $request->idHorario)->delete();
+				 HorarioEmpleado::where('id', $request->idHorario)->delete();
+				 $empleado=Empleado::find($request->idEmpleado);
+				 return redirect()->action('PersonaController@show', ['id' => $empleado->idPersona])->withInput()->with('success',"El horario especial fue borrado correctamente.");
+			}
+		}
+		catch(Exception $e){
+			return back()->withInput()->withError("Error en el sistema");
+		}
+		
 	}
 }

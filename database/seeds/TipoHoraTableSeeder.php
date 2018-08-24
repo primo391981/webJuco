@@ -18,13 +18,13 @@ class TipoHoraTableSeeder extends Seeder
             'nombre' => 'HORA EXTRA',
         ]);		
 		DB::table('contable_tipos_hora')->insert([
-            'nombre' => 'HORA PERNOCTE',
-        ]);
-		DB::table('contable_tipos_hora')->insert([
             'nombre' => 'HORA ESPERA',
         ]);
 		DB::table('contable_tipos_hora')->insert([
             'nombre' => 'HORA NOCTURNA',
+        ]);
+		DB::table('contable_tipos_hora')->insert([
+            'nombre' => 'HORA PERNOCTE',
         ]);		
     }
 }
