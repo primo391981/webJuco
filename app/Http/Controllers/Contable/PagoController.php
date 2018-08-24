@@ -69,11 +69,12 @@ class PagoController extends Controller
 		$empleado = Empleado::where([["idEmpresa",'=',$empresa->id], ["idPersona",'=',$persona->id]])->first();
 	
 		$pago = new Pago;
-		$pago ->idEmpleado = $empleado->id;
-		$pago ->idTipoPago = $request->tipoPago;
-		$pago ->fecha = $request->fecha;
-		$pago ->monto = $request->monto;
-		$pago ->descripcion = $request->descripcion;
+		$pago->idEmpleado = $empleado->id;
+		$pago->idTipoPago = $request->tipoPago;
+		$pago->fecha = $request->fecha;
+		$pago->monto = $request->monto;
+		$pago->dias = $request->dias;
+		$pago->descripcion = $request->descripcion;
 			
 		try {
 			$pago ->save();
@@ -130,9 +131,10 @@ class PagoController extends Controller
      */
     public function update(PagoRequest $request, Pago $pago)
     {
-        $pago ->fecha = $request->fecha;
-		$pago ->monto = $request->monto;
-		$pago ->descripcion = $request->descripcion;
+        $pago->fecha = $request->fecha;
+		$pago->monto = $request->monto;
+		$pago->dias = $request->dias;
+		$pago->descripcion = $request->descripcion;
 		
 		try {
 			$pago ->save();
