@@ -115,7 +115,6 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::post('reloj/crear/guardar', 'Contable\RegistroHoraController@guardarMarcas')->name('reloj.guardarMarcas')->middleware('role:contableAdmin');
 	Route::post('reloj/editar', 'Contable\RegistroHoraController@editarMes')->name('reloj.editarMes')->middleware('role:contableAdmin');
 	Route::post('reloj/editar/guardar', 'Contable\RegistroHoraController@guardarMarcasEdit')->name('reloj.guardarMarcasEdit')->middleware('role:contableAdmin');
-	Route::post('reloj/borrar', 'Contable\RegistroHoraController@eliminarMarcas')->name('reloj.eliminarMarcas')->middleware('role:contableAdmin');
 	Route::post('reloj/ver', 'Contable\RegistroHoraController@verMarcas')->name('reloj.verMarcas')->middleware('role:contableAdmin');
 	
 	//pagos

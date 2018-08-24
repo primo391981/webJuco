@@ -38,7 +38,7 @@
 						<th></th>
 						<th></th>
 						<th></th>
-						<th></th>						
+											
 					</tr>
 				</thead>
 				<tbody>
@@ -55,7 +55,7 @@
 							<td><button type="submit"class="btn btn-info" formaction="#" formmethod="post" ><i class="fas fa-info-circle"></i></button></td>
 							<td><button type="submit"class="btn btn-success" formaction="{{route('reloj.formMarcas')}}" formmethod="post" ><i class="fas fa-plus"></i></button></td>
 							<td><button type="submit"class="btn btn-warning" formaction="{{route('reloj.editarMes')}}" formmethod="post" ><i class="far fa-edit"></i></button></td>
-							<td><button type="submit"class="btn btn-danger" formaction="{{route('reloj.eliminarMarcas')}}" formmethod="post" ><i class="far fa-trash-alt"></i></button></td>							
+													
 						</form>
 					</tr>
 					@endforeach

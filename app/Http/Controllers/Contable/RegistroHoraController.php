@@ -48,7 +48,7 @@ class RegistroHoraController extends Controller
 						$dias=Dia::All();
 						$total=collect([]);
 						$horarios=HorarioEmpleado::where('idEmpleado','=',$empleado->id)->orderBy('id', 'desc')->get();
-						//dd($horarios);
+						
 						for($i=1;$i<=$fecha->daysInMonth;$i++){
 							$calendario =collect([]);
 							$cargoDia=false;
@@ -266,47 +266,6 @@ class RegistroHoraController extends Controller
 		
 	}
 	
-	/*Elimina las marca de reloj de un empleado en un mes y anio dado*/
-	public function eliminarMarcas(Request $request){
-		DB::beginTransaction();
-		try{
-			if($request->mes==null){
-				return back()->withInput()->withError("Debe seleccionar un mes y año.");
-			}
-			else{
-				$empleado=Empleado::find($request->idEmpleado);
-				$horasReg=RegistroHora::where('idEmpleado','=',$empleado->id)->where('fecha','=',$request->mes."-01")->first();
-				$tiposHoras=TipoHora::All();
-				if($horasReg!=null){
-					$fecha=new Carbon($request->mes);
-					for($i=1;$i<=$fecha->daysInMonth;$i++){
-						foreach($tiposHoras as $th){
-							/*$horasReg=RegistroHora::where('idEmpleado','=',$request->idEmpleado)->where('fecha','=',$fecha->year.'-'.$fecha->month.'-'.$i)->where('idTipoHora','=',$th->id)->first();
-							if($horasReg!=null){
-								$horasReg->delete();
-							}*/
-							$horasReg=RegistroHora::where('idEmpleado','=',$request->idEmpleado)->where('fecha','=',$fecha->year.'-'.$fecha->month.'-'.$i)->where('idTipoHora','=',$th->id)->first();
-							if($horasReg!=null){
-								RegistroHora::destroy($horasReg->id);
-							}
-						}
-					}
-					$mes=$fecha->month;
-					$anio=$fecha->year;
-					return redirect()->route('reloj.listaEmpleados')->with('success', "Las marcas reloj de ".$empleado->persona->nombre." ".$empleado->persona->apellido." para la fecha ".$mes." / ".$anio." fueron BORRADAS correctamente.");
-				}
-				else{
-					$fecha=new Carbon($request->mes);
-					return back()->withInput()->withError("NO existen horas cargadas de ".$empleado->persona->nombre." ".$empleado->persona->apellido." para la fecha ".$fecha->month." / ".$fecha->year.".");
-				}
-			}
-		}
-		catch(Exception $e){
-			DB::rollBack();
-			return back()->withInput()->withError("Error en el sistema.");
-		}
-		
-	}
 	/*listado de marcas de reloj de un empleado en un mes y anio*/
 	public function verMarcas(Request $request){
 		dd($request);
