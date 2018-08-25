@@ -50,11 +50,21 @@
 <!-- Datos del Viático -->
 <input id="tipoPago" type="hidden" class="form-control" name="tipoPago" value="{{ isset($tipoPago) ? $tipoPago : old('tipoPago') }}">
 <div class="form-group row">
-	<label for="fecha" class="control-label col-sm-3">FECHA</label>
+	<label for="mes" class="control-label col-sm-3">MES</label>
+	@if (isset($tipoPago))
+		fecha = Carbon::$pago->fecha);
 	<div class="col-sm-6">
-		<input type="date" name="fecha" id="fecha" class="form-control" value="{{ old('fecha') }}" required >
+		<input type="month" class="form-control" id="mes" name="mes" value="{{ isset($tipoPago) ? $fecha->format('m-Y') :old('mes') }}" required>		
 	</div>	
 </div>
+@if ($tipoPago == 1)
+	<div class="form-group row">
+		<label for="cantDias" class="control-label col-sm-3">DÍAS </label>
+		<div class="col-sm-6">
+			<input type="number" name="cantDias" id="cantDias" class="form-control" value="{{ old('cantDias') }}" min="1" required>
+		</div>	
+	</div>
+@endif
 <div class="form-group row">
 	<label for="monto" class="control-label col-sm-3">MONTO </label>
 	<div class="col-sm-6">

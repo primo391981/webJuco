@@ -67,13 +67,15 @@ class PagoController extends Controller
 	    $empresa = Empresa::where("rut","=",$request->rut)->first();
 		$persona = Persona::where([["tipoDocumento",'=',$request->tipoDocId], ["documento",'=',$request->numeroDoc]])->first();
 		$empleado = Empleado::where([["idEmpresa",'=',$empresa->id], ["idPersona",'=',$persona->id]])->first();
-	
+		
 		$pago = new Pago;
 		$pago->idEmpleado = $empleado->id;
 		$pago->idTipoPago = $request->tipoPago;
-		$pago->fecha = $request->fecha;
+		$pago->fecha = new Carbon($request->mes."-01");
 		$pago->monto = $request->monto;
-		$pago->dias = $request->dias;
+		if (isset($request->cantDias))
+			$pago->cantDias = $request->cantDias;
+		
 		$pago->descripcion = $request->descripcion;
 			
 		try {
@@ -131,9 +133,11 @@ class PagoController extends Controller
      */
     public function update(PagoRequest $request, Pago $pago)
     {
-        $pago->fecha = $request->fecha;
+        $pago->fecha = new Carbon($request->mes."-01");
 		$pago->monto = $request->monto;
-		$pago->dias = $request->dias;
+		if (isset($request->cantDias))
+			$pago->cantDias = $request->cantDias;
+		
 		$pago->descripcion = $request->descripcion;
 		
 		try {

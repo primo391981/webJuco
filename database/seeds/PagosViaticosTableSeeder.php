@@ -24,6 +24,7 @@ class PagosViaticosTableSeeder extends Seeder
 			'idEmpleado'=>2,
 			'idTipoPago'=>1,
 			'fecha'=>Carbon::parse('2018-08-04'),
+			'cantDias'=>10,
 			'monto'=>1500,
 			'descripcion'=>'Almuerzo en el Oro del Rhin.'
 		]);	
@@ -40,8 +41,8 @@ class PagosViaticosTableSeeder extends Seeder
 			'idEmpleado'=>3,
 			'idTipoPago'=>1,
 			'fecha'=>Carbon::parse('2018-08-7'),
-			'monto'=>800,
-			'descripcion'=>'Para pagar UTE'
+			'cantDias'=>10,
+			'monto'=>800
 		]);	
 		
     }

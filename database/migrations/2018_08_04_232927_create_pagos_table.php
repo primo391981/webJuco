@@ -18,8 +18,9 @@ class CreatePagosTable extends Migration
 			$table->integer('idEmpleado')->unsigned();
 			$table->integer('idTipoPago')->unsigned();
 			$table->date('fecha');
+			$table->integer('cantDias')->nullable();
 			$table->integer('monto');
-			$table->string('descripcion')->nullable();;
+			$table->string('descripcion')->nullable();
 			
             $table->foreign('idEmpleado')->references('id')->on('contable_empleados');
 			$table->foreign('idTipoPago')->references('id')->on('contable_tipos_pago');

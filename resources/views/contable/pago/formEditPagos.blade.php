@@ -46,9 +46,9 @@
 	<!-- Datos del Viático -->
 	<input id="tipoPago" type="hidden" class="form-control" name="tipoPago" value="{{ isset($pago) ? $pago->idTipoPago : old('tipoPago') }}">
 	<div class="form-group row">
-		<label for="fecha" class="control-label col-sm-3">FECHA</label>
+		<label for="mes" class="control-label col-sm-3">MES</label>
 		<div class="col-sm-6">
-			<input type="date" name="fecha" id="fecha" class="form-control {{ $errors->has('fecha') ? ' is-invalid' : '' }}" value="{{ isset($pago) ? $pago->fecha : old('fecha') }}" required >
+			<input type="month" name="mes" id="mes" class="form-control {{ $errors->has('mes') ? ' is-invalid' : '' }}" value="{{ isset($pago) ? $pago->fecha : old('mes') }}" required >
 			@if ($errors->has('fecha'))
 				<span class="invalid-feedback">
 					<strong>{{ $errors->first('fecha') }}</strong>
@@ -56,6 +56,21 @@
 			@endif
 		</div>	
 	</div>
+	
+	@if ($tipoPago == 1)
+		<div class="form-group row">
+			<label for="dias" class="control-label col-sm-3">DÍAS </label>
+			<div class="col-sm-6">
+				<input type="number" name="dias" id="dias" class="form-control {{ $errors->has('monto') ? ' is-invalid' : '' }}" value="{{ isset($pago) ? $pago->dias : old('dias') }}" min="0" required>
+				@if ($errors->has('dias'))
+				<span class="invalid-feedback">
+					<strong>{{ $errors->first('dias') }}</strong>
+				</span>
+			@endif
+			</div>	
+		</div>
+	@endif
+
 	<div class="form-group row">
 		<label for="monto" class="control-label col-sm-3">MONTO </label>
 		<div class="col-sm-6">
