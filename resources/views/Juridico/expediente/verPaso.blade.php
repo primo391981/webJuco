@@ -55,11 +55,11 @@
 								</div>
 							</div>
 							<div class="row">
-							<label for="archivos" class="control-label col-sm-3">Archivos</label>
+							<label for="archivos" class="control-label col-sm-3">ARCHIVOS</label>
 							<div class="col-sm-9">
 							@foreach($paso->archivos as $archivo)
 								
-								<a href="{{route('paso.download',$archivo)}}">{{$archivo->archivo}}</a>
+								<a href="{{route('paso.download',$archivo)}}">{{$archivo->nombre_archivo}}</a><br>
 							
 							@endforeach
 							</div>
@@ -74,12 +74,9 @@
 					</div>
 				</div>
 				<div class="row">
-				@if($expediente->pasos->last()->id == $paso->id)
+				@if($expediente->pasos->last()->id == $paso->id && $paso->tipo->id != 1)
 					<div class="col-sm-9">
-						<form action="{{route('paso.edit', $paso)}}" method="POST">
-							@csrf
-							<button class="btn btn-success btn-md" type="submit">Editar paso <i class="fas fa-edit"></i></button>
-						</form>
+						<a class="btn btn-success btn-md" href="{{route('paso.edit',$paso)}}">Editar paso <i class="fas fa-edit"></i></a>
 					</div>
 				@endif
 				</div>

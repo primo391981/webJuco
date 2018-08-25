@@ -64,9 +64,7 @@ class PasoController extends Controller
 		$expediente->save();
 		
 		if ($request->hasFile('documentos')) {
-			/*$num = 1;
-			
-			dd(str_slug($fileName,'-'));*/
+
 			$directorio = $expediente->iue;
 			$directorio = str_slug($directorio);
 			foreach($request->documentos as $key => $documento){
@@ -74,9 +72,9 @@ class PasoController extends Controller
 				$file = new ArchivoPaso();
 				$file->id_paso = $paso->id;
 				
-				$file->archivo = $documento->storeAs('expedientes/'.$directorio, $expediente->actual->nombre."_".$key.".".$documento->extension());
-				$file->nombre_archivo = $file->archivo;
-				$tipoArchivo = Storage::mimeType($file->nombre_archivo);
+				$file->archivo = $documento->storeAs('expedientes/'.$directorio, $documento->getClientOriginalName());
+				$file->nombre_archivo = $documento->getClientOriginalName();
+				$tipoArchivo = Storage::mimeType($file->archivo);
 				
 				switch(substr($tipoArchivo,0,4)){
 				case "text": $file->id_tipo = 1;
@@ -143,8 +141,13 @@ class PasoController extends Controller
     {
         
 		$exp = $paso->expediente;
-	
-		return view('juridico.expediente.editarPaso',['expediente' => $exp, 'paso' => $paso]);
+		
+		//solo es posible editar el paso actual en el que se encuentra un expediente
+		if( $exp->pasos->last()->id == $paso->id ){
+			return view('juridico.expediente.editarPaso',['expediente' => $exp, 'paso' => $paso]);
+		} else {
+			return redirect()->back();
+		}
     }
 
     /**
@@ -156,7 +159,59 @@ class PasoController extends Controller
      */
     public function update(Request $request, Paso $paso)
     {
-        //
+        $paso->comentario = $request->comentarios;
+		$expediente = $paso->expediente;	
+		$paso->save();
+		
+		if ($request->hasFile('documentos')) {
+			
+			
+			
+			
+			$directorio = $expediente->iue;
+			$directorio = str_slug($directorio);
+			foreach($request->documentos as $key => $documento){
+				$file = new ArchivoPaso();
+				$file->id_paso = $paso->id;
+				$file->archivo = $documento->storeAs('expedientes/'.$directorio, $documento->getClientOriginalName());
+				$file->nombre_archivo = $documento->getClientOriginalName();
+				$tipoArchivo = Storage::mimeType($file->archivo);
+				
+				switch(substr($tipoArchivo,0,4)){
+				case "text": $file->id_tipo = 1;
+						break;
+				case "imag": $file->id_tipo = 2;
+						break;
+				case "vide": $file->id_tipo = 3;
+						break;
+				case "audi": $file->id_tipo = 4;
+						break;
+				default: $file->id_tipo = 5;
+						break;
+				}
+				
+				$file->save();
+			}
+		}	
+		
+		$notificacion = new Notificacion();
+		$notificacion->id_paso = $paso->id;
+		$notificacion->id_user = $paso->id_usuario;
+		$notificacion->id_tipo = 1; //tipo info
+		$notificacion->fecha_envio = Carbon::now();
+		$notificacion->estado = 0; //se envía una notificación por mail.
+		$notificacion->mensaje = "El expediente ".$expediente->iue." ha sido modificado.";
+		
+		$notificacion->save();
+		
+		// envío de mail, pruebas	
+		$mensaje = "mail de prueba de juco";
+        Mail::to($expediente->usuario->email)->send(new SendMailable($notificacion->mensaje));
+		
+		// fin envío de mail
+	
+		 					
+		return redirect()->back()->with("message","El expediente fue modificado correctamente.");
     }
 
     /**

@@ -81,6 +81,8 @@ class ArchivoPasoController extends Controller
      */
     public function destroy(ArchivoPaso $archivoPaso)
     {
-        //
+        $archivoPaso->delete();
+		
+		return redirect()->back()->with('message','El archivo fue borrado correctamente');
     }
 }

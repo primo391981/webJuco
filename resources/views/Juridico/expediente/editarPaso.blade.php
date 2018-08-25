@@ -30,24 +30,38 @@
 			</div>
 			<div class="panel-body">
 				@include('juridico.expediente.detalleExpediente')
+				<div class="row">
+					<div class="col-sm-9">
+						<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">Transiciones <i class="fas fa-info"></i></button>
+						
+						<button type="button" class="btn btn-info btn-md" >Actualizaciones <i class="fas fa-sync-alt"></i></button>
+						
+						<button type="button" class="btn btn-danger btn-md" >notificaciones <i class="fas fa-bell"></i></button>
+						
+						<a type="button" class="btn btn-warning btn-md" href="{{route('expediente.show',$paso->expediente)}}">volver <i class="fas fa-undo-alt"></i></i></a>
+					</div>
+				</div>
+				<br>
 				<div class="panel panel-default">
 					<div class="panel-body">
 						<h4>Editar paso: {{$paso->tipo->nombre}}</h4>
-							<div class="form-group row">
-								<label for="comentarios" class="control-label col-sm-3">Archivos asociados al paso</label>
-								<div class="col-sm-9">
-									@foreach($paso->archivos as $archivo)
-										<p>
-											<a href="">{{ $archivo->nombre_archivo }}</a>
-											<form action="{{route('archivoPaso.destroy',$archivo)}}">
-												@csrf
-												<button type="submit" class="btn btn-link"><i class="fas fa-times-circle"></i></button>
-											</form>
-										</p>
-									@endforeach
+							@if(count($paso->archivos) > 0)
+								<div class="form-horizontal">
+								
+									<label for="comentarios" class="control-label col-sm-3">ARCHIVOS REGISTRADOS</label>
+									<div class="col-sm-9">
+										@foreach($paso->archivos as $archivo)
+												<a href="{{route('paso.download',$archivo)}}">{{$archivo->nombre_archivo}}</a>
+												<form method="POST" action="{{route('archivoPaso.destroy',$archivo)}}" style="display: inline;">
+													{{ method_field('DELETE') }}
+													@csrf
+													<button type="submit" class="btn btn-link"><i class="fas fa-times-circle"></i></button>
+												</form><br>
+										@endforeach
+									</div>
+								
 								</div>
-							</div>
-
+							@endif
 										
 									
 									
