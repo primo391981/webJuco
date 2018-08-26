@@ -35,7 +35,6 @@
 						<span style="color:red;">{{ $errors->first('nombreFantasia') }}</span>
 						@endif
 					</div>
-					<br/>
 				</div>
 				<hr style="width: 100%; color: black; height: 1px; background-color:orange;" />
 				<div class="form-group col-md-12">
