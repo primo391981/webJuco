@@ -20,6 +20,8 @@
 				<table id="tableEmpresas" class="table" style="width:100%" >
 							<thead>
 							<tr>
+								<th>RUT</th>
+								<th>RAZÓN SOCIAL</th>
 								<th>NOMBRE FANTASIA</th>
 								<th>CONTACTO</th>
 								<th>TELEFONO</th>
@@ -30,14 +32,41 @@
 						</thead>
 						<tbody>
 						@foreach($empresas as $empresa)						
-							<tr>								
+							<tr>
+								<td>{{$empresa->rut}}</td>
+								<td>{{$empresa->razonSocial}}</td>
 								<td>{{$empresa->nombreFantasia}}</td>
 								<td>{{$empresa->nomContacto}}</td>
 								<td>{{$empresa->telefono}}</td>		
 								<td>
-									<form method="GET" action="{{route('empresa.show', $empresa->id)}}">																
-										<button type="submit"class="btn btn-info"><i class="fas fa-info-circle"></i></button>												
-									</form>
+									<button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal{{$empresa->id}}"><i class="fas fa-info-circle"></i></button>
+									 	 <div class="modal fade" id="modal{{$empresa->id}}" role="dialog">
+											<div class="modal-dialog">
+											  <div class="modal-content">
+												<div class="modal-header">
+												  <button type="button" class="close" data-dismiss="modal">&times;</button>
+												  <h4 class="modal-title"><i class="fas fa-building"></i> {{$empresa->razonSocial}}</h4>
+												</div>
+												<div class="modal-body">												  
+												  <p><strong>RUT :</strong> {{$empresa->rut}}</p>
+													<p><strong>NÚMERO BPS :</strong> {{$empresa->numBps}}</p>
+													<p><strong>NÚMERO BSE :</strong> {{$empresa->numBse}}</p>	
+													<p><strong>NÚMERO MTSS :</strong> {{$empresa->numMtss}}</p>	
+													<p><strong>GRUPO :</strong> {{$empresa->grupo}}</p>	
+													<p><strong>SUBGRUPO :</strong> {{$empresa->subGrupo}}</p>	
+													<p><strong>RAZÓN SOCIAL :</strong> {{$empresa->razonSocial}}</p>
+													<p><strong>CONTACTO :</strong> {{$empresa->nomContacto}}</p>
+													<p><strong>TELÉFONO :</strong> {{$empresa->telefono}}</p>
+													<p><strong>EMAIL :</strong> {{$empresa->email}}</p>
+													<p><strong>DOMICILIO :</strong> {{$empresa->domicilio}}</p>												
+												</div>	
+												 <div class="modal-footer">
+														<button type="button" class="btn btn-warning btn-block" data-dismiss="modal"><i class="fas fa-times"></i> Cerrar</button>
+													  </div>												
+											  </div>											  
+											</div>
+										  </div>
+										  
 								</td>	
 								<td>
 									<form method="GET" action="{{ route('empresa.edit', $empresa->id) }}">																

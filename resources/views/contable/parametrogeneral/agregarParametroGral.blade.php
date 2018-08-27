@@ -3,7 +3,6 @@
 @section('seccion', " - AGREGAR")
 
 @section('content')
-<br>
 @if (Session::has('success'))
 	<div class="alert alert-success">
 		{{Session::get('success')}}
@@ -14,29 +13,29 @@
 		{{Session::get('error')}}
 	</div>
 @endif 
+<br>
 <div class="row">
-	<!--solamente es visible en cel-->
-	<div class="col-xs-12 visible-xs"><a href="{{ route('cargo.index') }}" class="btn btn-warning" style="margin-bottom:5%;" role="button"><i class="fas fa-list-ul"></i> Listado parámetros generales</a></div>				  
-</div>
-<div class="row">
-	<div class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2">
-		<div class="panel panel-warning">
+	<div class="col-xs-12">
+		
+		<div class="panel panel-warning text-warning">
 			<div class="panel-heading">
-				<div class="row">
-					<div class="col-sm-9"><h4>AGREGAR NUEVO PARÁMETRO GENERAL</h4></div>
-					<div class="col-sm-3 hidden-xs"><a href="{{ route('parametrogeneral.index') }}" class="btn btn-warning" role="button"><i class="fas fa-list-ul"></i> Listado parámetros gral.</a></div>
-				</div>
+				<a class="btn btn-success pull-right" href="{{ route('parametrogeneral.index') }}" role="button" data-toggle="tooltip" title="Listado de parametros"><i class="fas fa-list-ul"></i></a>
+				<h4><i class="fas fa-cogs"></i> AGREGAR NUEVO PARAMETRO GENERAL </h4>				
 			</div>
-			<div class="panel-body text-warning">
+			<div class="panel-body">
+
 				<form method="POST" action="{{ route('parametrogeneral.store') }}"class="form-horizontal" enctype="multipart/form-data" id="form">
-					@include('contable.parametrogeneral.formParametroGral', ['textoBoton' => 'Confirmar', 'readonly' => ''])
-				</form>
+					@include('contable.parametrogeneral.formParametroGral', ['readonly' => ''])
+				</div>
+				<div class="panel-footer">
+				<button type="submit" class="btn btn-warning btn-block"><i class="fas fa-check"></i> Confirmar</button>
+			</form>
 			</div>
-			<div class="panel-footer"><a href="{{ route('parametrogeneral.index') }}" class="btn btn-warning btn-block" role="button"><i class="fas fa-list-ul"></i> Listado parámetros gral.</a></div>
-		</div>
-	</div>
-	
-</div>
+		</div><!--cierre panel-->
+		
+	</div><!--cierre col xs12-->
+</div><!--cierre row-->
+				
 
 <script>
 

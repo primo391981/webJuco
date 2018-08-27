@@ -18,6 +18,8 @@
 							
 							<thead>
 							<tr>
+								<th>RUT</th>
+								<th>RAZÓN SOCIAL</th>
 								<th>NOMBRE FANTASIA</th>
 								<th>CONTACTO</th>
 								<th>TELEFONO</th>
@@ -28,9 +30,11 @@
 						
 						@foreach($empresas as $empresa)			
 						<tr>										
+								<td>{{$empresa->rut}}</td>
+								<td>{{$empresa->razonSocial}}</td>
 								<td>{{$empresa->nombreFantasia}}</td>
 								<td>{{$empresa->nomContacto}}</td>
-								<td>{{$empresa->telefono}}</td>
+								<td>{{$empresa->telefono}}</td>	
 								
 								<td>
 									<form method="GET" action="{{route('empresa.restaurar', $empresa->id)}}">																
@@ -63,7 +67,7 @@ $(document).ready(function() {
 		"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"},
 		dom: "<'row'<'col-sm-6'><'col-sm-6'f>>" +
 "<'row'<'col-sm-12'tr>>" +
-"<'row'<'col-sm-6'B><'col-sm-6'p>>",
+"<'row'<'col-sm-6'B><'col-sm-6'>>",
         buttons: [
            { extend: 'print', text: 'IMPRIMIR' },
 		   { extend: 'pdf', text: 'PDF' },		   

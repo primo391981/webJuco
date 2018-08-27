@@ -15,31 +15,27 @@
 		{{Session::get('error')}}
 	</div>
 @endif 
+<br>
 <div class="row">
-	<!--solamente es visible en cel-->
-	<div class="col-xs-12 visible-xs"><a href="{{ route('cargo.index') }}" class="btn btn-warning" style="margin-bottom:5%;" role="button"><i class="fas fa-list-ul"></i> Listado cargos activos</a></div>				  
-</div>
-<div class="row">
-	<div class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2">
-		<div class="panel panel-warning">
+	<div class="col-xs-12">
+		
+		<div class="panel panel-warning text-warning">
 			<div class="panel-heading">
-				<div class="row">
-					<div class="col-sm-8"><h4>AGREGAR NUEVO CARGO</h4></div>
-					<div class="col-sm-4 hidden-xs"><a href="{{ route('cargo.index') }}" class="btn btn-warning" role="button"><i class="fas fa-list-ul"></i> Listado cargos activos</a></div>
-				</div>
+				<a class="btn btn-success pull-right" href="{{ route('cargo.index') }}" role="button" data-toggle="tooltip" title="Listado de cargos"><i class="fas fa-list-ul"></i></a>
+				<h4><i class="fas fa-briefcase"></i> AGREGAR NUEVO CARGO </h4>				
 			</div>
-			<div class="panel-body text-warning">
+			<div class="panel-body">
 				<form method="POST" action="{{ route('cargo.store') }}"class="form-horizontal" enctype="multipart/form-data">
-					@include('contable.cargo.formCargos', ['textoBoton' => 'Confirmar'])
-				</form>
+					@include('contable.cargo.formCargos')
+					</div>
+				<div class="panel-footer">
+				<button type="submit" class="btn btn-warning btn-block"><i class="fas fa-check"></i> Confirmar</button>
+			</form>
 			</div>
-			<div class="panel-footer"><a href="{{ route('cargo.index') }}" class="btn btn-warning btn-block" role="button"><i class="fas fa-list-ul"></i> Listado cargos activos</a></div>
-		</div>
-	</div>
-	
-</div>
-    
-	
+		</div><!--cierre panel-->
+		
+	</div><!--cierre col xs12-->
+</div><!--cierre row-->
 				
 @endsection
 

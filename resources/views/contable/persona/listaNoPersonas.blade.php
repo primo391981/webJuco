@@ -15,14 +15,12 @@
 @endif 
 <script>
 $(document).ready(function() {
-    $('#tablePersonas').DataTable( {        
-		"pagingType": "numbers",
-		"pageLength": 5,
+    $('#tableEmpleados').DataTable( {        
 		"language": {
 		"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"},
 		dom: "<'row'<'col-sm-6'><'col-sm-6'f>>" +
 "<'row'<'col-sm-12'tr>>" +
-"<'row'<'col-sm-6'B><'col-sm-6'p>>",
+"<'row'<'col-sm-6'B><'col-sm-6'>>",
         buttons: [
            { extend: 'print', text: 'IMPRIMIR' },
 		   { extend: 'pdf', text: 'PDF' },		   
@@ -35,38 +33,38 @@ $(document).ready(function() {
 </script>
 <br>
 <div class="row">
-	<!--solamente es visible en cel-->
-	<div class="col-xs-12 visible-xs"><a href="{{ route('persona.create') }}" class="btn btn-warning" role="button" style="margin-bottom:5%;"><i class="fas fa-plus"></i> Agregar nuevo empleado</a></div>				  
-</div>
-<div class="row text-info">
-	<div class="col-xs-12">
-		<div class="panel panel-warning">
-				  <div class="panel-heading">
-					<div class="row">
-						<div class="col-sm-9"><h4>LISTADO EMPLEADOS INACTIVOS</h4></div>
-						<div class="col-sm-3 hidden-xs"><a href="{{ route('persona.create') }}" class="btn btn-warning pull-right" role="button"><i class="fas fa-plus"></i> Agregar nuevo empleado</a></div>				  
-					</div>
-				  </div>
-				  <div class="panel-body text-warning">					
-					<div class="table-responsive">
-						<table id="tablePersonas" class="table">
-							
-							<thead>
+	<div class="col-xs-12">		
+		<div class="panel panel-warning text-warning">
+			<div class="panel-heading">
+				<h4><i class="fas fa-users"></i> LISTADO DE EMPLEADOS INACTIVOS </h4>				
+			</div>
+			<div class="panel-body">
+			
+				<div class="table-responsive">
+				<table id="tableEmpleados" class="table" style="width:100%" >
+					<thead>
 							<tr>
+								<th>TIPO DOCUMENTO</th>
 								<th>DOCUMENTO</th>
 								<th>NOMBRE</th>
 								<th>APELLIDO</th>
+								<th>DOMICILIO</th>
+								<th>TELEFONO</th>
+								<th>EMAIL</th>
 								<th></th>								
 							</tr>
 						</thead>
 						<tbody>
 						
 						@foreach($personas as $persona)			
-						<tr>										
+						<tr>							
+								<td>{{$persona->tipoDoc->nombre}}</td>
 								<td>{{$persona->documento}}</td>
 								<td>{{$persona->nombre}}</td>
 								<td>{{$persona->apellido}}</td>
-								
+								<td>{{$persona->domicilio}}</td>
+								<td>{{$persona->telefono}}</td>
+								<td>{{$persona->email}}</td>
 								<td>
 									<form method="GET" action="{{route('persona.restaurar', $persona->id)}}">																
 										<button type="submit"class="btn btn-info"><i class="fas fa-recycle"></i></button>												
@@ -77,14 +75,13 @@ $(document).ready(function() {
 						</tr>
 						@endforeach
 						</tbody>
-						</table>
-					</div>
-					
-				  </div>
-				  <div class="panel-footer"><a href="{{ route('persona.create') }}" class="btn btn-warning btn-block" role="button"><i class="fas fa-plus"></i> Agregar nuevo empleado</a></div>
-		</div>
-	</div>
-</div>
-
+				</table>
+				</div>
+			
+			</div>
+		</div><!--cierre panel-->
+		
+	</div><!--cierre col xs12-->
+</div><!--cierre row-->
 @endsection
 
