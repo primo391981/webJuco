@@ -52,7 +52,7 @@
 							@csrf
 							<input id="idEmpleado" name="idEmpleado" type="hidden" value="{{$emp->id}}">
 							<td><div class="form-group"><input type="month" class="form-control" id="mes" name="mes" value="{{old('mes')}}"required></div></td>
-							<td><button type="submit"class="btn btn-info" formaction="#" formmethod="post" ><i class="fas fa-info-circle"></i></button></td>
+							<td><button type="submit"class="btn btn-info" formaction="{{route('reloj.verMarcas')}}" formmethod="post" ><i class="fas fa-info-circle"></i></button></td>
 							<td><button type="submit"class="btn btn-success" formaction="{{route('reloj.formMarcas')}}" formmethod="post" ><i class="fas fa-plus"></i></button></td>
 							<td><button type="submit"class="btn btn-warning" formaction="{{route('reloj.editarMes')}}" formmethod="post" ><i class="far fa-edit"></i></button></td>
 													
@@ -73,6 +73,7 @@
 <script>
 $(document).ready(function() {
     $('#tablePersonas').DataTable( {        
+		"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
 		"language": {
 		"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json",
 		},
