@@ -50,23 +50,44 @@
 <!-- Datos del Viático -->
 <input id="tipoPago" type="hidden" class="form-control" name="tipoPago" value="{{ isset($tipoPago) ? $tipoPago : old('tipoPago') }}">
 <div class="form-group row">
-	<label for="fecha" class="control-label col-sm-3">FECHA</label>
+	<label for="mes" class="control-label col-sm-3">MES</label>	
 	<div class="col-sm-6">
-		<input type="date" name="fecha" id="fecha" class="form-control" value="{{ old('fecha') }}" required >
+		<input type="month" class="form-control" id="mes" name="mes" value="{{ old('mes') }}" required>	
+		@if ($errors->has('mes'))
+			<span class="invalid-feedback">
+				<strong>{{ $errors->first('mes') }}</strong>
+			</span>
+		@endif
 	</div>	
 </div>
+@if ($tipoPago == 1)
+	<div class="form-group row">
+		<label for="cantDias" class="control-label col-sm-3">DÍAS </label>
+		<div class="col-sm-6">
+			<input type="number" name="cantDias" id="cantDias" class="form-control" value="{{ old('cantDias') }}" min="1" required>
+		@if ($errors->has('cantDias'))
+			<span class="invalid-feedback">
+				<strong>{{ $errors->first('cantDias') }}</strong>
+			</span>
+		@endif
+		</div>	
+	</div>
+@endif
 <div class="form-group row">
 	<label for="monto" class="control-label col-sm-3">MONTO </label>
 	<div class="col-sm-6">
 		<input type="number" name="monto" id="monto" class="form-control" value="{{ old('monto') }}" min="1" required>
+		@if ($errors->has('monto'))
+			<span class="invalid-feedback">
+				<strong>{{ $errors->first('monto') }}</strong>
+			</span>
+		@endif
 	</div>	
 </div>
 <div class="form-group row">
 	<label for="descripcion" class="control-label col-sm-3">DESCRIPCIÓN</label>
-
 	<div class="col-sm-9">
-		<input id="descripcion" type="text" class="form-control{{ $errors->has('descripcion') ? ' is-invalid' : '' }}" name="descripcion" value="{{ isset($param) ? $param->descripcion : old('descripcion') }}" autofocus>
-
+		<input id="descripcion" type="text" class="form-control{{ $errors->has('descripcion') ? ' is-invalid' : '' }}" name="descripcion" value="{{ old('descripcion') }}" autofocus>
 		@if ($errors->has('descripcion'))
 			<span class="invalid-feedback">
 				<strong>{{ $errors->first('descripcion') }}</strong>

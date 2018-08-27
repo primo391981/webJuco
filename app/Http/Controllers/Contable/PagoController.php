@@ -67,13 +67,16 @@ class PagoController extends Controller
 	    $empresa = Empresa::where("rut","=",$request->rut)->first();
 		$persona = Persona::where([["tipoDocumento",'=',$request->tipoDocId], ["documento",'=',$request->numeroDoc]])->first();
 		$empleado = Empleado::where([["idEmpresa",'=',$empresa->id], ["idPersona",'=',$persona->id]])->first();
-	
+		
 		$pago = new Pago;
-		$pago ->idEmpleado = $empleado->id;
-		$pago ->idTipoPago = $request->tipoPago;
-		$pago ->fecha = $request->fecha;
-		$pago ->monto = $request->monto;
-		$pago ->descripcion = $request->descripcion;
+		$pago->idEmpleado = $empleado->id;
+		$pago->idTipoPago = $request->tipoPago;
+		$pago->fecha = new Carbon($request->mes."-01");
+		$pago->monto = $request->monto;
+		if (isset($request->cantDias))
+			$pago->cantDias = $request->cantDias;
+		
+		$pago->descripcion = $request->descripcion;
 			
 		try {
 			$pago ->save();
@@ -107,12 +110,11 @@ class PagoController extends Controller
      */
     public function edit(Pago $pago)
     {
-		//dd($pago);
 		$empleado = Empleado::find($pago->idEmpleado);
 		$empresa = Empresa::find($empleado->idEmpresa);
 		$persona = Persona::where("id", $empleado->idPersona)->with('tipoDoc')->first();
+		$pago->fecha = new Carbon($pago->fecha);
 		
-		//dd($persona);
 		if ($pago->idTipoPago == 1)
 			$subtitulo = 'Editar Viático';
 		else
@@ -130,9 +132,12 @@ class PagoController extends Controller
      */
     public function update(PagoRequest $request, Pago $pago)
     {
-        $pago ->fecha = $request->fecha;
-		$pago ->monto = $request->monto;
-		$pago ->descripcion = $request->descripcion;
+        $pago->fecha = new Carbon($request->mes."-01");
+		$pago->monto = $request->monto;
+		if (isset($request->cantDias))
+			$pago->cantDias = $request->cantDias;
+		
+		$pago->descripcion = $request->descripcion;
 		
 		try {
 			$pago ->save();

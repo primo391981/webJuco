@@ -23,13 +23,13 @@ class PagoRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+		return [
             'rut'=>'required',
 			'tipoDocId'=>'required|numeric',
 			'numeroDoc'=>'required',
 			'tipoPago'=>'required|numeric',
 			'monto'=>'required|numeric',
-			'fecha'=>'required|date'			
+			'mes'=>'required',			
         ];
     }
 }
