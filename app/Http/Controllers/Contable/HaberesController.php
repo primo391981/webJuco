@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Empresa;
 use App\Contable\Empleado;
 use App\Contable\TipoRecibo;
+use App\Contable\RegistroHora;
+use App\Contable\Pago;
 use Exception;
 use \Carbon\Carbon;
 ////////////////////////
@@ -26,10 +28,59 @@ class HaberesController extends Controller
     public function index()
     {
         $empresas = Empresa::with('personas')->get();
-		$tiposHaberes = TipoRecibo::All();
-		
-        return view('contable.haberes.listaEmpresas', ['empresas' => $empresas, 'tiposHaberes' => $tiposHaberes]);
+		//$empresas=Empresa::All();
+		$tiposHaberes = TipoRecibo::All();		
+        return view('contable.haberes.listaEmpresasHaberes', ['empresas' => $empresas, 'tiposHaberes' => $tiposHaberes]);
     }
+	public function listaEmpleados(Request $request){
+		try{
+			
+			$empresa=Empresa::where('rut','=',$request->rut)->first();			
+			$personas=$empresa->personas;
+			$habilitadas=collect([]);
+			
+			foreach($personas as $persona){
+				$fecha=new Carbon($request->mes."-01");
+				$fDesde=new Carbon($persona->pivot->fechaDesde);
+				$fHasta=new Carbon($persona->pivot->fechaHasta);
+				if($fecha->between($fDesde,$fHasta)){
+					$habilita=collect([]);
+					$habilita->push($persona);					
+					$regHora=RegistroHora::where([['idEmpleado','=',$persona->pivot->id],['fecha','=',$fecha]])->first();
+					if($regHora!=null){
+						$habilita->push('1');
+					}
+					else{
+						$habilita->push('0');
+					}
+					$pagos=Pago::where([['idEmpleado','=',$persona->pivot->id],['fecha','=',$fecha]])->get();
+					
+					$totalViaticos=0;
+					$totalAdelantos=0;
+					foreach($pagos as $p){
+						
+						if($p->idTipoPago==1){
+							$totalViaticos+=$p->monto;
+						}
+						else{
+							$totalAdelantos+=$p->monto;
+						}
+						//echo ($persona->pivot->id.' - '.$p->tipoPago.' - '.$p->monto);
+					}
+					
+					$habilita->push($totalViaticos);
+					$habilita->push($totalAdelantos);
+					
+					$habilitadas->push($habilita);
+				}
+				
+			}
+			return view('contable.haberes.listaEmpleadosHaberes', ['habilitadas' => $habilitadas,'calculo'=>$request->calculo,'fecha'=>$fecha]);			
+		}
+		catch(Exception $e){
+			return back()->withInput()->withError("Error en el sistema.");
+		}		
+	}
 
     /**
      * Show the form for creating a new resource.
@@ -49,7 +100,17 @@ class HaberesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       try{
+			//1- calcular hr por empleado por si tiene horas de menos o de mas
+			//1.1 - descuento de las horas de menos
+			//2- calculo sueldo total nominal
+			//2.2 caluclar antiguedad
+			
+	   }
+	   catch(Exception $e){
+			return back()->withInput()->withError("Error en el sistema.");
+		}
+	   
     }
 
     /**

@@ -25,7 +25,7 @@
 				</div>
 				
 				<div class="panel-body text-warning">
-					<form method="POST" action="{{ haberes:: }}" class="form-horizontal" enctype="multipart/form-data" id="formCarga">		
+					<form method="POST" action="{{route('haberes.listaEmpleados')}}" class="form-horizontal" enctype="multipart/form-data" id="formCarga">		
 						@csrf
 						<!-- Datos de la Empresa -->
 						<div class="form-group row">
@@ -78,6 +78,7 @@
 						<div class="form-group row">
 							<br>
 							<div class="col-xs-12 text-center">
+								
 								<button type="submit" id="cargar" name="cargar" class="btn btn-warning btn-lg" onClick=""><i class="fas fa-check"></i> Cargar Empleados</button>
 							</div>
 						</div>

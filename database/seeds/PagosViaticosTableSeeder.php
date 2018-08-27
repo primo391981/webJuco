@@ -15,7 +15,7 @@ class PagosViaticosTableSeeder extends Seeder
         DB::table('contable_pagos')->insert([
 			'idEmpleado'=>1,
 			'idTipoPago'=>1,
-			'fecha'=>Carbon::parse('2018-08-11'),
+			'fecha'=>Carbon::parse('2018-08-01'),
 			'monto'=>750,
 			'descripcion'=>'Viático por pasajes.'
 		]);	
@@ -23,7 +23,7 @@ class PagosViaticosTableSeeder extends Seeder
 		DB::table('contable_pagos')->insert([
 			'idEmpleado'=>2,
 			'idTipoPago'=>1,
-			'fecha'=>Carbon::parse('2018-08-04'),
+			'fecha'=>Carbon::parse('2018-08-01'),
 			'cantDias'=>10,
 			'monto'=>1500,
 			'descripcion'=>'Almuerzo en el Oro del Rhin.'
@@ -32,7 +32,7 @@ class PagosViaticosTableSeeder extends Seeder
 		DB::table('contable_pagos')->insert([
 			'idEmpleado'=>3,
 			'idTipoPago'=>1,
-			'fecha'=>Carbon::parse('2018-08-13'),
+			'fecha'=>Carbon::parse('2018-08-01'),
 			'monto'=>650,
 			'descripcion'=>'Pasajes.'
 		]);	
@@ -40,7 +40,7 @@ class PagosViaticosTableSeeder extends Seeder
 		DB::table('contable_pagos')->insert([
 			'idEmpleado'=>3,
 			'idTipoPago'=>1,
-			'fecha'=>Carbon::parse('2018-08-7'),
+			'fecha'=>Carbon::parse('2018-08-01'),
 			'cantDias'=>10,
 			'monto'=>800
 		]);	
