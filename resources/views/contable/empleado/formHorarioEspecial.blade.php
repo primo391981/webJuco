@@ -13,21 +13,21 @@
 	<div class="col-xs-12">
 		<div class="panel panel-warning"> 
 		  <div class="panel-heading"> 
-			<h4>INGRESO HORARIO ESPECIAL EMPLEADO</h4>           
+			<h4><i class="far fa-clock"></i> INGRESO HORARIO ESPECIAL EMPLEADO</h4>           
 		  </div> 
 		  <div class="panel-body text-warning">   
 				<form class="form-horizontal" method="post" action="{{ route('empleado.guardarHorarioEsp')}}">
 					@csrf
 					 <input type="hidden" id="idEmpleado" name="idEmpleado" value="{{$idEmpleado}}">
 					<div class="form-group">
-						<label class="control-label col-sm-3" for="fechaDesde">FECHA DE INICIO *</label>
-						<div class="col-sm-9">
+						<label class="control-label col-md-2" for="fechaDesde">FECHA DE INICIO *</label>
+						<div class="col-md-10">
 							<input type="date" class="form-control" id="fechaDesde" name="fechaDesde" value="{{$fechaDesde}}" readonly />
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="control-label col-sm-3" for="fechaHasta">FECHA DE FIN *</label>
-						<div class="col-sm-9">
+						<label class="control-label col-md-2" for="fechaHasta">FECHA DE FIN *</label>
+						<div class="col-md-10">
 							<input type="date" class="form-control" id="fechaHasta" name="fechaHasta" value="{{$fechaHasta}}" readonly/>
 						</div>
 					</div>
@@ -36,11 +36,11 @@
 						@foreach($dias as $dia)
 							@if($dia->id==$hr->idDia)
 							<div class="form-group">
-								<label class="control-label col-sm-3" for="hr{{$dia->id}}">{{$dia->nombre}} *</label>
-								<div class="col-sm-5">
+								<label class="control-label col-md-2" for="hr{{$dia->id}}">{{$dia->nombre}} *</label>
+								<div class="col-md-5">
 									<input type="time" class="form-control" id="hr{{$dia->id}}" name="hr{{$dia->id}}" value="{{$hr->cantHoras}}"/>
 								</div>
-								<div class="col-sm-4">
+								<div class="col-md-5">
 									<select class="form-control" id="reg{{$dia->id}}" name="reg{{$dia->id}}">
 									@foreach($registros as $reg)
 										@if($reg->id==$hr->idRegistro)
@@ -55,14 +55,9 @@
 						@endif
 					@endforeach
 					@endforeach
-					<hr>
-					<div class="form-group">
-						<div class="col-sm-12 text-center">
-							<button type="submit"class="btn btn-warning"><i class="fas fa-check"></i> Confirmar horario</button>
-						</div>
-					</div>
-				</form>
+					
 		  </div>  
+		  <div class="panel-footer"><button type="submit"class="btn btn-warning btn-block"><i class="fas fa-check"></i> Confirmar horario</button></div>
 		</div> 
 	
 	</div>

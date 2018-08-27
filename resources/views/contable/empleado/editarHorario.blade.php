@@ -20,14 +20,14 @@
 				@csrf	
 					<input id="idHorarioEmp" name="idHorarioEmp" type="hidden" value="{{$horarioPrincipal->id}}">
 					<div class="form-group">
-						<label class="control-label col-sm-2" for="fechaDesde">FECHA DE INICIO *</label>
-						<div class="col-sm-8">
+						<label class="control-label col-md-2" for="fechaDesde">FECHA DE INICIO *</label>
+						<div class="col-md-10">
 							<input type="date" class="form-control" id="fechaDesde" name="fechaDesde" value="{{$horarioPrincipal->fechaDesde}}" readonly/>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="control-label col-sm-2" for="fechaHasta">FECHA DE FIN *</label>
-						<div class="col-sm-8">
+						<label class="control-label col-md-2" for="fechaHasta">FECHA DE FIN *</label>
+						<div class="col-md-10">
 							<input type="date" class="form-control" id="fechaHasta" name="fechaHasta" value="{{$horarioPrincipal->fechaHasta}}"readonly/>
 						</div>
 					</div>
@@ -36,11 +36,11 @@
 							@foreach($dias as $d)
 								@if($d->id==$hd->idDia)
 									<div class=" form-group">
-										<label class="control-label col-sm-2" >{{$d->nombre}}</label>
-										<div class="col-sm-4">
+										<label class="control-label col-md-2" >{{$d->nombre}}</label>
+										<div class="col-md-5">
 											<input type="time" class="form-control" id="{{$d->id}}" name="{{$d->id}}" value="{{$hd->cantHoras}}"/>
 										</div>
-										<div class="col-sm-4">
+										<div class="col-md-5">
 											<select class="form-control" id="reg{{$d->id}}" name="reg{{$d->id}}">
 												@foreach($registros as $reg)	
 													@if($reg->id==$hd->idRegistro)
