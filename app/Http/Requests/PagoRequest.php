@@ -29,7 +29,7 @@ class PagoRequest extends FormRequest
 			'numeroDoc'=>'required',
 			'tipoPago'=>'required|numeric',
 			'monto'=>'required|numeric',
-			'mes'=>'required'			
+			'mes'=>'required',			
         ];
     }
 }

@@ -1,5 +1,5 @@
 @csrf
-	@if(isset($cargo))
+	@if(isset($pago))
 			<input type="hidden" name="id" value="{{$pago->id}}">
 	@endif
 	<!-- Datos del Empresa -->
@@ -48,23 +48,23 @@
 	<div class="form-group row">
 		<label for="mes" class="control-label col-sm-3">MES</label>
 		<div class="col-sm-6">
-			<input type="month" name="mes" id="mes" class="form-control {{ $errors->has('mes') ? ' is-invalid' : '' }}" value="{{ isset($pago) ? $pago->fecha : old('mes') }}" required >
-			@if ($errors->has('fecha'))
+			<input type="month" name="mes" id="mes" class="form-control {{ $errors->has('mes') ? ' is-invalid' : '' }}" value="{{ isset($pago) ? $pago->fecha->format('Y-m') : old('mes') }}" required >
+			@if ($errors->has('mes'))
 				<span class="invalid-feedback">
-					<strong>{{ $errors->first('fecha') }}</strong>
+					<strong>{{ $errors->first('mes') }}</strong>
 				</span>
 			@endif
 		</div>	
 	</div>
 	
-	@if ($tipoPago == 1)
+	@if ($pago->idTipoPago == 1)
 		<div class="form-group row">
-			<label for="dias" class="control-label col-sm-3">DÍAS </label>
+			<label for="cantDias" class="control-label col-sm-3">DÍAS </label>
 			<div class="col-sm-6">
-				<input type="number" name="dias" id="dias" class="form-control {{ $errors->has('monto') ? ' is-invalid' : '' }}" value="{{ isset($pago) ? $pago->dias : old('dias') }}" min="0" required>
-				@if ($errors->has('dias'))
+				<input type="number" name="cantDias" id="cantDias" class="form-control {{ $errors->has('cantDias') ? ' is-invalid' : '' }}" value="{{ isset($pago) ? $pago->cantDias : old('cantDias') }}" min="0" required>
+				@if ($errors->has('cantDias'))
 				<span class="invalid-feedback">
-					<strong>{{ $errors->first('dias') }}</strong>
+					<strong>{{ $errors->first('cantDias') }}</strong>
 				</span>
 			@endif
 			</div>	

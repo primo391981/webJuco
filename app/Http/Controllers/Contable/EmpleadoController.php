@@ -266,4 +266,21 @@ class EmpleadoController extends Controller
 		}
 		
 	}
+	
+	public function search(Request $request)
+    {
+		if(!is_null($request->rut))
+		{
+			$rut = $request->rut;
+			//$empresa = Empresa::find($rut);
+			
+			$personas = Empresa::where("rut", "like", $rut)->first();
+		}
+			
+		if($request->ajax()) {
+				return response()->json([
+					'personas' => $personas
+				]);
+			}
+    }
 }

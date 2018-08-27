@@ -110,12 +110,11 @@ class PagoController extends Controller
      */
     public function edit(Pago $pago)
     {
-		//dd($pago);
 		$empleado = Empleado::find($pago->idEmpleado);
 		$empresa = Empresa::find($empleado->idEmpresa);
 		$persona = Persona::where("id", $empleado->idPersona)->with('tipoDoc')->first();
+		$pago->fecha = new Carbon($pago->fecha);
 		
-		//dd($persona);
 		if ($pago->idTipoPago == 1)
 			$subtitulo = 'Editar Viático';
 		else

@@ -12,7 +12,7 @@ class TipodocTableSeeder extends Seeder
     public function run()
     {
         DB::table('tipo_documento')->insert([
-            'nombre' => 'CEDULA',
+            'nombre' => 'CI',
         ]);
 		
         DB::table('tipo_documento')->insert([
@@ -20,7 +20,7 @@ class TipodocTableSeeder extends Seeder
         ]);
 
         DB::table('tipo_documento')->insert([
-            'nombre' => 'PASAPORTE',
+            'nombre' => 'PAS',
         ]);
 
         DB::table('tipo_documento')->insert([
