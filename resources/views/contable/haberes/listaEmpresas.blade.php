@@ -25,7 +25,7 @@
 				</div>
 				
 				<div class="panel-body text-warning">
-					<form method="POST" class="form-horizontal" enctype="multipart/form-data" id="formCarga">		
+					<form method="POST" action="{{ haberes:: }}" class="form-horizontal" enctype="multipart/form-data" id="formCarga">		
 						@csrf
 						<!-- Datos de la Empresa -->
 						<div class="form-group row">
@@ -65,7 +65,7 @@
 						</div>
 						<!-- Mes/Año a calcular -->
 						<div class="form-group row">
-							<label for="mes" class="control-label col-sm-3">MES *</label>	
+							<label for="mes" class="control-label col-sm-3">MES/AÑO *</label>	
 							<div class="col-sm-6">
 								<input type="month" class="form-control" id="mes" name="mes" value="{{ old('mes') }}" required  autofocus>	
 								@if ($errors->has('mes'))
@@ -78,69 +78,16 @@
 						<div class="form-group row">
 							<br>
 							<div class="col-xs-12 text-center">
-								<button type="button" id="cargar" name="cargar" class="btn btn-warning btn-lg" onClick=""><i class="fas fa-check"></i> Cargar Empleados</button>
+								<button type="submit" id="cargar" name="cargar" class="btn btn-warning btn-lg" onClick=""><i class="fas fa-check"></i> Cargar Empleados</button>
 							</div>
 						</div>
 					</form>
-				</div>
-				
-				<div class="panel-body text-warning">					
-					<div class="table-responsive">
-						<table id="tableHaberesEmpleados" class="table" style="width:100%" >
-							<thead>
-								<tr>
-									<th>DOCUMENTO</th>
-									<th>EMPLEADO</th>
-									<th>ADELANTOS</th>
-									<th>VIATICOS</th>
-									<th></th>
-									<th></th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>
-										<label for="documento" id="documento" name="documento" class="control-label col-sm-3"></label>
-									</td>
-									<td>
-										<label for="empl" id="empl" name="empl" class="control-label col-sm-3"></label>
-									</td>
-									<td>
-										<label for="adel" id="adel" name="adel" class="control-label col-sm-3"></label>
-									</td>
-									<td>
-										<label for="viat" id="viat" name="viat" class="control-label col-sm-3"></label>
-									</td>
-								</tr>
-							</tbody>						
-						</table>
-					</div>				
-				</div>
-				  
+				</div>				  
 		</div>
 	</div>
 </div>
 
 <script>
-$(document).ready(function() {
-    $('#tableHaberesEmpleados').DataTable( {        
-		"pagingType": "numbers",
-		"pageLength": 5,
-		"language": {
-		"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"},
-		dom: "<'row'<'col-sm-6'><'col-sm-6'f>>" +
-"<'row'<'col-sm-12'tr>>" +
-"<'row'<'col-sm-6'B><'col-sm-6'p>>",
-        buttons: [
-           { extend: 'print', text: 'IMPRIMIR' },
-		   { extend: 'pdf', text: 'PDF' },		   
-		   { extend: 'excel', text: 'EXCEL' },
-		   { extend: 'copy', text: 'COPIAR' }
-        ],
-		
-    } );
-} );
-
 $(function() 
 {
 	var empresa = @json($empresas);
@@ -171,21 +118,30 @@ $(function()
 		}
 	})
 	
-	$('#cargar').on('click', function() 
+/*	$('#cargar').on('click', function() 
 	{		
 		var form = $("#formCarga");
 		var url = "/empleado/search";
 		var data = form.serialize();
+		console.log(data);
 		
 		$.get(url, data, function (result) {
+			
 			console.log(result);
-			if(result.personas != null){
+			//Carga de datos de empleados
+			if(result.personas != null)
+			{
+				$("#documento").text(result.personas[0].tipoDocumento);
+				//$("#empleado").text(result.personas.nombre);
+			};
+				
+			/*if(result.personas != null){
 				$("#documento").text(result.personas.domicilio);
 				
 			}
 		});
 	})
-	
+*/	
 });
 
 </script>

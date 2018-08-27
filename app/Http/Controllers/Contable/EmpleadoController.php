@@ -272,9 +272,9 @@ class EmpleadoController extends Controller
 		if(!is_null($request->rut))
 		{
 			$rut = $request->rut;
-			//$empresa = Empresa::find($rut);
+			$empresa = Empresa::where("rut", "=", $rut)->first();
 			
-			$personas = Empresa::where("rut", "like", $rut)->first();
+			$personas = $empresa->personas;
 		}
 			
 		if($request->ajax()) {
