@@ -35,7 +35,7 @@
 						
 						<button type="button" class="btn btn-warning btn-md" >usuarios <i class="fas fa-user-plus"></i></button>
 						
-						<button type="button" class="btn btn-danger btn-md" >notificaciones <i class="fas fa-bell"></i></button>
+						<button type="button" class="btn btn-danger btn-md" data-toggle="modal" data-target="#modalRecordatorios">notificaciones <i class="fas fa-bell"></i></button>
 					</div>
 				</div>
 				<br>
@@ -57,7 +57,7 @@
 	</div>
 </div>
 
-<!-- Modal -->
+<!-- Modal Pasos Expediente-->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -101,6 +101,56 @@
     </div>
   </div>
 </div>
+<!-- FIN Modal Pasos Expediente-->
+
+<!-- Modal Notificaciones -->
+<div class="modal fade" id="modalRecordatorios" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">Recordatorios expediente</h4>
+			</div>
+			<div class="modal-body">
+				<div class="container-fluid">
+					<div class="col-md-12 example-title">
+						<h2>Recordatorios Exp. {{$expediente->iue}}</h2>	
+					</div>
+					<div>
+						@foreach($expediente->recordatorios as $recordatorio)
+						<div class="alert alert-info">
+							<span>{{$recordatorio}}</span>
+						</div>
+						@endforeach
+					</div>
+					<div>
+						<form>
+							<div class="form-group">
+								<label for="fecha">Fecha: </label>
+								<input type="date">
+							</div>
+							<div class="form-group">
+								<label for="dias">Cantidad de días: </label>
+								<input type="text">
+							</div>
+							<div class="form-group">
+								<label for="mensaje">mensaje</label>
+								<input type="text">
+							</div>
+							<button type="submit" class="btn btn-success btn-xs"><i class="fas fa-plus"></i></button>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- FIN Modal Notificaciones -->
+
 
 <script>
 $(document).ready(function() {
