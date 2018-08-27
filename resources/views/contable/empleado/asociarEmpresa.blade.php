@@ -14,7 +14,7 @@
 	<div class="col-xs-12">
 		<div class="panel panel-warning">
 			<div class="panel-heading">
-				<h4>SELECCIONE UNA EMPRESA</h4>
+				<h4><i class="far fa-handshake"></i> ASOCIAR EMPRESA AL EMPLEADO</h4>
 			</div>
 			<div class="panel-body text-warning">					
 				<div class="table-responsive">
@@ -47,20 +47,9 @@
 						</tbody>						
 						</table>
 					</div>
-				  </div>
-		</div>	
-	</div>
-</div>
-
-<div class="row">
-	<div class="col-xs-12">
-		<div class="panel panel-warning">
-			<div class="panel-heading">
-				<h4>DETALLE DEL CONTRATO</h4>
-			</div>
-			<div class="panel-body text-warning">					
-				
-				<form method="POST" action="{{ route('empleado.asociarEmpresa',[$persona->id]) }}" class="form-horizontal">
+			<hr>
+			
+			<form method="POST" action="{{ route('empleado.asociarEmpresa',[$persona->id]) }}" class="form-horizontal">
 					@csrf
 					<input type="hidden" id="idempresa" name="idempresa" value="">
 					<div class="form-group row">
@@ -116,19 +105,13 @@
 							 <input class="checkbox" type="checkbox" name="per" id="per">
 						 </div>
 					</div>
-					
-					<div class="form-group row">
-						<div class="col-xs-12 text-center">
-							<button type="submit" class="btn btn-warning"><i class="fas fa-check"></i> Confirmar asosiación</button>
-						</div>
-					</div>
-				</form>
 			</div>
-		</div>
+			<div class="panel-footer"><button type="submit" class="btn btn-warning btn-block"><i class="fas fa-check"></i> Confirmar asosiación</button>
+			</form>
+			</div>
+		</div>	
 	</div>
-
 </div>
-
 
 <script>
 function darValor(radioSeleccionado) { 
@@ -149,7 +132,7 @@ $(document).ready(function() {
 		"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"},
 		dom: "<'row'<'col-sm-6'><'col-sm-6'f>>" +
 "<'row'<'col-sm-12'tr>>" +
-"<'row'<'col-sm-6'><'col-sm-6'p>>" 
+"<'row'<'col-sm-6'><'col-sm-6'>>" 
 		
     } );
 } );

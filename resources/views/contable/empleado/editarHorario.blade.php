@@ -13,7 +13,7 @@
 	<div class="col-xs-12">
 		<div class="panel panel-warning"> 
 		  <div class="panel-heading"> 
-			<h4>EDITAR HORARIO POR DIA DEL EMPLEADO</h4>           
+			<h4><i class="far fa-edit"></i> EDITAR HORARIO POR DIA DEL EMPLEADO</h4>           
 		  </div> 
 		  <div class="panel-body text-warning">   
 				<form class="form-horizontal" method="POST" action="{{ route('empleado.guardarHorarioPrin') }}">
@@ -55,14 +55,11 @@
 								@endif
 							@endforeach
 						@endforeach
-					<hr>
-					<div class="form-group">
-						<div class="col-sm-12 text-center">
-							<button type="submit"class="btn btn-warning"><i class="fas fa-check"></i> Confirmar horario</button>
-						</div>
-					</div>
-				</form>
-		  </div>  
+					
+		  </div>
+			<div class="panel-footer"><button type="submit"class="btn btn-warning btn-block"><i class="fas fa-check"></i> Confirmar horario</button>
+			</form>
+			</div>		  
 		</div> 
 	
 	</div>
