@@ -78,7 +78,7 @@
 						<div class="form-group row">
 							<br>
 							<div class="col-xs-12 text-center">
-								<button type="button" id="cargar" name="cargar" class="btn btn-warning btn-lg" onClick=""><i class="fas fa-check"></i> Confirmar</button>
+								<button type="button" id="cargar" name="cargar" class="btn btn-warning btn-lg" onClick=""><i class="fas fa-check"></i> Cargar Empleados</button>
 							</div>
 						</div>
 					</form>
@@ -172,8 +172,7 @@ $(function()
 	})
 	
 	$('#cargar').on('click', function() 
-	{
-		
+	{		
 		var form = $("#formCarga");
 		var url = "/empleado/search";
 		var data = form.serialize();
