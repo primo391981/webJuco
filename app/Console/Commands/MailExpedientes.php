@@ -5,6 +5,8 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Mail\SendMailable;
 use Mail;
+use Carbon\Carbon;
+use App\Juridico\Recordatorio;
 
 class MailExpedientes extends Command
 {
@@ -39,7 +41,16 @@ class MailExpedientes extends Command
      */
     public function handle()
     {
-        $mensaje = "mail de prueba de juco";
-        Mail::to('primo39@gmail.com')->send(new SendMailable($mensaje));
+		$hoy = Carbon::today();
+		$recordatorios = Recordatorio::where('estado',0)->get();
+		foreach($recordatorios as $recordatorio){
+			$fecha_inicio = new Carbon($recordatorio->fecha_vencimiento);
+			$fecha_inicio->subDays($recordatorio->cant_dias);
+			if($fecha_inicio < $hoy){
+				$mensaje = $recordatorio->fecha_vencimiento." ".$recordatorio->mensaje." - Recordatorio de JUCO.";
+				Mail::to('primo39@gmail.com')->send(new SendMailable($mensaje));
+			}
+		}
+		
     }
 }

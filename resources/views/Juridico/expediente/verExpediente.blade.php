@@ -32,31 +32,58 @@
 				<div class="col-md-5">
 					@include('juridico.expediente.recordatoriosExpediente')
 				</div>
-				<div class="row">
-					<div class="col-sm-9">
-						<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">Transiciones <i class="fas fa-sitemap"></i></button>
-						
-						<button type="button" class="btn btn-info btn-md" >Actualizaciones <i class="fas fa-sync-alt"></i></button>
-						
-						<button type="button" class="btn btn-warning btn-md" >usuarios <i class="fas fa-user-plus"></i></button>
-						
-						<button type="button" class="btn btn-danger btn-md">notificaciones <i class="fas fa-bell"></i></button>
-					</div>
-				</div>
-				<br>
-				@if(count($transiciones) > 0)
-				<div class="panel panel-default">
-					<div class="panel-body">
-						<h4>Siguientes pasos</h4>
-						<div class="col-xs-12 text-center">
-						@foreach($transiciones as $transicion)
-							
-								<a type="button" class="btn btn-success" href="{{ route('paso.create',[$expediente,$transicion->siguiente])}}"><i class="fas fa-angle-right"></i> {{$transicion->siguiente->nombre}}</a>
-						@endforeach
+				<div class="col-md-5">
+					@if(count($transiciones) > 0)
+					<div class="box box-success">
+						<div class="box-header">
+							<h4>Siguientes pasos</h4>
+						</div>
+						<div class="box-body">
+							<div class="col-xs-12 text-center">
+							@foreach($transiciones as $transicion)
+								<a type="button" class="btn btn-success btn-xs" href="{{ route('paso.create',[$expediente,$transicion->siguiente])}}"><i class="fas fa-angle-double-right"></i> {{$transicion->siguiente->nombre}}</a>
+							@endforeach
+							</div>
 						</div>
 					</div>
+					@endif
 				</div>
-				@endif
+				<div class="col-md-2">
+					<div class="box box-success">
+						<div class="box-header">
+							<h4>Usuarios asignados</h4>
+						</div>
+						<div class="box-body">
+							<div class="col-xs-12">
+								<h4>Propietario</h4>
+								<i class="fas fa-user"></i> {{$expediente->usuario->name}} ({{$expediente->usuario->nombre}} {{$expediente->usuario->apellido}} asdasdasdasdasd)
+							</div>
+							<div class="col-xs-12">
+								<h4>Escritura</h4>
+								<i class="fas fa-user"></i> {{$expediente->usuario->name}} ({{$expediente->usuario->nombre}} {{$expediente->usuario->apellido}})
+							</div>
+							<div class="col-xs-12">
+								<h4>Solo Lectura</h4>
+								<i class="fas fa-user"></i> {{$expediente->usuario->name}} ({{$expediente->usuario->nombre}} {{$expediente->usuario->apellido}})
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<div class="col-md-5">
+					@if(count($transiciones) > 0)
+					<div class="box box-success">
+						<div class="box-body">
+							<h4>Archivos</h4>
+							<div class="col-xs-12 text-center">
+
+									<a type="button" class="btn btn-warning btn-xs" href=""><i class="fas fa-plus"></i> archivo</a>
+
+							</div>
+						</div>
+					</div>
+					@endif
+				</div>
 			</div>
 		</div>
 	</div>
@@ -120,13 +147,6 @@
 				<div class="container-fluid">
 					<div class="col-md-12 example-title">
 						<h3>Nuevo recordatorio</h3>	
-					</div>
-					<div>
-						@foreach($expediente->recordatorios as $recordatorio)
-						<div class="alert alert-info">
-							<span>{{$recordatorio}}</span>
-						</div>
-						@endforeach
 					</div>
 					<div>
 						<form method="POST" action="{{ route('recordatorio.store') }}" class="form-horizontal">

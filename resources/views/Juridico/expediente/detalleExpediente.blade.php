@@ -1,4 +1,4 @@
-<div class="box box-primary" id="detalle">
+<div class="box box-success" id="detalle">
 					<div class="box-header">
 						<h3>Exp. {{$expediente->iue}}</h3>
 					</div>
@@ -51,7 +51,7 @@
 						<div class="row">
 							<label for="fecha_inicio" class="control-label col-sm-3">PASO ACTUAL</label>
 							<div class="col-sm-9">
-								<a class="label label-success" href="{{route('paso.show',$expediente->pasos->last())}}">{{$expediente->actual->nombre}}</a>
+								<a class="label label-default" href="{{route('paso.show',$expediente->pasos->last())}}">{{$expediente->actual->nombre}}</a>
 							</div>
 						</div>
 						<div class="row">
@@ -60,5 +60,15 @@
 								{{$expediente->usuario->name}} ({{$expediente->usuario->nombre}} {{$expediente->usuario->apellido}})
 							</div>
 						</div>
-					</div>			
+					</div>
+					<div class="box-footer text-center">
+							
+								<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal">Transiciones <i class="fas fa-sitemap"></i></button>
+								
+								<button type="button" class="btn btn-primary btn-xs" >Actualizaciones <i class="fas fa-sync-alt"></i></button>
+								
+							
+						
+					</div>
+					
 				</div>

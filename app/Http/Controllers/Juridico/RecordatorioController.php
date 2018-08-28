@@ -90,6 +90,8 @@ class RecordatorioController extends Controller
      */
     public function destroy(Recordatorio $recordatorio)
     {
-        //
+        $recordatorio->delete();
+		
+		return redirect()->back()->with('success', 'El recordatorio fue eliminado correctamente');
     }
 }

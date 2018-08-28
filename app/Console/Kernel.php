@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         'App\Console\Commands\MailExpedientes',
+		'App\Console\Commands\CleanRecordatorios',
     ];
 
     /**
@@ -27,7 +28,8 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')
         //          ->hourly();
 		
-		$schedule->command('mail:expedientes')->everyMinute();
+		$schedule->command('mail:expedientes')->everyFiveMinutes();
+		$schedule->command('recordatorios:clean')->daily();
     }
 
     /**
