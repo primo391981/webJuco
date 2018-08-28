@@ -18,7 +18,9 @@ class PagosViaticosTableSeeder extends Seeder
 			'fecha'=>Carbon::parse('2018-08-01'),
 			'monto'=>750,
 			'descripcion'=>'Viático por pasajes.'
-		]);	
+			'gravado'=> 1,
+			'porcentaje'=> 50
+		]);
 		
 		DB::table('contable_pagos')->insert([
 			'idEmpleado'=>2,
@@ -27,6 +29,8 @@ class PagosViaticosTableSeeder extends Seeder
 			'cantDias'=>10,
 			'monto'=>1500,
 			'descripcion'=>'Almuerzo en el Oro del Rhin.'
+			'gravado'=> 1,
+			'porcentaje'=> 50
 		]);	
 		
 		DB::table('contable_pagos')->insert([
@@ -35,6 +39,8 @@ class PagosViaticosTableSeeder extends Seeder
 			'fecha'=>Carbon::parse('2018-08-01'),
 			'monto'=>650,
 			'descripcion'=>'Pasajes.'
+			'gravado'=> 1,
+			'porcentaje'=> 50
 		]);	
 		
 		DB::table('contable_pagos')->insert([
@@ -42,7 +48,9 @@ class PagosViaticosTableSeeder extends Seeder
 			'idTipoPago'=>1,
 			'fecha'=>Carbon::parse('2018-08-01'),
 			'cantDias'=>10,
-			'monto'=>800
+			'monto'=>800,
+			'gravado'=> 1,
+			'porcentaje'=> 50
 		]);	
 		
     }

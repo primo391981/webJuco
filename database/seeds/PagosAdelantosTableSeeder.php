@@ -17,7 +17,8 @@ class PagosAdelantosTableSeeder extends Seeder
 			'idTipoPago'=>2,
 			'fecha'=>Carbon::parse('2018-08-01'),
 			'monto'=>1500,
-			'descripcion'=>'Adelanto por viaje.'
+			'descripcion'=>'Adelanto por viaje.',
+			'gravado'=> 0
 		]);	
 		
 		DB::table('contable_pagos')->insert([
@@ -25,7 +26,8 @@ class PagosAdelantosTableSeeder extends Seeder
 			'idTipoPago'=>2,
 			'fecha'=>Carbon::parse('2018-08-01'),
 			'monto'=>1000,
-			'descripcion'=>'Por solicitud del empleado'
+			'descripcion'=>'Por solicitud del empleado',
+			'gravado'=> 0
 		]);	
 		
 		DB::table('contable_pagos')->insert([
@@ -33,7 +35,8 @@ class PagosAdelantosTableSeeder extends Seeder
 			'idTipoPago'=>2,
 			'fecha'=>Carbon::parse('2018-08-01'),
 			'monto'=>800,
-			'descripcion'=>'Para pagar UTE'
+			'descripcion'=>'Para pagar UTE',
+			'gravado'=> 0
 		]);	
 		
     }
