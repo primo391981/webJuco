@@ -15,17 +15,16 @@
 			{{Session::get('error')}}
 		</div>
 @endif 
-<div class="row text-info">
+<br>
+<div class="row">
 	<div class="col-xs-12">
-		<div class="panel panel-warning">
-				<div class="panel-heading">
-					<div class="row">
-						<div class="col-sm-12"><h4>HABERES</h4></div>
-					</div>
-				</div>
-				
-				<div class="panel-body text-warning">
-					<form method="POST" action="{{route('haberes.listaEmpleados')}}" class="form-horizontal" enctype="multipart/form-data" id="formCarga">		
+		
+		<div class="panel panel-warning text-warning">
+			<div class="panel-heading">
+				<h4><i class="fas fa-dollar-sign"></i> LIQUIDACION DE HABERES</h4>				
+			</div>
+			<div class="panel-body">
+				<form method="POST" action="{{route('haberes.listaEmpleados')}}" class="form-horizontal" enctype="multipart/form-data" id="formCarga">		
 						@csrf
 						<!-- Datos de la Empresa -->
 						<div class="form-group row">
@@ -75,18 +74,18 @@
 								@endif
 							</div>	
 						</div>
-						<div class="form-group row">
-							<br>
-							<div class="col-xs-12 text-center">
-								
-								<button type="submit" id="cargar" name="cargar" class="btn btn-warning btn-lg" onClick=""><i class="fas fa-check"></i> Cargar Empleados</button>
-							</div>
-						</div>
-					</form>
-				</div>				  
-		</div>
-	</div>
-</div>
+			
+			
+			
+			</div>
+			<div class="panel-footer">
+				<button type="submit" id="cargar" name="cargar" class="btn btn-warning btn-block" onClick=""><i class="fas fa-check"></i> Cargar Empleados</button>
+				</form>
+			</div>
+		</div><!--cierre panel-->
+		
+	</div><!--cierre col xs12-->
+</div><!--cierre row-->
 
 <script>
 $(function() 

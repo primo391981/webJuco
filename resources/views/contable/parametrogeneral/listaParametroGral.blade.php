@@ -72,10 +72,9 @@
 		
 	</div><!--cierre col xs12-->
 </div><!--cierre row-->
-
 <script>
 $(document).ready(function() {
-    $('#tablePG').DataTable( {  
+    $('#tablePG').DataTable( {        
 		"pagingType": "numbers",
 		"pageLength": 10,
 		"language": {
