@@ -21,7 +21,7 @@ class CreatePagosTable extends Migration
 			$table->integer('cantDias')->nullable();
 			$table->integer('monto');
 			$table->string('descripcion')->nullable();
-			$table->tinyint('gravado');
+			$table->tinyInteger('gravado');
 			$table->decimal('porcentaje', 6, 3)->nullable();
 			
             $table->foreign('idEmpleado')->references('id')->on('contable_empleados');
