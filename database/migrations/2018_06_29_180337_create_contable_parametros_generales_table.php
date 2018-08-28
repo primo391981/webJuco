@@ -20,6 +20,9 @@ class CreateContableParametrosGeneralesTable extends Migration
 			$table->date('fecha_inicio');
 			$table->date('fecha_fin')->nullable();
 			$table->decimal('valor', 9, 3);
+			$table->decimal('minimo', 9, 3)->nullable();
+			$table->decimal('maximo', 9, 3)->nullable();
+			
 			$table->timestamps();
             $table->softDeletes();
         });

@@ -104,7 +104,12 @@ class HaberesController extends Controller
 			//1- calcular hr por empleado por si tiene horas de menos o de mas
 			//1.1 - descuento de las horas de menos
 			//2- calculo sueldo total nominal
-			//2.2 caluclar antiguedad
+			//2.2 caluclar antiguedad (transporte no tiene)
+			//2.3 viaticos 50% para descuentos
+			//3- calculos descuentos
+			//		irpf, fonasa, bps, frl, calculo deducciones VMD,tasa fija deducciones TFD,
+			//4- monto no gravado (50%viaticos)
+			//5-sueldo nominal - descuento + monto no gravado
 			
 	   }
 	   catch(Exception $e){

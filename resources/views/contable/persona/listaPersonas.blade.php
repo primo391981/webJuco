@@ -88,7 +88,8 @@
 
 <script>
 $(document).ready(function() {
-    $('#tableEmpleados').DataTable( {        
+    $('#tableEmpleados').DataTable( {  
+		
 		"language": {
 		"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"},
 		dom: "<'row'<'col-sm-6'><'col-sm-6'f>>" +

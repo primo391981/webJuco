@@ -75,12 +75,14 @@
 
 <script>
 $(document).ready(function() {
-    $('#tablePG').DataTable( {        
+    $('#tablePG').DataTable( {  
+		"pagingType": "numbers",
+		"pageLength": 10,
 		"language": {
 		"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"},
 		dom: "<'row'<'col-sm-6'><'col-sm-6'f>>" +
 "<'row'<'col-sm-12'tr>>" +
-"<'row'<'col-sm-6'B><'col-sm-6'>>",
+"<'row'<'col-sm-6'B><'col-sm-6'p>>",
         buttons: [
            { extend: 'print', text: 'IMPRIMIR' },
 		   { extend: 'pdf', text: 'PDF' },		   
