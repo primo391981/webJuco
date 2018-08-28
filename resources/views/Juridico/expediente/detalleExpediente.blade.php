@@ -1,7 +1,10 @@
-<div class="panel panel-default">
-					<div class="panel-body">
+<div class="box box-primary" id="detalle">
+					<div class="box-header">
+						<h3>Exp. {{$expediente->iue}}</h3>
+					</div>
+					<div class="box-body">
 						<div class="row">
-							<label for="tipoexp" class="control-label col-sm-3">TIPO EXPEDIENTE</label>
+							<label for="tipoexp" class="control-label col-sm-3">TIPO</label>
 							<div class="col-sm-9">
 								{{$expediente->tipo->nombre}}
 							</div>
@@ -40,7 +43,7 @@
 							</div>
 						</div>
 						<div class="row">
-							<label for="fecha_inicio" class="control-label col-sm-3">FECHA CREACION</label>
+							<label for="fecha_inicio" class="control-label col-sm-3">FECHA</label>
 							<div class="col-sm-9">
 								{{$expediente->fecha_inicio}}
 							</div>
@@ -52,7 +55,7 @@
 							</div>
 						</div>
 						<div class="row">
-							<label for="fecha_inicio" class="control-label col-sm-3">INGRESADO POR</label>
+							<label for="fecha_inicio" class="control-label col-sm-3">USUARIO</label>
 							<div class="col-sm-9">
 								{{$expediente->usuario->name}} ({{$expediente->usuario->nombre}} {{$expediente->usuario->apellido}})
 							</div>

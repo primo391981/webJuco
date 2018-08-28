@@ -36,7 +36,16 @@ class RecordatorioController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $recordatorio = new Recordatorio();
+		$recordatorio->id_expediente = $request->id_expediente;
+		$recordatorio->fecha_vencimiento = $request->fecha;
+		$recordatorio->cant_dias = $request->cantDias;
+		$recordatorio->mensaje = $request->mensaje;
+		$recordatorio->estado = 0;
+		
+		$recordatorio->save();
+		
+		return redirect()->route('expediente.show',$recordatorio->id_expediente);
     }
 
     /**

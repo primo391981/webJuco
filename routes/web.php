@@ -115,16 +115,11 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::resource('cliente', 'Juridico\ClienteController')->middleware('role:juridicoAdmin');
 	
 	//expedientes
-	/*
-	Route::get('cliente/search', 'Juridico\ClienteController@search')->name('cliente.search')->middleware('role:juridicoAdmin');
-	Route::get('cliente/fisica', 'Juridico\ClienteController@createFisica')->name('cliente.create.fisica')->middleware('role:juridicoAdmin');
-	Route::get('cliente/juridica', 'Juridico\ClienteController@createJuridica')->name('cliente.create.juridica')->middleware('role:juridicoAdmin');
-	Route::get('cliente/inactivos', 'Juridico\ClienteController@inactivos')->name('cliente.index.inactivos')->middleware('role:juridicoAdmin');
-	Route::post('cliente/activar', 'Juridico\ClienteController@activar')->name('cliente.activar')->middleware('role:juridicoAdmin');
-	*/
-	
 	Route::get('expediente/search', 'Juridico\ExpedienteController@search')->name('expediente.search')->middleware('role:juridicoAdmin');
 	Route::resource('expediente', 'Juridico\ExpedienteController')->middleware('role:juridicoAdmin');
+	
+	//recordatorios
+	Route::resource('recordatorio', 'Juridico\RecordatorioController')->middleware('role:juridicoAdmin');
 	
 	//Pasos expediente
 	Route::get('paso/download/{archivo}', 'Juridico\PasoController@download')->name('paso.download')->middleware('role:juridicoAdmin');

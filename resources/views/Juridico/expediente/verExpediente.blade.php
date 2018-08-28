@@ -26,7 +26,12 @@
 				</div>
 			</div>
 			<div class="panel-body">
-				@include('juridico.expediente.detalleExpediente')
+				<div class="col-md-7">
+					@include('juridico.expediente.detalleExpediente')
+				</div>
+				<div class="col-md-5">
+					@include('juridico.expediente.recordatoriosExpediente')
+				</div>
 				<div class="row">
 					<div class="col-sm-9">
 						<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">Transiciones <i class="fas fa-sitemap"></i></button>
@@ -35,7 +40,7 @@
 						
 						<button type="button" class="btn btn-warning btn-md" >usuarios <i class="fas fa-user-plus"></i></button>
 						
-						<button type="button" class="btn btn-danger btn-md" data-toggle="modal" data-target="#modalRecordatorios">notificaciones <i class="fas fa-bell"></i></button>
+						<button type="button" class="btn btn-danger btn-md">notificaciones <i class="fas fa-bell"></i></button>
 					</div>
 				</div>
 				<br>
@@ -96,7 +101,7 @@
 		</div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
       </div>
     </div>
   </div>
@@ -109,12 +114,12 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="myModalLabel">Recordatorios expediente</h4>
+				<h4 class="modal-title" id="myModalLabel">Expediente {{$expediente->iue}}</h4>
 			</div>
 			<div class="modal-body">
 				<div class="container-fluid">
 					<div class="col-md-12 example-title">
-						<h2>Recordatorios Exp. {{$expediente->iue}}</h2>	
+						<h3>Nuevo recordatorio</h3>	
 					</div>
 					<div>
 						@foreach($expediente->recordatorios as $recordatorio)
@@ -124,26 +129,38 @@
 						@endforeach
 					</div>
 					<div>
-						<form>
-							<div class="form-group">
-								<label for="fecha">Fecha: </label>
-								<input type="date">
+						<form method="POST" action="{{ route('recordatorio.store') }}" class="form-horizontal">
+						  @csrf
+						  <input type="hidden" name="id_expediente" value="{{$expediente->id}}">
+						  <div class="form-group">
+							<label for="fecha" class="col-sm-2 control-label">Fecha</label>
+							<div class="col-sm-10">
+							  <input type="date" class="form-control" name="fecha">
 							</div>
-							<div class="form-group">
-								<label for="dias">Cantidad de días: </label>
-								<input type="text">
+						  </div>
+						  <div class="form-group">
+							<label for="cantDias" class="col-sm-2 control-label">Días</label>
+							<div class="col-sm-10">
+							  <input type="number" class="form-control" name="cantDias" placeholder="Cantidad de días previos al vencimiento">
 							</div>
-							<div class="form-group">
-								<label for="mensaje">mensaje</label>
-								<input type="text">
+						  </div>
+						  <div class="form-group">
+							<label for="mensaje" class="col-sm-2 control-label">Mensaje</label>
+							<div class="col-sm-10">
+							  <input type="text" class="form-control" name="mensaje" placeholder="opcional">
 							</div>
-							<button type="submit" class="btn btn-success btn-xs"><i class="fas fa-plus"></i></button>
+						  </div>
+						  <div class="form-group">
+							<div class="col-sm-12 text-center">
+							  <button type="submit" class="btn btn-primary">guardar</button>
+							</div>
+						  </div>
 						</form>
 					</div>
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
 			</div>
 		</div>
 	</div>
@@ -154,6 +171,10 @@
 
 <script>
 $(document).ready(function() {
+	$('#boxRecordatorios').height($('#detalle').height());
+	var altura = $('#boxRecordatorios').height() - 120;
+	$('#bodyRecordatorios').height(altura);
+	
     $('#tableExp').DataTable( {        
 		"language": {
 		"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"},
