@@ -12,7 +12,9 @@ use App\Contable\TipoHora;
 use App\Contable\RegistroHora;
 use App\Contable\Registro;
 use App\Contable\Dia;
+use App\Contable\Cargo;
 use App\Contable\HorarioEmpleado;
+use App\Contable\SalarioMinimoCargo;
 use Exception;
 use \Carbon\Carbon;
 
@@ -63,7 +65,7 @@ class HaberesController extends Controller
 						else{
 							$totalAdelantos+=$p->monto;
 						}
-						//echo ($persona->pivot->id.' - '.$p->tipoPago.' - '.$p->monto);
+						
 					}
 					
 					$habilita->push($totalViaticos);
@@ -111,14 +113,18 @@ class HaberesController extends Controller
 	 */
 	 //dd($request);
        try{
+		   $sueldoNominalGravado = 0;
+		   $sueldoNominalNoGravado = 0;
+		   $montoHorasFaltantes = 0;
+		   $montoAntiguedad = 0;
+		   
 		   $fecha = new Carbon($request->fecha);
 		   
 			for ( $i = 1; $i <= $request->cantHabilitados; $i++)
 			{
 				
 				if ($request->input($i.'idEmp') != null)
-				{
-					
+				{//Cálcula sueldo de cada empleado					
 					$idEmpleado = $request->input($i.'idEmp');
 					
 					$empleado = Empleado::find($idEmpleado);
@@ -126,8 +132,16 @@ class HaberesController extends Controller
 					$horasMesContrato = $this->obtenerHorasContratoMes($fecha, $empleado->id);
 					//Obtiene las horas efectivamente trabajadas
 					$horasMesTrabajado = $this->obtenerHorasTrabajadasMes($fecha, $empleado->id);
-					//dd($horasMesTrabajado[0]);
+					//Obtiene las horas a descontar, Horas Extras y Horas Extras Especiales
 					$horasADescuento = $this->obtenerHorasDescuentoYExtras($fecha, $horasMesContrato, $horasMesTrabajado[0]);
+					//Cálcula Antigüedad si corresponde
+					$cargo = Cargo::find($empleado->idCargo);
+					
+					$montoAntiguedad = $this->obtenerAntiguedad($fecha, $empleado, $cargo);
+					
+					
+					//Obtiene monto de Salario Nominal Gravado y no Gravado
+					
 					
 				
 				
@@ -408,14 +422,83 @@ class HaberesController extends Controller
 					break;
 			}			
 		}
-		
-		
+			
 		$horasEmpl->push($cantHorasDescuento);
 		$horasEmpl->push($cantHorasExtrasA);
 		$horasEmpl->push($cantHorasExtrasB);
 		
-		dd($horasEmpl);
 		return $horasEmpl;
+	}
+	
+	//Obtiene el monto de la antiguedad del empleado
+	private function obtenerAntiguedad($fecha, $empleado, $cargo)
+	{
+		$valorAntiguedad = 0;
+		
+		if ($cargo->id_remuneracion == 1)
+		{
+			//$salarioMinimos = $cargo->salarios;
+			$salarioMinimos = SalarioMinimoCargo::where("idCargo", "=", $cargo->id)->orderBy('id', 'desc')->get();
+		
+			//Obtiene SMN correspondiente a la fecha de cálculo para el cargo del empleado
+			foreach ($salarioMinimos as $smn)
+			{
+				$fechaInicio = new Carbon($smn->fechaDesde);
+				
+				if ($smn->fechaHasta == null)
+				{
+					if ($fechaInicio <= $fecha)
+					{
+						$salMin = $smn->monto;
+						$break;
+					}
+				}
+				else
+				{
+					$fechaFin = new Carbon($smn->fechaHasta);
+					
+					if ($fechaInicio <= $fecha && $fechaFin >= $fecha)
+					{
+						$salMin = $smn->monto;
+						$break;
+					}					
+				}
+			}
+				
+			$fecha->addMonth();
+			$fechaInicio = new Carbon($empleado->fechaDesde);
+			 
+			$meses = $fechaInicio->diffInMonths($fecha);
+/*
+	Antigüedad:
+		- 19 meses = 1,25 x SMN x años (1 años y 7 meses)
+		- 60 meses = 2,25 x SMN x años (5 años)
+		-120 meses = 2,5  x SMN x años (10 años)
+		-180 meses en adelante: 
+			tope = 2,5 x SMN x 15	
+*/		
+
+$meses = 200;
+			if ($meses >= 19 && $meses < 60)
+				$valorAntiguedad = $salMin * 0.0125 * (intval($meses / 12));
+			else
+			{
+				if ($meses >= 60 && $meses < 120)
+					$valorAntiguedad = $salMin * 0.0225 * (intval($meses / 12));
+				else
+				{
+					if ($meses >= 120 && $meses < 180)
+						$valorAntiguedad = $salMin * 0.025 * (intval($meses / 12));
+					else
+					{
+						if ($meses >= 180)
+							$valorAntiguedad = $salMin * 0.025 * 15;
+					}
+				}
+			}
+		}
+		dd($valorAntiguedad);
+		return $valorAntiguedad;
 	}
 	
 	

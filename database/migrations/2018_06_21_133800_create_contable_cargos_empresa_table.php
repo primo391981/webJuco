@@ -18,6 +18,7 @@ class CreateContableCargosEmpresaTable extends Migration
 			$table->string('nombre',30);
 			$table->text('descripcion');
 			$table->integer('id_remuneracion');
+			
 			$table->timestamps();
 			$table->softDeletes();
             
