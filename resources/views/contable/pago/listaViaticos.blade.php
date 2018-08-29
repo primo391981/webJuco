@@ -33,6 +33,8 @@
 									<th>EMPRESA</th>
 									<th>MONTO</th>
 									<th>FECHA</th>
+									<th>GRAVADO</th>
+									<th>PORCENTAJE</th>
 									<th></th>
 									<th></th>
 								</tr>
@@ -45,7 +47,9 @@
 									<td>{{$pago->empleado->empresa->nombreFantasia}}</td>
 									<td>{{$pago->monto}}</td>
 									
-									<td>{{$pago->fecha}}</td>	
+									<td>{{$pago->fecha}}</td>
+									<td>{{$pago->gravado==1 ? "SI" : "NO"}}</td>									
+									<td>{{$pago->porcentaje}}</td>
 									<td>
 										<form method="GET" action="{{ route('pago.edit', $pago) }}">																
 											<button type="submit"class="btn btn-warning"><i class="far fa-edit"></i></button>												

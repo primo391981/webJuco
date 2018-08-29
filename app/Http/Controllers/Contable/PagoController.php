@@ -90,6 +90,8 @@ class PagoController extends Controller
 		if (isset($request->porcentaje))
 			$pago->porcentaje = $request->porcentaje;
 		//dd($pago);
+			
+		
 		try {
 			$pago ->save();
 			

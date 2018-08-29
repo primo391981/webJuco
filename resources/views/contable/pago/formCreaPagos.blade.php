@@ -95,3 +95,22 @@
 		@endif
 	</div>
 </div>
+@if ($tipoPago <> 2)
+<div class="form-group row">
+	<label for="gravado" class="control-label col-md-3">GRAVADO</label>
+	<div class="col-md-9">
+		<input type="checkbox"  name="gravado" id="gravado" class="checkbox" name="gravado" onChange="" autofocus>
+	</div>
+</div>
+<div class="form-group row">
+	<label for="porcentaje" class="control-label col-md-3">PORCENTAJE</label>
+	<div class="col-md-6">
+		<input type="number" name="porcentaje" id="porcentaje" class="form-control" value="{{ old('porcentaje') }}" min="1" required disabled>
+		@if ($errors->has('porcentaje'))
+			<span class="invalid-feedback">
+				<strong>{{ $errors->first('porcentaje') }}</strong>
+			</span>
+		@endif
+	</div>	
+</div>
+@endif

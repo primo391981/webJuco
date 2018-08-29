@@ -96,6 +96,12 @@ $(function()
 		$("#tipoDoc").val(documentoEmpl[1]);
 		$("#numeroDoc").val(documentoEmpl[2]); 
 	})
+	
+	$('#gravado').on('change', function() 
+	{	
+		document.getElementById('porcentaje').disabled = !this.checked;
+	})
+	
 });
 
 </script>	

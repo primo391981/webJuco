@@ -65,7 +65,7 @@
 											@if($th->id!=1)
 												<td  bgcolor="#bababa"><input type="time" class="form-control" id="{{$th->id}}{{$t[1]}}" name="{{$th->id}}{{$t[1]}}" value="{{$reg->cantHoras}}" /></td>
 											@else
-												<td> <input type="time" class="form-control" id="{{$th->id}}{{$t[1]}}" name="{{$th->id}}{{$t[1]}}" value="{{$reg->cantHoras}}" /></td>
+												<td> <input type="time" class="form-control" id="{{$th->id}}{{$t[1]}}" name="{{$th->id}}{{$t[1]}}" value="{{$reg->cantHoras}}" min="00:00:00" max="08:00:00" {{$t[2]==="danger" ? 'readonly' : '' }} /></td>
 											@endif
 											@php $dibujo=true; @endphp
 											@break;

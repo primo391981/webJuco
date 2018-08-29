@@ -30,6 +30,7 @@
 			<form method="POST" action="{{ route('haberes.store') }}">		
 			@csrf
 			<input type="hidden" id="fecha" name="fecha" value="{{$fecha}}">
+			<input type="hidden" id="cantHabilitados" name="cantHabilitados" value="{{$cantHabilitados}}">
 								
 				<div class="table-responsive">
 				<table id="tableEmpleados" class="table" style="width:100%" >
@@ -45,18 +46,19 @@
 							</tr>
 						</thead>
 						<tbody>
-							
+							@php $i=1; @endphp
 							@foreach($habilitadas as $emp)
 							<tr>
-								<input type="hidden" id="idEmp{{$emp[0]->pivot->id}}" name="idEmp{{$emp[0]->pivot->id}}" value="{{$emp[0]->pivot->id}}" {{ $emp[1]==1 ? '' : 'disabled' }}>
-								<td><input type="checkbox" id="hab{{$emp[0]->pivot->id}}" name="hab{{$emp[0]->pivot->id}}" {{ $emp[1]==1 ? 'checked' : 'disabled' }}></td>								
+								<input type="hidden" id="{{$i}}idEmp" name="{{$i}}idEmp" value="{{$emp[0]->pivot->id}}" {{ $emp[1]==1 ? '' : 'disabled' }}>
+								<td><input type="checkbox" id="{{$i}}hab" name="{{$i}}hab" {{ $emp[1]==1 ? 'checked' : 'disabled' }}></td>								
 								<td>{{$emp[0]->documento}}</td>
 								<td>{{$emp[0]->nombre}}</td>
 								<td>{{$emp[0]->apellido}}</td>
-								<td><input id="v{{$emp[0]->pivot->id}}" name="v{{$emp[0]->pivot->id}}" type="number" value="{{$emp[2]}}" class="form-control" {{ $emp[1]==1 ? '' : 'disabled' }} required></td>
-								<td><input id="a{{$emp[0]->pivot->id}}" name="a{{$emp[0]->pivot->id}}" type="number" value="{{$emp[3]}}" class="form-control" {{ $emp[1]==1 ? '' : 'disabled' }} required></td>
-								<td><input id="ex{{$emp[0]->pivot->id}}" name="ex{{$emp[0]->pivot->id}}" type="number" class="form-control" {{ $emp[1]==1 ? '' : 'disabled' }} required></td>								
+								<td><input id="{{$i}}v" name="{{$i}}v" type="number" value="{{$emp[2]}}" class="form-control" {{ $emp[1]==1 ? '' : 'disabled' }} required></td>
+								<td><input id="{{$i}}a" name="{{$i}}a" type="number" value="{{$emp[3]}}" class="form-control" {{ $emp[1]==1 ? '' : 'disabled' }} required></td>
+								<td><input id="{{$i}}ex" name="{{$i}}ex" type="number" class="form-control" {{ $emp[1]==1 ? '' : 'disabled' }} value="100"></td>								
 							</tr>
+							@php $i++;  @endphp
 							@endforeach
 						</tbody>
 				</table>
