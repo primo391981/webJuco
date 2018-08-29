@@ -305,8 +305,7 @@ class HaberesController extends Controller
 		$cantHorasExtrasB = 0;
 		 
 		$horasEmpl = collect([]);
-		//dd( $horasMesTrabajado[0][1]);
-		
+				
 		for($i=0;$i<$fecha->daysInMonth;$i++)
 		{
 			//Suma de horas a descontar por diferencia
@@ -318,7 +317,7 @@ class HaberesController extends Controller
 				
 				$cantHorasDescuento = $cantHorasDescuento + $difHora;
 			}
-			
+			//dd($cantHorasDescuento);
 			$horasExtrasDia = Carbon::createFromTimeString($horasMesTrabajado[$i][2]);
 			//Suma de horas Extras
 			switch ($horasMesContrato[$i][2])
@@ -359,7 +358,9 @@ class HaberesController extends Controller
 						}
 						else
 						{
-							$cantHorasExtrasB = $cantHorasExtrasB + $horasExtrasDia->hour;
+							$cantHorasExtrasA = $cantHorasExtrasA + 4;
+							
+							$cantHorasExtrasB = $cantHorasExtrasB + ($horasExtrasDia->hour - 4);
 							
 							//Suma minutos
 							if ($horasExtrasDia->minute > 15 && $horasExtrasDia->minute <= 30)
@@ -371,14 +372,50 @@ class HaberesController extends Controller
 					break;
 				case 3:
 					//DESCANSO
-					
+						if ($horasExtrasDia->hour >= 0 && $horasExtrasDia->hour <= 8) 
+						{
+							$cantHorasExtrasA = $cantHorasExtrasA + $horasExtrasDia->hour;
+							
+							if ($horasExtrasDia->hour < 8 )
+							{//Suma minutos
+								if ($horasExtrasDia->minute > 15 && $horasExtrasDia->minute <= 30)
+									$cantHorasExtrasA = $cantHorasExtrasA + 0.5;
+								
+								if ($horasExtrasDia->minute > 30)
+									$cantHorasExtrasA = $cantHorasExtrasA + 1;		
+							}
+							else
+							{//Suma minutos
+								if ($horasExtrasDia->minute > 15 && $horasExtrasDia->minute <= 30)
+									$cantHorasExtrasB = $cantHorasExtrasB + 0.5;
+								
+								if ($horasExtrasDia->minute > 30)
+									$cantHorasExtrasB = $cantHorasExtrasB + 1;	
+							}
+						}
+						else
+						{
+							$cantHorasExtrasA = $cantHorasExtrasA + 8;
+							$cantHorasExtrasB = $cantHorasExtrasB + ($horasExtrasDia->hour - 8);
+							
+							//Suma minutos
+							if ($horasExtrasDia->minute > 15 && $horasExtrasDia->minute <= 30)
+								$cantHorasExtrasB = $cantHorasExtrasB + 0.5;
+							
+							if ($horasExtrasDia->minute > 30)
+								$cantHorasExtrasB = $cantHorasExtrasB + 1;	
+						}
 					break;
-			}	
-			
+			}			
 		}
 		
 		
-		dd($cantHorasDescuento);
+		$horasEmpl->push($cantHorasDescuento);
+		$horasEmpl->push($cantHorasExtrasA);
+		$horasEmpl->push($cantHorasExtrasB);
+		
+		dd($horasEmpl);
+		return $horasEmpl;
 	}
 	
 	
