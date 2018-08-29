@@ -118,7 +118,17 @@ $(document).ready(function() {
 "<'row'<'col-sm-12'tr>>" +
 "<'row'<'col-sm-6'><'col-sm-6'>>",
         buttons: [
-           { extend: 'print', text: 'IMPRIMIR' },
+           { extend: 'print', text: 'IMPRIMIR',customize: function ( win ) {
+                    $(win.document.body)
+                        .css( 'font-size', '10pt' )
+                        .prepend(
+                            '<img src="img/reloj.jpg" style="position:absolute; top:0; left:0;" />'
+                        );
+ 
+                    $(win.document.body).find( 'table' )
+                        .addClass( 'compact' )
+                        .css( 'font-size', 'inherit' );
+                } },
 		   { extend: 'pdf', text: 'PDF' },		   
 		   { extend: 'excel', text: 'EXCEL' },
 		   { extend: 'copy', text: 'COPIAR' }
