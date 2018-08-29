@@ -32,7 +32,7 @@
 				<div class="col-md-5">
 					@include('juridico.expediente.recordatoriosExpediente')
 				</div>
-				<div class="col-md-5">
+				<div class="col-md-4">
 					@if(count($transiciones) > 0)
 					<div class="box box-success">
 						<div class="box-header">
@@ -48,7 +48,7 @@
 					</div>
 					@endif
 				</div>
-				<div class="col-md-2">
+				<div class="col-md-3">
 					<div class="box box-success">
 						<div class="box-header">
 							<h4>Usuarios asignados</h4>
@@ -60,29 +60,33 @@
 							</div>
 							<div class="col-xs-12">
 								<h4>Escritura</h4>
-								<i class="fas fa-user"></i> {{$expediente->usuario->name}} ({{$expediente->usuario->nombre}} {{$expediente->usuario->apellido}})
+								@foreach($expediente->permisosExpedientes->where('id_tipo',1) as $usuario)
+									<i class="fas fa-user"></i> {{$usuario->name}} ({{$usuario->nombre}} {{$usuario->apellido}})
+								@endforeach
 							</div>
 							<div class="col-xs-12">
 								<h4>Solo Lectura</h4>
-								<i class="fas fa-user"></i> {{$expediente->usuario->name}} ({{$expediente->usuario->nombre}} {{$expediente->usuario->apellido}})
+								@foreach($expediente->permisosExpedientes->where('id_tipo',2) as $usuario)
+									<i class="fas fa-user"></i> {{$usuario->name}} ({{$usuario->nombre}} {{$usuario->apellido}})
+								@endforeach
 							</div>
+						</div>
+						<div class="box-footer text-center">
+							<button class="btn btn-info btn-xs" data-toggle="modal" data-target="#modalPermisos"> <i class="fas fa-plus"></i> permiso</button>
 						</div>
 					</div>
 
 				</div>
 				<div class="col-md-5">
-					@if(count($transiciones) > 0)
 					<div class="box box-success">
 						<div class="box-body">
 							<h4>Archivos</h4>
-							<div class="col-xs-12 text-center">
 
-									<a type="button" class="btn btn-warning btn-xs" href=""><i class="fas fa-plus"></i> archivo</a>
-
-							</div>
+						</div>
+						<div class="box-footer text-center">
+							<button class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modalPermisos"> <i class="fas fa-plus"></i> archivo</button>
 						</div>
 					</div>
-					@endif
 				</div>
 			</div>
 		</div>
@@ -135,7 +139,7 @@
 </div>
 <!-- FIN Modal Pasos Expediente-->
 
-<!-- Modal Notificaciones -->
+<!-- Modal Recordatorio -->
 <div class="modal fade" id="modalRecordatorios" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
@@ -144,40 +148,28 @@
 				<h4 class="modal-title" id="myModalLabel">Expediente {{$expediente->iue}}</h4>
 			</div>
 			<div class="modal-body">
-				<div class="container-fluid">
-					<div class="col-md-12 example-title">
-						<h3>Nuevo recordatorio</h3>	
-					</div>
-					<div>
-						<form method="POST" action="{{ route('recordatorio.store') }}" class="form-horizontal">
-						  @csrf
-						  <input type="hidden" name="id_expediente" value="{{$expediente->id}}">
-						  <div class="form-group">
-							<label for="fecha" class="col-sm-2 control-label">Fecha</label>
-							<div class="col-sm-10">
-							  <input type="date" class="form-control" name="fecha">
-							</div>
-						  </div>
-						  <div class="form-group">
-							<label for="cantDias" class="col-sm-2 control-label">Días</label>
-							<div class="col-sm-10">
-							  <input type="number" class="form-control" name="cantDias" placeholder="Cantidad de días previos al vencimiento">
-							</div>
-						  </div>
-						  <div class="form-group">
-							<label for="mensaje" class="col-sm-2 control-label">Mensaje</label>
-							<div class="col-sm-10">
-							  <input type="text" class="form-control" name="mensaje" placeholder="opcional">
-							</div>
-						  </div>
-						  <div class="form-group">
-							<div class="col-sm-12 text-center">
-							  <button type="submit" class="btn btn-primary">guardar</button>
-							</div>
-						  </div>
-						</form>
-					</div>
-				</div>
+				@include('juridico.expediente.formRecordatorio')
+			</div>
+			
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- FIN Modal Recordatorio -->
+
+<!-- Modal Permisos de usuario -->
+<div class="modal fade" id="modalPermisos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">Permisos de Usuario</h4>
+			</div>
+			<div class="modal-body">
+				@include('juridico.expediente.formPermiso')
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
@@ -186,14 +178,20 @@
 	</div>
 </div>
 
-<!-- FIN Modal Notificaciones -->
+<!-- FIN Modal Permisos de usuario -->
 
 
 <script>
 $(document).ready(function() {
+	
+	//igualar altura de boxes superiores
 	$('#boxRecordatorios').height($('#detalle').height());
 	var altura = $('#boxRecordatorios').height() - 120;
 	$('#bodyRecordatorios').height(altura);
+	
+	//select en formulario de permisos
+	
+	
 	
     $('#tableExp').DataTable( {        
 		"language": {

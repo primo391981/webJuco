@@ -12,13 +12,13 @@ class TipoPermisoTableSeeder extends Seeder
     public function run()
     {
         DB::table('juridico_tipo_permiso')->insert([
-			'nombre'=>'Lectura',
-			'descripcion'=>'Lectura'
+			'nombre'=>'Escritura',
+			'descripcion'=>'Escritura'
 		]);
 		
 		DB::table('juridico_tipo_permiso')->insert([
-			'nombre'=>'Escritura',
-			'descripcion'=>'Escritura'
+			'nombre'=>'Lectura',
+			'descripcion'=>'Lectura'
 		]);
     }
 }

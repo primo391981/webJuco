@@ -116,6 +116,7 @@ Route::group(['middleware' => ['auth']], function () {
 	
 	//expedientes
 	Route::get('expediente/search', 'Juridico\ExpedienteController@search')->name('expediente.search')->middleware('role:juridicoAdmin');
+	Route::post('expediente/permiso/{expediente}', 'Juridico\ExpedienteController@addPermiso')->name('expediente.addPermiso')->middleware('role:juridicoAdmin');
 	Route::resource('expediente', 'Juridico\ExpedienteController')->middleware('role:juridicoAdmin');
 	
 	//recordatorios

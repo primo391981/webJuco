@@ -7,6 +7,7 @@ use App\Juridico\Cliente;
 use App\Juridico\Transicion;
 use App\Juridico\TipoExpediente;
 use App\Juridico\Paso;
+use App\Administracion\User;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -135,7 +136,10 @@ class ExpedienteController extends Controller
     public function show(Expediente $expediente)
     {
         $transiciones = $expediente->tipo->transiciones->where('id_paso_inicial',$expediente->paso_actual);
-		return view('juridico.expediente.verExpediente', ['expediente' => $expediente, 'transiciones' =>$transiciones]);
+		
+		$usuarios = User::All();
+		
+		return view('juridico.expediente.verExpediente', ['expediente' => $expediente, 'transiciones' => $transiciones, 'usuarios' => $usuarios]);
 		
 		
 		
@@ -175,4 +179,11 @@ class ExpedienteController extends Controller
     {
         //
     }
+	
+	public function addPermiso(Request $request, Expediente $expediente)
+	{
+		$expediente->permisosExpedientes()->attach($request->usuario, ['id_tipo' => $request->tipoPermiso]);
+
+		return redirect()->back()->with('success', 'Permiso asignado correctamente');
+	}
 }
