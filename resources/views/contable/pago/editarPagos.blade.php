@@ -27,7 +27,7 @@
 				</h4>				
 			</div>
 			<div class="panel-body">
-				<form method="POST" action="{{ route('pago.update', ['pago' => $pago]) }}" class="form-horizontal" enctype="multipart/form-data">
+				<form method="POST" action="{{ route('pago.update', ['pago'=> $pago]) }}" class="form-horizontal" enctype="multipart/form-data">
 				{{ method_field('PUT') }}
 				@include('contable.pago.formEditPagos')
 				
@@ -41,3 +41,14 @@
 	</div><!--cierre col xs12-->
 </div><!--cierre row-->
 @endsection
+
+<script>	
+$(function() 
+{
+	$('#gravado').on('change', function() 
+	{	
+		document.getElementById('porcentaje').disabled = !this.checked;
+	})
+});
+
+</script>	

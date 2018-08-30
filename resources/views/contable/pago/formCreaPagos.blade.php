@@ -99,7 +99,7 @@
 <div class="form-group row">
 	<label for="gravado" class="control-label col-md-3">GRAVADO</label>
 	<div class="col-md-9">
-		<input type="checkbox"  name="gravado" id="gravado" class="checkbox" name="gravado" onChange="" autofocus>
+		<input type="checkbox"  name="gravado" id="gravado" class="checkbox" onChange="" autofocus>
 	</div>
 </div>
 <div class="form-group row">

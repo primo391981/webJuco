@@ -32,6 +32,8 @@
 									<th>EMPRESA</th>
 									<th>MONTO</th>
 									<th>FECHA</th>
+									<th>GRAVADO</th>
+									<th>PORCENTAJE</th>
 									<th></th>
 								</tr>
 							</thead>
@@ -43,6 +45,8 @@
 									<td>{{$pago->empleado->empresa->nombreFantasia}}</td>
 									<td>{{$pago->monto}}</td>									
 									<td>{{$pago->fecha}}</td>	
+									<td>{{$pago->gravado==1 ? "SI" : "NO"}}</td>									
+									<td>{{$pago->porcentaje}}</td>
 									<td> 
 										<form method="POST" action="{{ route('pago.activar') }}">
 											@csrf	
