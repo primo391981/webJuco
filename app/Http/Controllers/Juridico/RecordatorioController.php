@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Juridico;
 
 use App\Juridico\Recordatorio;
+use App\Juridico\Expediente;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Auth;
 
 class RecordatorioController extends Controller
 {
@@ -36,7 +38,16 @@ class RecordatorioController extends Controller
      */
     public function store(Request $request)
     {
-        $recordatorio = new Recordatorio();
+        $user = Auth::user();
+		
+		if($user->hasRole('invitado')){
+			$exp = Expediente::find($request->id_expediente);
+			if(!$user->permisosEscritura->contains($exp)){
+				return abort(403, 'Unauthorized action.');
+			}; 
+		};
+		
+		$recordatorio = new Recordatorio();
 		$recordatorio->id_expediente = $request->id_expediente;
 		$recordatorio->fecha_vencimiento = $request->fecha;
 		$recordatorio->cant_dias = $request->cantDias;
@@ -90,7 +101,16 @@ class RecordatorioController extends Controller
      */
     public function destroy(Recordatorio $recordatorio)
     {
-        $recordatorio->delete();
+        $user = Auth::user();
+		
+		if($user->hasRole('invitado')){
+			$exp = $recordatorio->expediente;
+			if(!$user->permisosEscritura->contains($exp)){
+				return abort(403, 'Unauthorized action.');
+			}; 
+		};
+		
+		$recordatorio->delete();
 		
 		return redirect()->back()->with('success', 'El recordatorio fue eliminado correctamente');
     }

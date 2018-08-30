@@ -19,6 +19,8 @@
 		@endif
 	</div>	
 	<div class="box-footer text-center">
-		<button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modalRecordatorios"> <i class="fas fa-plus"></i> recordatorio</button>
+		@if(Auth::user()->hasRole('juridicoAdmin') || Auth::user()->permisosEscritura->contains($expediente))
+			<button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modalRecordatorios"> <i class="fas fa-plus"></i> recordatorio</button>
+		@endif
 	</div>					
 </div>

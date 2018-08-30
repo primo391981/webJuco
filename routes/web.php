@@ -117,18 +117,19 @@ Route::group(['middleware' => ['auth']], function () {
 	//expedientes
 	Route::get('expediente/search', 'Juridico\ExpedienteController@search')->name('expediente.search')->middleware('role:juridicoAdmin');
 	Route::post('expediente/permiso/{expediente}', 'Juridico\ExpedienteController@addPermiso')->name('expediente.addPermiso')->middleware('role:juridicoAdmin');
+	Route::post('expediente/delpermiso/{expediente}', 'Juridico\ExpedienteController@delPermiso')->name('expediente.delPermiso')->middleware('role:juridicoAdmin');
 	Route::resource('expediente', 'Juridico\ExpedienteController')->middleware('role:juridicoAdmin,invitado');
 	
 	//recordatorios
-	Route::resource('recordatorio', 'Juridico\RecordatorioController')->middleware('role:juridicoAdmin');
+	Route::resource('recordatorio', 'Juridico\RecordatorioController')->middleware('role:juridicoAdmin,invitado');
 	
 	//Pasos expediente
-	Route::get('paso/download/{archivo}', 'Juridico\PasoController@download')->name('paso.download')->middleware('role:juridicoAdmin');
-	Route::get('paso/create/{expediente}/{paso}', 'Juridico\PasoController@create')->name('paso.create')->middleware('role:juridicoAdmin');
-	Route::resource('paso', 'Juridico\PasoController',['except' => ['create']])->middleware('role:juridicoAdmin');
+	Route::get('paso/download/{archivo}', 'Juridico\PasoController@download')->name('paso.download')->middleware('role:juridicoAdmin,invitado');
+	Route::get('paso/create/{expediente}/{paso}', 'Juridico\PasoController@create')->name('paso.create')->middleware('role:juridicoAdmin,invitado');
+	Route::resource('paso', 'Juridico\PasoController',['except' => ['create']])->middleware('role:juridicoAdmin,invitado');
 	
 	//Archivos Paso
-	Route::resource('archivoPaso', 'Juridico\ArchivoPasoController',['except' => ['create','edit','show','store','index','update']])->middleware('role:juridicoAdmin');
+	Route::resource('archivoPaso', 'Juridico\ArchivoPasoController',['except' => ['create','edit','show','store','index','update']])->middleware('role:juridicoAdmin,invitado');
 	
 	
 });

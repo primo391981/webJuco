@@ -20,27 +20,19 @@
 			<div class="panel-heading">
 				<div class="row">
 					<div class="col-sm-9"><h4>Detalle de paso de expediente</h4></div>
-					<div class="col-sm-3 hidden-xs">
-						<a href="{{ route('expediente.create') }}" class="btn btn-success pull-right" role="button"><i class="fas fa-plus"></i> nuevo expediente</a>
-					</div>				  
+					@if(Auth::user()->hasRole('juridicoAdmin'))
+						<div class="col-sm-3 hidden-xs">
+							<a href="{{ route('expediente.create') }}" class="btn btn-success pull-right" role="button"><i class="fas fa-plus"></i> nuevo expediente</a>
+						</div>
+					@endif
 				</div>
 			</div>
 			<div class="panel-body">
 				@include('juridico.expediente.detalleExpediente')
-				<div class="row">
-					<div class="col-sm-9">
-						<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">Transiciones <i class="fas fa-info"></i></button>
-						
-						<button type="button" class="btn btn-info btn-md" >Actualizaciones <i class="fas fa-sync-alt"></i></button>
-						
-						<button type="button" class="btn btn-danger btn-md" >notificaciones <i class="fas fa-bell"></i></button>
-						
-						<a type="button" class="btn btn-warning btn-md" href="{{route('expediente.show',$paso->expediente)}}">volver <i class="fas fa-undo-alt"></i></i></a>
-					</div>
-				</div>
 				<br>
-				<div class="panel panel-default">
-					<div class="panel-body">
+				
+				<div class="box box-success">
+					<div class="box-body">
 						<h4>Paso: {{$paso->tipo->nombre}}</h4>
 							<div class="row">
 							<label for="comentarios" class="control-label col-sm-3">FECHA DE INGRESO</label>
@@ -74,11 +66,21 @@
 					</div>
 				</div>
 				<div class="row">
-				@if($expediente->pasos->last()->id == $paso->id && $paso->tipo->id != 1)
+				
 					<div class="col-sm-9">
-						<a class="btn btn-success btn-md" href="{{route('paso.edit',$paso)}}">Editar paso <i class="fas fa-edit"></i></a>
+						@if(Auth::user()->hasRole('juridicoAdmin') || Auth::user()->permisosEscritura->contains($expediente))
+							@if($expediente->pasos->last()->id == $paso->id && $paso->tipo->id != 1)
+								<a class="btn btn-success btn-xs" href="{{route('paso.edit',$paso)}}">Editar paso <i class="fas fa-edit"></i></a>
+							@endif
+						@endif
+						<a type="button" class="btn btn-warning btn-xs" href="{{route('expediente.show',$paso->expediente)}}">volver <i class="fas fa-undo-alt"></i></i></a>
 					</div>
-				@endif
+				
+				</div>
+				<div class="row">
+					<div class="col-sm-9">
+						
+					</div>
 				</div>
 			</div>
 		</div>

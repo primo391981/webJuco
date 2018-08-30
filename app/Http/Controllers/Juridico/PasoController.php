@@ -36,6 +36,15 @@ class PasoController extends Controller
     public function create($expediente, $paso)
     {
         $exp = Expediente::find($expediente);
+		
+		$user = Auth::user();
+		
+		if($user->hasRole('invitado')){
+			if(!$user->permisosEscritura->contains($exp)){
+				return abort(403, 'Unauthorized action.');
+			}; 
+		};
+		
 		$tipoPaso = TipoPaso::find($paso);
 		
 		return view('juridico.expediente.agregarPaso',['expediente' => $exp, 'tipoPaso' => $tipoPaso]);
@@ -49,7 +58,15 @@ class PasoController extends Controller
      */
     public function store(Request $request)
     {
-        
+        $user = Auth::user();
+		$expediente = Expediente::find($request->expediente_id);
+		
+		if($user->hasRole('invitado')){
+			if(!$user->permisosEscritura->contains($expediente)){
+				return abort(403, 'Unauthorized action.');
+			}; 
+		};
+		
 		$paso = new Paso();
 		$paso->id_expediente = $request->expediente_id;
 		$paso->id_tipo = $request->tipoPaso_id;
@@ -109,7 +126,6 @@ class PasoController extends Controller
 		
 		// fin envío de mail
 	
-		 					
 		return redirect()->route('expediente.show',$expediente)->with("success","El expediente fue modificado correctamente.");
 		
 		
@@ -123,12 +139,19 @@ class PasoController extends Controller
      */
     public function show(Paso $paso)
     {
+	   $user = Auth::user();
+	   
 	   $expediente = $paso->expediente;
+	   
+	   if($user->hasRole('invitado')){
+			if(!$user->permisosExpedientes->contains($expediente)){
+				return abort(403, 'Unauthorized action.');
+			};
+		};
+	  
 	   $transiciones = $expediente->tipo->transiciones->where('id_paso_inicial',$expediente->paso_actual);
 
-	  
        return view('juridico.expediente.verPaso', ['paso' => $paso, 'expediente' => $expediente, 'transiciones' =>$transiciones]);
-	   
     }
 
     /**
@@ -139,7 +162,14 @@ class PasoController extends Controller
      */
     public function edit(Paso $paso)
     {
-        
+        $user = Auth::user();
+		
+		if($user->hasRole('invitado')){
+			if(!$user->permisosEscritura->contains($exp)){
+				return abort(403, 'Unauthorized action.');
+			}; 
+		};
+		
 		$exp = $paso->expediente;
 		
 		//solo es posible editar el paso actual en el que se encuentra un expediente
@@ -159,8 +189,16 @@ class PasoController extends Controller
      */
     public function update(Request $request, Paso $paso)
     {
-        $paso->comentario = $request->comentarios;
+        $user = Auth::user();
 		$expediente = $paso->expediente;	
+		
+		if($user->hasRole('invitado')){
+			if(!$user->permisosEscritura->contains($expediente)){
+				return abort(403, 'Unauthorized action.');
+			}; 
+		};
+		
+		$paso->comentario = $request->comentarios;
 		$paso->save();
 		
 		if ($request->hasFile('documentos')) {
@@ -228,6 +266,14 @@ class PasoController extends Controller
 	// inicia descarga del archivo indicado como parámetro
 	public function download(ArchivoPaso $archivo)
 	{
+		$user = Auth::user();
+		
+		if($user->hasRole('invitado')){
+			if(!$user->permisosExpedientes->contains($expediente)){
+				return abort(403, 'Unauthorized action.');
+			};
+		};
+		
 		$url = Storage::url($archivo->archivo);
 		
 		return response()->download(storage_path('app/' . $archivo->archivo));

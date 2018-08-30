@@ -81,7 +81,15 @@ class ArchivoPasoController extends Controller
      */
     public function destroy(ArchivoPaso $archivoPaso)
     {
-        $archivoPaso->delete();
+        $user = Auth::user();
+		
+		if($user->hasRole('invitado')){
+			if(!$user->permisosEscritura->contains($exp)){
+				return abort(403, 'Unauthorized action.');
+			}; 
+		};
+		
+		$archivoPaso->delete();
 		
 		return redirect()->back()->with('message','El archivo fue borrado correctamente');
     }

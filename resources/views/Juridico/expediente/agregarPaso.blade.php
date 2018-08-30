@@ -23,15 +23,17 @@
 			<div class="panel-heading">
 				<div class="row">
 					<div class="col-sm-9"><h4>Detalle de expediente</h4></div>
-					<div class="col-sm-3 hidden-xs">
-						<a href="{{ route('expediente.create') }}" class="btn btn-success pull-right" role="button"><i class="fas fa-plus"></i> nuevo expediente</a>
-					</div>				  
+					@if(Auth::user()->hasRole('juridicoAdmin'))
+						<div class="col-sm-3 hidden-xs">
+							<a href="{{ route('expediente.create') }}" class="btn btn-success pull-right" role="button"><i class="fas fa-plus"></i> nuevo expediente</a>
+						</div>				  
+					@endif
 				</div>
 			</div>
 			<div class="panel-body">
 				@include('juridico.expediente.detalleExpediente')
-				<div class="panel panel-default">
-					<div class="panel-body">
+				<div class="box box-success">
+					<div class="box-body">
 						<h4>Crear paso: {{$tipoPaso->nombre}}</h4>
 						<form method="POST" action="{{ route('paso.store') }}" class="form-horizontal" enctype="multipart/form-data" id="formPaso"> 
 							@include('juridico.expediente.formPaso', ['textoBoton' => 'Confirmar', 'expediente' => $expediente->id, 'tipoPaso' => $tipoPaso->id]) 

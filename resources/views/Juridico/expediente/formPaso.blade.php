@@ -37,8 +37,8 @@
 		
 						<div class="form-group row">
 								<div class="col-xs-12 text-center">
-									<button type="submit" class="btn btn-success btn-lg"><i class="fas fa-check"></i> Confirmar</button>
-									<a class="btn btn-danger btn-lg" href="{{route('expediente.show',$expediente)}}"><i class="fas fa-times"></i> Cancelar</a>
+									<button type="submit" class="btn btn-success btn-xs"><i class="fas fa-check"></i> Confirmar</button>
+									<a class="btn btn-danger btn-xs" href="{{route('expediente.show',$expediente)}}"><i class="fas fa-times"></i> Cancelar</a>
 								</div>
 						</div>
 					

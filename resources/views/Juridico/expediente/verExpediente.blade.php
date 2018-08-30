@@ -20,9 +20,11 @@
 			<div class="panel-heading">
 				<div class="row">
 					<div class="col-sm-9"><h4>Detalle de expediente</h4></div>
-					<div class="col-sm-3 hidden-xs">
-						<a href="{{ route('expediente.create') }}" class="btn btn-success pull-right" role="button"><i class="fas fa-plus"></i> nuevo expediente</a>
-					</div>				  
+					@if(Auth::user()->hasRole('juridicoAdmin'))
+						<div class="col-sm-3 hidden-xs">
+							<a href="{{ route('expediente.create') }}" class="btn btn-success pull-right" role="button"><i class="fas fa-plus"></i> nuevo expediente</a>
+						</div>				  
+					@endif
 				</div>
 			</div>
 			<div class="panel-body">
@@ -33,20 +35,28 @@
 					@include('juridico.expediente.recordatoriosExpediente')
 				</div>
 				<div class="col-md-4">
-					@if(count($transiciones) > 0)
+					
 					<div class="box box-success">
 						<div class="box-header">
 							<h4>Siguientes pasos</h4>
 						</div>
 						<div class="box-body">
 							<div class="col-xs-12 text-center">
-							@foreach($transiciones as $transicion)
-								<a type="button" class="btn btn-success btn-xs" href="{{ route('paso.create',[$expediente,$transicion->siguiente])}}"><i class="fas fa-angle-double-right"></i> {{$transicion->siguiente->nombre}}</a>
-							@endforeach
+								@if(Auth::user()->hasRole('juridicoAdmin') || Auth::user()->permisosEscritura->contains($expediente))
+									@if(count($transiciones) > 0)
+										@foreach($transiciones as $transicion)
+											<a type="button" class="btn btn-success btn-xs" href="{{ route('paso.create',[$expediente,$transicion->siguiente])}}"><i class="fas fa-angle-double-right"></i> {{$transicion->siguiente->nombre}}</a>
+										@endforeach
+									@else
+										<div class="alert alert-info">El expediente fue archivado.</div>
+									@endif
+								@else
+										<div class="alert alert-danger">No cuenta con permisos para acceder a esta información.</div>
+								@endif
 							</div>
 						</div>
 					</div>
-					@endif
+					
 				</div>
 				<div class="col-md-3">
 					<div class="box box-success">
@@ -56,23 +66,39 @@
 						<div class="box-body">
 							<div class="col-xs-12">
 								<h4>Propietario</h4>
-								<i class="fas fa-user"></i> {{$expediente->usuario->name}} ({{$expediente->usuario->nombre}} {{$expediente->usuario->apellido}} asdasdasdasdasd)
+								<i class="fas fa-user"></i> {{$expediente->usuario->name}} ({{$expediente->usuario->nombre}} {{$expediente->usuario->apellido}})  
 							</div>
 							<div class="col-xs-12">
 								<h4>Escritura</h4>
 								@foreach($expediente->permisosExpedientes->where('pivot.id_tipo',1) as $usuario)
 									<i class="fas fa-user"></i> {{$usuario->name}} ({{$usuario->nombre}} {{$usuario->apellido}})
+									@if(Auth::user()->hasRole('juridicoAdmin'))
+										<form class="form-inline" style="display: inline-block;" method="POST" action="{{ route('expediente.delPermiso',$expediente) }}">
+											@csrf
+											<input type="hidden" name="usuario" value="{{ $usuario->id }}">
+											<button type="submit" class="btn btn-link"><i class="fas fa-times"></i>
+										</form>
+									@endif
 								@endforeach
 							</div>
 							<div class="col-xs-12">
 								<h4>Solo Lectura</h4>
 								@foreach($expediente->permisosExpedientes->where('pivot.id_tipo',2) as $usuario)
 									<i class="fas fa-user"></i> {{$usuario->name}} ({{$usuario->nombre}} {{$usuario->apellido}})
+									@if(Auth::user()->hasRole('juridicoAdmin'))
+										<form class="form-inline" style="display: inline-block;" method="POST" action="{{ route('expediente.delPermiso',$expediente) }}">
+										@csrf
+											<input type="hidden" name="usuario" value="{{ $usuario->id }}">
+											<button type="submit" class="btn btn-link"><i class="fas fa-times"></i>
+										</form>
+									@endif
 								@endforeach
 							</div>
 						</div>
 						<div class="box-footer text-center">
-							<button class="btn btn-info btn-xs" data-toggle="modal" data-target="#modalPermisos"> <i class="fas fa-plus"></i> permiso</button>
+							@if(Auth::user()->hasRole('juridicoAdmin'))
+								<button class="btn btn-info btn-xs" data-toggle="modal" data-target="#modalPermisos"> <i class="fas fa-plus"></i> permiso</button>
+							@endif
 						</div>
 					</div>
 
@@ -84,7 +110,9 @@
 
 						</div>
 						<div class="box-footer text-center">
-							<button class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modalPermisos"> <i class="fas fa-plus"></i> archivo</button>
+							@if(Auth::user()->hasRole('juridicoAdmin') || Auth::user()->permisosEscritura->contains($expediente))
+								<button class="btn btn-warning btn-xs"> <i class="fas fa-plus"></i> archivo</button>
+							@endif
 						</div>
 					</div>
 				</div>

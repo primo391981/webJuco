@@ -17,7 +17,6 @@ use Auth;
 
 class ExpedienteController extends Controller
 {
-
 	/**
      * Display a listing of the resource.
      *
@@ -25,13 +24,23 @@ class ExpedienteController extends Controller
      */
     public function index()
     {
-       $expedientes = Expediente::All();
+		$user = Auth::user();
 	   
-	   return view('juridico.expediente.listaExpediente', ['expedientes' => $expedientes]);
+		if($user->hasRole('invitado')){
+			$expedientes = $user->permisosExpedientes;
+		} else {
+			$expedientes = Expediente::All();
+		}
+		//dd($expedientes);
+		return view('juridico.expediente.listaExpediente', ['expedientes' => $expedientes]);
 		
     }
 	
 	public function search(Request $request){
+		
+		if(Auth::user()->hasRole('invitado')){
+			return abort(403, 'Unauthorized action.');
+		}
 		
 		$wsdl = "http://www.expedientes.poderjudicial.gub.uy/wsConsultaIUE.php?wsdl";    
 		$client = new SoapClient($wsdl); 
@@ -61,7 +70,11 @@ class ExpedienteController extends Controller
      */
     public function create()
     {
-        return view('juridico.expediente.webserviceExpediente');
+        if(Auth::user()->hasRole('invitado')){
+			return abort(403, 'Unauthorized action.');
+		};
+		
+		return view('juridico.expediente.webserviceExpediente');
     }
 
     /**
@@ -72,12 +85,13 @@ class ExpedienteController extends Controller
      */
     public function store(Request $request)
     {
+		if(Auth::user()->hasRole('invitado')){
+			return abort(403, 'Unauthorized action.');
+		}
 		
-        //dd(Auth::user()->id);
 		$request->validate([
 			'IUE' => 'required|unique:juridico_expedientes',
 		]);
-		
 		
 		$expediente = new Expediente();
 		$expediente->iue = $request->IUE;
@@ -121,7 +135,15 @@ class ExpedienteController extends Controller
      */
     public function show(Expediente $expediente)
     {
-        $transiciones = $expediente->tipo->transiciones->where('id_paso_inicial',$expediente->paso_actual);
+		$user = Auth::user();
+		
+		if($user->hasRole('invitado')){
+			if(!$user->permisosExpedientes->contains($expediente)){
+				return abort(403, 'Unauthorized action.');
+			};
+		};
+		
+		$transiciones = $expediente->tipo->transiciones->where('id_paso_inicial',$expediente->paso_actual);
 		
 		$usuarios = User::All();
 		
@@ -165,8 +187,27 @@ class ExpedienteController extends Controller
 	
 	public function addPermiso(Request $request, Expediente $expediente)
 	{
+		$user = Auth::user();
+		
+		if($user->hasRole('invitado')){
+			return abort(403, 'Unauthorized action.');
+		};
+		
 		$expediente->permisosExpedientes()->attach($request->usuario, ['id_tipo' => $request->tipoPermiso]);
 
 		return redirect()->back()->with('success', 'Permiso asignado correctamente');
+	}
+	
+	public function delPermiso(Request $request, Expediente $expediente)
+	{
+		$user = Auth::user();
+		
+		if($user->hasRole('invitado')){
+			return abort(403, 'Unauthorized action.');
+		};
+		
+		$expediente->permisosExpedientes()->detach($request->usuario);
+
+		return redirect()->back()->with('success', 'Permiso eliminado correctamente');
 	}
 }
