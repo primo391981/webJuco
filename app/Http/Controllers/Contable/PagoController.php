@@ -64,7 +64,6 @@ class PagoController extends Controller
      */
     public function store(PagoRequest $request)
     {	
-	
 	    $empresa = Empresa::where("rut","=",$request->rut)->first();
 		$persona = Persona::where([["tipoDocumento",'=',$request->tipoDocId], ["documento",'=',$request->numeroDoc]])->first();
 		$empleado = Empleado::where([["idEmpresa",'=',$empresa->id], ["idPersona",'=',$persona->id]])->first();
@@ -163,10 +162,11 @@ class PagoController extends Controller
 		
 		if (isset($request->porcentaje))
 			$pago->porcentaje = $request->porcentaje;
-	
+		else
+			$pago->porcentaje = NULL;
 	//dd($pago);
 	
-		//try {
+		try {
 			$pago->save();
 			
 			if ($pago ->idTipoPago == 1)
@@ -174,10 +174,10 @@ class PagoController extends Controller
 			else
 				return redirect()->route('pago.adelantos')->with('success', "El adelanto se editó correctamente");
 				
-		/*} catch(Exception $e){
+		} catch(Exception $e){
 			return back()->withInput()->withError("El pago no se pudo registrar, intente nuevamente o contacte al administrador.");				;
 		};
-		*/
+		
     }
 
 	
