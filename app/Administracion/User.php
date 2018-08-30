@@ -45,4 +45,16 @@ class User extends Authenticatable
 		}
 		return false;
 	}
+	
+	public function permisosExpedientes(){
+		return $this->belongsToMany('App\Juridico\Expediente','juridico_permiso_expediente','id_user','id_expediente')->withPivot('id_tipo');
+	}
+	
+	public function permisosLectura(){
+		return $this->belongsToMany('App\Juridico\Expediente','juridico_permiso_expediente','id_user','id_expediente')->wherePivot('id_tipo',2)->withPivot('id_tipo');
+	}
+	
+	public function permisosEscritura(){
+		return $this->belongsToMany('App\Juridico\Expediente','juridico_permiso_expediente','id_user','id_expediente')->wherePivot('id_tipo',1)->withPivot('id_tipo');
+	}
 }

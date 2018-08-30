@@ -10,6 +10,6 @@ class Notificacion extends Model
 	
 	public function tipo(){
 		
-		return $this->belongsTo('App\Juridico\TipoNotificacion','id_tipo')
+		return $this->belongsTo('App\Juridico\TipoNotificacion','id_tipo');
 	}
 }

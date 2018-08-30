@@ -31,4 +31,12 @@ class Expediente extends Model
 	public function clientes(){
 		return $this->belongsToMany('App\Juridico\Cliente','juridico_cliente_expediente','id_expediente','id_cliente');
 	}
+	
+	public function recordatorios(){
+		return $this->hasMany('App\Juridico\Recordatorio', 'id_expediente');
+	}
+	
+	public function permisosExpedientes(){
+		return $this->belongsToMany('App\Administracion\User','juridico_permiso_expediente','id_expediente','id_user')->withPivot('id_tipo');
+	}
 }

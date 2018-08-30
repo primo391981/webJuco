@@ -47,6 +47,16 @@ class UserRoleTableSeeder extends Seeder
 			'role_id' => 4,
 		]);
 		
+		DB::table('admin_user_role')->insert([
+            'user_id' => 6,
+			'role_id' => 5,
+		]);
+		
+		DB::table('admin_user_role')->insert([
+            'user_id' => 7,
+			'role_id' => 5,
+		]);
+		
 		
     }
 }

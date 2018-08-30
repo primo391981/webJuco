@@ -20,10 +20,13 @@
 				  <div class="panel-heading">
 					<div class="row">
 						<div class="col-sm-9"><h4>LISTADO EXPEDIENTES</h4></div>
-						<div class="col-sm-3 hidden-xs"><a href="{{ route('expediente.create') }}" class="btn btn-success pull-right" role="button"><i class="fas fa-plus"></i> Agregar nuevo expediente</a></div>				  
+						@if(Auth::user()->hasRole('juridicoAdmin'))
+							<div class="col-sm-3 hidden-xs"><a href="{{ route('expediente.create') }}" class="btn btn-success pull-right" role="button"><i class="fas fa-plus"></i> nuevo expediente</a></div>				  
+						@endif
 					</div>
 				  </div>
 				<div class="panel-body text-muted">					
+					@if(!is_null($expedientes))
 					<div class="table-responsive">
 						<table id="tableExp" class="table table-bordered">
 							
@@ -62,9 +65,13 @@
 						
 						</table>
 					</div>
-					
+					@else
+						<div class="alert alert-info">No hay expedientes registrados en el sistema.</div>
+					@endif
 				</div>
-				<div class="panel-footer"><a href="{{ route('expediente.create') }}" class="btn btn-success btn-block" role="button"><i class="fas fa-plus"></i> Agregar expediente</a></div>
+				@if(Auth::user()->hasRole('juridicoAdmin'))
+					<div class="panel-footer"><a href="{{ route('expediente.create') }}" class="btn btn-success btn-block" role="button"><i class="fas fa-plus"></i> nuevo expediente</a></div>
+				@endif
 		</div>
 	</div>
 </div>

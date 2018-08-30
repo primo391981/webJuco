@@ -7,6 +7,7 @@
 </li>
 @endif
 @if(Auth::user()->hasRole('juridicoAdmin'))<li><a href="{{ route('juridico') }}"><i class="fas fa-balance-scale"></i> Admin. Jurídica</a></li>@endif
+@if(Auth::user()->hasRole('invitado'))<li><a href="{{ route('juridico') }}"><i class="fas fa-balance-scale"></i> Admin. Jurídica</a></li>@endif
 @if(Auth::user()->hasRole('contableAdmin'))<li><a href="{{ route('contable') }}"><i class="fas fa-university"></i> Admin. Contable</a></li>@endif
 @endsection
 

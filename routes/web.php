@@ -132,8 +132,8 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::resource('haberes', 'Contable\HaberesController')->middleware('role:contableAdmin');
 	
 	//JURIDICO
-	//dashboard juridico
-	Route::get('juridico', 'Juridico\JuridicoController@index')->name('juridico')->middleware('role:juridicoAdmin');
+	//dashboard contable
+	Route::get('juridico', 'Juridico\JuridicoController@index')->name('juridico')->middleware('role:invitado,juridicoAdmin');
 	
 	//clientes
 	Route::get('cliente/search', 'Juridico\ClienteController@search')->name('cliente.search')->middleware('role:juridicoAdmin');
@@ -144,20 +144,21 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::resource('cliente', 'Juridico\ClienteController')->middleware('role:juridicoAdmin');
 	
 	//expedientes
-	/*
-	Route::get('cliente/search', 'Juridico\ClienteController@search')->name('cliente.search')->middleware('role:juridicoAdmin');
-	Route::get('cliente/fisica', 'Juridico\ClienteController@createFisica')->name('cliente.create.fisica')->middleware('role:juridicoAdmin');
-	Route::get('cliente/juridica', 'Juridico\ClienteController@createJuridica')->name('cliente.create.juridica')->middleware('role:juridicoAdmin');
-	Route::get('cliente/inactivos', 'Juridico\ClienteController@inactivos')->name('cliente.index.inactivos')->middleware('role:juridicoAdmin');
-	Route::post('cliente/activar', 'Juridico\ClienteController@activar')->name('cliente.activar')->middleware('role:juridicoAdmin');
-	*/
-	
 	Route::get('expediente/search', 'Juridico\ExpedienteController@search')->name('expediente.search')->middleware('role:juridicoAdmin');
-	Route::resource('expediente', 'Juridico\ExpedienteController')->middleware('role:juridicoAdmin');
+	Route::post('expediente/permiso/{expediente}', 'Juridico\ExpedienteController@addPermiso')->name('expediente.addPermiso')->middleware('role:juridicoAdmin');
+	Route::post('expediente/delpermiso/{expediente}', 'Juridico\ExpedienteController@delPermiso')->name('expediente.delPermiso')->middleware('role:juridicoAdmin');
+	Route::resource('expediente', 'Juridico\ExpedienteController')->middleware('role:juridicoAdmin,invitado');
+	
+	//recordatorios
+	Route::resource('recordatorio', 'Juridico\RecordatorioController')->middleware('role:juridicoAdmin,invitado');
 	
 	//Pasos expediente
-	Route::get('paso/create/{expediente}/{paso}', 'Juridico\PasoController@create')->name('paso.create')->middleware('role:juridicoAdmin');
-	Route::resource('paso', 'Juridico\PasoController',['except' => ['create']])->middleware('role:juridicoAdmin');
+	Route::get('paso/download/{archivo}', 'Juridico\PasoController@download')->name('paso.download')->middleware('role:juridicoAdmin,invitado');
+	Route::get('paso/create/{expediente}/{paso}', 'Juridico\PasoController@create')->name('paso.create')->middleware('role:juridicoAdmin,invitado');
+	Route::resource('paso', 'Juridico\PasoController',['except' => ['create']])->middleware('role:juridicoAdmin,invitado');
+	
+	//Archivos Paso
+	Route::resource('archivoPaso', 'Juridico\ArchivoPasoController',['except' => ['create','edit','show','store','index','update']])->middleware('role:juridicoAdmin,invitado');
 	
 	
 });

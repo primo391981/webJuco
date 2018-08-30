@@ -13,7 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        'App\Console\Commands\MailExpedientes',
+		'App\Console\Commands\CleanRecordatorios',
     ];
 
     /**
@@ -26,6 +27,9 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+		
+		$schedule->command('mail:expedientes')->everyFiveMinutes();
+		$schedule->command('recordatorios:clean')->daily();
     }
 
     /**

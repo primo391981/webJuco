@@ -20,6 +20,7 @@ class CreateJuridicoNotificacionTable extends Migration
 			$table->integer('id_tipo');
 			$table->text('mensaje');
 			$table->date('fecha_envio');
+			$table->integer('estado'); //1 - para enviar, 2 - enviada
             $table->timestamps();
         });
     }

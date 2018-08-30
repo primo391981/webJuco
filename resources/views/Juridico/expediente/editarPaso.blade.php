@@ -1,6 +1,6 @@
 @extends('juridico.juridico')
 
-@section('seccion', " - AGREGAR")
+@section('seccion', " - Editar")
 
 @section('content')
 <br>
@@ -23,20 +23,52 @@
 			<div class="panel-heading">
 				<div class="row">
 					<div class="col-sm-9"><h4>Detalle de expediente</h4></div>
-					@if(Auth::user()->hasRole('juridicoAdmin'))
-						<div class="col-sm-3 hidden-xs">
-							<a href="{{ route('expediente.create') }}" class="btn btn-success pull-right" role="button"><i class="fas fa-plus"></i> nuevo expediente</a>
-						</div>				  
-					@endif
+					<div class="col-sm-3 hidden-xs">
+						<a href="{{ route('expediente.create') }}" class="btn btn-success pull-right" role="button"><i class="fas fa-plus"></i> nuevo expediente</a>
+					</div>				  
 				</div>
 			</div>
 			<div class="panel-body">
 				@include('juridico.expediente.detalleExpediente')
-				<div class="box box-success">
-					<div class="box-body">
-						<h4>Crear paso: {{$tipoPaso->nombre}}</h4>
-						<form method="POST" action="{{ route('paso.store') }}" class="form-horizontal" enctype="multipart/form-data" id="formPaso"> 
-							@include('juridico.expediente.formPaso', ['textoBoton' => 'Confirmar', 'expediente' => $expediente->id, 'tipoPaso' => $tipoPaso->id]) 
+				<div class="row">
+					<div class="col-sm-9">
+						<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">Transiciones <i class="fas fa-info"></i></button>
+						
+						<button type="button" class="btn btn-info btn-md" >Actualizaciones <i class="fas fa-sync-alt"></i></button>
+						
+						<button type="button" class="btn btn-danger btn-md" >notificaciones <i class="fas fa-bell"></i></button>
+						
+						<a type="button" class="btn btn-warning btn-md" href="{{route('expediente.show',$paso->expediente)}}">volver <i class="fas fa-undo-alt"></i></i></a>
+					</div>
+				</div>
+				<br>
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<h4>Editar paso: {{$paso->tipo->nombre}}</h4>
+							@if(count($paso->archivos) > 0)
+								<div class="form-horizontal">
+								
+									<label for="comentarios" class="control-label col-sm-3">ARCHIVOS REGISTRADOS</label>
+									<div class="col-sm-9">
+										@foreach($paso->archivos as $archivo)
+												<a href="{{route('paso.download',$archivo)}}">{{$archivo->nombre_archivo}}</a>
+												<form method="POST" action="{{route('archivoPaso.destroy',$archivo)}}" style="display: inline;">
+													{{ method_field('DELETE') }}
+													@csrf
+													<button type="submit" class="btn btn-link"><i class="fas fa-times-circle"></i></button>
+												</form><br>
+										@endforeach
+									</div>
+								
+								</div>
+							@endif
+										
+									
+									
+						<form method="POST" action="{{ route('paso.update',$paso) }}" class="form-horizontal" enctype="multipart/form-data" id="formPaso"> 
+							{{ method_field('PUT') }}
+							<input type="hidden" name="paso" value="{{ $paso }}">
+							@include('juridico.expediente.formPaso', ['textoBoton' => 'Confirmar', 'expediente' => $expediente->id, 'tipoPaso' => $paso->tipo->id]) 
 						</form>
 					</div>
 				</div>

@@ -20,78 +20,19 @@
 			<div class="panel-heading">
 				<div class="row">
 					<div class="col-sm-9"><h4>Detalle de paso de expediente</h4></div>
-					<div class="col-sm-3 hidden-xs">
-						<a href="{{ route('expediente.create') }}" class="btn btn-success pull-right" role="button"><i class="fas fa-plus"></i> nuevo expediente</a>
-					</div>				  
+					@if(Auth::user()->hasRole('juridicoAdmin'))
+						<div class="col-sm-3 hidden-xs">
+							<a href="{{ route('expediente.create') }}" class="btn btn-success pull-right" role="button"><i class="fas fa-plus"></i> nuevo expediente</a>
+						</div>
+					@endif
 				</div>
 			</div>
 			<div class="panel-body">
-				<div class="panel panel-default">
-					<div class="panel-body">
-						<div class="row">
-							<label for="iue" class="control-label col-sm-3">IUE</label>
-							<div class="col-sm-9">
-								{{$expediente->iue}}
-							</div>
-						</div>
-						<div class="row">
-							<label for="tipoexp" class="control-label col-sm-3">TIPO EXPEDIENTE</label>
-							<div class="col-sm-9">
-								{{$expediente->tipo->nombre}}
-							</div>
-						</div>
-						<div class="row">
-							<label for="juzgado" class="control-label col-sm-3">JUZGADO</label>
-							<div class="col-sm-9">
-								{{$expediente->juzgado}}
-							</div>
-						</div>
-						<div class="row">
-							<label for="caratula" class="control-label col-sm-3">CARATULA</label>
-							<div class="col-sm-9">
-								{{$expediente->caratula}}
-							</div>
-						</div>
-						<div class="row">
-							<label for="clientes" class="control-label col-sm-3">CLIENTES</label>
-							<div class="col-sm-9">
-								@foreach($expediente->clientes as $cliente)
-									{{ $cliente->persona->apellido}}, {{ $cliente->persona->nombre}} - {{ $cliente->persona->tipodoc->nombre}} {{ $cliente->persona->documento}}
-								@endforeach
-							</div>
-						</div>
-						<div class="row">
-							<label for="fecha_inicio" class="control-label col-sm-3">FECHA CREACION</label>
-							<div class="col-sm-9">
-								{{$expediente->fecha_inicio}}
-							</div>
-						</div>
-						<div class="row">
-							<label for="fecha_inicio" class="control-label col-sm-3">PASO ACTUAL</label>
-							<div class="col-sm-9">
-								{{$expediente->actual->nombre}}
-							</div>
-						</div>
-						<div class="row">
-							<label for="fecha_inicio" class="control-label col-sm-3">INGRESADO POR</label>
-							<div class="col-sm-9">
-								{{$expediente->usuario->name}} ({{$expediente->usuario->nombre}} {{$expediente->usuario->apellido}})
-							</div>
-						</div>
-					</div>			
-				</div>
-				<div class="row">
-					<div class="col-sm-9">
-						<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">Transiciones del expediente <i class="fas fa-info"></i></button>
-						
-						<button type="button" class="btn btn-info btn-md" >Actualizaciones del Expediente <i class="fas fa-sync-alt"></i></button>
-						
-						<a type="button" class="btn btn-warning btn-md" href="{{route('expediente.show',$paso->expediente)}}">volver a Expediente <i class="fas fa-undo-alt"></i></i></a>
-					</div>
-				</div>
+				@include('juridico.expediente.detalleExpediente')
 				<br>
-				<div class="panel panel-default">
-					<div class="panel-body">
+				
+				<div class="box box-success">
+					<div class="box-body">
 						<h4>Paso: {{$paso->tipo->nombre}}</h4>
 							<div class="row">
 							<label for="comentarios" class="control-label col-sm-3">FECHA DE INGRESO</label>
@@ -106,12 +47,14 @@
 								</div>
 							</div>
 							<div class="row">
-							<label for="archivos" class="control-label col-sm-3">Archivos</label>
+							<label for="archivos" class="control-label col-sm-3">ARCHIVOS</label>
+							<div class="col-sm-9">
 							@foreach($paso->archivos as $archivo)
 								
-								<div class="col-sm-9">{{$archivo->archivo}}</div>
+								<a href="{{route('paso.download',$archivo)}}">{{$archivo->nombre_archivo}}</a><br>
 							
 							@endforeach
+							</div>
 							</div>
 							<div class="row">
 							<label for="comentarios" class="control-label col-sm-3">PASO REGISTRADO POR</label>
@@ -122,7 +65,23 @@
 						
 					</div>
 				</div>
+				<div class="row">
 				
+					<div class="col-sm-9">
+						@if(Auth::user()->hasRole('juridicoAdmin') || Auth::user()->permisosEscritura->contains($expediente))
+							@if($expediente->pasos->last()->id == $paso->id && $paso->tipo->id != 1)
+								<a class="btn btn-success btn-xs" href="{{route('paso.edit',$paso)}}">Editar paso <i class="fas fa-edit"></i></a>
+							@endif
+						@endif
+						<a type="button" class="btn btn-warning btn-xs" href="{{route('expediente.show',$paso->expediente)}}">volver <i class="fas fa-undo-alt"></i></i></a>
+					</div>
+				
+				</div>
+				<div class="row">
+					<div class="col-sm-9">
+						
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
