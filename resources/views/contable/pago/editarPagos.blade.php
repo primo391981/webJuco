@@ -40,7 +40,6 @@
 		
 	</div><!--cierre col xs12-->
 </div><!--cierre row-->
-@endsection
 
 <script>	
 $(function() 
@@ -48,7 +47,13 @@ $(function()
 	$('#gravado').on('change', function() 
 	{	
 		document.getElementById('porcentaje').disabled = !this.checked;
+		if (document.getElementById('porcentaje').disabled == true)
+		{
+			alert(document.getElementById('porcentaje').value);
+			document.getElementById('porcentaje').value = "";
+		}
 	})
 });
 
 </script>	
+@endsection

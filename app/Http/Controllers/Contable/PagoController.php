@@ -163,18 +163,21 @@ class PagoController extends Controller
 		
 		if (isset($request->porcentaje))
 			$pago->porcentaje = $request->porcentaje;
-		
-		try {
-			$pago ->save();
+	
+	//dd($pago);
+	
+		//try {
+			$pago->save();
 			
 			if ($pago ->idTipoPago == 1)
 				return redirect()->route('pago.viaticos')->with('success', "El viático se editó correctamente");
 			else
 				return redirect()->route('pago.adelantos')->with('success', "El adelanto se editó correctamente");
 				
-		} catch(Exception $e){
+		/*} catch(Exception $e){
 			return back()->withInput()->withError("El pago no se pudo registrar, intente nuevamente o contacte al administrador.");				;
 		};
+		*/
     }
 
 	
