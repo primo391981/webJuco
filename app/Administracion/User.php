@@ -47,6 +47,6 @@ class User extends Authenticatable
 	}
 	
 	public function permisosExpedientes(){
-		return $this->belongsToMany('App\Juridico\Expediente','juridico_permiso_expediente','id_user','id_expediente');
+		return $this->belongsToMany('App\Juridico\Expediente','juridico_permiso_expediente','id_user','id_expediente')->withPivot('id_tipo');
 	}
 }

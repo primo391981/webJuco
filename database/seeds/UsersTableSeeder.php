@@ -51,5 +51,21 @@ class UsersTableSeeder extends Seeder
 			'nombre' => 'Thalia',
 			'apellido' => 'Sodi',
         ]);
+		
+		DB::table('admin_users')->insert([
+            'name' => 'readJuridico',
+            'email' => 'tevez@mail.com',
+            'password' => bcrypt('123456'),
+			'nombre' => 'Carlos',
+			'apellido' => 'Tevez',
+        ]);
+		
+		DB::table('admin_users')->insert([
+            'name' => 'writeJuridico',
+            'email' => 'saturno@mail.com',
+            'password' => bcrypt('123456'),
+			'nombre' => 'Sergio',
+			'apellido' => 'Saturno',
+        ]);
     }
 }

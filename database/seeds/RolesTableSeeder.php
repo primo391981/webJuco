@@ -16,7 +16,7 @@ class RolesTableSeeder extends Seeder
             'nombre' => 'superadmin',
 			'descripcion' => 'Administrador de los permisos de usuario',
         ]);
-		
+
 		DB::table('admin_roles')->insert([
             'nombre' => 'cmsAdmin',
 			'descripcion' => 'Administrador de los contenidos del sitio web',
@@ -31,5 +31,11 @@ class RolesTableSeeder extends Seeder
             'nombre' => 'contableAdmin',
 			'descripcion' => 'Usuario del sistema contable',
         ]);
+		
+		DB::table('admin_roles')->insert([
+            'nombre' => 'invitado',
+			'descripcion' => 'Usuario con acceso de lectura y/o escritura a expedientes',
+        ]);
+
     }
 }

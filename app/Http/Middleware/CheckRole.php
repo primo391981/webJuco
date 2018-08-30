@@ -13,13 +13,17 @@ class CheckRole
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next, $role)
+    public function handle($request, Closure $next, ... $roles)
     {
-		if (! $request->user()->hasRole($role)) {
-			//return redirect('/home');
-			return redirect('/notAuthorized');
-			//hacer una vista que diga que no tiene los permisos correspondientes para acceder a esa ruta
+		foreach($roles as $role){
+			if ($request->user()->hasRole($role)) {
+				return $next($request);
+			}
 		}
-        return $next($request);
+		
+		return redirect('/home');
+				//return redirect('/notAuthorized');
+				//hacer una vista que diga que no tiene los permisos correspondientes para acceder a esa ruta
+		
     }
 }

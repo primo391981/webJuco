@@ -104,7 +104,7 @@ Route::group(['middleware' => ['auth']], function () {
 	
 	//JURIDICO
 	//dashboard contable
-	Route::get('juridico', 'Juridico\JuridicoController@index')->name('juridico')->middleware('role:juridicoAdmin');
+	Route::get('juridico', 'Juridico\JuridicoController@index')->name('juridico')->middleware('role:invitado,juridicoAdmin');
 	
 	//clientes
 	Route::get('cliente/search', 'Juridico\ClienteController@search')->name('cliente.search')->middleware('role:juridicoAdmin');
@@ -117,7 +117,7 @@ Route::group(['middleware' => ['auth']], function () {
 	//expedientes
 	Route::get('expediente/search', 'Juridico\ExpedienteController@search')->name('expediente.search')->middleware('role:juridicoAdmin');
 	Route::post('expediente/permiso/{expediente}', 'Juridico\ExpedienteController@addPermiso')->name('expediente.addPermiso')->middleware('role:juridicoAdmin');
-	Route::resource('expediente', 'Juridico\ExpedienteController')->middleware('role:juridicoAdmin');
+	Route::resource('expediente', 'Juridico\ExpedienteController')->middleware('role:juridicoAdmin,invitado');
 	
 	//recordatorios
 	Route::resource('recordatorio', 'Juridico\RecordatorioController')->middleware('role:juridicoAdmin');

@@ -60,13 +60,13 @@
 							</div>
 							<div class="col-xs-12">
 								<h4>Escritura</h4>
-								@foreach($expediente->permisosExpedientes->where('id_tipo',1) as $usuario)
+								@foreach($expediente->permisosExpedientes->where('pivot.id_tipo',1) as $usuario)
 									<i class="fas fa-user"></i> {{$usuario->name}} ({{$usuario->nombre}} {{$usuario->apellido}})
 								@endforeach
 							</div>
 							<div class="col-xs-12">
 								<h4>Solo Lectura</h4>
-								@foreach($expediente->permisosExpedientes->where('id_tipo',2) as $usuario)
+								@foreach($expediente->permisosExpedientes->where('pivot.id_tipo',2) as $usuario)
 									<i class="fas fa-user"></i> {{$usuario->name}} ({{$usuario->nombre}} {{$usuario->apellido}})
 								@endforeach
 							</div>

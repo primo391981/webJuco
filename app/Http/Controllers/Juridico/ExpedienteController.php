@@ -17,7 +17,8 @@ use Auth;
 
 class ExpedienteController extends Controller
 {
-    /**
+
+	/**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -27,7 +28,6 @@ class ExpedienteController extends Controller
        $expedientes = Expediente::All();
 	   
 	   return view('juridico.expediente.listaExpediente', ['expedientes' => $expedientes]);
-		
 		
     }
 	
@@ -43,19 +43,11 @@ class ExpedienteController extends Controller
 			return back()->withInput()->withError('El sistema del Poder Judicial no se encuentra disponible en este momento. Haga click <a href="">aquí</a> para ingresar un iue de forma manual.');
 		} 		
 		
-          
-		
-		
-
-       
-		//dd($expediente->caratula);
-		
 		if($expediente->estado === "EL EXPEDIENTE NO SE ENCUENTRA EN EL SISTEMA"){
 			return back()->withInput()->withError('El expediente no se encuentra en el sistema del Poder Judicial');
 		} else {
 			$tipoExpedientes = TipoExpediente::All();
 			$clientes = Cliente::All();
-			//dd($clientes);
 			return view('juridico.expediente.agregarExpediente',['clientes' => $clientes, 'tipoExpedientes' => $tipoExpedientes, 'expediente' => $expediente, 'tipoDocumento' => 'DEMANDA' ]);
 		}
 		
@@ -103,8 +95,7 @@ class ExpedienteController extends Controller
 			$expediente->clientes()->attach($cliente);
 		}
 		
-		//dd($expediente->clientes);
-		//setting varables a mostrar en el formulario de creación de paso
+		//setting variables a mostrar en el formulario de creación de paso
 		$paso = new Paso();
 		$paso->id_expediente = $expediente->id;
 		$paso->id_tipo = 1;
@@ -113,17 +104,12 @@ class ExpedienteController extends Controller
 		$paso->fecha_fin = null;
 		
 		$paso->save();
-		
-		
-		
+
 		if ($request->exists('nextExpediente')){
 			return view('juridico.expediente.agregarPaso', ['expediente' => $expediente, 'numero_paso' => 1, 'nombre_paso' => "Adjuntar Demanda"])->with('success', "El expediente se creó correctamente.");
 		} else {
 			return redirect()->route('expediente.index')->with('success', "El expediente se creó correctamente.");
 		}
-		
-		
-		
 		
     }
 
@@ -140,10 +126,7 @@ class ExpedienteController extends Controller
 		$usuarios = User::All();
 		
 		return view('juridico.expediente.verExpediente', ['expediente' => $expediente, 'transiciones' => $transiciones, 'usuarios' => $usuarios]);
-		
-		
-		
-		//echo $expediente->tipo->transiciones->where('id_tipo_expediente',$expediente->tipo_id); 
+
     }
 
     /**

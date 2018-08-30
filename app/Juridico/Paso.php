@@ -38,12 +38,6 @@ class Paso extends Model
 	
 	}
 	
-	public function permisos(){
-		
-		return $this->hasMany('App\Juridico\PermisoPaso','id_paso','id_expediente','id_cliente');
-	
-	}
-	
 	public function usuario(){
 		
 		return $this->belongsTo('App\Administracion\User','id_usuario');
