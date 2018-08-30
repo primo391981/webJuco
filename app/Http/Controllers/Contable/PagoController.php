@@ -73,11 +73,24 @@ class PagoController extends Controller
 		$pago->idTipoPago = $request->tipoPago;
 		$pago->fecha = new Carbon($request->mes."-01");
 		$pago->monto = $request->monto;
+		
 		if (isset($request->cantDias))
 			$pago->cantDias = $request->cantDias;
 		
 		$pago->descripcion = $request->descripcion;
+		
+		if (!isset($request->gravado))
+			$pago->gravado = 0;
+		elseif ($request->gravado)
+			$pago->gravado = 1;
+		else
+			$pago->gravado = 0;
+		
+		if (isset($request->porcentaje))
+			$pago->porcentaje = $request->porcentaje;
+		//dd($pago);
 			
+		
 		try {
 			$pago ->save();
 			
@@ -134,13 +147,27 @@ class PagoController extends Controller
     {
         $pago->fecha = new Carbon($request->mes."-01");
 		$pago->monto = $request->monto;
+		
 		if (isset($request->cantDias))
 			$pago->cantDias = $request->cantDias;
 		
 		$pago->descripcion = $request->descripcion;
 		
+		if (!isset($request->gravado))
+			$pago->gravado = false;
+		elseif ($request->gravado)
+			$pago->gravado = true;
+		else
+			$pago->gravado = false;
+		
+		if (isset($request->porcentaje))
+			$pago->porcentaje = $request->porcentaje;
+		else
+			$pago->porcentaje = NULL;
+	//dd($pago);
+	
 		try {
-			$pago ->save();
+			$pago->save();
 			
 			if ($pago ->idTipoPago == 1)
 				return redirect()->route('pago.viaticos')->with('success', "El viático se editó correctamente");
@@ -150,6 +177,7 @@ class PagoController extends Controller
 		} catch(Exception $e){
 			return back()->withInput()->withError("El pago no se pudo registrar, intente nuevamente o contacte al administrador.");				;
 		};
+		
     }
 
 	

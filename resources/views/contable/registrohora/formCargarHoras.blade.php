@@ -58,7 +58,7 @@
 					@foreach ($total as $t)					
 					<tr class="{{$t[3]}}">
 						<td>{{$t[0]}} - {{$t[1]}}</td>
-						<td><input type="time" class="form-control" id="1{{$t[1]}}" name="1{{$t[1]}}" value="{{$t[2]}}"/></td>
+						<td><input type="time" class="form-control" id="1{{$t[1]}}" name="1{{$t[1]}}" value="{{$t[2]}}"min="00:00:00" max="08:00:00" {{$t[3]==="danger" ? 'readonly' : ''}}/></td>
 						<td><input type="time" class="form-control" id="2{{$t[1]}}" name="2{{$t[1]}}" value="00:00:00"/></td>
 						@if($empleado->espera==true)
 						<td><input type="time" class="form-control" id="3{{$t[1]}}" name="3{{$t[1]}}" value="00:00:00"/></td>

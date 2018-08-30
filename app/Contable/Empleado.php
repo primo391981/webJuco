@@ -23,4 +23,6 @@ class Empleado extends Pivot
 	public function registrosHoras(){
 		return $this->hasMany('App\Contable\RegistroHora','idEmpleado');
 	}
+	
+	
 }

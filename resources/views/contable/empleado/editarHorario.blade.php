@@ -38,7 +38,7 @@
 									<div class=" form-group">
 										<label class="control-label col-md-2" >{{$d->nombre}}</label>
 										<div class="col-md-5">
-											<input type="time" class="form-control" id="{{$d->id}}" name="{{$d->id}}" value="{{$hd->cantHoras}}"/>
+											<input type="time" class="form-control" id="{{$d->id}}" name="{{$d->id}}" value="{{$hd->cantHoras}}" min="00:00:00" max="08:00:00"/>
 										</div>
 										<div class="col-md-5">
 											<select class="form-control" id="reg{{$d->id}}" name="reg{{$d->id}}">

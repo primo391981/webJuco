@@ -47,6 +47,7 @@ class DatabaseSeeder extends Seeder
 			EstadosTableSeeder::class,
 			RemuneracionesTableSeeder::class,
 			CargosTableSeeder::class,
+			SalarioMinimoTableSeeder::class,
 			TransicionTableSeeder::class,
 			ExpedientesTableSeeder::class,
 			
@@ -65,7 +66,7 @@ class DatabaseSeeder extends Seeder
 			PagosViaticosTableSeeder::class,
 			PagosAdelantosTableSeeder::class,
 			TipoRecibosTableSeeder::class,
-			ConceptoRecibosTableSeeder::class
+			ConceptoRecibosTableSeeder::class			
 		]);	
     }
 }

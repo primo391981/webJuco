@@ -10,6 +10,7 @@ class Pago extends Model
 	/*Modelo que registra los pagos extras realizados por la empresa al empleado, entre ellos:
 		-Viáticos
 		-Adelantos
+		-Partidas Extras
 	*/
 	use SoftDeletes;
 	

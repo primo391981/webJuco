@@ -20,4 +20,7 @@ class Cargo extends Model
 		return $this->hasManyThrough('App\Empresa', 'App\Empleado');		
 	}
 	
+	public function salarios() {
+        return $this->hasMany('App\Contable\SalarioMinimoCargo','idCargo');
+    }
 }

@@ -22,7 +22,7 @@
 	<div class="col-xs-12">
 		
 		<div class="panel panel-warning text-warning">
-			<div class="panel-heading"><h4><i class="far fa-clock"></i> EDICIÓN MARCAS RELOJ </h4></div>
+			<div class="panel-heading"><h4><i class="far fa-clock"></i> INFORMACIÓN MARCAS RELOJ </h4></div>
 			<div class="panel-body">
 				<div class="row">
 					<div class="col-xs-12"><p><i class="far fa-calendar-alt"></i> {{$mes}}/{{$anio}}</p></div>
@@ -32,7 +32,7 @@
 				<hr>
 				
 				<div class="table-responsive">
-				<table id="" class="table table-condensed table-hover">
+				<table id="tableMarcas" class="table table-condensed table-hover">
 				<thead>
 					<tr>
 						<th>DÍA</th>
@@ -63,9 +63,9 @@
 								@foreach($t[3] as $reg)										
 										@if($th->id==$reg->idTipoHora)
 											@if($th->id!=1)
-												<td  bgcolor="#bababa"><input type="time" class="form-control" id="{{$th->id}}{{$t[1]}}" name="{{$th->id}}{{$t[1]}}" value="{{$reg->cantHoras}}" /></td>
+												<td  bgcolor="#bababa">{{$reg->cantHoras}}</td>
 											@else
-												<td> <input type="time" class="form-control" id="{{$th->id}}{{$t[1]}}" name="{{$th->id}}{{$t[1]}}" value="{{$reg->cantHoras}}" min="00:00:00" max="08:00:00" {{$t[2]==="danger" ? 'readonly' : '' }} /></td>
+												<td>{{$reg->cantHoras}}</td>
 											@endif
 											@php $dibujo=true; @endphp
 											@break;
@@ -74,21 +74,21 @@
 								@if($dibujo==false)
 									@switch($th->id)
 										@case(2)
-											<td><input type="time" class="form-control" id="{{$th->id}}{{$t[1]}}" name="{{$th->id}}{{$t[1]}}" value="00:00:00" /></td>
+											<td>-</td>
 											@break
 										@case(3)
 											@if($empleado->espera==true)
-											<td><input type="time" class="form-control" id="{{$th->id}}{{$t[1]}}" name="{{$th->id}}{{$t[1]}}" value="00:00:00"/></td>
+											<td>-</td>
 											@endif
 											@break
 										@case(4)
 											@if($empleado->nocturnidad==true)
-											<td><input type="time" class="form-control" id="{{$th->id}}{{$t[1]}}" name="{{$th->id}}{{$t[1]}}" value="00:00:00"/></td>
+											<td>-</td>
 											@endif
 											@break
 										@case(5)
 											@if($empleado->pernocte==true)
-											<td><input type="time" class="form-control" id="{{$th->id}}{{$t[1]}}" name="{{$th->id}}{{$t[1]}}" value="00:00:00"/></td>
+											<td>-</td>
 											@endif
 											@break	
 									@endswitch		
@@ -101,14 +101,42 @@
 			</div><!--cierra div table responsive-->
 				
 			</div><!--CIERRE DIV PANELBODY-->
-			<div class="panel-footer">
-				<button type="submit"class="btn btn-warning btn-block"><i class="fas fa-check"></i> Confirmar marcas</button>
-				</form>
-			</div><!--CIERRE DIV PANELFOOTER-->
+			
 			
 		</div><!--CIERRE DIV PANEL-->
 	</div>
 </div>
-
+<script>
+$(document).ready(function() {
+    $('#tableMarcas').DataTable( {     
+		paging: false,
+		"order": [],
+		"language": {
+		"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json",
+		},
+		dom: "<'row'<'col-sm-6'B><'col-sm-6'f>>" +
+"<'row'<'col-sm-12'tr>>" +
+"<'row'<'col-sm-6'><'col-sm-6'>>",
+        buttons: [
+           { extend: 'print', text: 'IMPRIMIR',customize: function ( win ) {
+                    $(win.document.body)
+                        .css( 'font-size', '10pt' )
+                        .prepend(
+                            '<img src="img/reloj.jpg" style="position:absolute; top:0; left:0;" />'
+                        );
+ 
+                    $(win.document.body).find( 'table' )
+                        .addClass( 'compact' )
+                        .css( 'font-size', 'inherit' );
+                } },
+		   { extend: 'pdf', text: 'PDF' },		   
+		   { extend: 'excel', text: 'EXCEL' },
+		   { extend: 'copy', text: 'COPIAR' }
+        ],
+		
+		
+    } );
+} );
+</script>
 @endsection
 
