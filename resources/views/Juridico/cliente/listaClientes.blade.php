@@ -14,6 +14,11 @@
 			{{Session::get('success')}}
 		</div>
 @endif 
+@if (Session::has('error'))
+		<div class="alert alert-danger">
+			{{Session::get('error')}}
+		</div>
+@endif 
 <div class="row text-info">
 	<div class="col-xs-12">
 		<div class="panel panel-success">
