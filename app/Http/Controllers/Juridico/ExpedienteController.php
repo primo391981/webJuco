@@ -177,7 +177,23 @@ class ExpedienteController extends Controller
      */
     public function update(Request $request, Expediente $expediente)
     {
-        //
+        if(Auth::user()->hasRole('invitado')){
+			return abort(403, 'Unauthorized action.');
+		}
+		
+		$expediente->tipo_id = $request->tipoexp;
+		$expediente->fecha_inicio = $request->fecha_inicio;
+		$expediente->user_id = Auth::user()->id;
+		
+		$expediente->save();
+		$expediente->clientes()->detach();
+		
+		foreach($request->clientes as $cliente){
+			$expediente->clientes()->attach($cliente);
+		}
+		
+		return redirect()->route('expediente.index')->with('success', "El expediente fue modificado correctamente.");
+
     }
 
     /**
@@ -197,6 +213,10 @@ class ExpedienteController extends Controller
 		
 		if($user->hasRole('invitado')){
 			return abort(403, 'Unauthorized action.');
+		};
+		
+		if($expediente->permisosExpedientes->contains($request->usuario)){
+			$expediente->permisosExpedientes()->detach($request->usuario);
 		};
 		
 		$expediente->permisosExpedientes()->attach($request->usuario, ['id_tipo' => $request->tipoPermiso]);

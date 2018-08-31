@@ -27,7 +27,8 @@
 				</div>
 			</div>
 			 <div class="panel-body text-success"> 
-				<form method="POST" action="{{ route('expediente.update',$exp) }}" class="form-horizontal" id="formPersona"> 
+				<form method="POST" action="{{ route('expediente.update',$exp) }}" class="form-horizontal"> 
+					@method('PATCH')
 					@include('juridico.expediente.formExpediente', ['textoBoton' => 'Confirmar']) 
 				</form>
 			</div>

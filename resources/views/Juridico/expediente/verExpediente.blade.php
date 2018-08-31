@@ -111,8 +111,18 @@
 				</div>
 				<div class="col-md-5">
 					<div class="box box-success">
-						<div class="box-body">
+						<div class="box-header">
 							<h4>Archivos</h4>
+						</div>
+						<div class="box-body">
+							@foreach($expediente->pasos as $paso)
+								@if($paso->archivos->count()>0)
+									{{ $paso->tipo->nombre}}:
+									@foreach($paso->archivos as $archivo)
+										{{$archivo->nombre_archivo}}
+									@endforeach	
+								@endif
+							@endforeach
 
 						</div>
 						<div class="box-footer text-center">

@@ -17,7 +17,7 @@
 </div>
 <div class="row text-info">
 	<div class="col-xs-12">
-		<div class="panel panel-success">
+		<div class="panel">
 				  <div class="panel-heading">
 					<div class="row">
 						<div class="col-sm-9"><h4>LISTADO CLIENTES INACTIVOS</h4></div>
