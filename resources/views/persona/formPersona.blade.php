@@ -10,7 +10,7 @@
 								</div>			
 						</div>
 						<div class="form-group row">
-							<label for="documento" class="control-label col-sm-3">Número de docuemento *</label>
+							<label for="documento" class="control-label col-sm-3">Número de documento *</label>
 							<div class="col-sm-9">
 								<input id="documento" type="text" class="form-control" name="documento" value="{{isset($persona) ? $persona->documento : old('documento') }}"autofocus required>
 								@if ($errors->has('documento'))

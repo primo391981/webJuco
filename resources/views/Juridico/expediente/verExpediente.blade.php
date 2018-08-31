@@ -76,9 +76,12 @@
 										<form class="form-inline" style="display: inline-block;" method="POST" action="{{ route('expediente.delPermiso',$expediente) }}">
 											@csrf
 											<input type="hidden" name="usuario" value="{{ $usuario->id }}">
-											<button type="submit" class="btn btn-link"><i class="fas fa-times"></i>
+											<button type="submit" class="btn btn-link">
+												<i class="fas fa-times"></i>
+											</button>
 										</form>
 									@endif
+									<br>
 								@endforeach
 							</div>
 							<div class="col-xs-12">
@@ -89,9 +92,12 @@
 										<form class="form-inline" style="display: inline-block;" method="POST" action="{{ route('expediente.delPermiso',$expediente) }}">
 										@csrf
 											<input type="hidden" name="usuario" value="{{ $usuario->id }}">
-											<button type="submit" class="btn btn-link"><i class="fas fa-times"></i>
+											<button type="submit" class="btn btn-link">
+												<i class="fas fa-times"></i>
+											</button>
 										</form>
 									@endif
+									<br>
 								@endforeach
 							</div>
 						</div>

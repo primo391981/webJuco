@@ -17,10 +17,10 @@
 
 <div class="row">
 	<div class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2">
-		<div class="panel panel-success">
+		<div class="box panel-success">
 			<div class="panel-heading">
 				<div class="row">
-					<div class="col-sm-9"><h4>AGREGAR NUEVO CLINETE - PERSONA FÍSICA</h4></div>
+					<div class="col-sm-9"><h4>AGREGAR NUEVO CLIENTE - PERSONA FÍSICA</h4></div>
 					<div class="col-sm-3 hidden-xs"><a href="{{ route('cliente.index') }}" class="btn btn-success" role="button"><i class="fas fa-list-ul"></i> Listado clientes</a></div>
 				</div>
 			</div>
