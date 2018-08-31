@@ -7,11 +7,13 @@
 			@foreach($expediente->recordatorios->where('estado',0) as $recordatorio)
 				<div class="alert alert-warning"> 
 					{{$recordatorio->fecha_vencimiento}} - {{$recordatorio->mensaje}} <i class="fas fa-exclamation"></i> 
-					<form class="form-inline" style="display: inline-block;" method="POST" action="{{ route('recordatorio.destroy',$recordatorio) }}">
+					@if(Auth::user()->hasRole('juridicoAdmin') || Auth::user()->permisosEscritura->contains($expediente))
+						<form class="form-inline" style="display: inline-block;" method="POST" action="{{ route('recordatorio.destroy',$recordatorio) }}">
 						@method('DELETE')
 						@csrf
 						<button type="submit" class="btn btn-link"><i class="fas fa-times"></i>
-					</form>
+						</form>
+					@endif
 				</div>
 			@endforeach
 		@else
