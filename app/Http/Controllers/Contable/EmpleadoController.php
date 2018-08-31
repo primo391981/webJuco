@@ -267,6 +267,20 @@ class EmpleadoController extends Controller
 		
 	}
 	
+	public function desvincularEmpresa(Request $request){
+		try{
+			dd($request);
+			$fechaHoy= Carbon::today('America/Montevideo');
+			Empleado::where('id', $request->idEmpleado)->where('idEmpresa', $request->idEmpresa)->update(['habilitado' => false,'fechaBaja'=>$fechaHoy->year.'-'.$fechaHoy->month.'-'.$fechaHoy->day]);
+			$empleado=Empleado::find($request->idEmpleado);
+			
+			return redirect()->action('PersonaController@show', ['id' => $empleado->idPersona])->withInput()->with('success','La desvinculación de la empresa '.$empelado->empresa->nombreFantasia.' se realizó correctamente.');
+		}
+		catch(Exception $e){
+			return back()->withInput()->withError("Error en el sistema");
+		}
+	}
+	
 	public function search(Request $request)
     {
 		if(!is_null($request->rut))

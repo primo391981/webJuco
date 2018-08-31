@@ -73,13 +73,15 @@ class PersonaController extends Controller
 			$horariosPrincipales=collect([]);
 			if($emprAsociadas->isNotEmpty()){
 				foreach($emprAsociadas as $empr){
+					if($empr->pivot->habilitado==true){
 						$hrEmp=collect([]);
 						if($empr->pivot->horarioCargado==true){
 							$horarioPrincipal=HorarioEmpleado::where('idEmpleado','=',$empr->pivot->id)->first();
 							$horariosPrincipales->push($horarioPrincipal);
 							//dd($horarioPrincipal->empleado);
 						}
-					}
+					}	
+				}
 			}			
 			
 			return view('contable.persona.verPersona',['persona'=>$persona,'emprAsociadas'=>$emprAsociadas,'cargos'=>$cargos,'dias'=>$dias,'horariosPrincipales'=>$horariosPrincipales,'registros'=>$registros]);

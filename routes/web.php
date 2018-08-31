@@ -108,6 +108,7 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::post('formHorarioEspecial', 'Contable\EmpleadoController@formHorarioEspecial')->name('empleado.formHorarioEspecial')->middleware('role:contableAdmin');
 	Route::post('guardarHorarioEsp', 'Contable\EmpleadoController@guardarHorarioEsp')->name('empleado.guardarHorarioEsp')->middleware('role:contableAdmin');
 	Route::post('empleado/horario/borrar', 'Contable\EmpleadoController@borrarHorarioEsp')->name('empleado.borrarHorarioEsp')->middleware('role:contableAdmin');
+	Route::post('empleado/desvincular', 'Contable\EmpleadoController@desvincularEmpresa')->name('empleado.desvincularEmpresa')->middleware('role:contableAdmin');
 		
 		
 	//registro horas reloj
