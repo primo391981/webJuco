@@ -55,9 +55,13 @@
 										</form>
 									</td>				
 									<td>
-										<form method="GET" action="{{ route('expediente.edit', $expediente) }}">																
-											<button type="submit"class="btn btn-warning"><i class="far fa-edit"></i></button>												
-										</form>
+									@if(Auth::user()->hasRole('juridicoAdmin'))
+										@if($expediente->pasos->count() <= 1)
+											<form method="GET" action="{{ route('expediente.edit', $expediente) }}">
+												<button type="submit"class="btn btn-warning"><i class="far fa-edit"></i></button>												
+											</form>
+										@endif
+									@endif
 									</td>
 								</tr>
 							@endforeach

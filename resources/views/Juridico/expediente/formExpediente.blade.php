@@ -37,9 +37,9 @@
 									 <select class="js-example-responsive" name="clientes[]" multiple="multiple" style="width: 100%" required>
 										@foreach($clientes as $key => $cliente)
 											@if($cliente->persona_type === "App\Persona")
-												<option value="{{ $cliente->id }}" {{ old('clientes', isset($exp) ? $exp->clientes : '' ) == $key + 1 ? 'selected' : '' }}>{{ $cliente->persona->tipodoc->nombre }} {{ $cliente->persona->documento }} - {{ $cliente->persona->apellido }}, {{ $cliente->persona->nombre }} </option>
+												<option value="{{ $cliente->id }}" {{ old('clientes', isset($exp) ? ($exp->clientes->contains($cliente) ? $cliente->id: '') : '' ) == $key + 1 ? 'selected' : '' }}>{{ $cliente->persona->tipodoc->nombre }} {{ $cliente->persona->documento }} - {{ $cliente->persona->apellido }}, {{ $cliente->persona->nombre }} </option>
 											@else
-												<option value="{{ $cliente->id }}" {{ old('clientes', isset($exp) ? $exp->clientes : '' ) == $key + 1 ? 'selected' : '' }}> RUT {{ $cliente->persona->rut}} {{ $cliente->persona->razonSocial }}</option>
+												<option value="{{ $cliente->id }}" {{ old('clientes', isset($exp) ? ($exp->clientes->contains($cliente) ? $cliente->id: '') : '' ) == $key + 1 ? 'selected' : '' }}> RUT {{ $cliente->persona->rut}} {{ $cliente->persona->razonSocial }}</option>
 											@endif
 										@endforeach
 									</select>

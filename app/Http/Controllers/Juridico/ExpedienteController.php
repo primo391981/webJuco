@@ -57,7 +57,7 @@ class ExpedienteController extends Controller
 		} else {
 			$tipoExpedientes = TipoExpediente::All();
 			$clientes = Cliente::All();
-			return view('juridico.expediente.agregarExpediente',['clientes' => $clientes, 'tipoExpedientes' => $tipoExpedientes, 'expediente' => $expediente, 'tipoDocumento' => 'DEMANDA' ]);
+			return view('juridico.expediente.agregarExpediente',['clientes' => $clientes, 'tipoExpedientes' => $tipoExpedientes, 'expediente' => $expediente]);
 		}
 		
 		
@@ -159,7 +159,13 @@ class ExpedienteController extends Controller
      */
     public function edit(Expediente $expediente)
     {
-        //
+		if(Auth::user()->hasRole('invitado')){
+			return abort(403, 'Unauthorized action.');
+		}
+		
+        $tipoExpedientes = TipoExpediente::All();
+		$clientes = Cliente::All();
+		return view('juridico.expediente.editarExpediente',['clientes' => $clientes, 'tipoExpedientes' => $tipoExpedientes, 'exp' => $expediente]);
     }
 
     /**
