@@ -63,7 +63,7 @@ $(document).ready(function(){
 function check()
 {
 	var form = $("#formPersona");
-	var url = "/empleados/search";
+	var url = "/cliente/search";
 	var data = form.serialize();
 		  
 	$.get(url, data, function (result) {
