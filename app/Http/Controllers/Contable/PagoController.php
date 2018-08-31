@@ -47,6 +47,13 @@ class PagoController extends Controller
 		return view('contable.pago.listaAdelantosInactivos', ['adelantos' => $adelantos]);
 	}	
 		
+	public function extras()
+    {
+      	$extras = Pago::where("idTipoPago", 3)->with('empleado')->get();
+		
+		return view('contable.pago.listaExtras', ['extras' => $extras]);
+    }
+	
 	public function create(Request $request)
     {
 		$empresas = Empresa::with('personas.tipoDoc')->get();

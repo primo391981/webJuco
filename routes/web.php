@@ -124,6 +124,8 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('adelantos', 'Contable\PagoController@adelantos')->name('pago.adelantos')->middleware('role:contableAdmin');
 	Route::get('adelantos/inactivos', 'Contable\PagoController@adelantosInactivos')->name('pago.adelantos.inactivos')->middleware('role:contableAdmin');
 	Route::post('pago/activar', 'Contable\PagoController@activar')->name('pago.activar')->middleware('role:contableAdmin');
+	Route::get('extras', 'Contable\PagoController@extras')->name('pago.extras')->middleware('role:contableAdmin');
+	Route::get('extras/inactivos', 'Contable\PagoController@extrasInactivos')->name('pago.extras.inactivos')->middleware('role:contableAdmin');
 	Route::get('pago/create/{idTipo}', 'EmpresaController@create')->name('pago.create')->middleware('role:contableAdmin');	
 	Route::resource('pago', 'Contable\PagoController')->middleware('role:contableAdmin');
 	
