@@ -163,15 +163,14 @@ class PasoController extends Controller
     public function edit(Paso $paso)
     {
         $user = Auth::user();
+		$exp = $paso->expediente;
 		
 		if($user->hasRole('invitado')){
 			if(!$user->permisosEscritura->contains($exp)){
 				return abort(403, 'Unauthorized action.');
 			}; 
 		};
-		
-		$exp = $paso->expediente;
-		
+				
 		//solo es posible editar el paso actual en el que se encuentra un expediente
 		if( $exp->pasos->last()->id == $paso->id ){
 			return view('juridico.expediente.editarPaso',['expediente' => $exp, 'paso' => $paso]);
@@ -202,10 +201,6 @@ class PasoController extends Controller
 		$paso->save();
 		
 		if ($request->hasFile('documentos')) {
-			
-			
-			
-			
 			$directorio = $expediente->iue;
 			$directorio = str_slug($directorio);
 			foreach($request->documentos as $key => $documento){
@@ -237,7 +232,7 @@ class PasoController extends Controller
 		$notificacion->id_user = $paso->id_usuario;
 		$notificacion->id_tipo = 1; //tipo info
 		$notificacion->fecha_envio = Carbon::now();
-		$notificacion->estado = 0; //se envía una notificación por mail.
+		$notificacion->estado = 1; //se envía una notificación por mail.
 		$notificacion->mensaje = "El expediente ".$expediente->iue." ha sido modificado.";
 		
 		$notificacion->save();
@@ -249,7 +244,7 @@ class PasoController extends Controller
 		// fin envío de mail
 	
 		 					
-		return redirect()->back()->with("message","El expediente fue modificado correctamente.");
+		return redirect()->route('paso.show',$paso)->with("success","El expediente fue modificado correctamente.");
     }
 
     /**

@@ -51,7 +51,12 @@
 									<td>{{$expediente->caratula}}</td>
 									<td>
 										@foreach($expediente->clientes as $cliente)
-											{{$cliente->persona->razonSocial}}
+											@if($cliente->persona_type == 'App\Empresa')
+												<i class="far fa-building"></i> {{$cliente->persona->razonSocial}}<br>
+											@else
+												<i class="fas fa-male"></i> {{$cliente->persona->nombre}} {{$cliente->persona->apellido}}<br>
+											@endif
+											
 										@endforeach
 									</td>
 									<td>{{$expediente->actual->nombre}}</td>
