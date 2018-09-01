@@ -36,6 +36,7 @@
 									<th>TIPO</th>
 									<th>IUE</th>
 									<th>CARATULA</th>
+									<th>CLIENTES</th>
 									<th>PASO</th>
 									<th></th>
 									<th></th>
@@ -48,6 +49,11 @@
 									<td>{{$expediente->tipo->nombre}}</td>
 									<td>{{$expediente->iue}}</td>
 									<td>{{$expediente->caratula}}</td>
+									<td>
+										@foreach($expediente->clientes as $cliente)
+											{{$cliente->persona->razonSocial}}
+										@endforeach
+									</td>
 									<td>{{$expediente->actual->nombre}}</td>
 									<td>
 										<form method="GET" action="{{route('expediente.show', $expediente)}}">																
