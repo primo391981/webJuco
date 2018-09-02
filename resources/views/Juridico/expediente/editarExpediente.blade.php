@@ -3,41 +3,37 @@
 @section('seccion', " - AGREGAR")
 
 @section('content')
-<br>
-<div class="row">
-	<!--solamente es visible en cel-->
-	<div class="col-xs-12 visible-xs"><a href="{{ route('expediente.index') }}" class="btn btn-success" style="margin-bottom:5%;" role="button"><i class="fas fa-list-ul"></i> Listado expediente</a></div>				  
-</div>
-
 @if ($errors->any())
     <div class="alert alert-danger">
-           @foreach ($errors->all() as $error)
+           <br>
+		   @foreach ($errors->all() as $error)
                 {{ $error }}
            @endforeach
     </div>
 @endif
-
+<br>
 <div class="row">
-	<div class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2">
-		<div class="panel">
+	<div class="col-xs-12">
+		
+		<div class="panel panel-success text-success">
 			<div class="panel-heading">
-				<div class="row">
-					<div class="col-sm-9"><h4>EDITAR EXPEDIENTE</h4></div>
-					<div class="col-sm-3 hidden-xs"><a href="{{ route('expediente.index') }}" class="btn btn-success" role="button"><i class="fas fa-list-ul"></i> Listado expedientes</a></div>
-				</div>
+				<a class="btn btn-success pull-right" href="{{route('expediente.index')}}" role="button"><i class="fas fa-list-ul"></i></a>
+				<h4><i class="fas fa-edit"></i> EDITAR EXPEDIENTE </h4>				
 			</div>
-			 <div class="panel-body text-success"> 
+			<div class="panel-body">
 				<form method="POST" action="{{ route('expediente.update',$exp) }}" class="form-horizontal"> 
 					@method('PATCH')
-					@include('juridico.expediente.formExpediente', ['textoBoton' => 'Confirmar']) 
+					@include('juridico.expediente.formExpediente') 
+			</div>
+			<div class="panel-footer">
+					<button type="submit" class="btn btn-success btn-block" name="saveExpediente"><i class="fas fa-check"></i> Confirmar</button>				
 				</form>
 			</div>
-			<div class="panel-footer"><a href="{{ route('expediente.index') }}" class="btn btn-success btn-block" role="button"><i class="fas fa-list-ul"></i> Listado expediente</a></div>
-		</div>
-	</div>
-	
-</div>
-    
+			</div>
+		</div><!--cierre panel-->
+		
+	</div><!--cierre col xs12-->
+</div><!--cierre row-->
 <script>
 
 $(document).ready(function(){

@@ -1,28 +1,33 @@
-<div class="box box-success" id="boxRecordatorios">
-	<div class="box-header">
-		<h4>Recordatorios</h4>
-	</div>
-	<div class="box-body" id="bodyRecordatorios" style="overflow-y: scroll;">
+@if(Auth::user()->hasRole('juridicoAdmin') || Auth::user()->permisosEscritura->contains($expediente))
+	<a class="btn btn-success pull-right" data-toggle="modal" data-target="#modalRecordatorios" role="button"><i class="fas fa-plus"></i></a>
+@endif
+<h4>Recordatorios</h4>
+<hr class="hidden-xs hidden-sm">
 		@if(count($expediente->recordatorios->where('estado',0)) > 0)
 			@foreach($expediente->recordatorios->where('estado',0) as $recordatorio)
-				<div class="alert alert-warning"> 
-					{{$recordatorio->fecha_vencimiento}} - {{$recordatorio->mensaje}} <i class="fas fa-exclamation"></i> 
+			<div class="row" style="margin-bottom:5px;">
+				<div class="col-xs-10">
+					<form method="POST" action="{{ route('recordatorio.destroy',$recordatorio) }}" class="form-inline">
+					@method('DELETE')
+					@csrf
+					<div class="form-group">
+						<span>{{$recordatorio->fecha_vencimiento}} - {{$recordatorio->mensaje}}</span>
+					</div>
+					
+				</div>
+				<div class="col-xs-2">
 					@if(Auth::user()->hasRole('juridicoAdmin') || Auth::user()->permisosEscritura->contains($expediente))
-						<form class="form-inline" style="display: inline-block;" method="POST" action="{{ route('recordatorio.destroy',$recordatorio) }}">
-						@method('DELETE')
-						@csrf
-						<button type="submit" class="btn btn-link"><i class="fas fa-times"></i>
-						</form>
+					  <button type="submit" class="btn btn-danger btn-xs"><i class="fas fa-times"></i>
+					</form>
 					@endif
 				</div>
+			</div>
 			@endforeach
 		@else
 			No hay recordatorios programados
-		@endif
-	</div>	
-	<div class="box-footer text-center">
-		@if(Auth::user()->hasRole('juridicoAdmin') || Auth::user()->permisosEscritura->contains($expediente))
-			<button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modalRecordatorios"> <i class="fas fa-plus"></i> recordatorio</button>
-		@endif
-	</div>					
-</div>
+		@endif					
+		
+		
+
+
+  

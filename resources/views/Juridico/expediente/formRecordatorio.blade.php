@@ -1,9 +1,11 @@
-<div class="container-fluid">
-					<div class="col-md-12 example-title">
-						<h3>Nuevo recordatorio</h3>	
-					</div>
-					<div>
-						<form method="POST" action="{{ route('recordatorio.store') }}" class="form-horizontal">
+<div class="row">
+<div class="col-xs-12 text-center">
+	<p><strong>NUEVO RECORDATORIO</strong></p>
+</div>
+</div>
+<div class="row">
+<div class="col-xs-12">
+<form method="POST" action="{{ route('recordatorio.store') }}" class="form-horizontal">
 						  @csrf
 						  <input type="hidden" name="id_expediente" value="{{$expediente->id}}">
 						  <div class="form-group">
@@ -25,10 +27,15 @@
 							</div>
 						  </div>
 						  <div class="form-group">
-							<div class="col-sm-12 text-center">
-							  <button type="submit" class="btn btn-primary">guardar</button>
+							<div class="col-xs-12 col-md-6" style="margin-bottom:5px;">
+							  <button type="submit" class="btn btn-success btn-block"><i class="fas fa-check"></i> Confirmar</button>
+							</div>
+							<div class="col-xs-12 col-md-6">
+							<button type="button" class="btn btn-danger btn-block" data-dismiss="modal"><i class="fas fa-times"></i> Cancelar</button>
 							</div>
 						  </div>
 						</form>
-					</div>
-				</div>
+					
+</div>
+</div>						
+				

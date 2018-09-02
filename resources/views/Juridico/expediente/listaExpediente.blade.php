@@ -3,41 +3,58 @@
 @section('seccion', " - ACTIVOS")
 
 @section('content')
-
-<br>
-<div class="row">
-	<!--solamente es visible en cel-->
-	<div class="col-xs-12 visible-xs"><a href="{{ route('cliente.create') }}" class="btn btn-success" role="button" style="margin-bottom:5%;"><i class="fas fa-plus"></i> Agregar nuevo expediente</a></div>				  
-</div>
 @if (Session::has('success'))
+	<br>
 		<div class="alert alert-success">
 			{{Session::get('success')}}
 		</div>
-@endif 
-<div class="row text-info">
+@endif
+
+<div class="row">
+<form method="GET" action="{{route('expediente.search')}}">
+					@csrf
+	<div class="form-group">
+		<label class="control-label col-xs-12 col-md-3">IUE - Identificación Unica de Expedientes</label>
+		@if ($errors->has('iue'))
+			<span style="color:red;">{{ $errors->first('iue') }}</span>
+		@endif
+		<div class="col-xs-12 col-md-9">
+			<div class="input-group">
+				<input id="iue" name="iue" type="text" class="form-control" required autofocus placeholder="xxxx-xxxx/xxxx - Consulta en el Sistema del Poder Judicial ">
+				
+				<div class="input-group-btn">
+				<button type="submit" class="btn btn-success btn-block"><i class="fas fa-search"></i> Consultar</button>
+				</form>
+				</div>
+			</div>
+		</div>	
+	</div>
+
+</div>
+<hr>
+
+<div class="row">
 	<div class="col-xs-12">
-		<div class="panel">
-				  <div class="panel-heading">
-					<div class="row">
-						<div class="col-sm-9"><h4>LISTADO EXPEDIENTES</h4></div>
-						@if(Auth::user()->hasRole('juridicoAdmin'))
-							<div class="col-sm-3 hidden-xs"><a href="{{ route('expediente.create') }}" class="btn btn-success pull-right" role="button"><i class="fas fa-plus"></i> nuevo expediente</a></div>				  
-						@endif
-					</div>
-				  </div>
-				<div class="panel-body text-muted">					
-					@if(!is_null($expedientes))
+		
+		<div class="panel panel-success text-success">
+			<div class="panel-heading">
+				@if(Auth::user()->hasRole('juridicoAdmin'))
+					<a href="{{ route('expediente.create') }}" class="btn btn-success pull-right" role="button"><i class="fas fa-plus"></i></a>
+				@endif
+				<h4><i class="fas fa-book"></i> LISTADO DE EXPEDIENTES</h4>				
+			</div>
+			<div class="panel-body">
+				@if(!is_null($expedientes))
 					<div class="table-responsive">
-						<table id="tableExp" class="table table-bordered">
+						<table id="tableExp" class="table">
 							
 							<thead>
-								<tr class='active'>
-									<th class="scope">ID</th>
-									<th>TIPO</th>
-									<th>IUE</th>
-									<th>CARATULA</th>
+								<tr>
+									<th>IDENTIFICACION</th>
+									<th>TIPO EXPEDIENTE</th>
+									<th class="col-xs-3">CARATULA</th>
 									<th>CLIENTES</th>
-									<th>PASO</th>
+									<th>PASO ACTUAL</th>
 									<th></th>
 									<th></th>
 								</tr>
@@ -45,9 +62,8 @@
 							<tbody>
 							@foreach($expedientes as $expediente)						
 								<tr>
-									<td>{{$expediente->id}}</td>
-									<td>{{$expediente->tipo->nombre}}</td>
 									<td>{{$expediente->iue}}</td>
+									<td>{{$expediente->tipo->nombre}}</td>
 									<td>{{$expediente->caratula}}</td>
 									<td>
 										@foreach($expediente->clientes as $cliente)
@@ -83,28 +99,30 @@
 					@else
 						<div class="alert alert-info">No hay expedientes registrados en el sistema.</div>
 					@endif
-				</div>
-				@if(Auth::user()->hasRole('juridicoAdmin'))
-					<div class="panel-footer"><a href="{{ route('expediente.create') }}" class="btn btn-success btn-block" role="button"><i class="fas fa-plus"></i> nuevo expediente</a></div>
-				@endif
-		</div>
-	</div>
-</div>
+			</div>
+		</div><!--cierre panel-->
+		
+	</div><!--cierre col xs12-->
+</div><!--cierre row-->
+
 <script>
 $(document).ready(function() {
     $('#tableExp').DataTable( {        
+		"pagingType": "numbers",
+		"pageLength": 10,
 		"language": {
 		"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"},
-		dom: '<"top"f>t<"bottom"Bpi><"clear">',
+		dom: "<'row'<'col-sm-6'><'col-sm-6'f>>" +
+"<'row'<'col-sm-12'tr>>" +
+"<'row'<'col-sm-6'B><'col-sm-6'p>>",
         buttons: [
            { extend: 'print', text: 'IMPRIMIR' },
 		   { extend: 'pdf', text: 'PDF' },		   
 		   { extend: 'excel', text: 'EXCEL' },
-		   { extend: 'copy', text: 'COPIAR TABLA' }
-        ]
+		   { extend: 'copy', text: 'COPIAR' }
+        ],
+		
     } );
-	
-	
 } );
 </script>
 @endsection

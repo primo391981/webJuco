@@ -1,35 +1,35 @@
 @extends('juridico.juridico')
-
-@section('seccion', " - ACTIVOS")
-
 @section('content')
-
-<br>
-<div class="row">
-	<!--solamente es visible en cel-->
-	<div class="col-xs-12 visible-xs"><a href="{{ route('cliente.create') }}" class="btn btn-success" role="button" style="margin-bottom:5%;"><i class="fas fa-plus"></i> Agregar nuevo cliente</a></div>				  
-</div>
 @if (Session::has('success'))
+	<br>
 		<div class="alert alert-success">
 			{{Session::get('success')}}
 		</div>
 @endif 
 @if (Session::has('error'))
+	<br>
 		<div class="alert alert-danger">
 			{{Session::get('error')}}
 		</div>
 @endif 
-<div class="row text-info">
+<br>
+<div class="row">
 	<div class="col-xs-12">
-		<div class="panel">
-				  <div class="panel-heading">
-					<div class="row">
-						<div class="col-sm-9"><h4>LISTADO CLIENTES ACTIVOS</h4></div>
-						<div class="col-sm-3 hidden-xs"><a href="{{ route('cliente.create') }}" class="btn btn-success pull-right" role="button"><i class="fas fa-plus"></i> Agregar nuevo cliente</a></div>				  
-					</div>
-				  </div>
-				  <div class="panel-body text-success">					
-					<div class="table-responsive">
+		
+		<div class="panel panel-success text-success">
+			<div class="panel-heading">
+				<div class="btn-group pull-right">
+				  <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+				  <i class="fas fa-plus"></i></button>
+				  <ul class="dropdown-menu" role="menu">
+					<li><a name="juridico" href="{{ route('cliente.create.juridica')}}"><i class="far fa-building"></i> Persona Jurídica</a></li>
+					<li><a name="fisico" href="{{ route('cliente.create.fisica')}}"><i class="fas fa-user"></i> Persona Física</a></li>
+				  </ul>
+				</div>
+				<h4>LISTADO CLIENTES ACTIVOS </h4>				
+			</div>
+			<div class="panel-body">
+				<div class="table-responsive">
 						<table id="tableCli" class="table">
 							
 							<thead>
@@ -49,9 +49,9 @@
 								<td>{{$cliente->id}}</td>
 								<td>
 									@if($cliente->persona_type=="App\Persona")
-										Física 
+										<i class="fas fa-user"></i> Física 
 									@else
-										Jurídica
+										<i class="far fa-building"></i> Jurídica
 									@endif
 								</td>
 								<td>
@@ -65,8 +65,8 @@
 								</td>
 								<td>
 									@if($cliente->persona_type=="App\Persona")
-										{{$cliente->persona->apellido}} 
 										{{$cliente->persona->nombre}}
+										{{$cliente->persona->apellido}} 
 									@else
 										{{$cliente->persona->razonSocial}}
 									@endif
@@ -92,27 +92,30 @@
 						
 						</table>
 					</div>
-					
-				  </div>
-				  <div class="panel-footer"><a href="{{ route('cliente.create') }}" class="btn btn-success btn-block" role="button"><i class="fas fa-plus"></i> Agregar nuevo cliente</a></div>
-		</div>
-	</div>
-</div>
+			</div>
+			
+		</div><!--cierre panel-->
+		
+	</div><!--cierre col xs12-->
+</div><!--cierre row-->
 <script>
 $(document).ready(function() {
     $('#tableCli').DataTable( {        
+		"pagingType": "numbers",
+		"pageLength": 10,
 		"language": {
 		"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"},
-		dom: '<"top"f>t<"bottom"Bpi><"clear">',
+		dom: "<'row'<'col-sm-6'><'col-sm-6'f>>" +
+"<'row'<'col-sm-12'tr>>" +
+"<'row'<'col-sm-6'B><'col-sm-6'p>>",
         buttons: [
            { extend: 'print', text: 'IMPRIMIR' },
 		   { extend: 'pdf', text: 'PDF' },		   
 		   { extend: 'excel', text: 'EXCEL' },
-		   { extend: 'copy', text: 'COPIAR TABLA' }
-        ]
+		   { extend: 'copy', text: 'COPIAR' }
+        ],
+		
     } );
-	
-	
 } );
 </script>
 @endsection
