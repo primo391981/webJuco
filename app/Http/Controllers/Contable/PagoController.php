@@ -54,6 +54,13 @@ class PagoController extends Controller
 		return view('contable.pago.listaExtras', ['extras' => $extras]);
     }
 	
+	public function extrasInactivos()
+    {
+        $extras  = Pago::onlyTrashed()->where("idTipoPago", 3)->with('empleado')->get();
+		
+		return view('contable.pago.listaExtrasInactivos', ['extras' => $extras]);
+	}	
+	
 	public function create(Request $request)
     {
 		$empresas = Empresa::with('personas.tipoDoc')->get();
@@ -103,8 +110,10 @@ class PagoController extends Controller
 			
 			if ($pago ->idTipoPago == 1)
 				return redirect()->route('pago.viaticos')->with('success', "El viático se cargo correctamente.");
-			else
+			elseif ($pago ->idTipoPago == 2)
 				return redirect()->route('pago.adelantos')->with('success', "El adelanto se cargo correctamente.");
+			else
+				return redirect()->route('pago.extras')->with('success', "La partida extra se cargo correctamente.");
 		} 
 		catch(Exception $e){
 			return back()->withInput()->withError("El pago no se pudo registrar, intente nuevamente o contacte al administrador.");				;
@@ -137,8 +146,10 @@ class PagoController extends Controller
 		
 		if ($pago->idTipoPago == 1)
 			$subtitulo = 'Editar Viático';
-		else
+		elseif ($pago ->idTipoPago == 2)
 			$subtitulo = 'Editar Adelanto';
+		else
+			$subtitulo = 'Editar Partida Extra';
 		
 		return view('contable.pago.editarPagos', ['subtitulo' => $subtitulo, 'empresa' => $empresa, 'persona' => $persona, 'pago' => $pago]);	
     }
@@ -171,15 +182,16 @@ class PagoController extends Controller
 			$pago->porcentaje = $request->porcentaje;
 		else
 			$pago->porcentaje = NULL;
-	//dd($pago);
-	
+
 		try {
 			$pago->save();
 			
 			if ($pago ->idTipoPago == 1)
 				return redirect()->route('pago.viaticos')->with('success', "El viático se editó correctamente");
-			else
+			elseif ($pago->idTipoPago == 2)
 				return redirect()->route('pago.adelantos')->with('success', "El adelanto se editó correctamente");
+			else
+				return redirect()->route('pago.extras')->with('success', "La partida extra se editó correctamente");
 				
 		} catch(Exception $e){
 			return back()->withInput()->withError("El pago no se pudo registrar, intente nuevamente o contacte al administrador.");				;
@@ -196,9 +208,12 @@ class PagoController extends Controller
 		
 		if ($pago->idTipoPago == 1)
 			return redirect()->route('pago.viaticos.inactivos')->with('success', "El viático fue restaurado correctamente");
-		else
+		elseif ($pago->idTipoPago == 2)
 			return redirect()->route('pago.adelantos.inactivos')->with('success', "El adelanto fue restaurado correctamente");
+		else
+			return redirect()->route('pago.extras.inactivos')->with('success', "La partida extra fue restaurada correctamente");
     }
+	
     /**
      * Remove the specified resource from storage.
      *
@@ -211,7 +226,9 @@ class PagoController extends Controller
 		
 		if ($pago->idTipoPago == 1)
 			return redirect()->route('pago.viaticos')->with('success', "El viático fue eliminado correctamente");
-		else
+		elseif ($pago->idTipoPago == 2)
 			return redirect()->route('pago.adelantos')->with('success', "El adelanto fue eliminado correctamente");
+		else
+			return redirect()->route('pago.extras')->with('success', "La partida extra eliminada correctamente");
     }
 }

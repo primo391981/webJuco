@@ -24,8 +24,10 @@
 				<a class="btn btn-success pull-right" href="{{ $tipoPago == 1 ? route('pago.viaticos') : route('pago.adelantos') }}" role="button"><i class="fas fa-list-ul"></i></a>
 				<h4>@if ($tipoPago == 1)
 						<i class="fas fa-book"></i> AGREGAR NUEVO VIATICO
-					@else
+					@elseif ($tipoPago == 2)
 						<i class="fas fa-credit-card"></i>  AGREGAR NUEVO ADELANTO
+					@else
+						<i class="fas fa-credit-card"></i>  AGREGAR NUEVA PARTIDA EXTRA
 					@endif
 				</h4>				
 			</div>

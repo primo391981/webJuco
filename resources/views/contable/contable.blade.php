@@ -54,9 +54,9 @@
 			<li>
 				<a href="#"><i class="fas fa-dollar-sign"></i> Partidas Extras <i class="fas fa-caret-down"></i></a>
 					<ul class="nav nav-third-level">
-						<li><a href="{{ route('pago.extras') }}"><i class="fas fa-list-ul"></i> Activos</a></li>	
-						<li><a href="{{-- route('pago.create', ['idTipo' => 3]) --}}"><i class="fas fa-plus"></i> Agregar nuevo</a></li>
-						<li><a href="{{-- route('pago.extrass.inactivos') --}}"><i class="fas fa-list-ul"></i> Inactivos</a></li>
+						<li><a href="{{ route('pago.extras') }}"><i class="fas fa-list-ul"></i> Activas</a></li>	
+						<li><a href="{{ route('pago.create', ['idTipo' => 3]) }}"><i class="fas fa-plus"></i> Agregar nueva</a></li>
+						<li><a href="{{ route('pago.extras.inactivos') }}"><i class="fas fa-list-ul"></i> Inactivas</a></li>
 					</ul>
 			</li>
         </ul>
