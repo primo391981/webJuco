@@ -133,13 +133,32 @@ class HaberesController extends Controller
 					$horasMesTrabajado = $this->obtenerHorasTrabajadasMes($fecha, $empleado->id);
 					//Obtiene las horas a descontar, Horas Extras y Horas Extras Especiales
 					$horasRecibo = $this->obtenerHorasDescuentoYExtras($fecha, $horasMesContrato, $horasMesTrabajado[0]);
+					//Agregar horas de nocturnidad, percnote y espera.
+			////////$horasRecibo 
+					
+					
 					//Cálcula Antigüedad si corresponde
 					$cargo = Cargo::find($empleado->idCargo);
-					
 					$montoAntiguedad = $this->obtenerAntiguedad($fecha, $empleado, $cargo);
 					
-					//Obtiene monto de Salario Nominal Gravado y no Gravado
+					//Obtiene monto de Salario Nominal Gravado y no Gravado, sumando todos los conceptos (víaticos y partidas extras)
+					//$montosSalario = $this->obtenerMontosSalarioNominal($fecha, $empleado, $horasRecibo, $montoAntiguedad);
 					
+					//Sumar 6% si Salario Nominal Gravado supera 10 BPC
+					
+					//Cálculo de descuento de Fonasa
+					
+					//Cálculo de descuento de BPS
+					
+					//Cálculo de descuento de FRL
+					
+					//Cálculo de descuento de IRPF Primario
+					
+					//Cálculo de deducciones de IRPF
+					
+					//IRPF final a pagar
+					
+					//Guarda detalles del recibo
 					
 				
 				
