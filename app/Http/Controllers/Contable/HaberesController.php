@@ -32,37 +32,46 @@ class HaberesController extends Controller
 		$tiposHaberes = TipoRecibo::All();		
         return view('contable.haberes.listaEmpresasHaberes', ['empresas' => $empresas, 'tiposHaberes' => $tiposHaberes]);
     }
+	
+	//Lista los empleados que se encuentran con contrato para el mes/año seleccionado para el cálculo, indicndo si están habilitados con sus horas del mes ya cargadas y totales de Adelantos/Viáticos/Partidas Extras.
 	public function listaEmpleados(Request $request){
-		try{
-			
+		try{			
 			$empresa=Empresa::where('rut','=',$request->rut)->first();			
 			$personas=$empresa->personas;
 			$habilitadas=collect([]);
 			$cantHabilitados = 0;
-			foreach($personas as $persona){
+			
+			foreach($personas as $persona)
+			{
 				$fecha=new Carbon($request->mes."-01");
 				$fDesde=new Carbon($persona->pivot->fechaDesde);
 				$fHasta=new Carbon($persona->pivot->fechaHasta);
-				if($fecha->between($fDesde,$fHasta)){
+				if($fecha->between($fDesde,$fHasta))
+				{
 					$habilita=collect([]);
 					$habilita->push($persona);					
 					$regHora=RegistroHora::where([['idEmpleado','=',$persona->pivot->id],['fecha','=',$fecha]])->first();
-					if($regHora!=null){
+					if($regHora!=null)
+					{
 						$habilita->push('1');
 					}
-					else{
+					else
+					{
 						$habilita->push('0');
 					}
 					$pagos=Pago::where([['idEmpleado','=',$persona->pivot->id],['fecha','=',$fecha]])->get();
 					
 					$totalViaticos=0;
 					$totalAdelantos=0;
-					foreach($pagos as $p){
-						
-						if($p->idTipoPago==1){
+					
+					foreach($pagos as $p)
+					{
+						if($p->idTipoPago==1)
+						{
 							$totalViaticos+=$p->monto;
 						}
-						else{
+						else
+						{
 							$totalAdelantos+=$p->monto;
 						}
 						
@@ -83,22 +92,13 @@ class HaberesController extends Controller
 		}		
 	}
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+  
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+	//Guarda los datos del cálculo de sueldos con los detalles correspondientes al recibo del mismo.
     public function store(Request $request)
     {
 	/*
@@ -111,8 +111,7 @@ class HaberesController extends Controller
 		  "1a" => "80894"
 		  "1ex" => "100"
 	 */
-	 //dd($request);
-       try{
+	    try{
 		   $sueldoNominalGravado = 0;
 		   $sueldoNominalNoGravado = 0;
 		   $montoHorasFaltantes = 0;
@@ -133,12 +132,11 @@ class HaberesController extends Controller
 					//Obtiene las horas efectivamente trabajadas
 					$horasMesTrabajado = $this->obtenerHorasTrabajadasMes($fecha, $empleado->id);
 					//Obtiene las horas a descontar, Horas Extras y Horas Extras Especiales
-					$horasADescuento = $this->obtenerHorasDescuentoYExtras($fecha, $horasMesContrato, $horasMesTrabajado[0]);
+					$horasRecibo = $this->obtenerHorasDescuentoYExtras($fecha, $horasMesContrato, $horasMesTrabajado[0]);
 					//Cálcula Antigüedad si corresponde
 					$cargo = Cargo::find($empleado->idCargo);
 					
 					$montoAntiguedad = $this->obtenerAntiguedad($fecha, $empleado, $cargo);
-					
 					
 					//Obtiene monto de Salario Nominal Gravado y no Gravado
 					
@@ -317,9 +315,9 @@ class HaberesController extends Controller
 		$cantHorasDescuento = 0;
 		$cantHorasExtrasA = 0;
 		$cantHorasExtrasB = 0;
-		 
+				 
 		$horasEmpl = collect([]);
-				
+			
 		for($i=0;$i<$fecha->daysInMonth;$i++)
 		{
 			//Suma de horas a descontar por diferencia
@@ -329,7 +327,7 @@ class HaberesController extends Controller
 				$horaReal = Carbon::createFromTimeString($horasMesTrabajado[$i][1]);
 				$difHora = $horaContrato->hour - $horaReal->hour;
 				
-				$cantHorasDescuento = $cantHorasDescuento + $difHora;
+				$cantHorasDescuento = $cantHorasDescuento - $difHora;
 			}
 			//dd($cantHorasDescuento);
 			$horasExtrasDia = Carbon::createFromTimeString($horasMesTrabajado[$i][2]);
@@ -426,13 +424,19 @@ class HaberesController extends Controller
 		$horasEmpl->push($cantHorasDescuento);
 		$horasEmpl->push($cantHorasExtrasA);
 		$horasEmpl->push($cantHorasExtrasB);
-		
+			
 		return $horasEmpl;
 	}
 	
 	//Obtiene el monto de la antiguedad del empleado
 	private function obtenerAntiguedad($fecha, $empleado, $cargo)
-	{
+	{/*	Antigüedad:
+		- 19 meses = 1,25 x SMN x años (1 años y 7 meses)
+		- 60 meses = 2,25 x SMN x años (5 años)
+		-120 meses = 2,5  x SMN x años (10 años)
+		-180 meses en adelante: 
+			tope = 2,5 x SMN x 15	
+	*/	
 		$valorAntiguedad = 0;
 		
 		if ($cargo->id_remuneracion == 1)
@@ -469,16 +473,7 @@ class HaberesController extends Controller
 			$fechaInicio = new Carbon($empleado->fechaDesde);
 			 
 			$meses = $fechaInicio->diffInMonths($fecha);
-/*
-	Antigüedad:
-		- 19 meses = 1,25 x SMN x años (1 años y 7 meses)
-		- 60 meses = 2,25 x SMN x años (5 años)
-		-120 meses = 2,5  x SMN x años (10 años)
-		-180 meses en adelante: 
-			tope = 2,5 x SMN x 15	
-*/		
-
-$meses = 200;
+	
 			if ($meses >= 19 && $meses < 60)
 				$valorAntiguedad = $salMin * 0.0125 * (intval($meses / 12));
 			else
@@ -497,7 +492,6 @@ $meses = 200;
 				}
 			}
 		}
-		dd($valorAntiguedad);
 		return $valorAntiguedad;
 	}
 	
