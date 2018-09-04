@@ -204,4 +204,30 @@ class PagoController extends Controller
 		else
 			return redirect()->route('pago.adelantos')->with('success', "El adelanto fue eliminado correctamente");
     }
+	
+	public function altaViatico(Request $request){
+		
+		
+		$pago = new Pago;
+		$pago->idEmpleado = $request->idEmpleado;
+		$pago->idTipoPago = 1;
+		$fechaPago= new Carbon($request->fecha);
+		$pago->fecha = $fechaPago->year.'-'.$fechaPago->month.'-01';
+		$pago->monto = $request->monto;
+		$pago->descripcion = $request->desc;
+		
+		if (isset($request->dias))
+			$pago->cantDias = $request->dias;
+		
+		if (isset ($request->gravado)){
+			$pago->gravado=1;
+			$pago->porcentaje = $request->porcentaje;		
+		}
+		else{
+			$pago->gravado=0;
+		}
+		$pago->save();
+			return redirect()->route('haberes.listaEmpleados');
+	}
+	
 }

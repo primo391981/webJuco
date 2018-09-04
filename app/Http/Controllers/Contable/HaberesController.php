@@ -34,7 +34,6 @@ class HaberesController extends Controller
     }
 	public function listaEmpleados(Request $request){
 		try{
-			
 			$empresa=Empresa::where('rut','=',$request->rut)->first();			
 			$personas=$empresa->personas;
 			$habilitadas=collect([]);
