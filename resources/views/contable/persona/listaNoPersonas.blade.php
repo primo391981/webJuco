@@ -68,9 +68,8 @@ $(document).ready(function() {
 								<td>{{$persona->telefono}}</td>
 								<td>{{$persona->email}}</td>
 								<td>
-									<form method="GET" action="{{route('persona.restaurar', $persona->id)}}">																
 										<button type="submit"class="btn btn-info"><i class="fas fa-recycle"></i></button>												
-									</form>
+									
 								</td>
 											
 								

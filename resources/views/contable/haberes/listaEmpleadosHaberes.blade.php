@@ -54,9 +54,30 @@
 								<td>{{$emp[0]->documento}}</td>
 								<td>{{$emp[0]->nombre}}</td>
 								<td>{{$emp[0]->apellido}}</td>
-								<td><input id="{{$i}}v" name="{{$i}}v" type="number" value="{{$emp[2]}}" class="form-control" {{ $emp[1]==1 ? '' : 'readonly' }} required></td>
-								<td><input id="{{$i}}a" name="{{$i}}a" type="number" value="{{$emp[3]}}" class="form-control" {{ $emp[1]==1 ? '' : 'readonly' }} required></td>
-								<td><input id="{{$i}}ex" name="{{$i}}ex" type="number" class="form-control" {{ $emp[1]==1 ? '' : 'readonly' }} value="{{$emp[4]}}"></td>								
+								
+								
+								<td>
+									<div class="input-group">
+									<input id="v{{$i}}" name="v{{$i}}" type="number" class="form-control input-sm" value="{{$emp[2]}}" readonly>
+										<div class="input-group-btn">
+											<button type="button" class="abrirModal btn btn-success btn-sm" data-id="{{$emp[0]->pivot->id}}" data-toggle="modal" data-target="#modalViaticoAdd"><i class="fas fa-plus"></i></button>
+											<button type="button" class="abrirModal btn btn-info btn-sm" data-id="{{$emp[0]->pivot->id}}" data-toggle="modal" data-target="#modalViaticoList"><i class="fas fa-info-circle"></i></button>
+										</div>
+									</div>
+								</td>
+								
+								<td>
+									<div class="input-group">
+									<input id="a{{$i}}" name="a{{$i}}" type="number" class="form-control input-sm" value="{{$emp[3]}}" readonly>
+										<div class="input-group-btn">
+											<button type="button" class="abrirModal btn btn-success btn-sm" data-id="{{$emp[0]->pivot->id}}" data-toggle="modal" data-target="#modalAdelantoAdd" ><i class="fas fa-plus"></i></button>
+											<button type="button" class="abrirModal btn btn-info btn-sm" data-id="{{$emp[0]->pivot->id}}" data-toggle="modal" data-target="#modalAdelantoList"><i class="fas fa-info-circle"></i></button>
+										</div>
+									</div>
+								</td>
+								
+								
+								<td><input id="{{$i}}ex" name="{{$i}}ex" type="number" class="form-control" {{ $emp[1]==1 ? '' : 'disabled' }} value="100"></td>								
 							</tr>
 							@php $i++;  @endphp
 							@endforeach
@@ -76,6 +97,70 @@
 	</div><!--cierre col xs12-->
 </div><!--cierre row-->
 
+<!-- Modal add viatico -->
+<div id="modalViaticoAdd" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+ <div class="modal-content text-warning">
+      <div class="modal-header"  style="background:#fcf8e3;">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><i class="fas fa-book"></i> INGRESO DE NUEVO VIATICO</h4>
+      </div>
+      <div class="modal-body">
+		<form class="form-horizontal" action="{{route('pago.altaViatico')}}" method="post">
+		@csrf        
+		<input type="hidden" id="idEmpleado" name="idEmpleado" value="">
+		<input type="hidden" id="fecha" name="fecha" value="{{$fecha}}">
+		<div class="form-group">
+				<label class="control-label col-sm-3">DESCRIPCION </label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" id="desc" name="desc" required>
+				</div>
+		</div>
+		<div class="form-group">
+				<label class="control-label col-sm-3">MONTO </label>
+				<div class="col-sm-9">
+					<input class="form-control" type="number" id="monto" name="monto" min="0" required>
+				</div>
+		</div>
+		<div class="form-group">
+				<label class="control-label col-sm-3">DIAS </label>
+				<div class="col-sm-9">
+					<input class="form-control" type="number" id="dias" name="dias" min="0" required>
+				</div>
+		</div>
+		
+		<div class="form-group">
+				<label class="control-label col-sm-3">GRAVADO </label>
+				<div class="col-sm-9">
+					<input type="checkbox" id="gravado" name="gravado"  onclick="habilitarPorcentajeV()">
+				</div>
+		</div>
+		<div class="form-group">
+				<label class="control-label col-sm-3">PORCENTAJE </label>
+				<div class="col-sm-9">
+					<input class="form-control" type="number" id="porcentaje" name="porcentaje" min="1" required disabled>
+				</div>
+		</div>
+		
+	  </div>
+      <div class="modal-footer">
+        <div class="row">
+			<div class="col-xs-6">
+					<button type="submit" class="btn btn-warning btn-block"><i class="fas fa-check"></i> Confirmar</button>
+			</div>
+			<div class="col-xs-6">
+				<button type="button" class="btn btn-danger btn-block" data-dismiss="modal"><i class="fas fa-times"></i> Cancelar</button>
+			</form>
+			</div>
+			</div>
+	  </div>
+    </div>
+
+  </div>
+</div><!-- cierre add viatico -->
+
+
+
 <script>
 $(document).ready(function() {
     $('#tableEmpleados').DataTable( {        
@@ -93,6 +178,27 @@ $(document).ready(function() {
 		
     } );
 } );
+
+$(document).on("click", ".abrirModal", function () {
+     var idEmp = $(this).data('id');
+	 var tipoBoton=$(this).val();
+     $(".modal-body #idEmpleado").val( idEmp );
+	 $(".modal-body #tipobtn").val( tipoBoton );
+     // obtener el idEmpleado cuando apreta boton de viaticos,adelanto o extra 
+});
+
+function habilitarPorcentajeV() {
+    var checkBox = document.getElementById("gravado");
+    if (checkBox.checked == true){
+        document.getElementById("porcentaje").disabled = false;
+    } else {
+       document.getElementById("porcentaje").disabled = true;
+    }
+}
+
+$('.modal').on('hidden.bs.modal', function(){
+    $(this).find('form')[0].reset();
+});
 </script>
 @endsection
 
