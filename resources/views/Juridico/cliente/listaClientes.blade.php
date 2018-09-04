@@ -40,6 +40,7 @@
 								<th>NOMBRE</th>
 								<th></th>
 								<th></th>
+								<th></th>
 								
 							</tr>
 						</thead>
@@ -72,8 +73,11 @@
 									@endif
 									
 								</td>
-								
-								
+								<td>
+									<form method="GET" action="{{route('cliente.show', $cliente)}}">
+										<button type="submit" class="btn btn-info"><i class="fas fa-info-circle"></i></button>
+									</form>
+								</td>
 								<td>
 									<form method="GET" action="{{ route('cliente.edit', $cliente) }}">																
 										<button type="submit"class="btn btn-warning"><i class="far fa-edit"></i></button>												

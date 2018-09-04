@@ -5,7 +5,7 @@
 <br>
 <div class="row">
 	<!--solamente es visible en cel-->
-	<div class="col-xs-12 visible-xs"><a href="{{ route('cliente.create') }}" class="btn btn-success" role="button" style="margin-bottom:5%;"><i class="fas fa-plus"></i></a></div>				  
+	<div class="col-xs-12 visible-xs"><a href="{{ route('expediente.create') }}" class="btn btn-success" role="button" style="margin-bottom:5%;"><i class="fas fa-plus"></i></a></div>				  
 </div>
 @if (Session::has('success'))
 		<div class="alert alert-success">
@@ -116,7 +116,12 @@
 							@if($expediente->archivos->count()>0)
 								<h4>Expediente</h4>
 								@foreach($expediente->archivos as $archivo)
-									<a href="{{route('paso.download',$archivo)}}">{{$archivo->nombre_archivo}}</a> <br>
+									<a href="{{route('paso.download',$archivo)}}">{{$archivo->nombre_archivo}}</a>
+									<form method="POST" action="{{route('archivo.destroy',$archivo)}}" style="display: inline;">
+										{{ method_field('DELETE') }}
+										@csrf
+										<button type="submit" class="btn btn-link"><i class="fas fa-times-circle"></i></button>
+									</form><br>
 								@endforeach	
 							@endif
 							<h4>Pasos</h4>
@@ -124,7 +129,12 @@
 								@if($paso->archivos->count()>0)
 									{{ $paso->tipo->nombre}} >
 									@foreach($paso->archivos as $archivo)
-										<a href="{{route('paso.download',$archivo)}}">{{$archivo->nombre_archivo}}</a><br>
+										<a href="{{route('paso.download',$archivo)}}">{{$archivo->nombre_archivo}}</a>
+										<form method="POST" action="{{route('archivo.destroy',$archivo)}}" style="display: inline;">
+											{{ method_field('DELETE') }}
+											@csrf
+										<button type="submit" class="btn btn-link"><i class="fas fa-times-circle"></i></button>
+										</form><br>
 									@endforeach	
 								@endif
 							@endforeach

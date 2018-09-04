@@ -39,19 +39,25 @@ class ArchivoController extends Controller
      */
     public function store(Request $request)
     {
-		
-        if ($request->hasFile('documentos')) {
+		if ($request->hasFile('documentos')) {
 
-			$expediente = Expediente::find($request->expediente_id);
-			$directorio = $expediente->iue;
-			$directorio = str_slug($directorio);
+			if($request->owner_type === "App\Juridico\Expediente"){
+				$expediente = Expediente::find($request->owner_id);
+				$directorio = $expediente->iue;
+				$directorio = str_slug($directorio);
+				$directorio = 'expedientes/'.$directorio;
+			} else {
+				$directorio = $request->owner_id;
+				$directorio = 'clientes/'.$directorio;
+			}
+			
 			foreach($request->documentos as $key => $documento){
 				
 				$file = new Archivo();
-				$file->owner_id = $expediente->id;
-				$file->owner_type = "App\Juridico\Expediente";
+				$file->owner_id = $request->owner_id;
+				$file->owner_type = $request->owner_type;
 				
-				$file->archivo = $documento->storeAs('expedientes/'.$directorio, $documento->getClientOriginalName());
+				$file->archivo = $documento->storeAs($directorio, $documento->getClientOriginalName());
 				$file->nombre_archivo = $documento->getClientOriginalName();
 				$tipoArchivo = Storage::mimeType($file->archivo);
 				
@@ -127,6 +133,6 @@ class ArchivoController extends Controller
 		
 		$archivo->delete();
 		
-		return redirect()->back()->with('message','El archivo fue borrado correctamente');
+		return redirect()->back()->with('success','El archivo fue borrado correctamente');
     }
 }

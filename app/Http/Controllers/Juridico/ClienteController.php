@@ -169,7 +169,7 @@ class ClienteController extends Controller
      */
     public function show(Cliente $cliente)
     {
-        //
+        return view('juridico.cliente.verCliente', ['cliente' => $cliente]);
     }
 
     /**

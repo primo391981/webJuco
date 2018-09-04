@@ -11,7 +11,7 @@
 		</div>
 @endif 
 
-@if (Session::has('message'))
+@if (Session::has('success'))
 		<div class="alert alert-success">
 			{{Session::get('message')}}
 		</div>
@@ -37,7 +37,7 @@
 							@if(count($paso->archivos) > 0)
 								<div class="form-horizontal">
 								
-									<label for="comentarios" class="control-label col-sm-3">ARCHIVOS REGISTRADOS</label>
+									<label for="archivos" class="control-label col-sm-3">ARCHIVOS REGISTRADOS</label>
 									<div class="col-sm-9">
 										@foreach($paso->archivos as $archivo)
 												<a href="{{route('paso.download',$archivo)}}">{{$archivo->nombre_archivo}}</a>

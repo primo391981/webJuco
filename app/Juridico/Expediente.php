@@ -41,8 +41,6 @@ class Expediente extends Model
 	}
 	
 	public function archivos(){
-		
 		return $this->morphMany('App\Juridico\Archivo','owner');
-	
 	}
 }
