@@ -113,11 +113,18 @@
 							<h4>Archivos</h4>
 						</div>
 						<div class="box-body">
+							@if($expediente->archivos->count()>0)
+								<h4>Expediente</h4>
+								@foreach($expediente->archivos as $archivo)
+									<a href="{{route('paso.download',$archivo)}}">{{$archivo->nombre_archivo}}</a> <br>
+								@endforeach	
+							@endif
+							<h4>Pasos</h4>
 							@foreach($expediente->pasos as $paso)
 								@if($paso->archivos->count()>0)
 									{{ $paso->tipo->nombre}} >
 									@foreach($paso->archivos as $archivo)
-										{{$archivo->nombre_archivo}}
+										<a href="{{route('paso.download',$archivo)}}">{{$archivo->nombre_archivo}}</a><br>
 									@endforeach	
 								@endif
 							@endforeach
@@ -125,7 +132,7 @@
 						</div>
 						<div class="box-footer text-center">
 							@if(Auth::user()->hasRole('juridicoAdmin') || Auth::user()->permisosEscritura->contains($expediente))
-								<button class="btn btn-warning btn-xs"> <i class="fas fa-plus"></i> archivo</button>
+								<button class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modalArchivos"> <i class="fas fa-plus"></i> archivo</button>
 							@endif
 						</div>
 					</div>
@@ -212,6 +219,26 @@
 			</div>
 			<div class="modal-body">
 				@include('juridico.expediente.formPermiso')
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- FIN Modal Permisos de usuario -->
+
+<!-- Modal Archivos Expediente-->
+<div class="modal fade" id="modalArchivos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">Archivos de Expediente</h4>
+			</div>
+			<div class="modal-body">
+				@include('juridico.expediente.formArchivo')
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>

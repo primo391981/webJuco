@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Juridico;
 
-use App\Juridico\ArchivoPaso;
+use App\Juridico\Archivo;
+use App\Juridico\Expediente;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Auth;
+use Storage;
 
-class ArchivoPasoController extends Controller
+class ArchivoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -36,7 +39,40 @@ class ArchivoPasoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+		
+        if ($request->hasFile('documentos')) {
+
+			$expediente = Expediente::find($request->expediente_id);
+			$directorio = $expediente->iue;
+			$directorio = str_slug($directorio);
+			foreach($request->documentos as $key => $documento){
+				
+				$file = new Archivo();
+				$file->owner_id = $expediente->id;
+				$file->owner_type = "App\Juridico\Expediente";
+				
+				$file->archivo = $documento->storeAs('expedientes/'.$directorio, $documento->getClientOriginalName());
+				$file->nombre_archivo = $documento->getClientOriginalName();
+				$tipoArchivo = Storage::mimeType($file->archivo);
+				
+				switch(substr($tipoArchivo,0,4)){
+				case "text": $file->id_tipo = 1;
+						break;
+				case "imag": $file->id_tipo = 2;
+						break;
+				case "vide": $file->id_tipo = 3;
+						break;
+				case "audi": $file->id_tipo = 4;
+						break;
+				default: $file->id_tipo = 5;
+						break;
+				}
+				
+				$file->save();
+			}
+		}	
+		
+		return redirect()->back()->with('success','El archivo fue creado correctamente');
     }
 
     /**
@@ -79,7 +115,7 @@ class ArchivoPasoController extends Controller
      * @param  \App\Juridico\ArchivoPaso  $archivoPaso
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ArchivoPaso $archivoPaso)
+    public function destroy(Archivo $archivo)
     {
         $user = Auth::user();
 		
@@ -89,7 +125,7 @@ class ArchivoPasoController extends Controller
 			}; 
 		};
 		
-		$archivoPaso->delete();
+		$archivo->delete();
 		
 		return redirect()->back()->with('message','El archivo fue borrado correctamente');
     }

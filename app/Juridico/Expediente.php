@@ -39,4 +39,10 @@ class Expediente extends Model
 	public function permisosExpedientes(){
 		return $this->belongsToMany('App\Administracion\User','juridico_permiso_expediente','id_expediente','id_user')->withPivot('id_tipo');
 	}
+	
+	public function archivos(){
+		
+		return $this->morphMany('App\Juridico\Archivo','owner');
+	
+	}
 }

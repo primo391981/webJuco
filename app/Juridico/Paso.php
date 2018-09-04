@@ -22,7 +22,7 @@ class Paso extends Model
 	
 	public function archivos(){
 		
-		return $this->hasMany('App\Juridico\ArchivoPaso','id_paso');
+		return $this->morphMany('App\Juridico\Archivo','owner');
 	
 	}
 	

@@ -158,7 +158,7 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::resource('paso', 'Juridico\PasoController',['except' => ['create']])->middleware('role:juridicoAdmin,invitado');
 	
 	//Archivos Paso
-	Route::resource('archivoPaso', 'Juridico\ArchivoPasoController',['except' => ['create','edit','show','store','index','update']])->middleware('role:juridicoAdmin,invitado');
+	Route::resource('archivo', 'Juridico\ArchivoController',['except' => ['create','edit','show','index','update']])->middleware('role:juridicoAdmin,invitado');
 	
 	
 });

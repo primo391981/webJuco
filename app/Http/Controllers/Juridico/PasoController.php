@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Juridico;
 use App\Juridico\Paso;
 use App\Juridico\TipoPaso;
 use App\Juridico\Expediente;
-use App\Juridico\ArchivoPaso;
+use App\Juridico\Archivo;
 use App\Juridico\TipoArchivo;
 use App\Juridico\Notificacion;
 use Illuminate\Http\Request;
@@ -86,8 +86,9 @@ class PasoController extends Controller
 			$directorio = str_slug($directorio);
 			foreach($request->documentos as $key => $documento){
 				
-				$file = new ArchivoPaso();
-				$file->id_paso = $paso->id;
+				$file = new Archivo();
+				$file->owner_id = $paso->id;
+				$file->owner_type = "App\Juridico\Paso";
 				
 				$file->archivo = $documento->storeAs('expedientes/'.$directorio, $documento->getClientOriginalName());
 				$file->nombre_archivo = $documento->getClientOriginalName();
@@ -204,8 +205,9 @@ class PasoController extends Controller
 			$directorio = $expediente->iue;
 			$directorio = str_slug($directorio);
 			foreach($request->documentos as $key => $documento){
-				$file = new ArchivoPaso();
-				$file->id_paso = $paso->id;
+				$file = new Archivo();
+				$file->owner_id = $paso->id;
+				$file->owner_type = "App\Juridico\Paso";
 				$file->archivo = $documento->storeAs('expedientes/'.$directorio, $documento->getClientOriginalName());
 				$file->nombre_archivo = $documento->getClientOriginalName();
 				$tipoArchivo = Storage::mimeType($file->archivo);
@@ -259,7 +261,7 @@ class PasoController extends Controller
     }
 	
 	// inicia descarga del archivo indicado como parámetro
-	public function download(ArchivoPaso $archivo)
+	public function download(Archivo $archivo)
 	{
 		$user = Auth::user();
 		
