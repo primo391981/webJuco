@@ -43,7 +43,11 @@
 								@if(Auth::user()->hasRole('juridicoAdmin') || Auth::user()->permisosEscritura->contains($expediente))
 									@if(count($transiciones) > 0)
 										@foreach($transiciones as $transicion)
-											<a type="button" class="btn btn-success btn-xs" href="{{ route('paso.create',[$expediente,$transicion->siguiente])}}"><i class="fas fa-angle-double-right"></i> {{$transicion->siguiente->nombre}}</a>
+											@if($transicion->tipo_transicion == 0)
+												<a type="button" class="btn btn-success btn-xs" href="{{ route('paso.create',[$expediente,$transicion->siguiente])}}"><i class="fas fa-angle-double-right"></i> {{$transicion->siguiente->nombre}}</a>
+											@else
+												<a type="button" class="btn btn-warning btn-xs" href="{{ route('paso.create',[$expediente,$transicion->siguiente])}}"><i class="fas fa-angle-double-right"></i> {{$transicion->siguiente->nombre}}</a>
+											@endif
 										@endforeach
 									@else
 										<div class="alert alert-info">El expediente fue archivado.</div>

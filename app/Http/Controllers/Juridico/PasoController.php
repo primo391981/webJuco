@@ -66,7 +66,7 @@ class PasoController extends Controller
 				return abort(403, 'Unauthorized action.');
 			}; 
 		};
-		
+		$pasoPrevio = $expediente->pasos->last();
 		$paso = new Paso();
 		$paso->id_expediente = $request->expediente_id;
 		$paso->id_tipo = $request->tipoPaso_id;
@@ -79,6 +79,8 @@ class PasoController extends Controller
 		
 		$paso->save();
 		$expediente->save();
+		$pasoPrevio->fecha_fin = Carbon::now();
+		$pasoPrevio->save();
 		
 		if ($request->hasFile('documentos')) {
 
