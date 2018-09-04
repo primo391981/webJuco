@@ -15,6 +15,7 @@ use App\Contable\Dia;
 use App\Contable\Cargo;
 use App\Contable\HorarioEmpleado;
 use App\Contable\SalarioMinimoCargo;
+use App\Contable\ParametroGeneral;
 use Exception;
 use \Carbon\Carbon;
 
@@ -63,6 +64,7 @@ class HaberesController extends Controller
 					
 					$totalViaticos=0;
 					$totalAdelantos=0;
+					$totalExtras=0;
 					
 					foreach($pagos as $p)
 					{
@@ -72,13 +74,21 @@ class HaberesController extends Controller
 						}
 						else
 						{
-							$totalAdelantos+=$p->monto;
+							if ($p->idTipoPago==2)
+							{
+								$totalAdelantos+=$p->monto;
+							}
+							else
+							{
+								$totalExtras+=$p->monto;
+							}
 						}
 						
 					}
 					
 					$habilita->push($totalViaticos);
 					$habilita->push($totalAdelantos);
+					$habilita->push($totalExtras);
 					
 					$habilitadas->push($habilita);
 					$cantHabilitados ++;
@@ -111,7 +121,7 @@ class HaberesController extends Controller
 		  "1a" => "80894"
 		  "1ex" => "100"
 	 */
-	    try{
+		//try{
 		   $sueldoNominalGravado = 0;
 		   $sueldoNominalNoGravado = 0;
 		   $montoHorasFaltantes = 0;
@@ -120,34 +130,46 @@ class HaberesController extends Controller
 		   $fecha = new Carbon($request->fecha);
 		   
 			for ( $i = 1; $i <= $request->cantHabilitados; $i++)
-			{
+			{//Recorre los empleados de la empresa.
 				
 				if ($request->input($i.'idEmp') != null)
 				{//Cálcula sueldo de cada empleado					
 					$idEmpleado = $request->input($i.'idEmp');
 					
 					$empleado = Empleado::find($idEmpleado);
-					//Obtiene las horas que debe realizar por contrato
-					$horasMesContrato = $this->obtenerHorasContratoMes($fecha, $empleado->id);
-					//Obtiene las horas efectivamente trabajadas
-					$horasMesTrabajado = $this->obtenerHorasTrabajadasMes($fecha, $empleado->id);
-					//Obtiene las horas a descontar, Horas Extras y Horas Extras Especiales
-					$horasRecibo = $this->obtenerHorasDescuentoYExtras($fecha, $horasMesContrato, $horasMesTrabajado[0]);
-					//Agregar horas de nocturnidad, percnote y espera.
-			////////$horasRecibo 
 					
-					
-					//Cálcula Antigüedad si corresponde
 					$cargo = Cargo::find($empleado->idCargo);
-					$montoAntiguedad = $this->obtenerAntiguedad($fecha, $empleado, $cargo);
 					
+					if ($cargo->id_remuneracion == 1)
+					{//El empleado es mensual.
+						//Obtiene las horas que debe realizar por contrato
+						$horasMesContrato = $this->obtenerHorasContratoMes($fecha, $empleado->id);
+						//Obtiene las horas efectivamente trabajadas
+						$horasMesTrabajado = $this->obtenerHorasTrabajadasMes($fecha, $empleado->id);
+						//Obtiene las horas a descontar, Horas Extras y Horas Extras Especiales
+						$horasRecibo = $this->obtenerHorasDescuentoYExtras($fecha, $horasMesContrato, $horasMesTrabajado[0]);
+						//Agregar horas de nocturnidad, percnote y espera.
+						$horasRecibo->push($horasMesTrabajado[1]);//Horas Espera
+						$horasRecibo->push($horasMesTrabajado[2]);//Horas Nocturnidad
+						$horasRecibo->push($horasMesTrabajado[3]);//Horas Percnote
+							
+						//Cálcula Antigüedad si corresponde						
+						$montoAntiguedad = $this->obtenerAntiguedad($fecha, $empleado, $cargo);
+					}
 					//Obtiene monto de Salario Nominal Gravado y no Gravado, sumando todos los conceptos (víaticos y partidas extras)
-					//$montosSalario = $this->obtenerMontosSalarioNominal($fecha, $empleado, $horasRecibo, $montoAntiguedad);
+					$montoSalario = $this->obtenerMontosSalarioNominal($fecha, $empleado, $cargo, $horasRecibo, $montoAntiguedad);
 					
 					//Sumar 6% si Salario Nominal Gravado supera 10 BPC
+					$valorBPC = $this->obtenerValorBPC($fecha);
+					 
+					if ($montoSalario[0] >= (10 * $valorBPC))
+						$montoSalario[0] = $montoSalario[0] * 1.06;
 					
-					//Cálculo de descuento de Fonasa
+					//Descuentos					
+					//Cálculo de descuento de Fonasa (porcentaje, monto)
+					$descFonasa = $this->obtenerDescuentoFonasa($empleado, $montoSalario[0], $valorBPC);
 					
+					dd($descFonasa);
 					//Cálculo de descuento de BPS
 					
 					//Cálculo de descuento de FRL
@@ -175,11 +197,11 @@ class HaberesController extends Controller
 			//4- monto no gravado (50%viaticos)
 			//5-sueldo nominal - descuento + monto no gravado
 			
-	   }
+	  /* }
 	   catch(Exception $e){
 			return back()->withInput()->withError("Error en el sistema.");
 		}
-	   
+	   */
     }
 
 	//Devuelve array con horas que TRABAJO el empleado en el mes indicado.
@@ -449,7 +471,8 @@ class HaberesController extends Controller
 	
 	//Obtiene el monto de la antiguedad del empleado
 	private function obtenerAntiguedad($fecha, $empleado, $cargo)
-	{/*	Antigüedad:
+	{/*Precondicion: Empleado con cargo mensual.
+	Antigüedad:
 		- 19 meses = 1,25 x SMN x años (1 años y 7 meses)
 		- 60 meses = 2,25 x SMN x años (5 años)
 		-120 meses = 2,5  x SMN x años (10 años)
@@ -458,60 +481,194 @@ class HaberesController extends Controller
 	*/	
 		$valorAntiguedad = 0;
 		
-		if ($cargo->id_remuneracion == 1)
+		$salarioMinimos = SalarioMinimoCargo::where("idCargo", "=", $cargo->id)->orderBy('id', 'desc')->get();
+	
+		//Obtiene SMN correspondiente a la fecha de cálculo para el cargo del empleado
+		foreach ($salarioMinimos as $smn)
 		{
-			//$salarioMinimos = $cargo->salarios;
-			$salarioMinimos = SalarioMinimoCargo::where("idCargo", "=", $cargo->id)->orderBy('id', 'desc')->get();
-		
-			//Obtiene SMN correspondiente a la fecha de cálculo para el cargo del empleado
-			foreach ($salarioMinimos as $smn)
+			$fechaInicio = new Carbon($smn->fechaDesde);
+			
+			if ($smn->fechaHasta == null)
 			{
-				$fechaInicio = new Carbon($smn->fechaDesde);
-				
-				if ($smn->fechaHasta == null)
+				if ($fechaInicio <= $fecha)
 				{
-					if ($fechaInicio <= $fecha)
-					{
-						$salMin = $smn->monto;
-						$break;
-					}
-				}
-				else
-				{
-					$fechaFin = new Carbon($smn->fechaHasta);
-					
-					if ($fechaInicio <= $fecha && $fechaFin >= $fecha)
-					{
-						$salMin = $smn->monto;
-						$break;
-					}					
+					$salMin = $smn->monto;
+					$break;
 				}
 			}
-				
-			$fecha->addMonth();
-			$fechaInicio = new Carbon($empleado->fechaDesde);
-			 
-			$meses = $fechaInicio->diffInMonths($fecha);
-	
-			if ($meses >= 19 && $meses < 60)
-				$valorAntiguedad = $salMin * 0.0125 * (intval($meses / 12));
 			else
 			{
-				if ($meses >= 60 && $meses < 120)
-					$valorAntiguedad = $salMin * 0.0225 * (intval($meses / 12));
+				$fechaFin = new Carbon($smn->fechaHasta);
+				
+				if ($fechaInicio <= $fecha && $fechaFin >= $fecha)
+				{
+					$salMin = $smn->monto;
+					$break;
+				}					
+			}
+		}
+			
+		$fecha->addMonth();
+		$fechaInicio = new Carbon($empleado->fechaDesde);
+		 
+		$meses = $fechaInicio->diffInMonths($fecha);
+
+		if ($meses >= 19 && $meses < 60)
+			$valorAntiguedad = $salMin * 0.0125 * (intval($meses / 12));
+		else
+		{
+			if ($meses >= 60 && $meses < 120)
+				$valorAntiguedad = $salMin * 0.0225 * (intval($meses / 12));
+			else
+			{
+				if ($meses >= 120 && $meses < 180)
+					$valorAntiguedad = $salMin * 0.025 * (intval($meses / 12));
 				else
 				{
-					if ($meses >= 120 && $meses < 180)
-						$valorAntiguedad = $salMin * 0.025 * (intval($meses / 12));
-					else
-					{
-						if ($meses >= 180)
-							$valorAntiguedad = $salMin * 0.025 * 15;
-					}
+					if ($meses >= 180)
+						$valorAntiguedad = $salMin * 0.025 * 15;
 				}
 			}
 		}
+		
 		return $valorAntiguedad;
+	}
+	
+	//Obtiene los montos de Salario Nominal Gravado y no Gravado.
+	private function obtenerMontosSalarioNominal($fecha, $empleado, $cargo, $horasRecibo, $montoAntiguedad)
+	{
+		$salNominalGravado = 0;
+		$salNominalNoGravado = 0;
+		$salarios = collect([]);
+		
+		if ($cargo->id_remuneracion == 1)
+		{//El empleado es mensual.
+			//Horas del mes
+			if ($horasRecibo[0] == 0)
+			{
+				$salNominalGravado = $empleado->monto;
+			}
+			else
+			{
+				$salNominalGravado = $empleado->monto - ($empleado->valorHora * $horasRecibo[0]); 
+			}
+			//Horas extras
+			$salNominalGravado += ($empleado->valorHora * 2) * $horasRecibo[1];
+			$salNominalGravado += ($empleado->valorHora * 2.5) * $horasRecibo[2];
+			//Horas Espera/Nocturna/Percnote
+			$salNominalGravado += ($empleado->valorHora * 2 * 0.175) * $horasRecibo[3];
+			$salNominalGravado += ($empleado->valorHora * 0.20) * $horasRecibo[4];
+			$salNominalGravado += ($empleado->valorHora * 2 * 0.175) * $horasRecibo[2];
+			//Antigüedad
+			$salNominalGravado += $montoAntiguedad;
+			//Obtiene los pagos
+			$pagos=Pago::where([['idEmpleado','=',$empleado->id],['fecha','=',$fecha]])->get();
+			//Recorre Pagos
+			foreach($pagos as $p)
+			{
+				if($p->idTipoPago==1 || $p->idTipoPago==3)
+				{
+					if($p->gravado == 1)
+					{
+						$salNominalGravado += $p->monto * ($p->porcentaje / 100);
+						$salNominalNoGravado += $p->monto * (1 - $p->porcentaje / 100);
+					}
+					else
+						$salNominalNoGravado += $p->monto;
+				}				
+			}
+		}
+		
+		$salarios->push($salNominalGravado);
+		$salarios->push($salNominalNoGravado);
+		
+		return $salarios;
+	}
+	
+	//Devuelve el valor del BPC vigente
+	private function obtenerValorBPC($fecha)
+	{
+		$valorBPC = 0;
+		
+		$valorBPCs = ParametroGeneral::where('nombre','=','BPC')->orderBy('id','desc')->get();
+		
+		foreach ($valorBPCs as $bp)
+		{
+			if ($bp->fecha_fin == null && $bp->fecha_desde <= $fecha)
+			{
+				$valorBPC = $bp->monto;
+				$break;
+			}
+			else
+			{
+				if ($bp->fecha_desde <= $fecha && $bp->fecha_fin >= $fecha)
+				{
+					$valorBPC = $bp->monto;
+					$break;
+				}			
+			}
+		}
+		return $valorBPC;
+	}
+	
+	//Devuelve el porcentaje de descuento Fonasa y el valor del mismo para el empleado
+	private function obtenerDescuentoFonasa($empleado, $montoSalario, $valorBPC)
+	{
+		$montoBPC = $valorBPC * 2.5;
+		$porcentaje = 0;
+		$montoFonasa = 0;
+		$nombre = "";
+		$descFonasa = collect([]);
+		
+		//dd($montoSalario);
+		
+		if($empleado->persona->estadoCivil == 2 || $empleado->persona->estadoCivil == 3)
+		{
+			if($montoSalario <= $montoBPC)
+			{
+				if ($empleado->persona->cantHijos > 0)
+				{
+					$nombre = "FONASA4";
+				}
+				else
+					$nombre = "FONASA3";
+			}
+			else
+			{
+				if ($empleado->persona->cantHijos > 0)
+					$nombre = "FONASA8";
+				else
+					$nombre = "FONASA7";
+			}
+		}
+		else
+		{
+			if($montoSalario <= $montoBPC)
+			{
+				if ($empleado->persona->cantHijos > 0)
+					$nombre = "FONASA2";
+				else
+					$nombre = "FONASA1";
+			}
+			else
+			{
+				if ($empleado->persona->cantHijos > 0)
+					$nombre = "FONASA6";
+				else
+					$nombre = "FONASA5";
+			}
+		}
+		
+		$fonasa = ParametroGeneral::where('nombre','=',$nombre)->first();
+		
+		$porcentaje = $fonasa->valor;
+		$montoFonasa = $montoSalario * ($fonasa->valor / 100);
+		
+		$descFonasa->push($porcentaje);
+		$descFonasa->push($montoFonasa);
+		$descFonasa->push($fonasa->nombre);
+		
+		return $descFonasa;
 	}
 	
 	

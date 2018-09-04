@@ -54,9 +54,9 @@
 								<td>{{$emp[0]->documento}}</td>
 								<td>{{$emp[0]->nombre}}</td>
 								<td>{{$emp[0]->apellido}}</td>
-								<td><input id="{{$i}}v" name="{{$i}}v" type="number" value="{{$emp[2]}}" class="form-control" {{ $emp[1]==1 ? '' : 'disabled' }} required></td>
-								<td><input id="{{$i}}a" name="{{$i}}a" type="number" value="{{$emp[3]}}" class="form-control" {{ $emp[1]==1 ? '' : 'disabled' }} required></td>
-								<td><input id="{{$i}}ex" name="{{$i}}ex" type="number" class="form-control" {{ $emp[1]==1 ? '' : 'disabled' }} value="100"></td>								
+								<td><input id="{{$i}}v" name="{{$i}}v" type="number" value="{{$emp[2]}}" class="form-control" {{ $emp[1]==1 ? '' : 'readonly' }} required></td>
+								<td><input id="{{$i}}a" name="{{$i}}a" type="number" value="{{$emp[3]}}" class="form-control" {{ $emp[1]==1 ? '' : 'readonly' }} required></td>
+								<td><input id="{{$i}}ex" name="{{$i}}ex" type="number" class="form-control" {{ $emp[1]==1 ? '' : 'readonly' }} value="{{$emp[4]}}"></td>								
 							</tr>
 							@php $i++;  @endphp
 							@endforeach

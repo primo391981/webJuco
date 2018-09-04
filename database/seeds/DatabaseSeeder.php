@@ -65,6 +65,7 @@ class DatabaseSeeder extends Seeder
 			//Prueba PAGOS
 			PagosViaticosTableSeeder::class,
 			PagosAdelantosTableSeeder::class,
+			PagosPartidasExtrasTableSeeder::class,
 			TipoRecibosTableSeeder::class,
 			ConceptoRecibosTableSeeder::class			
 		]);	
