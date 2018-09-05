@@ -23,6 +23,7 @@ class CreateJuridicoExpedientesTable extends Migration
 			$table->integer('tipo_id');
 			$table->integer('estado_id');
 			$table->integer('paso_actual');
+			$table->integer('paso_alternativo_actual')->nullable();
 
             $table->timestamps();
         });

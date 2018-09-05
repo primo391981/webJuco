@@ -41,12 +41,16 @@
 						<div class="box-body">
 							<div class="col-xs-12 text-center">
 								@if(Auth::user()->hasRole('juridicoAdmin') || Auth::user()->permisosEscritura->contains($expediente))
+									<p>Flujo Principal</p>
 									@if(count($transiciones) > 0)
-										@foreach($transiciones as $transicion)
+										@foreach($transiciones->sortBY('tipo_transicion') as $transicion)
 											@if($transicion->tipo_transicion == 0)
-												<a type="button" class="btn btn-success btn-xs" href="{{ route('paso.create',[$expediente,$transicion->siguiente])}}"><i class="fas fa-angle-double-right"></i> {{$transicion->siguiente->nombre}}</a>
+												<p><a type="button" class="btn btn-success btn-xs" href="{{ route('paso.create',[$expediente,$transicion->siguiente])}}"><i class="fas fa-angle-double-right"></i> {{$transicion->siguiente->nombre}}</a></p>
+												<br>
 											@else
-												<a type="button" class="btn btn-warning btn-xs" href="{{ route('paso.create',[$expediente,$transicion->siguiente])}}"><i class="fas fa-angle-double-right"></i> {{$transicion->siguiente->nombre}}</a>
+												<p>Flujo Paralelo</p>
+												<p><a type="button" class="btn btn-warning btn-xs" href="{{ route('paso.create',[$expediente,$transicion->siguiente])}}"><i class="fas fa-angle-double-right"></i> {{$transicion->siguiente->nombre}}</a></p>
+												
 											@endif
 										@endforeach
 									@else
@@ -134,11 +138,7 @@
 									{{ $paso->tipo->nombre}} >
 									@foreach($paso->archivos as $archivo)
 										<a href="{{route('paso.download',$archivo)}}">{{$archivo->nombre_archivo}}</a>
-										<form method="POST" action="{{route('archivo.destroy',$archivo)}}" style="display: inline;">
-											{{ method_field('DELETE') }}
-											@csrf
-										<button type="submit" class="btn btn-link"><i class="fas fa-times-circle"></i></button>
-										</form><br>
+										<br>
 									@endforeach	
 								@endif
 							@endforeach
