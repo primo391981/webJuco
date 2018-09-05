@@ -159,31 +159,48 @@ class HaberesController extends Controller
 					//Obtiene monto de Salario Nominal Gravado y no Gravado, sumando todos los conceptos (víaticos y partidas extras)
 					$montoSalario = $this->obtenerMontosSalarioNominal($fecha, $empleado, $cargo, $horasRecibo, $montoAntiguedad);
 					
+					//Descuentos
+					//Valor de BPC del mes a calcular
+					$valorBPC = $this->obtenerValorActual($fecha, 'BPC');
+	
+					//Cálculo de descuento de Fonasa (porcentaje, monto)
+					$valoresFonasa = $this->obtenerDescuentoFonasa($empleado, $montoSalario[0], $valorBPC);
+					
+					$porcFonasa = $valoresFonasa[0];
+					$descFonasa = $valoresFonasa[1];
+					
+					//Cálculo de descuento de BPS
+					$porcBPS = $this->obtenerValorActual($fecha, 'BPS');
+					
+					$descBPS = $montoSalario[0] * ($porcBPS / 100);
+					
+					//Cálculo de descuento de FRL
+					$porcFRL = $this->obtenerValorActual($fecha, 'FRL');
+
+					$descFRL = $montoSalario[0] * ($porcFRL / 100);
+					
 					//Sumar 6% si Salario Nominal Gravado supera 10 BPC
-					$valorBPC = $this->obtenerValorBPC($fecha);
-					 
 					if ($montoSalario[0] >= (10 * $valorBPC))
 						$montoSalario[0] = $montoSalario[0] * 1.06;
 					
-					//Descuentos					
-					//Cálculo de descuento de Fonasa (porcentaje, monto)
-					$descFonasa = $this->obtenerDescuentoFonasa($empleado, $montoSalario[0], $valorBPC);
-					
-					dd($descFonasa);
-					//Cálculo de descuento de BPS
-					
-					//Cálculo de descuento de FRL
-					
 					//Cálculo de descuento de IRPF Primario
-					
+					$descIRPFPrimario = $this->obtenerDescuentoIRPFPrimario($fecha, $empleado, $montoSalario[0], $valorBPC);
 					//Cálculo de deducciones de IRPF
+					$aportesSegSoc = $descFonasa + $descBPS + $descFRL;
 					
+					$deducionesIRPF = $this->obtenerDeduccionesIRPF($empleado, $montoSalario[0], $valorBPC, $aportesSegSoc);
 					//IRPF final a pagar
+					$descIRPF = $descIRPFPrimario - $deducionesIRPF;
 					
+					if ($descIRPF < 0)
+						$descIRPF = 0;
+										
+					//Cálculo Sueldo Luíqido
+					$sueldoLiquido = $empleado->monto - $aportesSegSoc - $descIRPF;
 					//Guarda detalles del recibo
 					
 				
-				
+				dd($montoSalario[0].' '.$descBPS.' '.$descFonasa.' '.$descFRL.' Suma: '.($descBPS+$descFonasa+$descFRL).' Deducciones '.$deducionesIRPF.' IRPF Primario '.$descIRPFPrimario.' DescIRPF: '.$descIRPF.' Sueldo Liq:'.$sueldoLiquido);
 				}
 			}
 		
@@ -586,31 +603,33 @@ class HaberesController extends Controller
 	}
 	
 	//Devuelve el valor del BPC vigente
-	private function obtenerValorBPC($fecha)
+	private function obtenerValorActual($fecha, $nombreParam)
 	{
-		$valorBPC = 0;
+		$valor = 0;
 		
-		$valorBPCs = ParametroGeneral::where('nombre','=','BPC')->orderBy('id','desc')->get();
+		$valores = ParametroGeneral::where('nombre','=',$nombreParam)->orderBy('id','desc')->get();
 		
-		foreach ($valorBPCs as $bp)
+		foreach ($valores as $bp)
 		{
-			if ($bp->fecha_fin == null && $bp->fecha_desde <= $fecha)
+			if ( $bp->fecha_fin == null && $bp->fecha_desde <= $fecha)
 			{
-				$valorBPC = $bp->monto;
+				$valor = $bp->valor;
 				$break;
 			}
 			else
-			{
-				if ($bp->fecha_desde <= $fecha && $bp->fecha_fin >= $fecha)
+			{				
+				if ($bp->fecha_desde <= $fecha &&  $bp->fecha_fin >= $fecha)
 				{
-					$valorBPC = $bp->monto;
+					$valor = $bp->valor;
 					$break;
 				}			
 			}
 		}
-		return $valorBPC;
+		
+		return $valor;
 	}
 	
+		
 	//Devuelve el porcentaje de descuento Fonasa y el valor del mismo para el empleado
 	private function obtenerDescuentoFonasa($empleado, $montoSalario, $valorBPC)
 	{
@@ -619,9 +638,7 @@ class HaberesController extends Controller
 		$montoFonasa = 0;
 		$nombre = "";
 		$descFonasa = collect([]);
-		
-		//dd($montoSalario);
-		
+			
 		if($empleado->persona->estadoCivil == 2 || $empleado->persona->estadoCivil == 3)
 		{
 			if($montoSalario <= $montoBPC)
@@ -670,6 +687,87 @@ class HaberesController extends Controller
 		
 		return $descFonasa;
 	}
+	
+	//Devuelve monto de IRPF Primario
+	private function obtenerDescuentoIRPFPrimario($fecha, $empleado, $montoSalario, $valorBPC)
+	{
+		$franjasIRPF = collect([]);
+		$montoIRPF = 0;
+		
+		for ($i=1; $i <= 8; $i++)
+		{
+			$valores = ParametroGeneral::where('nombre','=','IRPF'.$i)->orderBy('id','desc')->get();
+		
+			foreach ($valores as $irpf)
+			{
+				if ( $irpf->fecha_fin == null && $irpf->fecha_desde <= $fecha)
+				{
+					$franjasIRPF->push($irpf);
+					$break;
+				}
+				else
+				{				
+					if ($irpf->fecha_desde <= $fecha &&  $irpf->fecha_fin >= $fecha)
+					{
+						$franjasIRPF->push($irpf);
+						$break;
+					}			
+				}
+			}			
+		}
+		$encontre = false;
+		$j=0;
+		$montoDiferencia = 0;
+		
+		while (!$encontre)
+		{
+			$montoMin = $franjasIRPF[$j]->minimo * $valorBPC;
+			
+			if ($franjasIRPF[$j]->maximo <> NULL)
+			{
+				$montoMax = $franjasIRPF[$j]->maximo * $valorBPC;
+			
+				if ($montoSalario <= $montoMax)
+				{
+					$montoIRPF += ($montoSalario - $montoDiferencia) * ($franjasIRPF[$j]->valor / 100);
+					$encontre = true;
+				}
+				else
+				{
+					$montoIRPF += ($montoMax - $montoDiferencia) * ($franjasIRPF[$j]->valor / 100);
+					$montoDiferencia = $montoMax;
+				}
+			}
+			else
+			{
+				$montoIRPF += ($montoSalario - $montoDiferencia) * ($franjasIRPF[$j]->valor / 100);
+				$encontre = true;
+			}
+			
+			$j++;
+		}
+		
+		return($montoIRPF);
+	}
+	
+	//Devuelve monto de deducciones IRPF
+	private function obtenerDeduccionesIRPF($empleado, $montoSalario, $valorBPC, $aportesSegSoc)
+	{
+		$valorDeducciones = 0;
+		
+		$deduccionPersonaACargo = ((13 * $valorBPC) / 12) * $empleado->persona->cantHijos;
+
+		$sumaDeducciones = $aportesSegSoc + $deduccionPersonaACargo;
+	
+		//Tasa de Deducción
+		if( $sumaDeducciones <= (15 * $valorBPC))
+			$valorDeducciones = $sumaDeducciones * 0.1;
+		else
+			$valorDeducciones = $sumaDeducciones * 0.08;
+		
+		return ($valorDeducciones);
+	}
+	
 	
 	
 	/**
