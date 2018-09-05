@@ -6,6 +6,7 @@ use App\Contable\Pago;
 use App\Persona;
 use App\Empresa;
 use App\Contable\Empleado;
+use App\Contable\RegistroHora;
 use App\Http\Requests\PagoRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -206,28 +207,126 @@ class PagoController extends Controller
     }
 	
 	public function altaViatico(Request $request){
-		
-		
-		$pago = new Pago;
-		$pago->idEmpleado = $request->idEmpleado;
-		$pago->idTipoPago = 1;
-		$fechaPago= new Carbon($request->fecha);
-		$pago->fecha = $fechaPago->year.'-'.$fechaPago->month.'-01';
-		$pago->monto = $request->monto;
-		$pago->descripcion = $request->desc;
-		
-		if (isset($request->dias))
-			$pago->cantDias = $request->dias;
-		
-		if (isset ($request->gravado)){
-			$pago->gravado=1;
-			$pago->porcentaje = $request->porcentaje;		
+		$datos=0;
+		try{
+			$fechaPago= new Carbon($request->fecha);
+			//Se tiene que setear datos antes del save por si ocurre un error y vuelva con los datos que ya tenia.
+			$datos=$this->listaEmpleadosHaberes($request->idEmpleado,$fechaPago);
+			
+			$pago = new Pago;
+			$pago->idEmpleado = $request->idEmpleado;
+			$pago->idTipoPago = 1;
+			
+			$pago->fecha = $fechaPago->year.'-'.$fechaPago->month.'-01';
+			$pago->monto = $request->monto;
+			$pago->descripcion = $request->desc;
+			
+			if (isset($request->dias))
+				$pago->cantDias = $request->dias;
+			
+			if (isset ($request->gravado)){
+				$pago->gravado=1;
+				$pago->porcentaje = $request->porcentaje;		
+			}
+			else{
+				$pago->gravado=0;
+			}
+			
+			$pago->save();						
+			//todo ok vuelve con los viaticos actualizados
+			$datos=$this->listaEmpleadosHaberes($request->idEmpleado,$fechaPago);
+			return view('contable.haberes.listaEmpleadosHaberes', ['habilitadas' => $datos[0], 'calculo' => $request->calculo, 'fecha' => $fechaPago, 'cantHabilitados' => $datos[1]])->with('okMsg', 'El viatico se cargo correctamente.');
 		}
-		else{
-			$pago->gravado=0;
+		 catch(Exception $e){
+			return view('contable.haberes.listaEmpleadosHaberes', ['habilitadas' => $datos[0], 'calculo' => $request->calculo, 'fecha' => $fechaPago, 'cantHabilitados' => $datos[1]])->with('errorMsg', 'Error al cargar el viatico.');
 		}
-		$pago->save();
-			return redirect()->route('haberes.listaEmpleados');
+	}
+	
+	public function altaAdelanto(Request $request){
+		$datos=0;
+		try{
+			$fechaPago= new Carbon($request->fecha);
+			//Se tiene que setear datos antes del save por si ocurre un error y vuelva con los datos que ya tenia.
+			$datos=$this->listaEmpleadosHaberes($request->idEmpleado,$fechaPago);
+			
+			$pago = new Pago;
+			$pago->idEmpleado = $request->idEmpleado;
+			$pago->idTipoPago = 2;
+			
+			$pago->fecha = $fechaPago->year.'-'.$fechaPago->month.'-01';
+			$pago->monto = $request->monto;
+			$pago->descripcion = $request->desc;
+			$pago->gravado = false;
+			
+			$pago->save();						
+			//todo ok vuelve con los adelantos actualizados
+			$datos=$this->listaEmpleadosHaberes($request->idEmpleado,$fechaPago);
+			return view('contable.haberes.listaEmpleadosHaberes', ['habilitadas' => $datos[0], 'calculo' => $request->calculo, 'fecha' => $fechaPago, 'cantHabilitados' => $datos[1]])->with('okMsg', 'El adelanto se cargo correctamente.');
+		}
+		 catch(Exception $e){
+			return view('contable.haberes.listaEmpleadosHaberes', ['habilitadas' => $datos[0], 'calculo' => $request->calculo, 'fecha' => $fechaPago, 'cantHabilitados' => $datos[1]])->with('errorMsg', 'Error al cargar el adelanto.');
+		}
+	}
+	
+	
+	
+	public function listaPagos($idEmpleado,$tipoPago,$fecha,$calculo){
+		try{
+			$pagos =Pago::where('idEmpleado','=',$idEmpleado)->where('idTipoPago','=',$tipoPago)->where('fecha','=',$fecha)->get();
+			return $pagos;
+		}
+		catch(Exception $e){
+			return view('contable.haberes.listaEmpleadosHaberes', ['habilitadas' => $datos[0], 'calculo' => $calculo, 'fecha' => $fecha, 'cantHabilitados' => $datos[1]])->with('errorMsg', 'Error al listar los pagos.');
+		}
+	}
+	
+	
+	private function listaEmpleadosHaberes($idEmpleado,$fecha){
+			$empresa=Empresa::where('id','=',$idEmpleado)->first();			
+			$personas=$empresa->personas;
+			$habilitadas=collect([]);
+			$cantHabilitados = 0;
+			foreach($personas as $persona){
+				$fDesde=new Carbon($persona->pivot->fechaDesde);
+				$fHasta=new Carbon($persona->pivot->fechaHasta);
+				if($fecha->between($fDesde,$fHasta)){
+					$habilita=collect([]);
+					$habilita->push($persona);					
+					$regHora=RegistroHora::where([['idEmpleado','=',$persona->pivot->id],['fecha','=',$fecha]])->first();
+					if($regHora!=null){
+						$habilita->push('1');
+					}
+					else{
+						$habilita->push('0');
+					}
+					$pagos=Pago::where([['idEmpleado','=',$persona->pivot->id],['fecha','=',$fecha]])->get();
+					
+					$totalViaticos=0;
+					$totalAdelantos=0;
+					foreach($pagos as $p){
+						
+						if($p->idTipoPago==1){
+							$totalViaticos+=$p->monto;
+						}
+						else{
+							$totalAdelantos+=$p->monto;
+						}
+						
+					}
+					
+					$habilita->push($totalViaticos);
+					$habilita->push($totalAdelantos);
+					
+					$habilitadas->push($habilita);
+					$cantHabilitados ++;
+				}				
+			}
+			
+			$datos=collect([]);
+			$datos->push($habilitadas);
+			$datos->push($cantHabilitados);
+			
+			return $datos;
 	}
 	
 }
