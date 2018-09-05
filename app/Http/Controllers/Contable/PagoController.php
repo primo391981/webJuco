@@ -268,6 +268,39 @@ class PagoController extends Controller
 			return view('contable.haberes.listaEmpleadosHaberes', ['habilitadas' => $datos[0], 'calculo' => $request->calculo, 'fecha' => $fechaPago, 'cantHabilitados' => $datos[1]])->with('errorMsg', 'Error al cargar el viatico.');
 		}
 	}
+	public function altaPartidaExtra(Request $request){
+		$datos=0;
+		try{
+			$fechaPago= new Carbon($request->fecha);
+			//Se tiene que setear datos antes del save por si ocurre un error y vuelva con los datos que ya tenia.
+			$datos=$this->listaEmpleadosHaberes($request->idEmpleado,$fechaPago);
+			
+			$pago = new Pago;
+			$pago->idEmpleado = $request->idEmpleado;
+			$pago->idTipoPago = 3;
+			
+			$pago->fecha = $fechaPago->year.'-'.$fechaPago->month.'-01';
+			$pago->monto = $request->monto;
+			$pago->descripcion = $request->desc;
+			
+			if (isset ($request->gravado)){
+				$pago->gravado=1;
+				$pago->porcentaje = $request->porcentaje;		
+			}
+			else{
+				$pago->gravado=0;
+			}
+			
+			$pago->save();						
+			//todo ok vuelve con los viaticos actualizados
+			$datos=$this->listaEmpleadosHaberes($request->idEmpleado,$fechaPago);
+			return view('contable.haberes.listaEmpleadosHaberes', ['habilitadas' => $datos[0], 'calculo' => $request->calculo, 'fecha' => $fechaPago, 'cantHabilitados' => $datos[1]])->with('okMsg', 'La partida extra se cargo correctamente.');
+		}
+		 catch(Exception $e){
+			return view('contable.haberes.listaEmpleadosHaberes', ['habilitadas' => $datos[0], 'calculo' => $request->calculo, 'fecha' => $fechaPago, 'cantHabilitados' => $datos[1]])->with('errorMsg', 'Error al cargar la partida extra.');
+		}
+	}
+	
 	
 	public function altaAdelanto(Request $request){
 		$datos=0;
@@ -294,6 +327,7 @@ class PagoController extends Controller
 			return view('contable.haberes.listaEmpleadosHaberes', ['habilitadas' => $datos[0], 'calculo' => $request->calculo, 'fecha' => $fechaPago, 'cantHabilitados' => $datos[1]])->with('errorMsg', 'Error al cargar el adelanto.');
 		}
 	}
+	
 	
 	
 	
@@ -330,19 +364,31 @@ class PagoController extends Controller
 					
 					$totalViaticos=0;
 					$totalAdelantos=0;
-					foreach($pagos as $p){
-						
-						if($p->idTipoPago==1){
+					$totalExtras=0;
+					
+					foreach($pagos as $p)
+					{
+						if($p->idTipoPago==1)
+						{
 							$totalViaticos+=$p->monto;
 						}
-						else{
-							$totalAdelantos+=$p->monto;
+						else
+						{
+							if ($p->idTipoPago==2)
+							{
+								$totalAdelantos+=$p->monto;
+							}
+							else
+							{
+								$totalExtras+=$p->monto;
+							}
 						}
 						
 					}
 					
 					$habilita->push($totalViaticos);
 					$habilita->push($totalAdelantos);
+					$habilita->push($totalExtras);
 					
 					$habilitadas->push($habilita);
 					$cantHabilitados ++;

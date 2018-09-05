@@ -38,7 +38,10 @@
 				<p><strong>EMAIL :</strong> {{$persona->email}}</p> 
 				<p><strong>DOMICILIO :</strong> {{$persona->domicilio}}</p> 
 				<p><strong>ESTADO CIVIL :</strong> {{$persona->eCivil->nombre}}</p> 
-				<p><strong>CANTIDAD DE HIJOS :</strong> {{$persona->cantHijos}}</p>
+				<hr>
+				<p><strong>CANTIDAD PERSONAS A CARGO</strong></p>
+				<p><strong>HIJOS MENORES :</strong> {{$persona->cantHijos}}</p>
+				<p><strong>CON DISCAPACIDAD :</strong> {{$persona->conDiscapacidad}}</p>
 		
 		  </div> 
 		</div>
