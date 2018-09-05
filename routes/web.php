@@ -120,6 +120,7 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::post('reloj/ver', 'Contable\RegistroHoraController@verMarcas')->name('reloj.verMarcas')->middleware('role:contableAdmin');
 	
 	//pagos
+	Route::post('pago/adelanto/alta', 'Contable\PagoController@altaAdelanto')->name('pago.altaAdelanto')->middleware('role:contableAdmin');
 	Route::post('pago/viatico/alta', 'Contable\PagoController@altaViatico')->name('pago.altaViatico')->middleware('role:contableAdmin');
 	Route::get('viaticos', 'Contable\PagoController@viaticos')->name('pago.viaticos')->middleware('role:contableAdmin');
 	Route::get('viaticos/inactivos', 'Contable\PagoController@viaticosInactivos')->name('pago.viaticos.inactivos')->middleware('role:contableAdmin');
