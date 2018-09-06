@@ -43,8 +43,8 @@ class PersonaTableSeeder extends Seeder
 			'domicilio'=>'Colonia N° 1254',
 			'telefono'=>'2901 8759',
 			'email'=>'email1@email1.com',
-			'cantHijos'=>1,
-			'estadoCivil'=>1,
+			'cantHijos'=>2,
+			'estadoCivil'=>2,
 			'conDiscapacidad'=>0
 		]);
 		DB::table('persona')->insert([
@@ -68,7 +68,7 @@ class PersonaTableSeeder extends Seeder
 			'telefono'=>'2908 2546',
 			'email'=>'email1@email1.com',
 			'cantHijos'=>0,
-			'estadoCivil'=>2,
+			'estadoCivil'=>3,
 			'conDiscapacidad'=>0
 		]);
     }

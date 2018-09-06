@@ -18,7 +18,7 @@ class EmpleadosTableSeeder extends Seeder
 			'idCargo'=>1,
 			'fechaDesde'=>Carbon::parse('2018-01-01'),
 			'fechaHasta'=>Carbon::parse('2019-01-01'),
-			'monto'=>'24000',
+			'monto'=>'45000',
 			'horarioCargado'=>1,
 			'valorHora'=>160,
 			'nocturnidad'=>1,
