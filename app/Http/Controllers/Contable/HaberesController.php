@@ -163,9 +163,22 @@ class HaberesController extends Controller
 					}
 					//Obtiene monto de Salario Nominal Gravado y no Gravado, sumando todos los conceptos (víaticos y partidas extras)
 					$montoSalario = $this->obtenerMontosSalarioNominal($fecha, $empleado, $cargo, $horasRecibo, $montoAntiguedad);
-	
 					//Carga Detalles
+					$total=collect([]);
+					$cant=count($montoSalario);
 					
+					for($j=0;$j<$cant;$j++){
+						$detalle=collect([]);						
+						$cantParam=$montoSalario[$j];
+						
+						for($x=1;$x<=$cantParam;$x++){
+							$detalle->push($montoSalario[$j+$x]);
+						}
+						$j=$j+$cantParam;
+						$total->push($detalle);
+					}
+					
+					dd($total);
 					
 					//Descuentos
 					//Valor de BPC del mes a calcular
