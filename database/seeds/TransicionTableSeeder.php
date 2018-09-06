@@ -416,12 +416,12 @@ class TransicionTableSeeder extends Seeder
 			'tipo_transicion' => 1,
 		]);
 		
-		DB::table('juridico_transicion')->insert([
+		/*DB::table('juridico_transicion')->insert([
             'id_tipo_expediente' => 5,
             'id_paso_inicial' => 22,
             'id_paso_siguiente' => 10,
 			'tipo_transicion' => 1,
-		]);
+		]);*/
 		
 		DB::table('juridico_transicion')->insert([
             'id_tipo_expediente' => 5,
@@ -457,6 +457,7 @@ class TransicionTableSeeder extends Seeder
             'id_paso_siguiente' => 10,
 			'tipo_transicion' => 0,
 		]);
+		
 		
 		DB::table('juridico_transicion')->insert([
             'id_tipo_expediente' => 5,
@@ -505,13 +506,3 @@ class TransicionTableSeeder extends Seeder
     }
 }
 
-
-/*
- Schema::create('juridico_transicion', function (Blueprint $table) {
-            $table->increments('id');
-			$table->integer('id_tipo_expediente');
-			$table->integer('id_paso_inicial');
-			$table->integer('id_paso_siguiente');
-            $table->timestamps();
-        });
-*/

@@ -49,7 +49,7 @@ class DatabaseSeeder extends Seeder
 			CargosTableSeeder::class,
 			SalarioMinimoTableSeeder::class,
 			TransicionTableSeeder::class,
-			ExpedientesTableSeeder::class,
+			//ExpedientesTableSeeder::class,
 			
 			TipoHoraTableSeeder::class,
 			EstadoCivilTableSeeder::class,

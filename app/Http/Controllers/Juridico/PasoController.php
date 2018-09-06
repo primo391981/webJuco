@@ -8,6 +8,7 @@ use App\Juridico\Expediente;
 use App\Juridico\Archivo;
 use App\Juridico\TipoArchivo;
 use App\Juridico\Notificacion;
+use App\Juridico\Transicion;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
@@ -33,9 +34,11 @@ class PasoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($expediente, $paso)
+    public function create($expediente, $transicion)
     {
-        $exp = Expediente::find($expediente);
+        
+		//dd($tran);
+		$exp = Expediente::find($expediente);
 		
 		$user = Auth::user();
 		
@@ -44,10 +47,11 @@ class PasoController extends Controller
 				return abort(403, 'Unauthorized action.');
 			}; 
 		};
+		$tran = Transicion::find($transicion);
 		
-		$tipoPaso = TipoPaso::find($paso);
+		$tipoPaso = TipoPaso::find($tran->id_paso_siguiente);
 		
-		return view('juridico.expediente.agregarPaso',['expediente' => $exp, 'tipoPaso' => $tipoPaso]);
+		return view('juridico.expediente.agregarPaso',['expediente' => $exp, 'tipoPaso' => $tipoPaso, 'transicion' => $tran]);
     }
 
     /**
@@ -58,30 +62,40 @@ class PasoController extends Controller
      */
     public function store(Request $request)
     {
+		
         $user = Auth::user();
 		$expediente = Expediente::find($request->expediente_id);
-		
+		$transicion = Transicion::find($request->transicion_id);
 		if($user->hasRole('invitado')){
 			if(!$user->permisosEscritura->contains($expediente)){
 				return abort(403, 'Unauthorized action.');
 			}; 
 		};
-		$pasoPrevio = $expediente->pasos->last();
-		$paso = new Paso();
-		$paso->id_expediente = $request->expediente_id;
-		$paso->id_tipo = $request->tipoPaso_id;
-		$paso->id_usuario = Auth::user()->id;
-		$paso->comentario = $request->comentarios;
-		$paso->fecha_fin = null;
+				
+		if($expediente->pasos->where('id_tipo',$request->tipoPaso_id)->count() == 0){
+			$paso = new Paso();
+			$paso->id_expediente = $request->expediente_id;
+			$paso->id_tipo = $request->tipoPaso_id;
+			$paso->id_usuario = Auth::user()->id;
+			$paso->comentario = $request->comentarios;
+			$paso->flujo = $transicion->tipo_transicion;
+			$paso->fecha_fin = null;
 		
-		$expediente = Expediente::find($request->expediente_id);
-		$expediente->paso_actual = $request->tipoPaso_id;
+		} else {
+			$paso = $expediente->pasos->where('id_tipo',$request->tipoPaso_id)->first();
+			$paso->flujo = 0;
+			
+		}
 		
 		$paso->save();
-		$expediente->save();
-		$pasoPrevio->fecha_fin = Carbon::now();
-		$pasoPrevio->save();
 		
+		$pasoPrevio = $expediente->pasos->where('id_tipo',$transicion->inicial->id)->first();
+		//dd($pasoPrevio);
+		if($pasoPrevio->flujo == $paso->flujo){
+			$pasoPrevio->fecha_fin = Carbon::now();
+			$pasoPrevio->save();
+		}
+			
 		if ($request->hasFile('documentos')) {
 
 			$directorio = $expediente->iue;

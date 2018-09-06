@@ -59,7 +59,7 @@
 											
 										@endforeach
 									</td>
-									<td>{{$expediente->actual->nombre}}</td>
+									<td>{{$expediente->pasos->last()->tipo->nombre}}</td>
 									<td>
 										<form method="GET" action="{{route('expediente.show', $expediente)}}">																
 											<button type="submit"class="btn btn-info"><i class="fas fa-info-circle"></i></button>												

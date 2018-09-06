@@ -101,7 +101,6 @@ class ExpedienteController extends Controller
 		$expediente->fecha_inicio = $request->fecha_inicio;
 		$expediente->juzgado = $request->juzgado;
 		$expediente->estado_id = 1;
-		$expediente->paso_actual = 1;
 		$expediente->user_id = Auth::user()->id;
 		
 		$expediente->save();
@@ -115,6 +114,7 @@ class ExpedienteController extends Controller
 		$paso->id_tipo = 1;
 		$paso->id_usuario = Auth::user()->id;
 		$paso->comentario = "Expediente creado";
+		$paso->flujo = 0;
 		$paso->fecha_fin = null;
 		
 		$paso->save();
@@ -135,6 +135,8 @@ class ExpedienteController extends Controller
      */
     public function show(Expediente $expediente)
     {
+		//dd($expediente->pasos);
+		
 		$user = Auth::user();
 		
 		if($user->hasRole('invitado')){
@@ -143,8 +145,19 @@ class ExpedienteController extends Controller
 			};
 		};
 		
-		$transiciones = $expediente->tipo->transiciones->where('id_paso_inicial',$expediente->paso_actual);
-		
+		$pasos_actuales = array();
+		$pasos = array();
+		foreach($expediente->pasos as $paso){
+			
+			array_push($pasos,$paso->id_tipo);
+			if($paso->fecha_fin == null){
+				array_push($pasos_actuales,$paso->id_tipo);
+			}
+		}
+		//dd($pasos);
+		$transiciones = $expediente->tipo->transiciones->whereIn('id_paso_inicial',$pasos_actuales)->whereNotIn('id_paso_siguiente',$pasos);
+		//dd($transiciones);
+		//dd($expediente->tipo->transiciones);
 		$usuarios = User::All();
 		
 		return view('juridico.expediente.verExpediente', ['expediente' => $expediente, 'transiciones' => $transiciones, 'usuarios' => $usuarios]);

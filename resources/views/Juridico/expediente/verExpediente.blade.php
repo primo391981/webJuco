@@ -45,11 +45,11 @@
 									@if(count($transiciones) > 0)
 										@foreach($transiciones->sortBY('tipo_transicion') as $transicion)
 											@if($transicion->tipo_transicion == 0)
-												<p><a type="button" class="btn btn-success btn-xs" href="{{ route('paso.create',[$expediente,$transicion->siguiente])}}"><i class="fas fa-angle-double-right"></i> {{$transicion->siguiente->nombre}}</a></p>
+												<p><a type="button" class="btn btn-success btn-xs" href="{{ route('paso.create',[$expediente,$transicion])}}"><i class="fas fa-angle-double-right"></i> {{$transicion->siguiente->nombre}}</a></p>
 												<br>
 											@else
 												<p>Flujo Paralelo</p>
-												<p><a type="button" class="btn btn-warning btn-xs" href="{{ route('paso.create',[$expediente,$transicion->siguiente])}}"><i class="fas fa-angle-double-right"></i> {{$transicion->siguiente->nombre}}</a></p>
+												<p><a type="button" class="btn btn-warning btn-xs" href="{{ route('paso.create',[$expediente,$transicion])}}"><i class="fas fa-angle-double-right"></i> {{$transicion->siguiente->nombre}}</a></p>
 												
 											@endif
 										@endforeach
