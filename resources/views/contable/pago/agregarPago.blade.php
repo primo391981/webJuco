@@ -27,7 +27,7 @@
 					@elseif ($tipoPago == 2)
 						<i class="fas fa-credit-card"></i>  AGREGAR NUEVO ADELANTO
 					@else
-						<i class="fas fa-credit-card"></i>  AGREGAR NUEVA PARTIDA EXTRA
+						<i class="fas fa-dollar-sign"></i>  AGREGAR NUEVA PARTIDA EXTRA
 					@endif
 				</h4>				
 			</div>

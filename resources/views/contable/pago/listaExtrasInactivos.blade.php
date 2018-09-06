@@ -19,7 +19,7 @@
 		
 		<div class="panel panel-warning text-warning">
 			<div class="panel-heading">
-				<h4><i class="fas fa-credit-card"></i> LISTADO DE PARTIDAS EXTRAS INACTIVAS </h4>				
+				<h4><i class="fas fa-dollar-sign"></i> LISTADO DE PARTIDAS EXTRAS INACTIVAS </h4>				
 			</div>
 			<div class="panel-body">
 				<div class="table-responsive">

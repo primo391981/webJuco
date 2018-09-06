@@ -20,7 +20,8 @@ class PersonaTableSeeder extends Seeder
 			'telefono'=>'098065107',
 			'email'=>'diegounibazo@gmail.com',
 			'cantHijos'=>0,
-			'estadoCivil'=>1
+			'estadoCivil'=>1,
+			'conDiscapacidad'=>0
 		]);
 		DB::table('persona')->insert([
 			'tipoDocumento'=>1,
@@ -31,7 +32,8 @@ class PersonaTableSeeder extends Seeder
 			'telefono'=>'091987653',
 			'email'=>'fsellanes@gmail.com',
 			'cantHijos'=>2,
-			'estadoCivil'=>1
+			'estadoCivil'=>1,
+			'conDiscapacidad'=>0
 		]);
 		DB::table('persona')->insert([
 			'tipoDocumento'=>1,
@@ -42,7 +44,8 @@ class PersonaTableSeeder extends Seeder
 			'telefono'=>'2901 8759',
 			'email'=>'email1@email1.com',
 			'cantHijos'=>1,
-			'estadoCivil'=>1
+			'estadoCivil'=>1,
+			'conDiscapacidad'=>0
 		]);
 		DB::table('persona')->insert([
 			'tipoDocumento'=>1,
@@ -53,7 +56,8 @@ class PersonaTableSeeder extends Seeder
 			'telefono'=>'2908 2546',
 			'email'=>'email1@email1.com',
 			'cantHijos'=>2,
-			'estadoCivil'=>1
+			'estadoCivil'=>1,
+			'conDiscapacidad'=>0
 		]);
 		DB::table('persona')->insert([
 			'tipoDocumento'=>2,
@@ -64,7 +68,8 @@ class PersonaTableSeeder extends Seeder
 			'telefono'=>'2908 2546',
 			'email'=>'email1@email1.com',
 			'cantHijos'=>0,
-			'estadoCivil'=>2
+			'estadoCivil'=>2,
+			'conDiscapacidad'=>0
 		]);
     }
 }

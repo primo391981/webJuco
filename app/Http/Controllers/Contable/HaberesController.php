@@ -91,6 +91,7 @@ class HaberesController extends Controller
 					$habilita->push($totalExtras);
 					
 					$habilitadas->push($habilita);
+					//dd($habilitadas);
 					$cantHabilitados ++;
 				}
 				
@@ -755,9 +756,14 @@ class HaberesController extends Controller
 	{
 		$valorDeducciones = 0;
 		
-		$deduccionPersonaACargo = ((13 * $valorBPC) / 12) * $empleado->persona->cantHijos;
-
-		$sumaDeducciones = $aportesSegSoc + $deduccionPersonaACargo;
+		//VMD1 = 13*VALOR BPC/12
+		$vmd1=ParametroGeneral::where('nombre','=','VMD1')->first();
+		$hijosMenores = $vmd1 * $empleado->persona->cantHijos;
+		//VMD2 = 26*VALOR BPC/12
+		$vmd2=ParametroGeneral::where('nombre','=','VMD2')->first();
+		$conDiscapacidad=$vmd2 * $empleado->persona->conDiscapacidad;
+		
+		$sumaDeducciones = $aportesSegSoc + $hijosMenores + $conDiscapacidad;
 	
 		//Tasa de Deducción
 		if( $sumaDeducciones <= (15 * $valorBPC))

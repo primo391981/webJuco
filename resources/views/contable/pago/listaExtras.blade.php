@@ -19,7 +19,7 @@
 		<div class="panel panel-warning text-warning">
 			<div class="panel-heading">
 				<a class="btn btn-success pull-right" href="{{ route('pago.create', ['idTipo' => 3]) }}" role="button"><i class="fas fa-plus"></i></a>
-				<h4><i class="fas fa-book"></i> LISTADO DE PARTIDAS EXTRAS ACTIVAS </h4>				
+				<h4><i class="fas fa-dollar-sign"></i> LISTADO DE PARTIDAS EXTRAS ACTIVAS </h4>				
 			</div>
 			<div class="panel-body">
 				<div class="table-responsive">

@@ -22,9 +22,9 @@
 				<h4>@if ($pago->idTipoPago == 1)
 						<i class="fas fa-book"></i> EDITAR VIATICO
 					@elseif ($pago->idTipoPago == 2)
-						<i class="fas fa-credit-card"></i>  AGREGAR NUEVO ADELANTO
+						<i class="fas fa-credit-card"></i> EDITAR ADELANTO
 					@else
-						<i class="fas fa-credit-card"></i>  AGREGAR NUEVA PARTIDA EXTRA
+						<i class="fas fa-dollar-sign"></i> EDITAR PARTIDA EXTRA
 					@endif
 				</h4>				
 			</div>

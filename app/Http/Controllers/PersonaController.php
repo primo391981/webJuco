@@ -48,6 +48,8 @@ class PersonaController extends Controller
 		$persona->email=$request->input('email');
 		$persona->cantHijos=$request->input('cantHijos');		
 		$persona->estadoCivil=$request->input('estadoCivil');		
+		$persona->conDiscapacidad=$request->input('conDiscapacidad');		
+		
 		try{
 			$persona->save();
 			return redirect()->route('persona.index')->with('success', "El empleado ".$persona->tipoDoc->nombre." - ".$persona->documento." se agregó correctamente.");
@@ -111,6 +113,8 @@ class PersonaController extends Controller
 		$persona->email=$request->input('email');
 		$persona->cantHijos=$request->input('cantHijos');		
 		$persona->estadoCivil=$request->input('estadoCivil');		
+		$persona->conDiscapacidad=$request->input('conDiscapacidad');		
+		
 		$persona->save();
 		return redirect()->route('persona.index');
     }

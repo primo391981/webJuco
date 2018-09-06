@@ -24,6 +24,7 @@ class CreatePersonaTable extends Migration
 			$table->string('email')->nullable();
 			$table->integer('cantHijos');
 			$table->integer('estadoCivil');
+			$table->integer('conDiscapacidad');			
 				
 			$table->foreign('tipoDocumento')->references('id')->on('tipo_documento');
 			

@@ -49,13 +49,15 @@
 					@endforeach
 					
 		  </div>
-<div class="panel-footer"><button type="submit"class="btn btn-warning btn-block"><i class="fas fa-check"></i> Confirmar horario</button>
-	</form>
-</div>		  
+			<div class="panel-footer"><button type="submit"class="btn btn-warning btn-block"><i class="fas fa-check"></i> Confirmar horario</button>
+				</form>
+			</div>		  
 		</div> 
 	
 	</div>
 </div>
+
+
 @endsection 
  
  
