@@ -51,7 +51,13 @@
 						<div class="row">
 							<label for="fecha_inicio" class="control-label col-sm-3">PASO ACTUAL</label>
 							<div class="col-sm-9">
-								<a class="label label-default" href="{{route('paso.show',$expediente->pasos->last())}}">{{$expediente->pasos->last()->tipo->nombre}}</a>
+								@foreach($expediente->pasos->where('fecha_fin',null) as $paso)
+									@if($paso->flujo == 0)
+										<a class="label label-success" href="{{route('paso.show',$paso)}}">{{$paso->tipo->nombre}}</a>
+									@else
+										<a class="label label-warning" href="{{route('paso.show',$paso)}}">{{$paso->tipo->nombre}}</a>
+									@endif
+								@endforeach
 							</div>
 						</div>
 						<div class="row">
