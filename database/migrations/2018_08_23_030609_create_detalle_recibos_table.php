@@ -17,9 +17,11 @@ class CreateDetalleRecibosTable extends Migration
             $table->increments('id');
 			$table->integer('idRecibo')->unsigned();
 			$table->integer('idConceptoRecibo')->unsigned();
-			$table->decimal('cantDias', 4, 1);
-			$table->decimal('cantHoras', 4, 1);
+			$table->decimal('cantDias', 4, 1)->nullable();
+			$table->decimal('cantHoras', 4, 1)->nullable();
 			$table->decimal('monto', 8, 2);
+			$table->decimal('porcentaje', 8, 3)->nullable();
+			
 			
 			$table->foreign('idRecibo')->references('id')->on('contable_recibos_empleado');
 			$table->foreign('idConceptoRecibo')->references('id')->on('contable_conceptos_recibo');

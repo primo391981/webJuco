@@ -132,6 +132,7 @@ class HaberesController extends Controller
 		   $montoAntiguedad = 0;
 		   
 		   $fecha = new Carbon($request->fecha);
+		   $empleadosRecibo=collect([]);
 		   
 			for ( $i = 1; $i <= $request->cantHabilitados; $i++)
 			{//Recorre los empleados de la empresa.
@@ -164,9 +165,8 @@ class HaberesController extends Controller
 					//Obtiene monto de Salario Nominal Gravado y no Gravado, sumando todos los conceptos (víaticos y partidas extras)
 					$montoSalario = $this->obtenerMontosSalarioNominal($fecha, $empleado, $cargo, $horasRecibo, $montoAntiguedad);
 					//Carga Detalles
-					$total=collect([]);
-					$cant=count($montoSalario);
 					
+					$cant=count($montoSalario);					
 					for($j=0;$j<$cant;$j++){
 						$detalle=collect([]);						
 						$cantParam=$montoSalario[$j];
@@ -175,10 +175,8 @@ class HaberesController extends Controller
 							$detalle->push($montoSalario[$j+$x]);
 						}
 						$j=$j+$cantParam;
-						$total->push($detalle);
+						$datosRecibo->push($detalle);
 					}
-					
-					dd($total);
 					
 					//Descuentos
 					//Valor de BPC del mes a calcular
@@ -189,16 +187,17 @@ class HaberesController extends Controller
 					
 					$porcFonasa = $valoresFonasa[0];
 					$descFonasa = $valoresFonasa[1];
+					$datosRecibo->push($this->obtenerDetalle(13,$descFonasa,$porcFonasa));
 					
 					//Cálculo de descuento de BPS
 					$porcBPS = $this->obtenerValorActual($fecha, 'BPS');
-					
 					$descBPS = $montoSalario[28] * ($porcBPS / 100);
+					$datosRecibo->push($this->obtenerDetalle(12,$descBPS,$porcBPS));
 					
 					//Cálculo de descuento de FRL
 					$porcFRL = $this->obtenerValorActual($fecha, 'FRL');
-
 					$descFRL = $montoSalario[28] * ($porcFRL / 100);
+					$datosRecibo->push($this->obtenerDetalle(16,$descFRL,$porcFRL));
 					
 					//Sumar 6% si Salario Nominal Gravado supera 10 BPC
 					if ($montoSalario[28] >= (10 * $valorBPC))
@@ -206,18 +205,38 @@ class HaberesController extends Controller
 					
 					//Cálculo de descuento de IRPF Primario
 					$descIRPFPrimario = $this->obtenerDescuentoIRPFPrimario($fecha, $empleado, $montoSalario[28], $valorBPC);
+					
 					//Cálculo de deducciones de IRPF
 					$aportesSegSoc = $descFonasa + $descBPS + $descFRL;
-					
 					$deducionesIRPF = $this->obtenerDeduccionesIRPF($fecha, $empleado, $montoSalario[28], $valorBPC, $aportesSegSoc);
+					
 					//IRPF final a pagar
 					$descIRPF = $descIRPFPrimario - $deducionesIRPF;
 					
-					if ($descIRPF < 0)
-						$descIRPF = 0;
+					if ($descIRPF < 0){
+						$descIRPFPrimario=0;
+						$deducionesIRPF=0;
+					}
 										
+					$datosRecibo->push($this->obtenerDetalle(14,$descIRPFPrimario,'NA'));
+					$datosRecibo->push($this->obtenerDetalle(15,$deducionesIRPF,'NA'));
+					
+					//Adelantos de empleado
+					$montoAdelanto=$this->obtenerPagos($fecha,$empleado,2);
+					$datosRecibo->push($this->obtenerDetalle(17,$montoAdelanto,'NA'));
+					
+					//Viaticos empleado
+					$montoViatico=$this->obtenerPagos($fecha,$empleado,1);
+					$datosRecibo->push($this->obtenerDetalle(8,$montoViatico,'NA'));
+					
+					
+					//Suma de descuentos
+					$sumaDescuentos=$aportesSegSoc + $descIRPF + $montoAdelanto;
+					$datosRecibo->push($this->obtenerDetalle(18,$sumaDescuentos,'NA'));
+					
 					//Cálculo Sueldo Luíqido
-					$sueldoLiquido = $empleado->monto - $aportesSegSoc - $descIRPF;
+					$sueldoLiquido = $empleado->monto - $sumaDescuentos;
+					$datosRecibo->push($this->obtenerDetalle(19,$sueldoLiquido,'NA'));
 					
 					//Guarda encabezado del recibo
 					$recibo = new ReciboEmpleado;
@@ -232,12 +251,44 @@ class HaberesController extends Controller
 					$UltimoReciboEmpleado = ReciboEmpleado::where('idEmpleado','=',$empleado->id)->orderBy('id','desc')->first();
 					
 					//Guarda detalles del recibo
-					$detalleRecibo = new DetalleRecibo;
 					
+					foreach($datosRecibo as $dtr){
+						$detalleRecibo = new DetalleRecibo;
+						/*$table->integer('idConceptoRecibo')->unsigned();
+						$table->decimal('cantDias', 4, 1);
+						$table->decimal('cantHoras', 4, 1);
+						$table->decimal('monto', 8, 2);
+						$table->decimal('porcentaje', 8, 2);
+						*/
 						
+						$detalleRecibo->idConceptoRecibo=$dtr[0];
+						$detalleRecibo->cantDias=0;//por que es mensual
+						
+						if($dtr[0]>=2 && $dtr[0]<=6){
+							$detalleRecibo->cantHoras=$dtr[2];
+						}
+						else{
+							$detalleRecibo->cantHoras=0;							
+						}						
+						
+						$detalleRecibo->monto=$dtr[1];					
+						if($dtr[0]==12 || $dtr[0]==13 || $dtr[0]==16){
+								$detalleRecibo->porcentaje=$dtr[2];						
+						}
+						$detalleRecibo->idRecibo=$UltimoReciboEmpleado->id;
+						
+						$detalleRecibo->save();
+						
+					}
+					
+					
 				
-				dd($montoSalario[28].' '.$descBPS.' '.$descFonasa.' '.$descFRL.' Suma: '.($descBPS+$descFonasa+$descFRL).' Deducciones '.$deducionesIRPF.' IRPF Primario '.$descIRPFPrimario.' DescIRPF: '.$descIRPF.' Sueldo Liq:'.$sueldoLiquido);
+				/*dd($montoSalario[28].' '.$descBPS.' '.$descFonasa.' '.$descFRL.' Suma: '.($descBPS+$descFonasa+$descFRL).' Deducciones '.$deducionesIRPF.' IRPF Primario '.$descIRPFPrimario.' DescIRPF: '.$descIRPF.' Sueldo Liq:'.$sueldoLiquido);*/
 				}
+				
+				$empleadosRecibo->push($UltimoReciboEmpleado->id);
+				return view('contable.haberes.listaEmpleadosRecibos', ['empleadosRecibo' => $empleadosRecibo]);
+				
 			}
 		
 		//1- calcular hr por empleado por si tiene horas de menos o de mas
@@ -584,6 +635,7 @@ class HaberesController extends Controller
 			}
 		}
 		
+		$fecha->subMonth();
 		return $valorAntiguedad;
 	}
 	
@@ -621,28 +673,28 @@ class HaberesController extends Controller
 			
 			$salarios->push(3);
 			$salarios->push(3);
-			$salarios->push(($empleado->valorHora * 2.5) * $horasRecibo[2]);
+			$salarios->push(($empleado->valorHora * 2.5) * $horasRecibo[2]);			
 			$salarios->push($horasRecibo[2]);
 			
 			//Horas Espera/Nocturna/Percnote
 			$salNominalGravado += ($empleado->valorHora * 2 * 0.175) * $horasRecibo[3];
 			
 			$salarios->push(3);
-			$salarios->push(11);
+			$salarios->push(4);
 			$salarios->push(($empleado->valorHora * 2 * 0.175) * $horasRecibo[3]);
 			$salarios->push($horasRecibo[3]);
 			
 			$salNominalGravado += ($empleado->valorHora * 0.20) * $horasRecibo[4];
 			
 			$salarios->push(3);
-			$salarios->push(12);
+			$salarios->push(5);
 			$salarios->push(($empleado->valorHora * 0.20) * $horasRecibo[4]);
 			$salarios->push($horasRecibo[4]);
 			
 			$salNominalGravado += ($empleado->valorHora * 2 * 0.175) * $horasRecibo[5];
 			
 			$salarios->push(3);
-			$salarios->push(13);
+			$salarios->push(6);
 			$salarios->push(($empleado->valorHora * 2 * 0.175) * $horasRecibo[5]);
 			$salarios->push($horasRecibo[5]);
 			
@@ -650,10 +702,11 @@ class HaberesController extends Controller
 			$salNominalGravado += $montoAntiguedad;
 			
 			$salarios->push(2);
-			$salarios->push(19);
+			$salarios->push(7);
 			$salarios->push($montoAntiguedad);
 			
 			//Obtiene los pagos
+			
 			$pagos=Pago::where([['idEmpleado','=',$empleado->id],['fecha','=',$fecha]])->get();
 			//Recorre Pagos
 			foreach($pagos as $p)
@@ -672,12 +725,16 @@ class HaberesController extends Controller
 		}
 		
 		$salarios->push(2);
-		$salarios->push(4);
+		$salarios->push(9);
 		$salarios->push($salNominalGravado);
 		
 		$salarios->push(2);
-		$salarios->push(5);
+		$salarios->push(10);
 		$salarios->push($salNominalNoGravado);
+		
+		$salarios->push(2);
+		$salarios->push(11);
+		$salarios->push($salNominalNoGravado+$salNominalGravado);
 		
 		return $salarios;
 	}
@@ -846,7 +903,7 @@ class HaberesController extends Controller
 		$sumaDeducciones = $aportesSegSoc + $hijosMenores + $conDiscapacidad;
 	
 		//Tasa de Deducción
-		if( $sumaDeducciones <= (15 * $valorBPC))
+		if( $montoSalario <= (15 * $valorBPC))
 			$valorDeducciones = $sumaDeducciones * 0.1;
 		else
 			$valorDeducciones = $sumaDeducciones * 0.08;
@@ -854,7 +911,31 @@ class HaberesController extends Controller
 		return ($valorDeducciones);
 	}
 	
+	private function obtenerDetalle($idConcepto,$descuento,$porcentaje){
+		$detalle=collect([]);
+		
+		$detalle->push($idConcepto);
+		
+		if(is_numeric($descuento))		
+			$detalle->push($descuento);
+		
+		if($porcentaje!='NA')
+			$detalle->push($porcentaje);
+		
+		return $detalle;
+	}
 	
+	private function obtenerPagos($fecha,$empleado,$idTipoPago){
+		$valor=0;
+		//Obtiene los pagos
+		$pagos=Pago::where([['idEmpleado','=',$empleado->id],['fecha','=',$fecha],['idTipoPago','=',$idTipoPago]])->get();
+		//Recorre Pagos
+		foreach($pagos as $p)
+		{	
+			$valor += $p->monto;
+		}
+		return $valor;
+	}
 	
 	/**
      * Display the specified resource.
