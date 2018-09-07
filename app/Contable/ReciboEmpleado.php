@@ -19,4 +19,8 @@ class ReciboEmpleado extends Model
 	public function detallesRecibos(){
 		return $this->hasMany('App\Contable\DetalleRecibo','idRecibo');
 	}
+	
+	public function empleado(){
+		return $this->belongsTo('App\Contable\Empleado','idEmpleado');
+	}
 }

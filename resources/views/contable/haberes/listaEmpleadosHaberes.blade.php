@@ -38,6 +38,7 @@
 			@csrf
 			<input type="hidden" id="fecha" name="fecha" value="{{$fecha}}">
 			<input type="hidden" id="cantHabilitados" name="cantHabilitados" value="{{$cantHabilitados}}">
+			<input type="hidden" id="calculo" name="calculo" value="{{$calculo}}">
 								
 				<div class="table-responsive">
 				<table id="tableEmpleados" class="table" style="width:100%" >

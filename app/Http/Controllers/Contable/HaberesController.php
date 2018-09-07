@@ -286,8 +286,9 @@ class HaberesController extends Controller
 				/*dd($montoSalario[28].' '.$descBPS.' '.$descFonasa.' '.$descFRL.' Suma: '.($descBPS+$descFonasa+$descFRL).' Deducciones '.$deducionesIRPF.' IRPF Primario '.$descIRPFPrimario.' DescIRPF: '.$descIRPF.' Sueldo Liq:'.$sueldoLiquido);*/
 				}
 				
-				$empleadosRecibo->push($UltimoReciboEmpleado->id);
-				return view('contable.haberes.listaEmpleadosRecibos', ['empleadosRecibo' => $empleadosRecibo]);
+				$empleadosRecibo->push($UltimoReciboEmpleado);
+				
+				return view('contable.haberes.listaEmpleadosRecibos', ['empleadosRecibo' => $empleadosRecibo,'fechaMes'=>$fecha->month,'fechaAnio'=>$fecha->year,'calculo'=>$request->calculo]);
 				
 			}
 		
