@@ -29,30 +29,27 @@
 				<div class="col-md-6">
 					@include('juridico.cliente.detalleCliente')
 				</div>
-				
 				<div class="col-md-6">
-					<div class="box box-success">
-						<div class="box-header">
-							<h4>Archivos</h4>
-						</div>
-						<div class="box-body">
-							@if($cliente->archivos->count()>0)
-								@foreach($cliente->archivos as $archivo)
-									<a href="{{route('paso.download',$archivo)}}">{{$archivo->nombre_archivo}}</a> 
-									<form method="POST" action="{{route('archivo.destroy',$archivo)}}" style="display: inline;">
-										{{ method_field('DELETE') }}
-										@csrf
-										<button type="submit" class="btn btn-link"><i class="fas fa-times-circle"></i></button>
-									</form><br>
-								@endforeach	
-							@endif
-						</div>
-						<div class="box-footer text-center">
+					<div class="row">
+						<div class="col-xs-12">
 							@if(Auth::user()->hasRole('juridicoAdmin'))
-								<button class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modalArchivos"> <i class="fas fa-plus"></i> archivo</button>
+								<button class="btn btn-warning pull-right" data-toggle="modal" data-target="#modalArchivos"> <i class="fas fa-plus"></i></button>
 							@endif
+							<h3>ARCHIVOS</h3>
+							<hr class="hidden-xs hidden-sm">
 						</div>
 					</div>
+				
+					@if($cliente->archivos->count()>0)
+						@foreach($cliente->archivos as $archivo)
+							<a href="{{route('paso.download',$archivo)}}">{{$archivo->nombre_archivo}}</a> 
+							<form method="POST" action="{{route('archivo.destroy',$archivo)}}" style="display: inline;">
+								{{ method_field('DELETE') }}
+								@csrf
+								<button type="submit" class="btn btn-link"><i class="fas fa-times-circle"></i></button>
+							</form><br>
+						@endforeach	
+					@endif
 				</div>
 			</div>
 		</div>

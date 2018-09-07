@@ -59,13 +59,5 @@
 								@endif
 							</div>
 						</div>
-						
-						
-						<div class="form-group row">
-								<br>
-								<div class="col-xs-12 text-center">
-									<button type="submit" class="btn btn-success btn-lg" name="saveExpediente"><i class="fas fa-check"></i> Guardar</button>
-									<button type="submit" class="btn btn-info btn-lg" name="nextExpediente"><i class="fas fa-angle-right"></i> Siguiente Paso</button>
-								</div>
-						</div>
+
 					
