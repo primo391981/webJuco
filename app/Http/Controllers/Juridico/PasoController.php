@@ -139,7 +139,7 @@ class PasoController extends Controller
 		
 		// envío de mail, notificación de modificación	
 		Mail::to($expediente->usuario->email)->send(new SendMailable($notificacion->mensaje));
-		foreach($expeidiente->permisosExpedientes as $usuario){
+		foreach($expediente->permisosExpedientes as $usuario){
 			Mail::to($usuario->email)->send(new SendMailable($notificacion->mensaje));
 		}
 		// fin envío de mail
