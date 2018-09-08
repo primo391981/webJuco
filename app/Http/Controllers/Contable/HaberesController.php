@@ -44,7 +44,7 @@ class HaberesController extends Controller
 			$personas=$empresa->personas;
 			$habilitadas=collect([]);
 			$cantHabilitados = 0;
-			
+			$hayUno=false;
 			foreach($personas as $persona)
 			{
 				$fecha=new Carbon($request->mes."-01");
@@ -58,6 +58,7 @@ class HaberesController extends Controller
 					if($regHora!=null)
 					{
 						$habilita->push('1');
+						$hayUno=true;
 					}
 					else
 					{
@@ -99,7 +100,7 @@ class HaberesController extends Controller
 				}
 				
 			}
-			return view('contable.haberes.listaEmpleadosHaberes', ['habilitadas' => $habilitadas, 'calculo' => $request->calculo, 'fecha' => $fecha, 'cantHabilitados' => $cantHabilitados]);			
+			return view('contable.haberes.listaEmpleadosHaberes', ['habilitadas' => $habilitadas, 'calculo' => $request->calculo, 'fecha' => $fecha, 'cantHabilitados' => $cantHabilitados,'hayUnoHab'=>$hayUno]);			
 		}
 		catch(Exception $e){
 			return back()->withInput()->withError("Error en el sistema.");
@@ -115,198 +116,182 @@ class HaberesController extends Controller
 	//Guarda los datos del cálculo de sueldos con los detalles correspondientes al recibo del mismo.
     public function store(Request $request)
     {
-	/*
-	---- DATOS de los EMPLEADOS -----
-		"fecha" => "2018-08-01 00:00:00"
-		"cantHabilitados" => "2"
-		  "1idEmp" => "1"
-		  "1hab" => "on"
-		  "1v" => "4750"
-		  "1a" => "80894"
-		  "1ex" => "100"
-	 */
-		//try{
-		   $sueldoNominalGravado = 0;
-		   $sueldoNominalNoGravado = 0;
-		   $montoHorasFaltantes = 0;
-		   $montoAntiguedad = 0;
-		   
-		   $fecha = new Carbon($request->fecha);
-		   $empleadosRecibo=collect([]);
-		   
-			for ( $i = 1; $i <= $request->cantHabilitados; $i++)
-			{//Recorre los empleados de la empresa.
-				$datosRecibo = collect([]);
-					
-				if ($request->input($i.'idEmp') != null)
-				{//Cálcula sueldo de cada empleado					
-					$idEmpleado = $request->input($i.'idEmp');
-					
-					$empleado = Empleado::find($idEmpleado);
-					
-					$cargo = Cargo::find($empleado->idCargo);
-					
-					if ($cargo->id_remuneracion == 1)
-					{//El empleado es mensual.
-						//Obtiene las horas que debe realizar por contrato
-						$horasMesContrato = $this->obtenerHorasContratoMes($fecha, $empleado->id);
-						//Obtiene las horas efectivamente trabajadas
-						$horasMesTrabajado = $this->obtenerHorasTrabajadasMes($fecha, $empleado->id);
-						//Obtiene las horas a descontar, Horas Extras y Horas Extras Especiales
-						$horasRecibo = $this->obtenerHorasDescuentoYExtras($fecha, $horasMesContrato, $horasMesTrabajado[0]);
-						//Agregar horas de nocturnidad, percnote y espera.
-						$horasRecibo->push($horasMesTrabajado[1]);//Horas Espera
-						$horasRecibo->push($horasMesTrabajado[2]);//Horas Nocturnidad
-						$horasRecibo->push($horasMesTrabajado[3]);//Horas Percnote
-							
-						//Cálcula Antigüedad si corresponde						
-						$montoAntiguedad = $this->obtenerAntiguedad($fecha, $empleado, $cargo);
-					}
-					//Obtiene monto de Salario Nominal Gravado y no Gravado, sumando todos los conceptos (víaticos y partidas extras)
-					$montoSalario = $this->obtenerMontosSalarioNominal($fecha, $empleado, $cargo, $horasRecibo, $montoAntiguedad);
-					//Carga Detalles
-					
-					$cant=count($montoSalario);					
-					for($j=0;$j<$cant;$j++){
-						$detalle=collect([]);						
-						$cantParam=$montoSalario[$j];
-						
-						for($x=1;$x<=$cantParam;$x++){
-							$detalle->push($montoSalario[$j+$x]);
-						}
-						$j=$j+$cantParam;
-						$datosRecibo->push($detalle);
-					}
-					
-					//Descuentos
-					//Valor de BPC del mes a calcular
-					$valorBPC = $this->obtenerValorActual($fecha, 'BPC');
-	
-					//Cálculo de descuento de Fonasa (porcentaje, monto)
-					$valoresFonasa = $this->obtenerDescuentoFonasa($empleado, $montoSalario[28], $valorBPC);
-					
-					$porcFonasa = $valoresFonasa[0];
-					$descFonasa = $valoresFonasa[1];
-					$datosRecibo->push($this->obtenerDetalle(13,$descFonasa,$porcFonasa));
-					
-					//Cálculo de descuento de BPS
-					$porcBPS = $this->obtenerValorActual($fecha, 'BPS');
-					$descBPS = $montoSalario[28] * ($porcBPS / 100);
-					$datosRecibo->push($this->obtenerDetalle(12,$descBPS,$porcBPS));
-					
-					//Cálculo de descuento de FRL
-					$porcFRL = $this->obtenerValorActual($fecha, 'FRL');
-					$descFRL = $montoSalario[28] * ($porcFRL / 100);
-					$datosRecibo->push($this->obtenerDetalle(16,$descFRL,$porcFRL));
-					
-					//Sumar 6% si Salario Nominal Gravado supera 10 BPC
-					if ($montoSalario[28] >= (10 * $valorBPC))
-						$montoSalario[28] = $montoSalario[28] * 1.06;
-					
-					//Cálculo de descuento de IRPF Primario
-					$descIRPFPrimario = $this->obtenerDescuentoIRPFPrimario($fecha, $empleado, $montoSalario[28], $valorBPC);
-					
-					//Cálculo de deducciones de IRPF
-					$aportesSegSoc = $descFonasa + $descBPS + $descFRL;
-					$deducionesIRPF = $this->obtenerDeduccionesIRPF($fecha, $empleado, $montoSalario[28], $valorBPC, $aportesSegSoc);
-					
-					//IRPF final a pagar
-					$descIRPF = $descIRPFPrimario - $deducionesIRPF;
-					
-					if ($descIRPF < 0){
-						$descIRPFPrimario=0;
-						$deducionesIRPF=0;
-					}
-										
-					$datosRecibo->push($this->obtenerDetalle(14,$descIRPFPrimario,'NA'));
-					$datosRecibo->push($this->obtenerDetalle(15,$deducionesIRPF,'NA'));
-					
-					//Adelantos de empleado
-					$montoAdelanto=$this->obtenerPagos($fecha,$empleado,2);
-					$datosRecibo->push($this->obtenerDetalle(17,$montoAdelanto,'NA'));
-					
-					//Viaticos empleado
-					$montoViatico=$this->obtenerPagos($fecha,$empleado,1);
-					$datosRecibo->push($this->obtenerDetalle(8,$montoViatico,'NA'));
-					
-					
-					//Suma de descuentos
-					$sumaDescuentos=$aportesSegSoc + $descIRPF + $montoAdelanto;
-					$datosRecibo->push($this->obtenerDetalle(18,$sumaDescuentos,'NA'));
-					
-					//Cálculo Sueldo Luíqido
-					$sueldoLiquido = $empleado->monto - $sumaDescuentos;
-					$datosRecibo->push($this->obtenerDetalle(19,$sueldoLiquido,'NA'));
-					
-					//Guarda encabezado del recibo
-					$recibo = new ReciboEmpleado;
-					$recibo->idEmpleado = $empleado->id;
-					$recibo->idTipoRecibo = 1; //Sueldo
-					$hoy = Carbon::today();
-					$recibo->fechaRecibo = $hoy->year.'-'.$hoy->month.'-'.$hoy->day;
-					$recibo->fechaPago = $hoy->year.'-'.$hoy->month.'-'.$hoy->day;
-					
-					$recibo->save();
-					
-					$UltimoReciboEmpleado = ReciboEmpleado::where('idEmpleado','=',$empleado->id)->orderBy('id','desc')->first();
-					
-					//Guarda detalles del recibo
-					
-					foreach($datosRecibo as $dtr){
-						$detalleRecibo = new DetalleRecibo;
-						/*$table->integer('idConceptoRecibo')->unsigned();
-						$table->decimal('cantDias', 4, 1);
-						$table->decimal('cantHoras', 4, 1);
-						$table->decimal('monto', 8, 2);
-						$table->decimal('porcentaje', 8, 2);
-						*/
-						
-						$detalleRecibo->idConceptoRecibo=$dtr[0];
-						$detalleRecibo->cantDias=0;//por que es mensual
-						
-						if($dtr[0]>=2 && $dtr[0]<=6){
-							$detalleRecibo->cantHoras=$dtr[2];
-						}
-						else{
-							$detalleRecibo->cantHoras=0;							
-						}						
-						
-						$detalleRecibo->monto=$dtr[1];					
-						if($dtr[0]==12 || $dtr[0]==13 || $dtr[0]==16){
-								$detalleRecibo->porcentaje=$dtr[2];						
-						}
-						$detalleRecibo->idRecibo=$UltimoReciboEmpleado->id;
-						
-						$detalleRecibo->save();
-						
-					}
-					
-					
-				
-				/*dd($montoSalario[28].' '.$descBPS.' '.$descFonasa.' '.$descFRL.' Suma: '.($descBPS+$descFonasa+$descFRL).' Deducciones '.$deducionesIRPF.' IRPF Primario '.$descIRPFPrimario.' DescIRPF: '.$descIRPF.' Sueldo Liq:'.$sueldoLiquido);*/
-				}
-				
-				$empleadosRecibo->push($UltimoReciboEmpleado);
-				
-				return view('contable.haberes.listaEmpleadosRecibos', ['empleadosRecibo' => $empleadosRecibo,'fechaMes'=>$fecha->month,'fechaAnio'=>$fecha->year,'calculo'=>$request->calculo]);
-				
-			}
-		
-		//1- calcular hr por empleado por si tiene horas de menos o de mas
-			//1.1 - descuento de las horas de menos
-			//2- calculo sueldo total nominal
-			//2.2 caluclar antiguedad (transporte no tiene)
-			//2.3 viaticos 50% para descuentos
-			//3- calculos descuentos
-			//		irpf, fonasa, bps, frl, calculo deducciones VMD,tasa fija deducciones TFD,
-			//4- monto no gravado (50%viaticos)
-			//5-sueldo nominal - descuento + monto no gravado
+		/*
+		---- DATOS de los EMPLEADOS -----
+			"fecha" => "2018-08-01 00:00:00"
+			"cantHabilitados" => "2"
+			  "1idEmp" => "1"
+			  "1hab" => "on"
+			  "1v" => "4750"
+			  "1a" => "80894"
+			  "1ex" => "100"
+		 */
+			//try{		
 			
-	  /* }
-	   catch(Exception $e){
-			return back()->withInput()->withError("Error en el sistema.");
-		}
-	   */
+			   $sueldoNominalGravado = 0;
+			   $sueldoNominalNoGravado = 0;
+			   $montoHorasFaltantes = 0;
+			   $montoAntiguedad = 0;
+			   
+			   $fecha = new Carbon($request->fecha);
+			   $empleadosRecibo=collect([]);
+			   
+				for ( $i = 2; $i <= $request->cantHabilitados; $i++)
+				{//Recorre los empleados de la empresa.
+					$datosRecibo = collect([]);
+						
+					if ($request->input($i.'hab') != null)
+					{//Cálcula sueldo de cada empleado					
+						$idEmpleado = $request->input($i.'hab');
+						
+						$empleado = Empleado::find($idEmpleado);
+						
+						$cargo = Cargo::find($empleado->idCargo);
+						
+						if ($cargo->id_remuneracion == 1)
+						{//El empleado es mensual.
+							//Obtiene las horas que debe realizar por contrato
+							$horasMesContrato = $this->obtenerHorasContratoMes($fecha, $empleado->id);
+							//Obtiene las horas efectivamente trabajadas
+							$horasMesTrabajado = $this->obtenerHorasTrabajadasMes($fecha, $empleado->id);
+							//Obtiene las horas a descontar, Horas Extras y Horas Extras Especiales
+							$horasRecibo = $this->obtenerHorasDescuentoYExtras($fecha, $horasMesContrato, $horasMesTrabajado[0]);
+							//Agregar horas de nocturnidad, percnote y espera.
+							$horasRecibo->push($horasMesTrabajado[1]);//Horas Espera
+							$horasRecibo->push($horasMesTrabajado[2]);//Horas Nocturnidad
+							$horasRecibo->push($horasMesTrabajado[3]);//Horas Percnote
+								
+							//Cálcula Antigüedad si corresponde						
+							$montoAntiguedad = $this->obtenerAntiguedad($fecha, $empleado, $cargo);
+						}
+						//Obtiene monto de Salario Nominal Gravado y no Gravado, sumando todos los conceptos (víaticos y partidas extras)
+						$montoSalario = $this->obtenerMontosSalarioNominal($fecha, $empleado, $cargo, $horasRecibo, $montoAntiguedad);
+						//Carga Detalles
+						
+						$cant=count($montoSalario);					
+						for($j=0;$j<$cant;$j++){
+							$detalle=collect([]);						
+							$cantParam=$montoSalario[$j];
+							
+							for($x=1;$x<=$cantParam;$x++){
+								$detalle->push($montoSalario[$j+$x]);
+							}
+							$j=$j+$cantParam;
+							$datosRecibo->push($detalle);
+						}
+						
+						//Descuentos
+						//Valor de BPC del mes a calcular
+						$valorBPC = $this->obtenerValorActual($fecha, 'BPC');
+		
+						//Cálculo de descuento de Fonasa (porcentaje, monto)
+						$valoresFonasa = $this->obtenerDescuentoFonasa($empleado, $montoSalario[28], $valorBPC);
+						
+						$porcFonasa = $valoresFonasa[0];
+						$descFonasa = $valoresFonasa[1];
+						$datosRecibo->push($this->obtenerDetalle(13,$descFonasa,$porcFonasa));
+						
+						//Cálculo de descuento de BPS
+						$porcBPS = $this->obtenerValorActual($fecha, 'BPS');
+						$descBPS = $montoSalario[28] * ($porcBPS / 100);
+						$datosRecibo->push($this->obtenerDetalle(12,$descBPS,$porcBPS));
+						
+						//Cálculo de descuento de FRL
+						$porcFRL = $this->obtenerValorActual($fecha, 'FRL');
+						$descFRL = $montoSalario[28] * ($porcFRL / 100);
+						$datosRecibo->push($this->obtenerDetalle(16,$descFRL,$porcFRL));
+						
+						//Sumar 6% si Salario Nominal Gravado supera 10 BPC
+						if ($montoSalario[28] >= (10 * $valorBPC))
+							$montoSalario[28] = $montoSalario[28] * 1.06;
+						
+						//Cálculo de descuento de IRPF Primario
+						$descIRPFPrimario = $this->obtenerDescuentoIRPFPrimario($fecha, $empleado, $montoSalario[28], $valorBPC);
+						
+						//Cálculo de deducciones de IRPF
+						$aportesSegSoc = $descFonasa + $descBPS + $descFRL;
+						$deducionesIRPF = $this->obtenerDeduccionesIRPF($fecha, $empleado, $montoSalario[28], $valorBPC, $aportesSegSoc);
+						
+						//IRPF final a pagar
+						$descIRPF = $descIRPFPrimario - $deducionesIRPF;
+						
+						if ($descIRPF < 0){
+							$descIRPFPrimario=0;
+							$deducionesIRPF=0;
+						}
+											
+						$datosRecibo->push($this->obtenerDetalle(14,$descIRPFPrimario,'NA'));
+						$datosRecibo->push($this->obtenerDetalle(15,$deducionesIRPF,'NA'));
+						
+						//Adelantos de empleado
+						$montoAdelanto=$this->obtenerPagos($fecha,$empleado,2);
+						$datosRecibo->push($this->obtenerDetalle(17,$montoAdelanto,'NA'));
+						
+						//Viaticos empleado
+						$montoViatico=$this->obtenerPagos($fecha,$empleado,1);
+						$datosRecibo->push($this->obtenerDetalle(8,$montoViatico,'NA'));
+						
+						
+						//Suma de descuentos
+						$sumaDescuentos=$aportesSegSoc + $descIRPF + $montoAdelanto;
+						$datosRecibo->push($this->obtenerDetalle(18,$sumaDescuentos,'NA'));
+						
+						//Cálculo Sueldo Luíqido
+						$sueldoLiquido = $empleado->monto - $sumaDescuentos;
+						$datosRecibo->push($this->obtenerDetalle(19,$sueldoLiquido,'NA'));
+						
+						//Guarda encabezado del recibo
+						$recibo = new ReciboEmpleado;
+						$recibo->idEmpleado = $empleado->id;
+						$recibo->idTipoRecibo = 1; //Sueldo
+						$hoy = Carbon::today();
+						$recibo->fechaRecibo = $hoy->year.'-'.$hoy->month.'-'.$hoy->day;
+						$recibo->fechaPago = $hoy->year.'-'.$hoy->month.'-'.$hoy->day;
+						
+						$recibo->save();
+						
+						$UltimoReciboEmpleado = ReciboEmpleado::where('idEmpleado','=',$empleado->id)->orderBy('id','desc')->first();
+						
+						//Guarda detalles del recibo
+						
+						foreach($datosRecibo as $dtr){
+							$detalleRecibo = new DetalleRecibo;
+							/*$table->integer('idConceptoRecibo')->unsigned();
+							$table->decimal('cantDias', 4, 1);
+							$table->decimal('cantHoras', 4, 1);
+							$table->decimal('monto', 8, 2);
+							$table->decimal('porcentaje', 8, 2);
+							*/
+							
+							$detalleRecibo->idConceptoRecibo=$dtr[0];
+							$detalleRecibo->cantDias=0;//por que es mensual
+							
+							if($dtr[0]>=2 && $dtr[0]<=6){
+								$detalleRecibo->cantHoras=$dtr[2];
+							}
+							else{
+								$detalleRecibo->cantHoras=0;							
+							}						
+							
+							$detalleRecibo->monto=$dtr[1];					
+							if($dtr[0]==12 || $dtr[0]==13 || $dtr[0]==16){
+									$detalleRecibo->porcentaje=$dtr[2];						
+							}
+							$detalleRecibo->idRecibo=$UltimoReciboEmpleado->id;
+							
+							$detalleRecibo->save();
+							
+						}
+						
+						
+					
+					/*dd($montoSalario[28].' '.$descBPS.' '.$descFonasa.' '.$descFRL.' Suma: '.($descBPS+$descFonasa+$descFRL).' Deducciones '.$deducionesIRPF.' IRPF Primario '.$descIRPFPrimario.' DescIRPF: '.$descIRPF.' Sueldo Liq:'.$sueldoLiquido);*/
+					}
+				}
+					$empleadosRecibo->push($UltimoReciboEmpleado);
+					
+					return view('contable.haberes.listaEmpleadosRecibos', ['empleadosRecibo' => $empleadosRecibo,'fechaMes'=>$fecha->month,'fechaAnio'=>$fecha->year,'calculo'=>$request->calculo]);
+			
     }
 
 	//Devuelve array con horas que TRABAJO el empleado en el mes indicado.

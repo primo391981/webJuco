@@ -46,25 +46,26 @@
 		  </div> 
 		</div>
 	  </div><!--CIERRE DIV DATOS-->
-  
-  
-  <div class="col-xs-12 col-md-9"> <!--ABRE DIV EMPRESAS-->
-		<div class="panel panel-warning"> 
-		  <div class="panel-heading"> 
-			<form method="GET" action="{{ route('empleado.formCrear', $persona->id) }}">																
-					<button type="submit"class="btn btn-success pull-right"><i class="fas fa-plus"></i></button>												
-			</form>
-		  <h4>EMPRESAS ASOCIADAS AL EMPLEADO</h4>
-		  </div> 
-			<div class="panel-body text-warning">
-				@if (count($emprAsociadas) >0)
-					@foreach($emprAsociadas as $empr) 
-						<form>
+
+	  
+	  
+			<div class="col-xs-12 col-md-9">				
+				<div class="panel panel-warning text-warning">
+					<div class="panel-heading">
+						<form method="GET" action="{{ route('empleado.formCrear', $persona->id) }}">																
+							<button type="submit"class="btn btn-success pull-right"><i class="fas fa-plus"></i></button>												
+						</form>
+					  <h4>EMPRESAS ASOCIADAS AL EMPLEADO</h4>				
+					</div>
+					<div class="panel-body">
+					@if(count($persona->empresas)>0)
+					@foreach($persona->empresas as $empr)	
+					<div class="row">
+					<form>
 						@csrf
 						<input type="hidden" id="idEmpleado" name="idEmpleado" value="{{$empr->pivot->id}}">
 						<input type="hidden" id="idEmpresa" name="idEmpresa" value="{{$empr->id}}">
-							<div class="row">
-								<div class="col-xs-12 col-md-4"><!-- DIV DETALLE EMPRESA-->
+							<div class="col-xs-12 col-md-4"><!-- DIV DETALLE EMPRESA-->
 									
 									<div class="row">
 										<div class="col-xs-10">
@@ -103,8 +104,8 @@
 										</div>
 									</div>
 									
-								</div><!-- CIERRE DETALLE EMPRESA-->
-								<div class="col-xs-12 col-md-4"><!--DIV DETALLE CONTRATO-->
+							</div><!-- CIERRE DETALLE EMPRESA-->
+							<div class="col-xs-12 col-md-4"><!--DIV DETALLE CONTRATO-->
 									<div class="row">
 										<div class="col-xs-10">
 											<p><strong>DETALLE CONTRATO</strong></p>
@@ -129,10 +130,9 @@
 											<p>Tiene horas pernocte.</p>
 										@endif		
 									</div>
-								</div><!-- CIERRE DETALLE CONTRATO-->
-								
+							</div><!-- CIERRE DETALLE CONTRATO-->
+							<div class="col-xs-12 col-md-4"><!-- DIV DETALLE HORARIO-->
 								@if($empr->pivot->cargo->id_remuneracion==1)
-								<div class="col-xs-12 col-md-4"><!-- DIV DETALLE HORARIO-->
 									<div class="row">
 										<div class="col-xs-10">
 											<p><strong>DETALLE HORARIO</strong></p>
@@ -141,13 +141,13 @@
 										@if($empr->pivot->horarioCargado==false)
 											<button type="submit"class="btn btn-success btn-xs" formaction="{{ route('empleado.formCargarHorario',$empr->pivot->id) }}"  method="GET" style="margin-bottom:5px;" ><i class="fas fa-plus"></i></button>
 										</div><!--cierran lo mismo el xs-2 para boton-->
+										
 										@else
-											@if(count($horariosPrincipales)>0)									
-												@foreach($horariosPrincipales as $hr)
-													@if($empr->pivot->id == $hr->empleado->id)
-														<button type="submit"class="btn btn-warning btn-xs" formaction="{{route('empleado.editHorarioPrincipal',[$empr->pivot->id,$hr->id])}}" formmethod="get" style="margin-bottom:5px;"><i class="far fa-edit"></i></button>
-														</div><!--cierran lo mismo el xs-2 para boton-->
-														
+											@foreach($empr->pivot->horarios as $hr)
+												@if ($loop->last)
+													<button type="submit"class="btn btn-warning btn-xs" formaction="{{route('empleado.editHorarioPrincipal',[$empr->pivot->id,$hr->id])}}" formmethod="get" style="margin-bottom:5px;"><i class="far fa-edit"></i></button>
+													</div><!--cierran lo mismo el xs-2 para boton-->
+													
 														<div class="row">
 															<div class="col-xs-12">
 															@foreach($hr->horariosPorDia as $hd)
@@ -163,78 +163,80 @@
 															@endforeach
 															</div>
 														</div>
-													@endif
-												@endforeach
-											@endif
-										@endif										
-									</div>									
-								</div><!-- CIERRE DETALLE HORARIO-->
+													
+												@endif
+											@endforeach
+										@endif
+									</div>
 								@else
-								<div class="col-xs-12 col-md-4">
-									<p>Empleado con cargo jornalero, no necesita detalle de horario.</p>
-								</div>
+									<div class="row">
+										<div class="col-xs-12">
+											<p>Empleado con cargo jornalero, no necesita detalle de horario.</p>
+										</div>
+									</div>
 								@endif
-								
-							</div>
-						</form>
+							</div><!-- CIERRE DETALLE HORARIO-->
+					
+					</form>
+					
+					</div>
+					@if(count($persona->empresas)>1)
 						<hr>
-					@endforeach		
-				@else
-					<p>El empleado todavía no esta asociada a ninguna empresa.</p>				
-				@endif
-			</div><!--cierra body panel empresas-->
-			 
-		</div>
-	</div><!--CIERRE DIV EMPRESAS-->
-	
-</div><!--CIERRE row EMPRESAS-->
-	
-<div class="row">		
-  
- @if (count($emprAsociadas) >0)
+					@endif
+					@endforeach
+					@else
+						<p>El empleado todavía no esta asociada a ninguna empresa.</p>
+					@endif
+					
+				</div><!--cierre panel-->
+				
+			</div><!--cierre div empresas-->
+</div>
+
+@if(count($persona->empresas)>0)
+<div class="row">	
   <div class="col-xs-12"><!--ABRE DIV INGRESO HORARIO ESPECIAL--> 
     <div class="panel panel-warning"> 
       <div class="panel-heading"> 
         <h4>INGRESO DE HORARIO ESPECIAL</h4>           
       </div> 
       <div class="panel-body text-warning">  
-		
-			@foreach($emprAsociadas as $emp)
+			@foreach($persona->empresas as $emp)
 				<form>
 				@csrf
 				<input type="hidden" id="idEmpleado" name="idEmpleado" value="{{$emp->pivot->id}}">
 				<div class="form-group row">
 					<label class="col-sm-2 col-form-label">{{$emp->nombreFantasia}}</label>
-					@if($emp->pivot->horarioCargado==true)
-						<div class="col-sm-3">
-							<input type="date" class="form-control" id="fechaDesde" name="fechaDesde" value="{{old('fechaDesde')}}" required >
-						</div>
-						<div class="col-sm-3">
-						  <input type="date" class="form-control" id="fechaHasta" name="fechaHasta" value="{{old('fechaHasta')}}" required>
-						</div>
-						<div class="col-sm-2">
-						  <button type="submit"class="btn btn-success btn-block" formaction="{{route('empleado.formHorarioEspecial')}}" formmethod="post"><i class="far fa-clock"></i> Nuevo</button>	
-						</div>
-						<div class="col-sm-2">
-						  <button type="button" class="btn btn-info btn-block" data-toggle="collapse" data-target="#horarios{{$emp->id}}"><i class="fas fa-info"></i> Horarios</button>	
-						</div>
-						
-					@else
-						@if($emp->pivot->cargo->id_remuneracion==1)
-						<div class="col-sm-9">
-							<p>Debe ingresar un horario principal.</p>
-						</div>
+					@if($emp->pivot->cargo->id_remuneracion==1)
+						@if($emp->pivot->horarioCargado==true)
+							<div class="col-sm-3">
+								<input type="date" class="form-control" id="fechaDesde" name="fechaDesde" value="{{old('fechaDesde')}}" required >
+							</div>
+							<div class="col-sm-3">
+							  <input type="date" class="form-control" id="fechaHasta" name="fechaHasta" value="{{old('fechaHasta')}}" required>
+							</div>
+							<div class="col-sm-2">
+							  <button type="submit"class="btn btn-success btn-block" formaction="{{route('empleado.formHorarioEspecial')}}" formmethod="post"><i class="far fa-clock"></i> Nuevo</button>	
+							</div>
+							<div class="col-sm-2">
+							  <button type="button" class="btn btn-info btn-block" data-toggle="collapse" data-target="#horarios{{$emp->id}}"><i class="fas fa-info"></i> Horarios</button>	
+							</div>
+							
 						@else
 							<div class="col-sm-9">
-							<p>Ingreso de horario especial solo esta habilitado para empleados con cargos mensuales.</p>
-							</div>
-						@endif	
+								<p>Debe ingresar un horario principal.</p>
+							</div>	
+						@endif
+					@else
+							<div class="col-sm-9">
+								<p>El empleado con cargo jornalero no tiene la opcion habilitada de ingresar un horario especial.</p>
+							</div>	
 					@endif
 				</div>
-				</form>
-				@if(count($emprAsociadas) >1)
-					<hr>
+				@if(count($persona->empresas)>1)
+				<hr>
 				@endif
+				</form>
 				<div id="horarios{{$emp->id}}" class="row collapse">
 				
 					@php $horariosEmp=$horarios->verHorariosEsp($emp->pivot->id); @endphp
@@ -292,9 +294,8 @@
       </div>       
     </div>
   </div><!--CIERRE DIV HORARIO ESPECIAL-->
- @endif
-	
-	
 </div> <!--CIERRE ROW 2-->
+@endif
+
 @endsection 
  

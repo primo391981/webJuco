@@ -57,8 +57,12 @@
 							@php $i=1; @endphp
 							@foreach($habilitadas as $emp)
 							<tr>
-								<input type="hidden" id="{{$i}}idEmp" name="{{$i}}idEmp" value="{{$emp[0]->pivot->id}}" {{ $emp[1]==1 ? '' : 'disabled' }}>
-								<td><input type="checkbox" id="{{$i}}hab" name="{{$i}}hab" {{ $emp[1]==1 ? 'checked' : 'disabled' }}></td>								
+								@if($emp[1]==0)
+									<td><i class="far fa-clock" style="color:red;"></i></i></td>
+								@else
+									<td><input type="checkbox" id="{{$i}}hab" name="{{$i}}hab" value="{{$emp[0]->pivot->id}}"  {{ $emp[1]==1 ? 'checked' : 'disabled' }}></td>
+								@endif									
+																
 								<td>{{$emp[0]->documento}}</td>
 								<td>{{$emp[0]->nombre}}</td>
 								<td>{{$emp[0]->apellido}}</td>
@@ -219,7 +223,11 @@
 			</div>
 			
 			<div class="panel-footer">
-			<button type="submit" class="btn btn-warning btn-block"><i class="fas fa-check"></i> Calcular</button>
+			<button type="submit" class="btn btn-warning btn-block 
+			@if($hayUnoHab==false)
+				disabled
+			@endif
+			"><i class="fas fa-check"></i> Calcular</button>
 			</form>
 		</div>
 		</div><!--cierre panel-->

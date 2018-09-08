@@ -68,25 +68,10 @@ class PersonaController extends Controller
     {		
 		try{
 			$persona=Persona::find($id);
-			$emprAsociadas=$persona->empresas;
-			$cargos=Cargo::All();
 			$dias=Dia::All();
 			$registros=Registro::All();
-			$horariosPrincipales=collect([]);
-			if($emprAsociadas->isNotEmpty()){
-				foreach($emprAsociadas as $empr){
-					if($empr->pivot->habilitado==true){
-						$hrEmp=collect([]);
-						if($empr->pivot->horarioCargado==true){
-							$horarioPrincipal=HorarioEmpleado::where('idEmpleado','=',$empr->pivot->id)->first();
-							$horariosPrincipales->push($horarioPrincipal);
-							//dd($horarioPrincipal->empleado);
-						}
-					}	
-				}
-			}			
 			
-			return view('contable.persona.verPersona',['persona'=>$persona,'emprAsociadas'=>$emprAsociadas,'cargos'=>$cargos,'dias'=>$dias,'horariosPrincipales'=>$horariosPrincipales,'registros'=>$registros]);
+			return view('contable.persona.verPersona',['persona'=>$persona,'dias'=>$dias,'registros'=>$registros]);
 		}
 		catch(Exception $e){
 			return back()->withInput()->withError("Problemas en el sistema, intente nuevamente o contacte al administrador.");
