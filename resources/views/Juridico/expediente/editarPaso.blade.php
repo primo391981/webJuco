@@ -17,22 +17,22 @@
 		</div>
 @endif 
 
-<div class="row text-info">
+<div class="row">
 	<div class="col-xs-12">
-		<div class="panel">
+		<div class="panel panel-success">
 			<div class="panel-heading">
 				<div class="row">
-					<div class="col-sm-9"><h4>Detalle de expediente</h4></div>
-					<div class="col-sm-3 hidden-xs">
-						<a href="{{ route('expediente.create') }}" class="btn btn-success pull-right" role="button"><i class="fas fa-plus"></i> nuevo expediente</a>
+					<div class="col-xs-12">
+					<a class="btn btn-warning pull-right" href="{{route('expediente.show',$expediente)}}" role="button"><i class="fas fa-undo-alt"></i></a>
+					<h4><i class="fas fa-book"></i> DETALLE DE EXPEDIENTE</h4>	
 					</div>				  
 				</div>
 			</div>
 			<div class="panel-body">
 				@include('juridico.expediente.detalleExpediente')
 				<br>
-				<div class="panel panel-default">
-					<div class="panel-body">
+				<hr>
+				<div class="col-xs-12">
 						<h4>Editar paso: {{$paso->tipo->nombre}}</h4>
 							@if(count($paso->archivos) > 0)
 								<div class="form-horizontal">
@@ -59,11 +59,7 @@
 							<input type="hidden" name="paso" value="{{ $paso }}">
 							@include('juridico.expediente.formPaso', ['textoBoton' => 'Confirmar', 'expediente' => $expediente->id, 'tipoPaso' => $paso->tipo->id]) 
 						</form>
-					</div>
 				</div>
-			</div>
-			<div class="panel-footer">
-				<a href="{{ route('expediente.index') }}" class="btn btn-success btn-block" role="button"><i class="fas fa-list-ul"></i> Listado expedientes</a>
 			</div>
 		</div>
 	</div>

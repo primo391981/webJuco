@@ -190,7 +190,7 @@ class PasoController extends Controller
 		};
 				
 		//solo es posible editar el paso actual en el que se encuentra un expediente
-		if( $exp->pasos->last()->id == $paso->id ){
+		if( $paso->fecha_fin == null ){
 			return view('juridico.expediente.editarPaso',['expediente' => $exp, 'paso' => $paso]);
 		} else {
 			return redirect()->back();
