@@ -133,14 +133,15 @@ class PasoController extends Controller
 		$notificacion->id_tipo = 1; //tipo info
 		$notificacion->fecha_envio = Carbon::now();
 		$notificacion->estado = 0; //se envía una notificación por mail.
-		$notificacion->mensaje = "El expediente ".$expediente->iue." ha sido modificado.";
+		$notificacion->mensaje = Carbon::now()." - El expediente ".$expediente->iue." ha sido modificado por el usuario ".Auth::user()->name.".";
 		
 		$notificacion->save();
 		
-		// envío de mail, pruebas	
-		$mensaje = "mail de prueba de juco";
-        Mail::to($expediente->usuario->email)->send(new SendMailable($notificacion->mensaje));
-		
+		// envío de mail, notificación de modificación	
+		Mail::to($expediente->usuario->email)->send(new SendMailable($notificacion->mensaje));
+		foreach($expeidiente->permisosExpedientes as $usuario){
+			Mail::to($usuario->email)->send(new SendMailable($notificacion->mensaje));
+		}
 		// fin envío de mail
 	
 		return redirect()->route('expediente.show',$expediente)->with("success","El expediente fue modificado correctamente.");

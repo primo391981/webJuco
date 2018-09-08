@@ -14,16 +14,16 @@
 			{{Session::get('success')}}
 		</div>
 @endif 
-<div class="row text-info">
+<div class="row">
 	<div class="col-xs-12">
-		<div class="panel">
+		<div class="panel panel-success text-success">
 				  <div class="panel-heading">
-					<div class="row">
-						<div class="col-sm-9"><h4>LISTADO EXPEDIENTES</h4></div>
+					<div class="btn-group pull-right">
 						@if(Auth::user()->hasRole('juridicoAdmin'))
-							<div class="col-sm-3 hidden-xs"><a href="{{ route('expediente.create') }}" class="btn btn-success pull-right" role="button"><i class="fas fa-plus"></i> nuevo expediente</a></div>				  
+							<a href="{{ route('expediente.create') }}" class="btn btn-success pull-right" role="button"><i class="fas fa-plus"></i></a>
 						@endif
 					</div>
+					<h4>LISTADO EXPEDIENTES</h4>
 				  </div>
 				<div class="panel-body text-muted">					
 					@if(!is_null($expedientes))
@@ -84,9 +84,6 @@
 						<div class="alert alert-info">No hay expedientes registrados en el sistema.</div>
 					@endif
 				</div>
-				@if(Auth::user()->hasRole('juridicoAdmin'))
-					<div class="panel-footer"><a href="{{ route('expediente.create') }}" class="btn btn-success btn-block" role="button"><i class="fas fa-plus"></i> nuevo expediente</a></div>
-				@endif
 		</div>
 	</div>
 </div>

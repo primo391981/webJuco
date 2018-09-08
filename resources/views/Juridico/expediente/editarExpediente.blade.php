@@ -23,16 +23,16 @@
 			<div class="panel-heading">
 				<div class="row">
 					<div class="col-sm-9"><h4>EDITAR EXPEDIENTE</h4></div>
-					<div class="col-sm-3 hidden-xs"><a href="{{ route('expediente.index') }}" class="btn btn-success" role="button"><i class="fas fa-list-ul"></i> Listado expedientes</a></div>
+					<div class="col-sm-3 hidden-xs"><a href="{{ route('expediente.index') }}" class="btn btn-success" role="button"><i class="fas fa-list-ul"></i></a></div>
 				</div>
 			</div>
+			 <form method="POST" action="{{ route('expediente.update',$exp) }}" class="form-horizontal"> 
 			 <div class="panel-body text-success"> 
-				<form method="POST" action="{{ route('expediente.update',$exp) }}" class="form-horizontal"> 
 					@method('PATCH')
-					@include('juridico.expediente.formExpediente', ['textoBoton' => 'Confirmar']) 
-				</form>
+					@include('juridico.expediente.formExpediente') 
 			</div>
-			<div class="panel-footer"><a href="{{ route('expediente.index') }}" class="btn btn-success btn-block" role="button"><i class="fas fa-list-ul"></i> Listado expediente</a></div>
+			<div class="panel-footer"><button type="submit" class="btn btn-success btn-block" role="button"><i class="fas fa-check"></i> Confirmar</a></div>
+			</form>
 		</div>
 	</div>
 	
