@@ -116,18 +116,6 @@ class HaberesController extends Controller
 	//Guarda los datos del cálculo de sueldos con los detalles correspondientes al recibo del mismo.
     public function store(Request $request)
     {
-		/*
-		---- DATOS de los EMPLEADOS -----
-			"fecha" => "2018-08-01 00:00:00"
-			"cantHabilitados" => "2"
-			  "1idEmp" => "1"
-			  "1hab" => "on"
-			  "1v" => "4750"
-			  "1a" => "80894"
-			  "1ex" => "100"
-		 */
-			//try{		
-			
 			   $sueldoNominalGravado = 0;
 			   $sueldoNominalNoGravado = 0;
 			   $montoHorasFaltantes = 0;
@@ -136,7 +124,7 @@ class HaberesController extends Controller
 			   $fecha = new Carbon($request->fecha);
 			   $empleadosRecibo=collect([]);
 			   
-				for ( $i = 2; $i <= $request->cantHabilitados; $i++)
+				for ( $i = 1; $i <= $request->cantHabilitados; $i++)
 				{//Recorre los empleados de la empresa.
 					$datosRecibo = collect([]);
 						
@@ -283,15 +271,13 @@ class HaberesController extends Controller
 							
 						}
 						
-						
-					
+						$empleadosRecibo->push($UltimoReciboEmpleado);
 					/*dd($montoSalario[28].' '.$descBPS.' '.$descFonasa.' '.$descFRL.' Suma: '.($descBPS+$descFonasa+$descFRL).' Deducciones '.$deducionesIRPF.' IRPF Primario '.$descIRPFPrimario.' DescIRPF: '.$descIRPF.' Sueldo Liq:'.$sueldoLiquido);*/
 					}
 				}
-					$empleadosRecibo->push($UltimoReciboEmpleado);
-					
-					return view('contable.haberes.listaEmpleadosRecibos', ['empleadosRecibo' => $empleadosRecibo,'fechaMes'=>$fecha->month,'fechaAnio'=>$fecha->year,'calculo'=>$request->calculo]);
-			
+				
+				return view('contable.haberes.listaEmpleadosRecibos', ['empleadosRecibo' => $empleadosRecibo,'fechaMes'=>$fecha->month,'fechaAnio'=>$fecha->year,'calculo'=>$request->calculo]);
+				
     }
 
 	//Devuelve array con horas que TRABAJO el empleado en el mes indicado.
