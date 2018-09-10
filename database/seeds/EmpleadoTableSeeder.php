@@ -24,8 +24,8 @@ class EmpleadosTableSeeder extends Seeder
 			'nocturnidad'=>1,
 			'pernocte'=>0,
 			'espera'=>0,
-			'habilitado'=>1
-			
+			'habilitado'=>1,
+			'tipoHorario'=>1			
 		]);	
 
 		DB::table('contable_empleados')->insert([
@@ -40,7 +40,8 @@ class EmpleadosTableSeeder extends Seeder
 			'nocturnidad'=>0,
 			'pernocte'=>0,
 			'espera'=>0,
-			'habilitado'=>1
+			'habilitado'=>1,
+			'tipoHorario'=>1
 		]);
 		
 		DB::table('contable_empleados')->insert([
@@ -55,7 +56,8 @@ class EmpleadosTableSeeder extends Seeder
 			'nocturnidad'=>0,
 			'pernocte'=>0,
 			'espera'=>0,
-			'habilitado'=>1
+			'habilitado'=>1,
+			'tipoHorario'=>1
 		]);
     }
 }

@@ -14,6 +14,7 @@ use App\Contable\Registro;
 use App\EstadoCivil;
 use App\Contable\HorarioEmpleado;
 use App\Contable\HorarioPorDia;
+use Carbon\Carbon;
 
 use Exception;
 
@@ -41,15 +42,20 @@ class PersonaController extends Controller
 		$persona=new Persona;
 		$persona->tipoDocumento = $request->input('tipodoc');		
 		$persona->documento=$request->input('documento');
-		$persona->nombre=$request->input('nombre');
-		$persona->apellido=$request->input('apellido');
-		$persona->domicilio=$request->input('domicilio');
+		$persona->nombre=strtoupper($request->input('nombre'));
+		$persona->apellido=strtoupper($request->input('apellido'));
+		$persona->domicilio=strtoupper($request->input('domicilio'));
 		$persona->telefono=$request->input('telefono');
 		$persona->email=$request->input('email');
 		$persona->cantHijos=$request->input('cantHijos');		
 		$persona->estadoCivil=$request->input('estadoCivil');		
-		$persona->conDiscapacidad=$request->input('conDiscapacidad');		
-		
+		$persona->conDiscapacidad=$request->input('conDiscapacidad');	
+		$persona->nacionalidad=strtoupper($request->input('nacionalidad'));
+		$fecha=new Carbon($request->input('fechaNacimiento'));
+		$persona->fechaNacimiento=$fecha->year.'-'.$fecha->month.'-'.$fecha->day;
+		$persona->pagoNombre=strtoupper($request->input('pagoNombre'));
+		$persona->pagoNumero=$request->input('pagoNumero');
+		$persona->departamento=strtoupper($request->input('departamento'));
 		try{
 			$persona->save();
 			return redirect()->route('persona.index')->with('success', "El empleado ".$persona->tipoDoc->nombre." - ".$persona->documento." se agregó correctamente.");
@@ -61,7 +67,7 @@ class PersonaController extends Controller
 			}else{
 				return back()->withInput()->withError("El empleado no se pudo registrar, intente nuevamente o contacte al administrador.");
 			}
-		}		
+		}	
     }
 
     public function show($id)

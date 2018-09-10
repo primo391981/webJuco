@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-
+use Carbon\Carbon;
 class PersonaTableSeeder extends Seeder
 {
     /**
@@ -21,7 +21,12 @@ class PersonaTableSeeder extends Seeder
 			'email'=>'diegounibazo@gmail.com',
 			'cantHijos'=>0,
 			'estadoCivil'=>1,
-			'conDiscapacidad'=>0
+			'conDiscapacidad'=>0,
+			'nacionalidad'=>'URUGUAYA',
+			'fechaNacimiento'=>Carbon::parse('1992-01-10'),
+			'pagoNombre'=>'RED COBRANZA',
+			'pagoNumero'=>123333,
+			'departamento'=>'MVDO'
 		]);
 		DB::table('persona')->insert([
 			'tipoDocumento'=>1,
@@ -33,7 +38,12 @@ class PersonaTableSeeder extends Seeder
 			'email'=>'fsellanes@gmail.com',
 			'cantHijos'=>2,
 			'estadoCivil'=>1,
-			'conDiscapacidad'=>0
+			'conDiscapacidad'=>0,
+			'nacionalidad'=>'URUGUAYA',
+			'fechaNacimiento'=>Carbon::parse('1992-01-10'),
+			'pagoNombre'=>'RED COBRANZA',
+			'pagoNumero'=>123333,
+			'departamento'=>'MVDO'
 		]);
 		DB::table('persona')->insert([
 			'tipoDocumento'=>1,
@@ -45,7 +55,12 @@ class PersonaTableSeeder extends Seeder
 			'email'=>'email1@email1.com',
 			'cantHijos'=>2,
 			'estadoCivil'=>2,
-			'conDiscapacidad'=>0
+			'conDiscapacidad'=>0,
+			'nacionalidad'=>'URUGUAYA',
+			'fechaNacimiento'=>Carbon::parse('1992-01-10'),
+			'pagoNombre'=>'RED COBRANZA',
+			'pagoNumero'=>123333,
+			'departamento'=>'MVDO'
 		]);
 		DB::table('persona')->insert([
 			'tipoDocumento'=>1,
@@ -57,7 +72,12 @@ class PersonaTableSeeder extends Seeder
 			'email'=>'email1@email1.com',
 			'cantHijos'=>2,
 			'estadoCivil'=>1,
-			'conDiscapacidad'=>0
+			'conDiscapacidad'=>0,
+			'nacionalidad'=>'URUGUAYA',
+			'fechaNacimiento'=>Carbon::parse('1992-01-10'),
+			'pagoNombre'=>'RED COBRANZA',
+			'pagoNumero'=>123333,
+			'departamento'=>'MVDO'
 		]);
 		DB::table('persona')->insert([
 			'tipoDocumento'=>2,
@@ -69,7 +89,12 @@ class PersonaTableSeeder extends Seeder
 			'email'=>'email1@email1.com',
 			'cantHijos'=>0,
 			'estadoCivil'=>3,
-			'conDiscapacidad'=>0
+			'conDiscapacidad'=>0,
+			'nacionalidad'=>'URUGUAYA',
+			'fechaNacimiento'=>Carbon::parse('1992-01-10'),
+			'pagoNombre'=>'RED COBRANZA',
+			'pagoNumero'=>123333,
+			'departamento'=>'MVDO'
 		]);
     }
 }

@@ -224,9 +224,7 @@
 			
 			<div class="panel-footer">
 			<button type="submit" class="btn btn-warning btn-block 
-			@if($hayUnoHab==false)
-				disabled
-			@endif
+			
 			"><i class="fas fa-check"></i> Calcular</button>
 			</form>
 		</div>

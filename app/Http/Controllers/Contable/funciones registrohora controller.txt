@@ -1,37 +1,7 @@
-<?php
-
-namespace App\Http\Controllers\Contable;
-
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Contable\Empleado;
-use App\Contable\RegistroHora;
-use App\Contable\HorarioEmpleado;
-use App\Contable\HorarioPorDia;
-use App\Contable\Dia;
-use App\Contable\TipoHora;
-
-use App\Persona;
-use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
-
-class RegistroHoraController extends Controller
-{
-	/*listado de todos los empleados por empresa (debe tener el horario principal cargado) para el manejo de marcas reloj*/
+/*listado de todos los empleados por empresa (debe tener el horario principal cargado) para el manejo de marcas reloj*/
     public function listaEmpleados(){	
 		try{
-			$habilitados=Empleado::where('habilitado','=',true)->get();
-			$empleados=collect([]);
-			foreach($habilitados as $emp){
-				if($emp->cargo->remuneracion->id==1){
-					if($emp->horarioCargado==true){
-						$empleados->push($emp);
-					}
-				}
-				else{
-					$empleados->push($emp);
-				}				
-			}						
+			$empleados=Empleado::where("horarioCargado","=",true)->where('habilitado','=',true)->get();
 			return view('contable.registrohora.listaEmpleados',['empleados'=>$empleados]);
 		}
 		catch(Exception $e){
@@ -42,6 +12,10 @@ class RegistroHoraController extends Controller
 	/*formulario para el ingreso de marcas de reloj de un empleado en un mes y anio dado*/
 	public function formMarcas(Request $request){
 		try{
+			if($request->mes==null){
+				return back()->withInput()->withError("Debe seleccionar un mes y año.");
+			}
+			else{
 				//ver si esta dentro del contrato del empleado.
 				$empleado=Empleado::where('id','=',$request->idEmpleado)->first();
 				$fecha=new Carbon($request->mes."-01");
@@ -342,6 +316,3 @@ class RegistroHoraController extends Controller
 			return back()->withInput()->withError("Error en el sistema.");
 		}
 	}
-	
-	
-}

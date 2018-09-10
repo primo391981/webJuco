@@ -1,5 +1,4 @@
 @extends('contable.contable') 
-@section('seccion', " - ASOSIACIÓN") 
  
 @section('content') 
 @if (Session::has('error')) 
@@ -53,13 +52,22 @@
 					@csrf
 					<input type="hidden" id="idempresa" name="idempresa" value="">
 					<div class="form-group row">
-						<label for="cargo" class="control-label col-sm-3">CARGO </label>
+						<label for="cargo" class="control-label col-sm-3">CATEGORIA </label>
 						<div class="col-sm-6">
 							<select name="cargo" class="form-control" id="cargo" required> 
 							@foreach($cargos as $key => $tipo) 
-								<option value="{{ $tipo->id }}" {{ old('tipo') == $key + 1 ? 'selected' : '' }}>{{ $tipo->nombre }}</option>   
+								<option value="{{ $tipo->id }}" {{ old('tipo') == $key + 1 ? 'selected' : '' }}>{{ $tipo->nombre }} - {{$tipo->remuneracion->nombre}}</option>   
 							@endforeach 
                           </select> 
+						</div>	
+					</div>
+					<div class="form-group row">
+						<label for="tipo" class="control-label col-sm-3">TIPO HORARIO</label>
+						<div class="col-sm-6">
+							<select name="tipo" class="form-control" id="tipo" required> 
+								<option value="1">HABITUAL</option>   
+								<option value="2">FLEXIBLE</option>   
+						  </select> 
 						</div>	
 					</div>
 					<div class="form-group row">
@@ -120,8 +128,6 @@ function darValor(radioSeleccionado) {
  } 
 }
 </script>
-
-
 
 <script>
 $(document).ready(function() {

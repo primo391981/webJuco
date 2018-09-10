@@ -36,6 +36,34 @@
 								@endif
 							</div>	
 						 </div>
+						 <div class="form-group row">
+							<label for="fechaNacimiento" class="control-label col-sm-3">FECHA DE NACIMIENTO *</label>
+							<div class="col-sm-9">
+								<input id="fechaNacimiento" type="date" class="form-control" name="fechaNacimiento" value="{{isset($persona) ? $persona->fechaNacimiento : old('fechaNacimiento') }}" required>
+								@if ($errors->has('fechaNacimiento'))
+									<span style="color:red;">{{ $errors->first('fechaNacimiento') }}</span>
+								@endif
+							</div>	
+						 </div>
+						<div class="form-group row">
+							<label for="nacionalidad" class="control-label col-sm-3">NACIONALIDAD *</label>
+							<div class="col-sm-9">
+								<input id="nacionalidad" type="text" class="form-control" name="nacionalidad" value="{{isset($persona) ? $persona->nacionalidad : old('nacionalidad') }}" required>
+								@if ($errors->has('nacionalidad'))
+									<span style="color:red;">{{ $errors->first('nacionalidad') }}</span>
+								@endif
+							</div>	
+						 </div>	
+						<div class="form-group row">
+							<label for="departamento" class="control-label col-sm-3">LOCALIDAD *</label>
+							<div class="col-sm-9">
+								<input id="departamento" type="text" class="form-control" name="departamento" value="{{isset($persona) ? $persona->departamento : old('departamento') }}" required>
+								@if ($errors->has('departamento'))
+									<span style="color:red;">{{ $errors->first('departamento') }}</span>
+								@endif
+							</div>	
+						 </div>
+						 
 						  <div class="form-group row">
 							<label for="domicilio" class="control-label col-sm-3">DOMICILIO *</label>
 							<div class="col-sm-9">
@@ -72,6 +100,26 @@
 										@endforeach
 									</select>
 								</div>			
+						</div>
+						<hr> 
+						<p><strong>ENTIDAD DE PAGO:</strong></p>
+						<div class="form-group row">
+							<label for="pagoNombre" class="control-label col-sm-3">NOMBRE ENTIDAD *</label>
+							<div class="col-sm-9">
+								<input id="pagoNombre" type="text" class="form-control" name="pagoNombre" value="{{isset($persona) ? $persona->pagoNombre : old('pagoNombre') }}" required>
+								@if ($errors->has('pagoNombre'))
+									<span style="color:red;">{{ $errors->first('pagoNombre') }}</span>
+								@endif
+							</div>	
+						</div>
+						<div class="form-group row">
+							<label for="pagoNumero" class="control-label col-sm-3">NUMERO *</label>
+							<div class="col-sm-9">
+								<input id="pagoNumero" type="number" class="form-control" name="pagoNumero" value="{{isset($persona) ? $persona->pagoNumero : old('pagoNumero') }}" min="0" required>
+								@if ($errors->has('pagoNumero'))
+									<span style="color:red;">{{ $errors->first('pagoNumero') }}</span>
+								@endif
+							</div>	
 						</div>
 						<hr> 
 						<p><strong>PERSONAS A CARGO:</strong></p>

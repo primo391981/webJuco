@@ -24,7 +24,12 @@ class CreatePersonaTable extends Migration
 			$table->string('email')->nullable();
 			$table->integer('cantHijos');
 			$table->integer('estadoCivil');
-			$table->integer('conDiscapacidad');			
+			$table->integer('conDiscapacidad');		
+			$table->string('nacionalidad');
+			$table->date('fechaNacimiento');
+			$table->string('pagoNombre');
+			$table->integer('pagoNumero');
+			$table->string('departamento');
 				
 			$table->foreign('tipoDocumento')->references('id')->on('tipo_documento');
 			

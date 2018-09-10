@@ -56,7 +56,7 @@ class EmpleadoController extends Controller
 					if($request->esp=='on'){
 						$esp=true;
 					}
-					$persona->empresas()->save($empresa, ['idCargo'=>$request->cargo,'fechaDesde'=>$request->fechaInicio,'fechaHasta'=>$request->fechaFin,'monto'=>$request->monto,'valorHora'=>$request->valorhr,'nocturnidad'=>$noc,'pernocte'=>$per,'espera'=>$esp]);
+					$persona->empresas()->save($empresa, ['idCargo'=>$request->cargo,'fechaDesde'=>$request->fechaInicio,'fechaHasta'=>$request->fechaFin,'monto'=>$request->monto,'valorHora'=>$request->valorhr,'nocturnidad'=>$noc,'pernocte'=>$per,'espera'=>$esp,'tipoHorario'=>$request->tipo]);
 					return redirect()->route('persona.show',['id' => $idPer]);
 				}
 			}
@@ -111,7 +111,7 @@ class EmpleadoController extends Controller
 				$idPer = DB::table('contable_empleados')->where('id',$request->idEmpleado)->value('idPersona');
 			
 				DB::table('contable_empleados')->where('id',$request->idEmpleado)->update(['horarioCargado' => true]);
-
+				
 				return redirect()->action('PersonaController@show', ['id' => $idPer]);
 				//return redirect()->action('PersonaController@index');
 			

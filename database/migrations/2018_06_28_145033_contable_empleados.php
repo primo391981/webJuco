@@ -28,8 +28,9 @@ class ContableEmpleados extends Migration
 			$table->boolean('espera')->default(false);
 			$table->boolean('habilitado')->default(true);
 			$table->date('fechaBaja')->nullable();
-			$table->integer('idMotivo')->unsigned()->nullable();			
-			
+			$table->integer('idMotivo')->unsigned()->nullable();
+			$table->integer('tipoHorario')->nullable();
+				
 			
 			$table->foreign('idPersona')->references('id')->on('persona');
 			$table->foreign('idEmpresa')->references('id')->on('empresa');
