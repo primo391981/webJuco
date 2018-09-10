@@ -1,13 +1,13 @@
 @extends('juridico.juridico')
 
 @section('content')
-
-<br>
 @if (Session::has('success'))
+	<br>
 		<div class="alert alert-success">
 			{{Session::get('success')}}
-		</div><br>
+		</div>
 @endif 
+<br>
 <div class="row">
 	<div class="col-xs-12">
 		<div class="panel panel-success">
@@ -158,7 +158,7 @@
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header text-success" style="background:#dff0d8;">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Pasos expediente</h4>
       </div>
@@ -204,16 +204,12 @@
 <div class="modal fade" id="modalRecordatorios" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
-			<div class="modal-header">
+			<div class="modal-header text-success" style="background:#dff0d8;">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title" id="myModalLabel">Expediente {{$expediente->iue}}</h4>
 			</div>
 			<div class="modal-body">
 				@include('juridico.expediente.formRecordatorio')
-			</div>
-			
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
 			</div>
 		</div>
 	</div>
@@ -225,16 +221,14 @@
 <div class="modal fade" id="modalPermisos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
-			<div class="modal-header">
+			<div class="modal-header text-success" style="background:#dff0d8;">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title" id="myModalLabel">Permisos de Usuario</h4>
 			</div>
 			<div class="modal-body">
 				@include('juridico.expediente.formPermiso')
 			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-			</div>
+
 		</div>
 	</div>
 </div>
@@ -245,48 +239,18 @@
 <div class="modal fade" id="modalArchivos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
-			<div class="modal-header">
+			<div class="modal-header text-success" style="background:#dff0d8;">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title" id="myModalLabel">Archivos de Expediente</h4>
 			</div>
 			<div class="modal-body">
 				@include('juridico.expediente.formArchivo')
 			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-			</div>
+
 		</div>
 	</div>
 </div>
 
 <!-- FIN Modal Permisos de usuario -->
 
-
-<script>
-$(document).ready(function() {
-	
-	//igualar altura de boxes superiores
-	$('#boxRecordatorios').height($('#detalle').height());
-	var altura = $('#boxRecordatorios').height() - 120;
-	$('#bodyRecordatorios').height(altura);
-	
-	//select en formulario de permisos
-	
-	
-	
-    $('#tableExp').DataTable( {        
-		"language": {
-		"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"},
-		dom: '<"top"f>t<"bottom"Bpi><"clear">',
-        buttons: [
-           { extend: 'print', text: 'IMPRIMIR' },
-		   { extend: 'pdf', text: 'PDF' },		   
-		   { extend: 'excel', text: 'EXCEL' },
-		   { extend: 'copy', text: 'COPIAR TABLA' }
-        ]
-    } );
-	
-	
-} );
-</script>
 @endsection

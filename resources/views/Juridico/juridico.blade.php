@@ -8,15 +8,21 @@
 @if(Auth::user()->hasRole('juridicoAdmin'))
 <li>
     <a href="#"><i class="fas fa-users"></i> Clientes <i class="fas fa-caret-down"></i></a>
-		<ul class="nav nav-second-level">
-			 <li><a href="{{ route('cliente.index') }}"><i class="fas fa-list-ul"></i> Activos</a></li>
-			 <li><a href="{{ route('cliente.create') }}"><i class="fas fa-plus"></i> Agregar nuevo</a></li>
-			<li><a href="{{ route('cliente.index.inactivos') }}"><i class="fas fa-list-ul"></i> Inactivos</a></li>
-        </ul>
+	<ul class="nav nav-second-level">
+		<li><a href="{{ route('cliente.index') }}"><i class="fas fa-list-ul"></i> Activos</a></li>
+		<li>
+			<a href="#"><i class="fas fa-plus"></i> Agregar nuevo <i class="fas fa-caret-down"></i></a>
+			<ul class="nav nav-third-level">
+				<li><a name="juridico" href="{{ route('cliente.create.juridica')}}"><i class="far fa-building"></i> Persona Jurídica</a></li>
+				<li><a name="fisico" href="{{ route('cliente.create.fisica')}}"><i class="fas fa-user"></i> Persona Física</a></li>
+			</ul>
+		</li>
+		<li><a href="{{ route('cliente.index.inactivos') }}"><i class="fas fa-list-ul"></i> Inactivos</a></li>
+	</ul>
 </li>
 @endif
 <li>
-    <a href="#"><i class="fas fa-users"></i> Expedientes <i class="fas fa-caret-down"></i></a>
+    <a href="#"><i class="fas fa-book"></i> Expedientes <i class="fas fa-caret-down"></i></a>
 		<ul class="nav nav-second-level">
 			 <li><a href="{{ route('expediente.index') }}"><i class="fas fa-list-ul"></i> Activos</a></li>
 			 @if(Auth::user()->hasRole('juridicoAdmin'))<li><a href="{{ route('expediente.create') }}"><i class="fas fa-plus"></i> Agregar nuevo</a></li>@endif
@@ -41,9 +47,7 @@
 	<div class="col-xs-12 col-sm-12 col-md-4">
 	 @if(Auth::user()->hasRole('juridicoAdmin'))
 		<div class="panel panel-success">
-			 
 			  <div class="panel-heading text-center"><h1><i class="fas fa-building"></i> Clientes</h1></div>
-				
 				  <div class="panel-body text-success">
 						<a class="btn btn-success btn-block" href="{{ route('cliente.create') }}" role="button"><i class="fas fa-plus"></i> Agregar nuevo cliente</a>
 						<a class="btn btn-success btn-block" href="{{ route('cliente.index') }}" role="button"><i class="fas fa-list-ul"></i> Listado de clientes activos</a>

@@ -65,7 +65,7 @@
 				
 					<div class="col-sm-9">
 						@if(Auth::user()->hasRole('juridicoAdmin') || Auth::user()->permisosEscritura->contains($expediente))
-							@if($expediente->pasos->last()->id == $paso->id && $paso->tipo->id != 1)
+							@if($paso->fecha_fin == null && $paso->tipo->id != 1)
 								<a class="btn btn-success btn-xs" href="{{route('paso.edit',$paso)}}">Editar paso <i class="fas fa-edit"></i></a>
 							@endif
 						@endif

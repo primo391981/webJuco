@@ -11,18 +11,11 @@
 			{{Session::get('success')}}
 		</div>
 @endif 
-<div class="row">
-	<!--solamente es visible en cel-->
-	<div class="col-xs-12 visible-xs"><a href="{{ route('cliente.create') }}" class="btn btn-success" role="button" style="margin-bottom:5%;"><i class="fas fa-plus"></i> Agregar nuevo cliente</a></div>				  
-</div>
 <div class="row text-info">
 	<div class="col-xs-12">
-		<div class="panel">
+		<div class="panel panel-success text-success">
 				  <div class="panel-heading">
-					<div class="row">
-						<div class="col-sm-9"><h4>LISTADO CLIENTES INACTIVOS</h4></div>
-						<div class="col-sm-3 hidden-xs"><a href="{{ route('cliente.create') }}" class="btn btn-success pull-right" role="button"><i class="fas fa-plus"></i> Agregar nuevo cliente</a></div>
-					</div>
+					<h4>LISTADO CLIENTES INACTIVOS</h4>
 				  </div>
 				  <div class="panel-body text-success">					
 					<div class="table-responsive">
@@ -35,7 +28,6 @@
 								<th>IDENTIFICADOR</th>
 								<th>NOMBRE</th>
 								<th></th>
-								<th></th>
 								
 							</tr>
 						</thead>
@@ -45,9 +37,9 @@
 								<td>{{$cliente->id}}</td>
 								<td>
 									@if($cliente->persona_type=="App\Persona")
-										Física 
+										<i class="fas fa-user"></i> Física 
 									@else
-										Jurídica
+										<i class="far fa-building"></i> Jurídica
 									@endif
 								</td>
 								<td>
@@ -68,7 +60,6 @@
 									@endif
 									
 								</td>
-								<td></td>
 								<td>
 									<form method="POST" action="{{ route('cliente.activar') }}">
 										@csrf	
@@ -84,7 +75,6 @@
 					</div>
 					
 				  </div>
-				  <div class="panel-footer"><a href="{{ route('cliente.create') }}" class="btn btn-success btn-block" role="button"><i class="fas fa-plus"></i> Agregar nuevo cliente</a></div>
 		</div>
 	</div>
 </div>

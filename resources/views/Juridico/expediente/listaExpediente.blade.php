@@ -67,11 +67,18 @@
 									</td>				
 									<td>
 									@if(Auth::user()->hasRole('juridicoAdmin'))
-										@if($expediente->pasos->count() <= 1)
+										
 											<form method="GET" action="{{ route('expediente.edit', $expediente) }}">
-												<button type="submit"class="btn btn-warning"><i class="far fa-edit"></i></button>												
+												@if($expediente->pasos->count() > 1)
+													<fieldset disabled>
+												@endif
+												<button type="submit"class="btn btn-warning"><i class="far fa-edit"></i></button>
+												@if($expediente->pasos->count() > 1)
+													</fieldset>
+												@endif												
+												
 											</form>
-										@endif
+										
 									@endif
 									</td>
 								</tr>

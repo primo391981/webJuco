@@ -10,7 +10,7 @@
 						  <div class="form-group">
 							<label for="user" class="col-sm-4 control-label">Archivos</label>
 							<div class="col-sm-8">
-								<input id="documentos" type="file" class="form-control{{ $errors->has('documentos') ? ' is-invalid' : '' }}" name="documentos[]" autofocus multiple>
+								<input id="documentos" type="file" class="form-control{{ $errors->has('documentos') ? ' is-invalid' : '' }}" name="documentos[]" autofocus multiple required>
 
 									@if ($errors->has('documentos'))
 										<span class="invalid-feedback">

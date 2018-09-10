@@ -15,16 +15,12 @@
 <div class="row text-info">
 	<div class="col-xs-12">
 		<div class="panel panel-success">
+			
 			<div class="panel-heading">
-				<div class="row">
-					<div class="col-sm-9"><h4>Detalle de cliente</h4></div>
-					@if(Auth::user()->hasRole('juridicoAdmin'))
-						<div class="col-sm-3 hidden-xs">
-							<a href="{{ route('cliente.create') }}" class="btn btn-success pull-right" role="button"><i class="fas fa-plus"></i></a>
-						</div>				  
-					@endif
-				</div>
+				<a class="btn btn-success pull-right" href="{{route('cliente.index')}}" role="button"><i class="fas fa-list-ul"></i></a>
+				<h4><i class="fas fa-book"></i> DETALLE DE CLIENTE</h4>				
 			</div>
+			
 			<div class="panel-body">
 				<div class="col-md-6">
 					@include('juridico.cliente.detalleCliente')
@@ -42,12 +38,23 @@
 				
 					@if($cliente->archivos->count()>0)
 						@foreach($cliente->archivos as $archivo)
-							<a href="{{route('paso.download',$archivo)}}">{{$archivo->nombre_archivo}}</a> 
-							<form method="POST" action="{{route('archivo.destroy',$archivo)}}" style="display: inline;">
-								{{ method_field('DELETE') }}
-								@csrf
-								<button type="submit" class="btn btn-link"><i class="fas fa-times-circle"></i></button>
-							</form><br>
+							<div class="row">
+								<div class="col-xs-10">
+									<p><a href="{{route('paso.download',$archivo)}}">{{$archivo->nombre_archivo}}</a></p>
+								</div>
+								<div class="col-xs-2">
+								@if(Auth::user()->hasRole('juridicoAdmin') || Auth::user()->permisosEscritura->contains($expediente))
+									<form method="POST" action="{{route('archivo.destroy',$archivo)}}">
+										@csrf
+										@method('DELETE')
+										<input type="hidden" name="archivo" value="{{ $archivo->id }}">
+										<button type="submit" class="btn btn-danger btn-xs">
+											<i class="fas fa-times"></i>
+										</button>
+									</form>
+									@endif
+								</div>
+							</div>
 						@endforeach	
 					@endif
 				</div>
@@ -60,9 +67,9 @@
 <div class="modal fade" id="modalArchivos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
-			<div class="modal-header">
+			<div class="modal-header text-success" style="background:#dff0d8;">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="myModalLabel">Archivos de Expediente</h4>
+				<h4 class="modal-title" id="myModalLabel">Archivos de Cliente</h4>
 			</div>
 			<div class="modal-body">
 				<div class="container-fluid">
@@ -95,9 +102,6 @@
 						</form>
 					</div>
 				</div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
 			</div>
 		</div>
 	</div>
