@@ -23,7 +23,7 @@
 							<a href="{{ route('expediente.create') }}" class="btn btn-success pull-right" role="button"><i class="fas fa-plus"></i></a>
 						@endif
 					</div>
-					<h4>LISTADO EXPEDIENTES</h4>
+					<h4><i class="fas fa-book"></i> LISTADO EXPEDIENTES</h4>
 				  </div>
 				<div class="panel-body text-muted">					
 					@if(!is_null($expedientes))
@@ -37,6 +37,7 @@
 									<th>IUE</th>
 									<th>CARATULA</th>
 									<th>CLIENTES</th>
+									<th>ESTADO</th>
 									<th>PASO</th>
 									<th></th>
 									<th></th>
@@ -59,7 +60,16 @@
 											
 										@endforeach
 									</td>
-									<td>{{$expediente->pasos->last()->tipo->nombre}}</td>
+									<td>{{$expediente->estado->nombre}}</td>
+									<td>
+										@foreach($expediente->pasos->where('fecha_fin',null) as $paso)
+											@if($paso->flujo == 0)
+												<a class="label label-success" href="{{route('paso.show',$paso)}}">{{$paso->tipo->nombre}}</a>
+											@else
+												<a class="label label-warning" href="{{route('paso.show',$paso)}}">{{$paso->tipo->nombre}}</a>
+											@endif
+										@endforeach
+									</td>
 									<td>
 										<form method="GET" action="{{route('expediente.show', $expediente)}}">																
 											<button type="submit"class="btn btn-info"><i class="fas fa-info-circle"></i></button>												

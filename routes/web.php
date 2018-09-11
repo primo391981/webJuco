@@ -144,6 +144,7 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::resource('cliente', 'Juridico\ClienteController')->middleware('role:juridicoAdmin');
 	
 	//expedientes
+	Route::get('expediente/create/manual', 'Juridico\ExpedienteController@createManual')->name('expediente.create.manual')->middleware('role:juridicoAdmin');
 	Route::get('expediente/search', 'Juridico\ExpedienteController@search')->name('expediente.search')->middleware('role:juridicoAdmin');
 	Route::post('expediente/permiso/{expediente}', 'Juridico\ExpedienteController@addPermiso')->name('expediente.addPermiso')->middleware('role:juridicoAdmin');
 	Route::post('expediente/delpermiso/{expediente}', 'Juridico\ExpedienteController@delPermiso')->name('expediente.delPermiso')->middleware('role:juridicoAdmin');

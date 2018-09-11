@@ -62,6 +62,10 @@ class PasoController extends Controller
 		//obtención del expediente correspondiente
 		$expediente = Expediente::find($request->expediente_id);
 		
+		//se actualiza el estado del expediente
+		$expediente->estado_id = 2;
+		$expediente->save();
+		
 		//obtención de la transicion correspondiente
 		$transicion = Transicion::find($request->transicion_id);
 		
@@ -102,7 +106,7 @@ class PasoController extends Controller
 			$pasoPrevio->fecha_fin = Carbon::now();
 			$pasoPrevio->save();
 		}
-			
+		
 		//si hay archivos, se adjuntan al paso	
 		if ($request->hasFile('documentos')) {
 			//se genera le nombre de carpeta para el almacenamiento
@@ -142,7 +146,9 @@ class PasoController extends Controller
 				//se guardan los cambios
 				$file->save();
 			}
+			
 		}	
+		
 		
 		//se crea una notificación
 		$notificacion = new Notificacion();
@@ -155,6 +161,14 @@ class PasoController extends Controller
 		
 		$notificacion->save();
 		
+		//se actualiza el estado del expediente	
+		if($paso->id_tipo == 12){
+			$expediente->estado_id = 5;
+		} else {
+			$expediente->estado_id = 2;
+		}
+		$expediente->save();
+			
 		// envío de mail, notificación de modificación	
 		Mail::to($expediente->usuario->email)->send(new SendMailable($notificacion->mensaje));
 		foreach($expediente->permisosExpedientes as $usuario){

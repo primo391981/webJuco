@@ -10,24 +10,21 @@
 								</div>			
 						</div>
 						<div class="form-group row">
-							<label for="iue" class="control-label col-sm-3">IUE *</label>
+							<label for="IUE" class="control-label col-sm-3">IUE *</label>
 							<div class="col-sm-9">
-								<div class="well well-sm">{{isset($exp) ? $exp->iue : $expediente->expediente }}</div>
-								<input id="IUE" type="hidden" name="IUE" value="{{isset($exp) ? $exp->iue : $expediente->expediente }}">
+								<input type="text" name="IUE" id="IUE" value="{{isset($exp) ? $exp->iue : $expediente->expediente }}" class="form-control" required>
 							</div>	
 						 </div>
 						 <div class="form-group row">
 							<label for="juzgado" class="control-label col-sm-3">JUZGADO *</label>
 							<div class="col-sm-9">
-								<div class="well well-sm">{{isset($exp) ? $exp->juzgado : $expediente->origen }}</div>
-								<input id="juzgado" type="hidden" name="juzgado" value="{{isset($exp) ? $exp->juzgado : $expediente->origen }}">
+								<input type="text" name="juzgado" value="{{isset($exp) ? $exp->juzgado : $expediente->origen }}" class="form-control" required>
 							</div>	
 						 </div>
 						 <div class="form-group row">
 							<label for="caratula" class="control-label col-sm-3">CARATULA *</label>
 							<div class="col-sm-9">
-								<div class="well well-sm">{{isset($exp) ? $exp->iue : $expediente->caratula }}</div>
-								<input id="caratula" type="hidden" name="caratula" value="{{isset($exp) ? $exp->iue : $expediente->caratula }}">
+								<textarea name="caratula" class="form-control" required>{{isset($exp) ? $exp->caratula : $expediente->caratula }}</textarea>
 							</div>	
 						 </div>
 						 

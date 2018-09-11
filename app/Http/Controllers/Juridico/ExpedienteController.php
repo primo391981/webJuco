@@ -51,11 +51,12 @@ class ExpedienteController extends Controller
 		try { 
 			$expediente = $client->ConsultaIUE($iue);
         } catch (SoapFault $e) { 
-			return back()->withInput()->withError('El sistema del Poder Judicial no se encuentra disponible en este momento. Haga click <a href="">aquí</a> para ingresar un iue de forma manual.');
+			return back()->withInput()->withError('El sistema del Poder Judicial no se encuentra disponible en este momento. Haga click <a href='.route('expediente.create.manual').'>aquí</a> para ingresar un iue de forma manual.');
 		} 		
-		
 		if($expediente->estado === "EL EXPEDIENTE NO SE ENCUENTRA EN EL SISTEMA"){
-			return back()->withInput()->withError('El expediente no se encuentra en el sistema del Poder Judicial');
+			return back()->withInput()->withError('El expediente no se encuentra en el sistema del Poder Judicial. Haga click <a href='.route('expediente.create.manual').'>aquí</a> para ingresar un iue de forma manual.');
+		} elseif($expediente->estado === "EL EXPEDIENTE MANTIENE RESERVA") {
+			return back()->withInput()->withError('El expediente se encuentra bajo reserva. Haga click <a href='.route('expediente.create.manual').'>aquí</a> para ingresar un iue de forma manual.');
 		} else {
 			$tipoExpedientes = TipoExpediente::All();
 			$clientes = Cliente::All();
@@ -65,6 +66,19 @@ class ExpedienteController extends Controller
 		
 	}
 
+	//Creación manual de un expediente
+	public function createManual()
+    {
+        if(Auth::user()->hasRole('invitado')){
+			return abort(403, 'Unauthorized action.');
+		};
+		
+		$tipoExpedientes = TipoExpediente::All();
+		$clientes = Cliente::All();
+		$expediente = new Expediente();
+		return view('juridico.expediente.agregarExpediente',['clientes' => $clientes, 'tipoExpedientes' => $tipoExpedientes, 'expediente' => $expediente]);
+    }
+	
     /**
      * Show the form for creating a new resource.
      *
@@ -91,6 +105,8 @@ class ExpedienteController extends Controller
 		if(Auth::user()->hasRole('invitado')){
 			return abort(403, 'Unauthorized action.');
 		}
+		
+		//dd($request);
 		
 		$request->validate([
 			'IUE' => 'required|unique:juridico_expedientes',

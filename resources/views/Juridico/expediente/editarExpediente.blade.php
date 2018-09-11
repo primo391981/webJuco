@@ -19,12 +19,10 @@
 
 <div class="row">
 	<div class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2">
-		<div class="panel">
+		<div class="panel panel-success">
 			<div class="panel-heading">
-				<div class="row">
-					<div class="col-sm-9"><h4>EDITAR EXPEDIENTE</h4></div>
-					<div class="col-sm-3 hidden-xs"><a href="{{ route('expediente.index') }}" class="btn btn-success" role="button"><i class="fas fa-list-ul"></i></a></div>
-				</div>
+				<a class="btn btn-success pull-right" href="{{route('expediente.index')}}" role="button"><i class="fas fa-list-ul"></i></a>
+				<h4><i class="fas fa-book"></i> EDITAR EXPEDIENTE </h4>	
 			</div>
 			 <form method="POST" action="{{ route('expediente.update',$exp) }}" class="form-horizontal"> 
 			 <div class="panel-body text-success"> 
