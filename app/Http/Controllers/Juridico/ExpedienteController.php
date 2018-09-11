@@ -14,6 +14,7 @@ use App\Http\Controllers\Controller;
 use SoapClient;
 use SoapFault;
 use Auth;
+use DB;
 
 class ExpedienteController extends Controller
 {
@@ -47,6 +48,12 @@ class ExpedienteController extends Controller
 		$wsdl = "http://www.expedientes.poderjudicial.gub.uy/wsConsultaIUE.php?wsdl";    
 		$client = new SoapClient($wsdl); 
 		$iue = $request->iue;
+		
+		$exp = Expediente::where(DB::raw('REPLACE(iue, " ", "")'),str_replace(' ','',$iue))->get();
+		
+		if($exp->count() > 0){
+			return back()->withInput()->withError('El iue ingresado ya se encuentra registrado en el sistema. Ingrese un nuevo iue.');
+		}
 		
 		try { 
 			$expediente = $client->ConsultaIUE($iue);
