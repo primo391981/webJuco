@@ -101,7 +101,7 @@ class RegistroHoraController extends Controller
 				else{
 					return back()->withInput()->withError("Debe elegir una fecha que este dentro del contrato del empleado. Contrato vigente desde ".$fDesde->toDateString()." hasta ".$fHasta->toDateString());
 				}				
-			}
+			
 		}
 		catch(Exception $e){
 			return back()->withInput()->withError("Error en el sistema.");
