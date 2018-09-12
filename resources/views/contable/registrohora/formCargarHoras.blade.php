@@ -26,8 +26,8 @@
 			<div class="panel-body">
 				<div class="row">
 					<div class="col-xs-12"><p><i class="far fa-calendar-alt"></i> {{$mes}}/{{$anio}}</p></div>
-					<div class="col-xs-12"><p><i class="fas fa-building"></i> {{$empleado->empresa->nombreFantasia}}</p></div>
-					<div class="col-xs-12"><p><i class="fas fa-user"></i> {{$empleado->persona->tipoDoc->nombre}} {{$empleado->persona->documento}} - {{$empleado->persona->nombre}} {{$empleado->persona->apellido}}</p></p></div>
+					<div class="col-xs-12"><p><i class="fas fa-building"></i> {{$empleado->empresa->nombreFantasia}} - {{$empleado->cargo->remuneracion->nombre}}</p></div>
+					<div class="col-xs-12"><p><i class="fas fa-user"></i> {{$empleado->persona->tipoDoc->nombre}} {{$empleado->persona->documento}} - {{$empleado->persona->nombre}} {{$empleado->persona->apellido}}</p></div>
 				</div>
 				<hr>
 				
@@ -35,8 +35,17 @@
 				<table class="table table-condensed table-hover">
 				<thead>
 					<tr>
+						
+						@if($empleado->cargo->remuneracion->id==1)
+							@if($empleado->tipoHorario==2)
+							<th class="text-center">#T</th>
+							@endif
+						@else 
+							<th class="text-center">#T</th>
+						@endif
+						<th class="text-center">#I</th>
 						<th>DÍA</th>
-						<th>HORAS COMUNES</th>
+						<th>HORAS</th>
 						<th>HORAS EXTRAS</th>
 						@if($empleado->espera==true)
 						<th>HORAS ESPERA</th>
@@ -55,19 +64,41 @@
 					<input id="idEmpleado" name="idEmpleado" type="hidden" value="{{$idEmpleado}}">
 					<input id="fecha" name="fecha" type="hidden" value="{{$fecha}}">
 					
-					@foreach ($total as $t)					
-					<tr class="{{$t[3]}}">
+					@foreach ($total as $t)	
+						@if($empleado->cargo->remuneracion->id==1 && $empleado->tipoHorario==1)							
+							<tr class="{{$t[3]}}">
+						@else 
+							<tr>
+						@endif
+
+						
+						@if($empleado->cargo->remuneracion->id==1)
+							@if($empleado->tipoHorario==2)
+							<td class="warning text-center"><input type="checkbox" id="trabajado{{$t[1]}}" name="trabajado{{$t[1]}}" checked></td>
+							@endif
+						@else 
+							<td class="warning text-center"><input type="checkbox" id="trabajado{{$t[1]}}" name="trabajado{{$t[1]}}" checked></td>
+						@endif
+						
+						<td class="success text-center"><input type="checkbox" id="6{{$t[1]}}" name="6{{$t[1]}}" value="00:30:00"></td>
 						<td>{{$t[0]}} - {{$t[1]}}</td>
-						<td><input type="time" class="form-control" id="1{{$t[1]}}" name="1{{$t[1]}}" value="{{$t[2]}}"min="00:00:00" max="08:00:00" {{$t[3]==="danger" ? 'readonly' : ''}}/></td>
-						<td><input type="time" class="form-control" id="2{{$t[1]}}" name="2{{$t[1]}}" value="00:00:00"/></td>
+						
+						@if($empleado->cargo->remuneracion->id==1 && $empleado->tipoHorario==1)
+							<td><input type="time" class="form-control input-sm" id="1{{$t[1]}}" name="1{{$t[1]}}" value="{{$t[2]}}"min="00:00:00" max="08:00:00"/></td>
+						@else
+							<td><input type="time" class="form-control input-sm" id="1{{$t[1]}}" name="1{{$t[1]}}" value="08:00:00" min="00:00:00" max="08:00:00"/></td>
+						@endif
+						
+						<td><input type="time" class="form-control input-sm" id="2{{$t[1]}}" name="2{{$t[1]}}" value="00:00:00"/></td>
+						
 						@if($empleado->espera==true)
-						<td><input type="time" class="form-control" id="3{{$t[1]}}" name="3{{$t[1]}}" value="00:00:00"/></td>
+						<td><input type="time" class="form-control input-sm" id="3{{$t[1]}}" name="3{{$t[1]}}" value="00:00:00"/></td>
 						@endif
 						@if($empleado->nocturnidad==true)
-						<td><input type="time" class="form-control" id="4{{$t[1]}}" name="4{{$t[1]}}" value="00:00:00" /></td>
+						<td><input type="time" class="form-control input-sm" id="4{{$t[1]}}" name="4{{$t[1]}}" value="00:00:00" /></td>
 						@endif
 						@if($empleado->pernocte==true)
-						<td><input type="time" class="form-control" id="5{{$t[1]}}" name="5{{$t[1]}}" value="00:00:00" /></td>						
+						<td><input type="time" class="form-control input-sm" id="5{{$t[1]}}" name="5{{$t[1]}}" value="00:00:00" /></td>						
 						@endif
 					</tr>
 					@endforeach					
@@ -84,8 +115,7 @@
 		</div><!--CIERRE DIV PANEL-->
 	</div>
 </div>
-
-
+</script>
 
 @endsection
 

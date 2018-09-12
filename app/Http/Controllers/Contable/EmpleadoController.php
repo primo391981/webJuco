@@ -34,6 +34,7 @@ class EmpleadoController extends Controller
 	/*Guarda la asociacion de un empleado a una empresa junto con sus datos contrato*/
     public function asociarEmpresa(Request $request,$idPer){
 		try{
+			
 			if($request->idempresa==null){
 				return back()->withInput()->withError("Debe seleccionar una empresa.");
 			}

@@ -34,9 +34,17 @@
 				<div class="table-responsive">
 				<table id="tableMarcas" class="table table-condensed table-hover">
 				<thead>
-					<tr>
+					<tr>						
+						@if($empleado->cargo->remuneracion->id==1)
+							@if($empleado->tipoHorario==2)
+							<th class="text-center">#T</th>
+							@endif
+						@else 
+							<th class="text-center">#T</th>
+						@endif
+						<th class="text-center">#I</th>
 						<th>DÍA</th>
-						<th>HORAS COMUNES</th>
+						<th>HORAS</th>
 						<th>HORAS EXTRAS</th>
 						@if($empleado->espera==true)
 						<th>HORAS ESPERA</th>
@@ -52,49 +60,66 @@
 				<tbody>
 					<form action="{{route('reloj.guardarMarcasEdit')}}" method="post">
 					@csrf
-					<input id="idEmpleado" name="idEmpleado" type="hidden" value="{{$idEmpleado}}"/>
+					<input id="idEmpleado" name="idEmpleado" type="hidden" value="{{$empleado->id}}"/>
 					<input id="fecha" name="fecha" type="hidden" value="{{$fecha}}"/>
 					
 					@foreach ($total as $t)					
-					<tr class="{{$t[2]}}">
-						<td>{{$t[0]}} - {{$t[1]}}</td>							
-							@foreach($tiposHoras as $th)
-								@php $dibujo=false; @endphp
-								@foreach($t[3] as $reg)										
-										@if($th->id==$reg->idTipoHora)
-											@if($th->id!=1)
-												<td  bgcolor="#bababa">{{$reg->cantHoras}}</td>
-											@else
-												<td>{{$reg->cantHoras}}</td>
-											@endif
-											@php $dibujo=true; @endphp
-											@break;
-										@endif
+						@if($empleado->cargo->remuneracion->id==1 && $empleado->tipoHorario==1)							
+								<tr class="{{$t[3]}}">
+								
+								@php $dibujoIntermedio=false; @endphp
+								@foreach($t[2] as $reg)										
+									@if($reg->idTipoHora==6)
+										<td class="text-center success">SI</td>
+										@php $dibujoIntermedio=true; @endphp
+									@endif
 								@endforeach
-								@if($dibujo==false)
-									@switch($th->id)
-										@case(2)
-											<td>-</td>
-											@break
-										@case(3)
-											@if($empleado->espera==true)
-											<td>-</td>
+								
+								@if($dibujoIntermedio==false)
+									<td></td>
+								@endif
+								
+								<td>{{$t[0]}} - {{$t[1]}}</td>							
+								
+								@foreach($tiposHoras as $th)
+									@php $dibujo=false; @endphp
+									@foreach($t[2] as $reg)										
+											@if($th->id==$reg->idTipoHora)
+												@if($th->id!=1 && $th->id!=6)
+													<td  bgcolor="#bababa">{{$reg->cantHoras}}</td>
+												@else
+													@if($th->id!=6)
+													<td>{{$reg->cantHoras}}</td>
+													@endif
+												@endif
+												@php $dibujo=true; @endphp
+												@break;
 											@endif
-											@break
-										@case(4)
-											@if($empleado->nocturnidad==true)
-											<td>-</td>
-											@endif
-											@break
-										@case(5)
-											@if($empleado->pernocte==true)
-											<td>-</td>
-											@endif
-											@break	
-									@endswitch		
-								@endif	
-							@endforeach							
-					</tr>
+									@endforeach
+									@if($dibujo==false)
+										@switch($th->id)
+											@case(2)
+												<td>-</td>
+												@break
+											@case(3)
+												@if($empleado->espera==true)
+												<td>-</td>
+												@endif
+												@break
+											@case(4)
+												@if($empleado->nocturnidad==true)
+												<td>-</td>
+												@endif
+												@break
+											@case(5)
+												@if($empleado->pernocte==true)
+												<td>-</td>
+												@endif
+												@break	
+										@endswitch		
+									@endif	
+								@endforeach							
+							</tr>						
 					@endforeach
 				</tbody>
 			</table>
@@ -118,17 +143,7 @@ $(document).ready(function() {
 "<'row'<'col-sm-12'tr>>" +
 "<'row'<'col-sm-6'><'col-sm-6'>>",
         buttons: [
-           { extend: 'print', text: 'IMPRIMIR',customize: function ( win ) {
-                    $(win.document.body)
-                        .css( 'font-size', '10pt' )
-                        .prepend(
-                            '<img src="img/reloj.jpg" style="position:absolute; top:0; left:0;" />'
-                        );
- 
-                    $(win.document.body).find( 'table' )
-                        .addClass( 'compact' )
-                        .css( 'font-size', 'inherit' );
-                } },
+           { extend: 'print', text: 'IMPRIMIR' },
 		   { extend: 'pdf', text: 'PDF' },		   
 		   { extend: 'excel', text: 'EXCEL' },
 		   { extend: 'copy', text: 'COPIAR' }

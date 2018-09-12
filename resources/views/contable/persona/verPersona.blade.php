@@ -115,9 +115,10 @@
 										</div>
 									</div>
 									<div class="row col-xs-12">
-										<p>Cargo: {{$empr->pivot->cargo->nombre}}</p>
+										<p>Categoria: {{$empr->pivot->cargo->nombre}}</p>
+										<p>Remuneracion: {{$empr->pivot->cargo->remuneracion->nombre}} {{$empr->pivot->tipoHorario}}</p>
 										<p>Inicio: {{$empr->pivot->fechaDesde}}</p>
-										<p>Fin: {{$empr->pivot->fechaHasta}}</p>
+										<p>Egreso: {{$empr->pivot->fechaHasta}}</p>
 										<p>Monto: {{$empr->pivot->monto}}</p>
 										<p>Valor Hora: {{$empr->pivot->valorHora}}</p>
 										@if($empr->pivot->espera==true)
@@ -133,6 +134,7 @@
 							</div><!-- CIERRE DETALLE CONTRATO-->
 							<div class="col-xs-12 col-md-4"><!-- DIV DETALLE HORARIO-->
 								@if($empr->pivot->cargo->id_remuneracion==1)
+									@if($empr->pivot->tipoHorario==1)
 									<div class="row">
 										<div class="col-xs-10">
 											<p><strong>DETALLE HORARIO</strong></p>
@@ -168,6 +170,13 @@
 											@endforeach
 										@endif
 									</div>
+									@else
+										<div class="row">
+										<div class="col-xs-12">
+											<p>Empleado con cargo mensual, con tipo horario FLEXIBLE no necesita detalle de horario.</p>
+										</div>
+									</div>
+									@endif
 								@else
 									<div class="row">
 										<div class="col-xs-12">
@@ -208,23 +217,29 @@
 				<div class="form-group row">
 					<label class="col-sm-2 col-form-label">{{$emp->nombreFantasia}}</label>
 					@if($emp->pivot->cargo->id_remuneracion==1)
-						@if($emp->pivot->horarioCargado==true)
-							<div class="col-sm-3">
-								<input type="date" class="form-control" id="fechaDesde" name="fechaDesde" value="{{old('fechaDesde')}}" required >
-							</div>
-							<div class="col-sm-3">
-							  <input type="date" class="form-control" id="fechaHasta" name="fechaHasta" value="{{old('fechaHasta')}}" required>
-							</div>
-							<div class="col-sm-2">
-							  <button type="submit"class="btn btn-success btn-block" formaction="{{route('empleado.formHorarioEspecial')}}" formmethod="post"><i class="far fa-clock"></i> Nuevo</button>	
-							</div>
-							<div class="col-sm-2">
-							  <button type="button" class="btn btn-info btn-block" data-toggle="collapse" data-target="#horarios{{$emp->id}}"><i class="fas fa-info"></i> Horarios</button>	
-							</div>
-							
+						@if($emp->pivot->tipoHorario==1)
+							@if($emp->pivot->horarioCargado==true)
+								<div class="col-sm-3">
+									<input type="date" class="form-control" id="fechaDesde" name="fechaDesde" value="{{old('fechaDesde')}}" required >
+								</div>
+								<div class="col-sm-3">
+								  <input type="date" class="form-control" id="fechaHasta" name="fechaHasta" value="{{old('fechaHasta')}}" required>
+								</div>
+								<div class="col-sm-2">
+								  <button type="submit"class="btn btn-success btn-block" formaction="{{route('empleado.formHorarioEspecial')}}" formmethod="post"><i class="far fa-clock"></i> Nuevo</button>	
+								</div>
+								<div class="col-sm-2">
+								  <button type="button" class="btn btn-info btn-block" data-toggle="collapse" data-target="#horarios{{$emp->id}}"><i class="fas fa-info"></i> Horarios</button>	
+								</div>
+								
+							@else
+								<div class="col-sm-9">
+									<p>Debe ingresar un horario principal.</p>
+								</div>	
+							@endif
 						@else
 							<div class="col-sm-9">
-								<p>Debe ingresar un horario principal.</p>
+								<p>El empleado con cargo mensual y tipo horario FLEXIBLE no tiene la opcion habilitada de ingresar un horario especial.</p>
 							</div>	
 						@endif
 					@else
