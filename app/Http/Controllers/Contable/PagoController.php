@@ -62,6 +62,20 @@ class PagoController extends Controller
 		return view('contable.pago.listaExtrasInactivos', ['extras' => $extras]);
 	}	
 	
+	public function fictos()
+    {
+      	$fictos = Pago::where("idTipoPago", 4)->with('empleado')->get();
+		
+		return view('contable.pago.listaFictos', ['fictos' => $fictos]);
+    }
+	
+	/*public function extrasInactivos()
+    {
+        $extras  = Pago::onlyTrashed()->where("idTipoPago", 3)->with('empleado')->get();
+		
+		return view('contable.pago.listaExtrasInactivos', ['extras' => $extras]);
+	}*/	
+	
 	public function create(Request $request)
     {
 		$empresas = Empresa::with('personas.tipoDoc')->get();
@@ -103,9 +117,7 @@ class PagoController extends Controller
 		
 		if (isset($request->porcentaje))
 			$pago->porcentaje = $request->porcentaje;
-		//dd($pago);
 			
-		
 		try {
 			$pago ->save();
 			
@@ -113,8 +125,10 @@ class PagoController extends Controller
 				return redirect()->route('pago.viaticos')->with('success', "El viático se cargo correctamente.");
 			elseif ($pago ->idTipoPago == 2)
 				return redirect()->route('pago.adelantos')->with('success', "El adelanto se cargo correctamente.");
-			else
+			elseif ($pago ->idTipoPago == 3)
 				return redirect()->route('pago.extras')->with('success', "La partida extra se cargo correctamente.");
+			else
+				return redirect()->route('pago.fictos')->with('success', "El ficto se cargo correctamente.");
 		} 
 		catch(Exception $e){
 			return back()->withInput()->withError("El pago no se pudo registrar, intente nuevamente o contacte al administrador.");				;

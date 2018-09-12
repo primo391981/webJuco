@@ -26,8 +26,10 @@
 						<i class="fas fa-book"></i> AGREGAR NUEVO VIATICO
 					@elseif ($tipoPago == 2)
 						<i class="fas fa-credit-card"></i>  AGREGAR NUEVO ADELANTO
-					@else
+					@elseif ($tipoPago == 3)
 						<i class="fas fa-dollar-sign"></i>  AGREGAR NUEVA PARTIDA EXTRA
+					@else
+						<i class="fas fa-dollar-sign"></i>  AGREGAR NUEVO FICTO
 					@endif
 				</h4>				
 			</div>
