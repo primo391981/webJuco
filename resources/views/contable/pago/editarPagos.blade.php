@@ -21,8 +21,10 @@
 			<div class="panel-heading">
 				<h4>@if ($pago->idTipoPago == 1)
 						<i class="fas fa-book"></i> EDITAR VIATICO
-					@else
+					@elseif ($pago->idTipoPago == 2)
 						<i class="fas fa-credit-card"></i> EDITAR ADELANTO
+					@else
+						<i class="fas fa-dollar-sign"></i> EDITAR PARTIDA EXTRA
 					@endif
 				</h4>				
 			</div>

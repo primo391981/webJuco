@@ -3,7 +3,18 @@
 @section('seccion', " - ACTIVAS")
 
 @section('content')
-
+@if (Session::has('success'))
+<br>	
+	<div class="alert alert-success">
+		{{Session::get('success')}}
+	</div>
+@endif 
+@if (Session::has('error'))
+<br>	
+	<div class="alert alert-danger">
+		{{Session::get('error')}}
+	</div>
+@endif 
 <br>
 
 <div class="row">

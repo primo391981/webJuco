@@ -68,11 +68,9 @@
 									</form>
 								</td>				
 								<td>
-									<form method="POST" action="{{ route('persona.destroy',$per->id) }}">
-										{{ method_field('DELETE') }}
-										@csrf	
+										
 										<button type="submit"class="btn btn-danger"><i class="far fa-trash-alt"></i></button>												
-									</form>
+									
 								</td>									
 							</tr>
 							@endforeach

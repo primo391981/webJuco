@@ -10,7 +10,7 @@ class DetalleRecibo extends Model
 	use SoftDeletes;
     protected $table = 'contable_detalles_recibo';
 	
-	public function conceptosRecibos() {
+	public function conceptoRecibo() {
         return $this->belongsTo('App\Contable\ConceptoRecibo','idConceptoRecibo');
     }
 }

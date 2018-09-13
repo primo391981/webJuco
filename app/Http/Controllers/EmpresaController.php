@@ -83,8 +83,22 @@ class EmpresaController extends Controller
     public function destroy($id)
     {
 		$empresa=Empresa::find($id);
-		$empresa->delete();		
-		return redirect()->route('empresa.index');
+		$personasAsociados=$empresa->personas;
+		$encontre=false;
+		
+		foreach($personasAsociados as $persona){
+			if($persona->pivot->habilitado==true){
+				$encontre=true;
+			}
+		}		
+		if($encontre){
+			return back()->withInput()->withError("Debe desvincular todos los empleados de la empesa antes de eliminarla.");
+		}
+		else{
+			$empresa->delete();
+			return redirect()->route('empresa.index')->with('success', "La empresa se eliminio correctamente.");			
+		}		
+			
     }
 	
 	public function restaurar($id)

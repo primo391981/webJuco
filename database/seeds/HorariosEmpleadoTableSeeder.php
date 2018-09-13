@@ -31,7 +31,7 @@ class HorariosEmpleadoTableSeeder extends Seeder
 		
 		DB::table('contable_horarios_empleados')->insert([
 			'idEmpleado'=>3,
-			'fechaDesde'=>Carbon::parse('2018-06-01'),
+			'fechaDesde'=>Carbon::parse('2018-01-01'),
 			'fechaHasta'=>Carbon::parse('2019-05-31')			
 		]);		
     }

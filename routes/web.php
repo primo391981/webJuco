@@ -76,6 +76,7 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('contable', 'Contable\ContableController@index')->name('contable')->middleware('role:contableAdmin');
 	
 	//cargos
+	Route::post('cargo/salario', 'Contable\CargoController@altaSalarioMinimo')->name('cargo.altaSalarioMinimo')->middleware('role:contableAdmin');
 	Route::get('cargo/inactivos', 'Contable\CargoController@inactivos')->name('cargo.index.inactivos')->middleware('role:contableAdmin');
 	Route::post('cargo/activar', 'Contable\CargoController@activar')->name('cargo.activar')->middleware('role:contableAdmin');
 	Route::resource('cargo', 'Contable\CargoController')->middleware('role:contableAdmin');
@@ -94,7 +95,6 @@ Route::group(['middleware' => ['auth']], function () {
 	
 	//persona
 	Route::get('desactivado', 'PersonaController@desactivado')->name('persona.desactivado')->middleware('role:contableAdmin');
-	Route::get('restauraremp/{id}', 'PersonaController@restaurar')->name('persona.restaurar')->middleware('role:contableAdmin');
 	Route::resource('persona', 'PersonaController')->middleware('role:contableAdmin');
 	
 	//empleado
@@ -108,6 +108,7 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::post('formHorarioEspecial', 'Contable\EmpleadoController@formHorarioEspecial')->name('empleado.formHorarioEspecial')->middleware('role:contableAdmin');
 	Route::post('guardarHorarioEsp', 'Contable\EmpleadoController@guardarHorarioEsp')->name('empleado.guardarHorarioEsp')->middleware('role:contableAdmin');
 	Route::post('empleado/horario/borrar', 'Contable\EmpleadoController@borrarHorarioEsp')->name('empleado.borrarHorarioEsp')->middleware('role:contableAdmin');
+	Route::post('empleado/desvincular', 'Contable\EmpleadoController@desvincularEmpresa')->name('empleado.desvincularEmpresa')->middleware('role:contableAdmin');
 		
 		
 	//registro horas reloj
@@ -119,10 +120,17 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::post('reloj/ver', 'Contable\RegistroHoraController@verMarcas')->name('reloj.verMarcas')->middleware('role:contableAdmin');
 	
 	//pagos
+	Route::post('pago/extra/alta', 'Contable\PagoController@altaPartidaExtra')->name('pago.altaPartidaExtra')->middleware('role:contableAdmin');
+	Route::post('pago/adelanto/alta', 'Contable\PagoController@altaAdelanto')->name('pago.altaAdelanto')->middleware('role:contableAdmin');
+	Route::post('pago/viatico/alta', 'Contable\PagoController@altaViatico')->name('pago.altaViatico')->middleware('role:contableAdmin');
 	Route::get('viaticos', 'Contable\PagoController@viaticos')->name('pago.viaticos')->middleware('role:contableAdmin');
 	Route::get('viaticos/inactivos', 'Contable\PagoController@viaticosInactivos')->name('pago.viaticos.inactivos')->middleware('role:contableAdmin');
 	Route::get('adelantos', 'Contable\PagoController@adelantos')->name('pago.adelantos')->middleware('role:contableAdmin');
 	Route::get('adelantos/inactivos', 'Contable\PagoController@adelantosInactivos')->name('pago.adelantos.inactivos')->middleware('role:contableAdmin');
+	Route::get('extras', 'Contable\PagoController@extras')->name('pago.extras')->middleware('role:contableAdmin');
+	Route::get('extras/inactivos', 'Contable\PagoController@extrasInactivos')->name('pago.extras.inactivos')->middleware('role:contableAdmin');
+	Route::get('fictos', 'Contable\PagoController@fictos')->name('pago.fictos')->middleware('role:contableAdmin');
+	Route::get('fictos/inactivos', 'Contable\PagoController@fictosInactivos')->name('pago.fictos.inactivos')->middleware('role:contableAdmin');
 	Route::post('pago/activar', 'Contable\PagoController@activar')->name('pago.activar')->middleware('role:contableAdmin');
 	Route::get('pago/create/{idTipo}', 'EmpresaController@create')->name('pago.create')->middleware('role:contableAdmin');	
 	Route::resource('pago', 'Contable\PagoController')->middleware('role:contableAdmin');

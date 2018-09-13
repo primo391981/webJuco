@@ -20,5 +20,8 @@ class TipoPagoTableSeeder extends Seeder
 		 DB::table('contable_tipos_pago')->insert([
             'nombre' => 'PARTIDAS EXTRAS',
         ]);	
+		DB::table('contable_tipos_pago')->insert([
+            'nombre' => 'FICTOS',
+        ]);
     }
 }

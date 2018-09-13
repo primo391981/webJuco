@@ -31,9 +31,10 @@
 				<thead>
 					<tr>
 						<th>DOCUMENTO</th>
-						<th>NOMBRE</th>
-						<th>APELLIDO</th>
+						<th>EMPLEADO</th>
 						<th>EMPRESA</th>
+						<th>CATEGORIA</th>
+						<th>REMUNERACION</th>
 						<th>MES - AÑO</th>
 						<th></th>
 						<th></th>
@@ -45,9 +46,11 @@
 					@foreach($empleados as $emp)
 					<tr>								
 						<td>{{$emp->persona->tipoDoc->nombre}} - {{$emp->persona->documento}}</td>
-						<td>{{$emp->persona->nombre}}</td>
-						<td>{{$emp->persona->apellido}}</td>
+						<td>{{$emp->persona->nombre}} {{$emp->persona->apellido}}</td>
 						<td>{{$emp->empresa->nombreFantasia}}</td>
+						<td>{{$emp->cargo->nombre}}</td>
+						<td>{{$emp->cargo->remuneracion->nombre}}</td>
+						
 						<form>
 							@csrf
 							<input id="idEmpleado" name="idEmpleado" type="hidden" value="{{$emp->id}}">

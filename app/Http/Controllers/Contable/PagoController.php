@@ -6,6 +6,7 @@ use App\Contable\Pago;
 use App\Persona;
 use App\Empresa;
 use App\Contable\Empleado;
+use App\Contable\RegistroHora;
 use App\Http\Requests\PagoRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -47,6 +48,34 @@ class PagoController extends Controller
 		return view('contable.pago.listaAdelantosInactivos', ['adelantos' => $adelantos]);
 	}	
 		
+	public function extras()
+    {
+      	$extras = Pago::where("idTipoPago", 3)->with('empleado')->get();
+		
+		return view('contable.pago.listaExtras', ['extras' => $extras]);
+    }
+	
+	public function extrasInactivos()
+    {
+        $extras  = Pago::onlyTrashed()->where("idTipoPago", 3)->with('empleado')->get();
+		
+		return view('contable.pago.listaExtrasInactivos', ['extras' => $extras]);
+	}	
+	
+	public function fictos()
+    {
+      	$fictos = Pago::where("idTipoPago", 4)->with('empleado')->get();
+		
+		return view('contable.pago.listaFictos', ['fictos' => $fictos]);
+    }
+	
+	/*public function extrasInactivos()
+    {
+        $extras  = Pago::onlyTrashed()->where("idTipoPago", 3)->with('empleado')->get();
+		
+		return view('contable.pago.listaExtrasInactivos', ['extras' => $extras]);
+	}*/	
+	
 	public function create(Request $request)
     {
 		$empresas = Empresa::with('personas.tipoDoc')->get();
@@ -88,16 +117,18 @@ class PagoController extends Controller
 		
 		if (isset($request->porcentaje))
 			$pago->porcentaje = $request->porcentaje;
-		//dd($pago);
 			
-		
 		try {
 			$pago ->save();
 			
 			if ($pago ->idTipoPago == 1)
 				return redirect()->route('pago.viaticos')->with('success', "El viático se cargo correctamente.");
-			else
+			elseif ($pago ->idTipoPago == 2)
 				return redirect()->route('pago.adelantos')->with('success', "El adelanto se cargo correctamente.");
+			elseif ($pago ->idTipoPago == 3)
+				return redirect()->route('pago.extras')->with('success', "La partida extra se cargo correctamente.");
+			else
+				return redirect()->route('pago.fictos')->with('success', "El ficto se cargo correctamente.");
 		} 
 		catch(Exception $e){
 			return back()->withInput()->withError("El pago no se pudo registrar, intente nuevamente o contacte al administrador.");				;
@@ -130,8 +161,10 @@ class PagoController extends Controller
 		
 		if ($pago->idTipoPago == 1)
 			$subtitulo = 'Editar Viático';
-		else
+		elseif ($pago ->idTipoPago == 2)
 			$subtitulo = 'Editar Adelanto';
+		else
+			$subtitulo = 'Editar Partida Extra';
 		
 		return view('contable.pago.editarPagos', ['subtitulo' => $subtitulo, 'empresa' => $empresa, 'persona' => $persona, 'pago' => $pago]);	
     }
@@ -164,15 +197,16 @@ class PagoController extends Controller
 			$pago->porcentaje = $request->porcentaje;
 		else
 			$pago->porcentaje = NULL;
-	//dd($pago);
-	
+
 		try {
 			$pago->save();
 			
 			if ($pago ->idTipoPago == 1)
 				return redirect()->route('pago.viaticos')->with('success', "El viático se editó correctamente");
-			else
+			elseif ($pago->idTipoPago == 2)
 				return redirect()->route('pago.adelantos')->with('success', "El adelanto se editó correctamente");
+			else
+				return redirect()->route('pago.extras')->with('success', "La partida extra se editó correctamente");
 				
 		} catch(Exception $e){
 			return back()->withInput()->withError("El pago no se pudo registrar, intente nuevamente o contacte al administrador.");				;
@@ -189,9 +223,12 @@ class PagoController extends Controller
 		
 		if ($pago->idTipoPago == 1)
 			return redirect()->route('pago.viaticos.inactivos')->with('success', "El viático fue restaurado correctamente");
-		else
+		elseif ($pago->idTipoPago == 2)
 			return redirect()->route('pago.adelantos.inactivos')->with('success', "El adelanto fue restaurado correctamente");
+		else
+			return redirect()->route('pago.extras.inactivos')->with('success', "La partida extra fue restaurada correctamente");
     }
+	
     /**
      * Remove the specified resource from storage.
      *
@@ -204,7 +241,179 @@ class PagoController extends Controller
 		
 		if ($pago->idTipoPago == 1)
 			return redirect()->route('pago.viaticos')->with('success', "El viático fue eliminado correctamente");
-		else
+		elseif ($pago->idTipoPago == 2)
 			return redirect()->route('pago.adelantos')->with('success', "El adelanto fue eliminado correctamente");
+		else
+			return redirect()->route('pago.extras')->with('success', "La partida extra eliminada correctamente");
     }
+	
+	public function altaViatico(Request $request){
+		$datos=0;
+		try{
+			$fechaPago= new Carbon($request->fecha);
+			//Se tiene que setear datos antes del save por si ocurre un error y vuelva con los datos que ya tenia.
+			$datos=$this->listaEmpleadosHaberes($request->idEmpleado,$fechaPago);
+			
+			$pago = new Pago;
+			$pago->idEmpleado = $request->idEmpleado;
+			$pago->idTipoPago = 1;
+			
+			$pago->fecha = $fechaPago->year.'-'.$fechaPago->month.'-01';
+			$pago->monto = $request->monto;
+			$pago->descripcion = $request->desc;
+			
+			if (isset($request->dias))
+				$pago->cantDias = $request->dias;
+			
+			if (isset ($request->gravado)){
+				$pago->gravado=1;
+				$pago->porcentaje = $request->porcentaje;		
+			}
+			else{
+				$pago->gravado=0;
+			}
+			
+			$pago->save();						
+			//todo ok vuelve con los viaticos actualizados
+			$datos=$this->listaEmpleadosHaberes($request->idEmpleado,$fechaPago);
+			return view('contable.haberes.listaEmpleadosHaberes', ['habilitadas' => $datos[0], 'calculo' => $request->calculo, 'fecha' => $fechaPago, 'cantHabilitados' => $datos[1]])->with('okMsg', 'El viatico se cargo correctamente.');
+		}
+		 catch(Exception $e){
+			return view('contable.haberes.listaEmpleadosHaberes', ['habilitadas' => $datos[0], 'calculo' => $request->calculo, 'fecha' => $fechaPago, 'cantHabilitados' => $datos[1]])->with('errorMsg', 'Error al cargar el viatico.');
+		}
+	}
+	public function altaPartidaExtra(Request $request){
+		$datos=0;
+		try{
+			$fechaPago= new Carbon($request->fecha);
+			//Se tiene que setear datos antes del save por si ocurre un error y vuelva con los datos que ya tenia.
+			$datos=$this->listaEmpleadosHaberes($request->idEmpleado,$fechaPago);
+			
+			$pago = new Pago;
+			$pago->idEmpleado = $request->idEmpleado;
+			$pago->idTipoPago = 3;
+			
+			$pago->fecha = $fechaPago->year.'-'.$fechaPago->month.'-01';
+			$pago->monto = $request->monto;
+			$pago->descripcion = $request->desc;
+			
+			if (isset ($request->gravado)){
+				$pago->gravado=1;
+				$pago->porcentaje = $request->porcentaje;		
+			}
+			else{
+				$pago->gravado=0;
+			}
+			
+			$pago->save();						
+			//todo ok vuelve con los viaticos actualizados
+			$datos=$this->listaEmpleadosHaberes($request->idEmpleado,$fechaPago);
+			return view('contable.haberes.listaEmpleadosHaberes', ['habilitadas' => $datos[0], 'calculo' => $request->calculo, 'fecha' => $fechaPago, 'cantHabilitados' => $datos[1]])->with('okMsg', 'La partida extra se cargo correctamente.');
+		}
+		 catch(Exception $e){
+			return view('contable.haberes.listaEmpleadosHaberes', ['habilitadas' => $datos[0], 'calculo' => $request->calculo, 'fecha' => $fechaPago, 'cantHabilitados' => $datos[1]])->with('errorMsg', 'Error al cargar la partida extra.');
+		}
+	}
+	
+	
+	public function altaAdelanto(Request $request){
+		$datos=0;
+		try{
+			$fechaPago= new Carbon($request->fecha);
+			//Se tiene que setear datos antes del save por si ocurre un error y vuelva con los datos que ya tenia.
+			$datos=$this->listaEmpleadosHaberes($request->idEmpleado,$fechaPago);
+			
+			$pago = new Pago;
+			$pago->idEmpleado = $request->idEmpleado;
+			$pago->idTipoPago = 2;
+			
+			$pago->fecha = $fechaPago->year.'-'.$fechaPago->month.'-01';
+			$pago->monto = $request->monto;
+			$pago->descripcion = $request->desc;
+			$pago->gravado = false;
+			
+			$pago->save();						
+			//todo ok vuelve con los adelantos actualizados
+			$datos=$this->listaEmpleadosHaberes($request->idEmpleado,$fechaPago);
+			return view('contable.haberes.listaEmpleadosHaberes', ['habilitadas' => $datos[0], 'calculo' => $request->calculo, 'fecha' => $fechaPago, 'cantHabilitados' => $datos[1]])->with('okMsg', 'El adelanto se cargo correctamente.');
+		}
+		 catch(Exception $e){
+			return view('contable.haberes.listaEmpleadosHaberes', ['habilitadas' => $datos[0], 'calculo' => $request->calculo, 'fecha' => $fechaPago, 'cantHabilitados' => $datos[1]])->with('errorMsg', 'Error al cargar el adelanto.');
+		}
+	}
+	
+	
+	
+	
+	public function listaPagos($idEmpleado,$tipoPago,$fecha,$calculo){
+		try{
+			$pagos =Pago::where('idEmpleado','=',$idEmpleado)->where('idTipoPago','=',$tipoPago)->where('fecha','=',$fecha)->get();
+			return $pagos;
+		}
+		catch(Exception $e){
+			return view('contable.haberes.listaEmpleadosHaberes', ['habilitadas' => $datos[0], 'calculo' => $calculo, 'fecha' => $fecha, 'cantHabilitados' => $datos[1]])->with('errorMsg', 'Error al listar los pagos.');
+		}
+	}
+	
+	
+	private function listaEmpleadosHaberes($idEmpleado,$fecha){
+			$empresa=Empresa::where('id','=',$idEmpleado)->first();			
+			$personas=$empresa->personas;
+			$habilitadas=collect([]);
+			$cantHabilitados = 0;
+			foreach($personas as $persona){
+				$fDesde=new Carbon($persona->pivot->fechaDesde);
+				$fHasta=new Carbon($persona->pivot->fechaHasta);
+				if($fecha->between($fDesde,$fHasta)){
+					$habilita=collect([]);
+					$habilita->push($persona);					
+					$regHora=RegistroHora::where([['idEmpleado','=',$persona->pivot->id],['fecha','=',$fecha]])->first();
+					if($regHora!=null){
+						$habilita->push('1');
+					}
+					else{
+						$habilita->push('0');
+					}
+					$pagos=Pago::where([['idEmpleado','=',$persona->pivot->id],['fecha','=',$fecha]])->get();
+					
+					$totalViaticos=0;
+					$totalAdelantos=0;
+					$totalExtras=0;
+					
+					foreach($pagos as $p)
+					{
+						if($p->idTipoPago==1)
+						{
+							$totalViaticos+=$p->monto;
+						}
+						else
+						{
+							if ($p->idTipoPago==2)
+							{
+								$totalAdelantos+=$p->monto;
+							}
+							else
+							{
+								$totalExtras+=$p->monto;
+							}
+						}
+						
+					}
+					
+					$habilita->push($totalViaticos);
+					$habilita->push($totalAdelantos);
+					$habilita->push($totalExtras);
+					
+					$habilitadas->push($habilita);
+					$cantHabilitados ++;
+				}				
+			}
+			
+			$datos=collect([]);
+			$datos->push($habilitadas);
+			$datos->push($cantHabilitados);
+			
+			return $datos;
+	}
+	
 }

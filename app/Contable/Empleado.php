@@ -24,5 +24,8 @@ class Empleado extends Pivot
 		return $this->hasMany('App\Contable\RegistroHora','idEmpleado');
 	}
 	
+	public function cargo(){
+		return $this->belongsTo('App\Contable\Cargo','idCargo');
+	}
 	
 }

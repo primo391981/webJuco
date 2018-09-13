@@ -25,6 +25,9 @@ class TipoHoraTableSeeder extends Seeder
         ]);
 		DB::table('contable_tipos_hora')->insert([
             'nombre' => 'HORA PERNOCTE',
-        ]);		
+        ]);
+DB::table('contable_tipos_hora')->insert([
+            'nombre' => 'HORA INTERMEDIO',
+        ]);			
     }
 }

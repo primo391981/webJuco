@@ -34,6 +34,7 @@ class EmpleadoController extends Controller
 	/*Guarda la asociacion de un empleado a una empresa junto con sus datos contrato*/
     public function asociarEmpresa(Request $request,$idPer){
 		try{
+			
 			if($request->idempresa==null){
 				return back()->withInput()->withError("Debe seleccionar una empresa.");
 			}
@@ -56,7 +57,7 @@ class EmpleadoController extends Controller
 					if($request->esp=='on'){
 						$esp=true;
 					}
-					$persona->empresas()->save($empresa, ['idCargo'=>$request->cargo,'fechaDesde'=>$request->fechaInicio,'fechaHasta'=>$request->fechaFin,'monto'=>$request->monto,'valorHora'=>$request->valorhr,'nocturnidad'=>$noc,'pernocte'=>$per,'espera'=>$esp]);
+					$persona->empresas()->save($empresa, ['idCargo'=>$request->cargo,'fechaDesde'=>$request->fechaInicio,'fechaHasta'=>$request->fechaFin,'monto'=>$request->monto,'valorHora'=>$request->valorhr,'nocturnidad'=>$noc,'pernocte'=>$per,'espera'=>$esp,'tipoHorario'=>$request->tipo]);
 					return redirect()->route('persona.show',['id' => $idPer]);
 				}
 			}
@@ -111,7 +112,7 @@ class EmpleadoController extends Controller
 				$idPer = DB::table('contable_empleados')->where('id',$request->idEmpleado)->value('idPersona');
 			
 				DB::table('contable_empleados')->where('id',$request->idEmpleado)->update(['horarioCargado' => true]);
-
+				
 				return redirect()->action('PersonaController@show', ['id' => $idPer]);
 				//return redirect()->action('PersonaController@index');
 			
@@ -265,6 +266,20 @@ class EmpleadoController extends Controller
 			return back()->withInput()->withError("Error en el sistema");
 		}
 		
+	}
+	
+	public function desvincularEmpresa(Request $request){
+		try{
+			dd($request);
+			$fechaHoy= Carbon::today('America/Montevideo');
+			Empleado::where('id', $request->idEmpleado)->where('idEmpresa', $request->idEmpresa)->update(['habilitado' => false,'fechaBaja'=>$fechaHoy->year.'-'.$fechaHoy->month.'-'.$fechaHoy->day]);
+			$empleado=Empleado::find($request->idEmpleado);
+			
+			return redirect()->action('PersonaController@show', ['id' => $empleado->idPersona])->withInput()->with('success','La desvinculación de la empresa '.$empelado->empresa->nombreFantasia.' se realizó correctamente.');
+		}
+		catch(Exception $e){
+			return back()->withInput()->withError("Error en el sistema");
+		}
 	}
 	
 	public function search(Request $request)

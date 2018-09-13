@@ -17,6 +17,6 @@ class Empresa extends Model
     }
 	
 	public function personas(){
-		return $this->belongsToMany('App\Persona','contable_empleados','idEmpresa','idPersona')->using('App\Contable\Empleado')->withPivot('id','idCargo','fechaDesde','fechaHasta','monto','horarioCargado','valorHora','nocturnidad','pernocte','espera');
+		return $this->belongsToMany('App\Persona','contable_empleados','idEmpresa','idPersona')->using('App\Contable\Empleado')->withPivot('id','idCargo','fechaDesde','fechaHasta','monto','horarioCargado','valorHora','nocturnidad','pernocte','espera','habilitado','fechaBaja','idMotivo','tipoHorario');
 	}
 }

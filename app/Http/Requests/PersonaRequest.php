@@ -30,7 +30,7 @@ class PersonaRequest extends FormRequest
 			'domicilio'=>'required',
 			'telefono'=>'required',
 			'estadoCivil'=>'required',
-			'email' => 'email|nullable|unique:persona,email,'.$this->persona,
+			//'email' => 'email|nullable|unique:persona,email,'.$this->persona,
 			'cantHijos'=>'required'
         ];
     }
