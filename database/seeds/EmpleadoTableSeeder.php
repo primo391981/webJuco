@@ -20,7 +20,7 @@ class EmpleadosTableSeeder extends Seeder
 			'fechaHasta'=>Carbon::parse('2019-01-01'),
 			'monto'=>'45000',
 			'horarioCargado'=>1,
-			'valorHora'=>160,
+			'valorHora'=>187.5,
 			'nocturnidad'=>1,
 			'pernocte'=>0,
 			'espera'=>0,

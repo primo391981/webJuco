@@ -17,13 +17,18 @@ class ConceptoRecibosTableSeeder extends Seeder
         ]);	
         
 		DB::table('contable_conceptos_recibo')->insert([
+            'nombre' => 'Descanso Semanal Trabajado',
+			'descripcion' => 'Día de Descanso Semanal Trabajado',
+        ]);	
+		
+		DB::table('contable_conceptos_recibo')->insert([
             'nombre' => 'Horas Extras',
 			'descripcion' => 'Horas Extras con valor 200%',
         ]);		
 		
 		DB::table('contable_conceptos_recibo')->insert([
-            'nombre' => 'Horas Extras 2,5',
-			'descripcion' => 'Horas Extras con valor 250%',
+            'nombre' => 'Horas Extras Día Descanso',
+			'descripcion' => 'Horas Extras en Día Descanso',
         ]);	
 		
 		DB::table('contable_conceptos_recibo')->insert([
@@ -32,18 +37,23 @@ class ConceptoRecibosTableSeeder extends Seeder
         ]);
 		
 		DB::table('contable_conceptos_recibo')->insert([
-            'nombre' => 'Tiempo Percnote',
-			'descripcion' => 'Horas de Percnote',
-        ]);
-		
-		DB::table('contable_conceptos_recibo')->insert([
             'nombre' => 'Tiempo de Nocturnidad',
 			'descripcion' => 'Horas de Nocturnidad',
-        ]);
+		]);
 		
+		DB::table('contable_conceptos_recibo')->insert([
+            'nombre' => 'Tiempo Percnote',
+			'descripcion' => 'Horas de Percnote',
+        ]);     
+			
 		DB::table('contable_conceptos_recibo')->insert([
             'nombre' => 'Antiguedad',
 			'descripcion' => 'Prima de Antiguedad',
+        ]);
+		
+		DB::table('contable_conceptos_recibo')->insert([
+            'nombre' => 'Licencia Gozada',
+			'descripcion' => 'Licencia Gozada',
         ]);
 		
 		//partidas extras
@@ -108,5 +118,9 @@ class ConceptoRecibosTableSeeder extends Seeder
 			'descripcion' => 'Líquido a Cobrar',
         ]);
 
+		DB::table('contable_conceptos_recibo')->insert([
+            'nombre' => 'Faltas',
+			'descripcion' => 'Faltas',
+        ]);
     }
 }

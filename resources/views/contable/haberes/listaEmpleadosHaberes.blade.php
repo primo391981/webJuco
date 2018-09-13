@@ -51,6 +51,8 @@
 								<th>TOTAL VIATICOS</th>
 								<th>TOTAL ADELANTOS</th>
 								<th>TOTAL EXTRAS</th>
+								<th>TOTAL FICTOS</th>
+								<th>LICENCIA GOZADA</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -62,7 +64,7 @@
 								@else
 									<td><input type="checkbox" id="{{$i}}hab" name="{{$i}}hab" value="{{$emp[0]->pivot->id}}"  {{ $emp[1]==1 ? 'checked' : 'disabled' }}></td>
 								@endif									
-																
+									
 								<td>{{$emp[0]->documento}}</td>
 								<td>{{$emp[0]->nombre}}</td>
 								<td>{{$emp[0]->apellido}}</td>
@@ -163,7 +165,6 @@
 								</td>
 								
 								<td>
-								
 										<div class="input-group">
 										<input id="ex{{$i}}" name="ex{{$i}}" type="number" class="form-control input-sm" value="{{$emp[4]}}" readonly>
 											<div class="input-group-btn">
@@ -212,6 +213,12 @@
 											</div><!-- cierre LISTA PARTIDAS EXTRAS -->
 								</td>
 								
+								<td>
+									FICTOS
+								</td>
+								<td>
+									<input id="lic{{$i}}" name="lic{{$i}}" type="number" class="form-control input-sm" value=0 min=0>
+								</td>
 							</tr>
 							
 							@php $i++;  @endphp
