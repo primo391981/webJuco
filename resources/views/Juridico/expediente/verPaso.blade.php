@@ -14,25 +14,22 @@
 			{{Session::get('success')}}
 		</div>
 @endif 
-<div class="row text-info">
+<div class="row">
 	<div class="col-xs-12">
-		<div class="panel">
+		<div class="panel panel-success">
 			<div class="panel-heading">
 				<div class="row">
-					<div class="col-sm-9"><h4>Detalle de paso de expediente</h4></div>
-					@if(Auth::user()->hasRole('juridicoAdmin'))
-						<div class="col-sm-3 hidden-xs">
-							<a href="{{ route('expediente.create') }}" class="btn btn-success pull-right" role="button"><i class="fas fa-plus"></i> nuevo expediente</a>
-						</div>
-					@endif
+					<div class="col-xs-12">
+					<a class="btn btn-warning pull-right" href="{{route('expediente.show',$expediente)}}" role="button"><i class="fas fa-undo-alt"></i></a>
+					<h4><i class="fas fa-book"></i> DETALLE DE EXPEDIENTE</h4>	
+					</div>
 				</div>
 			</div>
 			<div class="panel-body">
 				@include('juridico.expediente.detalleExpediente')
 				<br>
-				
-				<div class="box box-success">
-					<div class="box-body">
+				<hr>
+				<div class="col-xs-12">
 						<h4>Paso: {{$paso->tipo->nombre}}</h4>
 							<div class="row">
 							<label for="comentarios" class="control-label col-sm-3">FECHA DE INGRESO</label>
@@ -63,24 +60,18 @@
 								</div>
 							</div>
 						
-					</div>
 				</div>
 				<div class="row">
 				
 					<div class="col-sm-9">
 						@if(Auth::user()->hasRole('juridicoAdmin') || Auth::user()->permisosEscritura->contains($expediente))
-							@if($expediente->pasos->last()->id == $paso->id && $paso->tipo->id != 1)
+							@if($paso->fecha_fin == null && $paso->tipo->id != 1)
 								<a class="btn btn-success btn-xs" href="{{route('paso.edit',$paso)}}">Editar paso <i class="fas fa-edit"></i></a>
 							@endif
 						@endif
-						<a type="button" class="btn btn-warning btn-xs" href="{{route('expediente.show',$paso->expediente)}}">volver <i class="fas fa-undo-alt"></i></i></a>
+						<a type="button" class="btn btn-warning btn-xs" href="{{route('expediente.show',$paso->expediente)}}">volver <i class="fas fa-undo-alt"></i></a>
 					</div>
 				
-				</div>
-				<div class="row">
-					<div class="col-sm-9">
-						
-					</div>
 				</div>
 			</div>
 		</div>

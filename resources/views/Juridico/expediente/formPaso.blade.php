@@ -1,7 +1,10 @@
 	@csrf
 						<input type="hidden" name="expediente_id" value="{{ $expediente }}">
+						
+						
 						@if(!isset($paso))
 							<input type="hidden" name="tipoPaso_id" value="{{ $tipoPaso }}">
+							<input type="hidden" name="transicion_id" value="{{ $transicion->id }}">
 						@endif
 						
 						@if($tipoPaso != 12)

@@ -11,4 +11,8 @@ class Transicion extends Model
 	public function siguiente(){
 		return $this->belongsTo('App\Juridico\TipoPaso','id_paso_siguiente');
 	}
+	
+	public function inicial(){
+		return $this->belongsTo('App\Juridico\TipoPaso','id_paso_inicial');
+	}
 }

@@ -55,10 +55,7 @@ class ClienteController extends Controller
 					'personas' => $personas
 				]);
 			}
-		
-		//return $respuesta;
-		//Se retorna la vista "index" 
-		//return view('cms.contenido.listaContenidos', ['subtitulo' => $subtitulo, 'contenidos' => $contenidos]);
+
     }
     /**
      * Show the form for creating a new resource.
@@ -87,13 +84,7 @@ class ClienteController extends Controller
 	
 	public function createJuridica()
     {
-        //$tiposdoc = Tipodoc::All();
-		
-		//$estados = EstadoCivil::All();
-			
-		//return view('juridico.cliente.agregarJuridica', ['tiposdoc' => $tiposdoc, 'estados' => $estados]);
-		
-		return view('juridico.cliente.agregarJuridica');
+ 		return view('juridico.cliente.agregarJuridica');
     }
 
     /**
@@ -105,7 +96,7 @@ class ClienteController extends Controller
     public function store(Request $request)
     {
 		$tipoPersona = $request->tipo_persona;
-//die();
+
 		if($tipoPersona == "fisica"){	
 			
 			$persona = Persona::where([
@@ -178,7 +169,7 @@ class ClienteController extends Controller
      */
     public function show(Cliente $cliente)
     {
-        //
+        return view('juridico.cliente.verCliente', ['cliente' => $cliente]);
     }
 
     /**
@@ -262,8 +253,13 @@ class ClienteController extends Controller
      */
     public function destroy(Cliente $cliente)
     {
-        $cliente->delete();
+        if($cliente->expedientes->count() > 0){
+			return redirect()->route('cliente.index')->with('error', "El cliente no puede ser eliminado porque participa en uno o más expedientes.");
+		} else {
+			$cliente->delete();
 		
-		return redirect()->route('cliente.index')->with('success', "El cliente fue eliminado correctamente");
+			return redirect()->route('cliente.index')->with('success', "El cliente fue eliminado correctamente");
+		}
+		
     }
 }

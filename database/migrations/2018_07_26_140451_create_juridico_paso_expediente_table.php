@@ -18,8 +18,11 @@ class CreateJuridicoPasoExpedienteTable extends Migration
 			$table->integer('id_expediente');
 			$table->integer('id_tipo');
 			$table->integer('id_usuario');
-			$table->text('comentario')->nullable();;
-			$table->date('fecha_fin')->nullable();
+			$table->text('comentario')->nullable();
+			$table->integer('flujo'); //0: principal, 1: paralelo
+			
+			$table->datetime('fecha_fin')->nullable();
+			
             $table->timestamps();
         });
     }

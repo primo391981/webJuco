@@ -4,7 +4,7 @@ namespace App\Juridico;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ArchivoPaso extends Model
+class Archivo extends Model
 {
     protected $table = 'juridico_archivo';
 	
@@ -12,4 +12,9 @@ class ArchivoPaso extends Model
 		
 		return $this->belongsTo('App\Juridico\TipoArchivo','id_tipo');
 	}
+	
+	 public function owner()
+    {
+        return $this->morphTo();
+    }
 }

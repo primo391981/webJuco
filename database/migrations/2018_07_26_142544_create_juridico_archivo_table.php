@@ -15,7 +15,8 @@ class CreateJuridicoArchivoTable extends Migration
     {
         Schema::create('juridico_archivo', function (Blueprint $table) {
             $table->increments('id');
-			$table->integer('id_paso');
+			$table->integer('owner_id');
+			$table->string('owner_type');
 			$table->integer('id_tipo');
 			$table->text('archivo');
 			$table->text('nombre_archivo');

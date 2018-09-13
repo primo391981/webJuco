@@ -14,6 +14,7 @@ use App\Http\Controllers\Controller;
 use SoapClient;
 use SoapFault;
 use Auth;
+use DB;
 
 class ExpedienteController extends Controller
 {
@@ -26,16 +27,18 @@ class ExpedienteController extends Controller
     {
 		$user = Auth::user();
 	   
+		//definir lista de expedientes de acuerdo a los permisos
 		if($user->hasRole('invitado')){
 			$expedientes = $user->permisosExpedientes;
 		} else {
 			$expedientes = Expediente::All();
 		}
-		//dd($expedientes);
+	
 		return view('juridico.expediente.listaExpediente', ['expedientes' => $expedientes]);
 		
     }
 	
+	//función que accede al webservice del Poder Judicial para obtener los datos del expediente
 	public function search(Request $request){
 		
 		if(Auth::user()->hasRole('invitado')){
@@ -46,23 +49,43 @@ class ExpedienteController extends Controller
 		$client = new SoapClient($wsdl); 
 		$iue = $request->iue;
 		
+		$exp = Expediente::where(DB::raw('REPLACE(iue, " ", "")'),str_replace(' ','',$iue))->get();
+		
+		if($exp->count() > 0){
+			return back()->withInput()->withError('El iue ingresado ya se encuentra registrado en el sistema. Ingrese un nuevo iue.');
+		}
+		
 		try { 
 			$expediente = $client->ConsultaIUE($iue);
         } catch (SoapFault $e) { 
-			return back()->withInput()->withError('El sistema del Poder Judicial no se encuentra disponible en este momento. Haga click <a href="">aquí</a> para ingresar un iue de forma manual.');
+			return back()->withInput()->withError('El sistema del Poder Judicial no se encuentra disponible en este momento. Haga click <a href='.route('expediente.create.manual').'>aquí</a> para ingresar un iue de forma manual.');
 		} 		
-		
 		if($expediente->estado === "EL EXPEDIENTE NO SE ENCUENTRA EN EL SISTEMA"){
-			return back()->withInput()->withError('El expediente no se encuentra en el sistema del Poder Judicial');
+			return back()->withInput()->withError('El expediente no se encuentra en el sistema del Poder Judicial. Haga click <a href='.route('expediente.create.manual').'>aquí</a> para ingresar un iue de forma manual.');
+		} elseif($expediente->estado === "EL EXPEDIENTE MANTIENE RESERVA") {
+			return back()->withInput()->withError('El expediente se encuentra bajo reserva. Haga click <a href='.route('expediente.create.manual').'>aquí</a> para ingresar un iue de forma manual.');
 		} else {
 			$tipoExpedientes = TipoExpediente::All();
 			$clientes = Cliente::All();
-			return view('juridico.expediente.agregarExpediente',['clientes' => $clientes, 'tipoExpedientes' => $tipoExpedientes, 'expediente' => $expediente, 'tipoDocumento' => 'DEMANDA' ]);
+			return view('juridico.expediente.agregarExpediente',['clientes' => $clientes, 'tipoExpedientes' => $tipoExpedientes, 'expediente' => $expediente]);
 		}
 		
 		
 	}
 
+	//Creación manual de un expediente
+	public function createManual()
+    {
+        if(Auth::user()->hasRole('invitado')){
+			return abort(403, 'Unauthorized action.');
+		};
+		
+		$tipoExpedientes = TipoExpediente::All();
+		$clientes = Cliente::All();
+		$expediente = new Expediente();
+		return view('juridico.expediente.agregarExpediente',['clientes' => $clientes, 'tipoExpedientes' => $tipoExpedientes, 'expediente' => $expediente]);
+    }
+	
     /**
      * Show the form for creating a new resource.
      *
@@ -85,14 +108,18 @@ class ExpedienteController extends Controller
      */
     public function store(Request $request)
     {
+		//solo usuarios admin
 		if(Auth::user()->hasRole('invitado')){
 			return abort(403, 'Unauthorized action.');
 		}
+		
+		//dd($request);
 		
 		$request->validate([
 			'IUE' => 'required|unique:juridico_expedientes',
 		]);
 		
+		//creación del expediente
 		$expediente = new Expediente();
 		$expediente->iue = $request->IUE;
 		$expediente->tipo_id = $request->tipoexp;
@@ -101,24 +128,27 @@ class ExpedienteController extends Controller
 		$expediente->fecha_inicio = $request->fecha_inicio;
 		$expediente->juzgado = $request->juzgado;
 		$expediente->estado_id = 1;
-		$expediente->paso_actual = 1;
 		$expediente->user_id = Auth::user()->id;
 		
 		$expediente->save();
+		
+		//registros de los clientes del expediente
 		foreach($request->clientes as $cliente){
 			$expediente->clientes()->attach($cliente);
 		}
 		
-		//setting variables a mostrar en el formulario de creación de paso
+		//Creación del paso de creación del expediente
 		$paso = new Paso();
 		$paso->id_expediente = $expediente->id;
 		$paso->id_tipo = 1;
 		$paso->id_usuario = Auth::user()->id;
 		$paso->comentario = "Expediente creado";
+		$paso->flujo = 0;
 		$paso->fecha_fin = null;
 		
 		$paso->save();
-
+		
+		//Creación del paso de creación del expediente
 		if ($request->exists('nextExpediente')){
 			return view('juridico.expediente.agregarPaso', ['expediente' => $expediente, 'numero_paso' => 1, 'nombre_paso' => "Adjuntar Demanda"])->with('success', "El expediente se creó correctamente.");
 		} else {
@@ -135,15 +165,32 @@ class ExpedienteController extends Controller
      */
     public function show(Expediente $expediente)
     {
+		//se obtiene el usuario actual
 		$user = Auth::user();
 		
+		//se restringe el acceso a usuarios con el rol adecuado
 		if($user->hasRole('invitado')){
 			if(!$user->permisosExpedientes->contains($expediente)){
 				return abort(403, 'Unauthorized action.');
 			};
 		};
 		
-		$transiciones = $expediente->tipo->transiciones->where('id_paso_inicial',$expediente->paso_actual);
+		//array de pasos en los que se encuentra el expediente
+		$pasosActuales = array();
+		
+		//array de pasos del expediente
+		$pasos = array();
+		
+		foreach($expediente->pasos as $paso){
+			
+			array_push($pasos,$paso->id_tipo);
+			if($paso->fecha_fin == null){
+				array_push($pasosActuales,$paso->id_tipo);
+			}
+		}
+		
+		//listado de transiciones a las cuales puede seguir el expediente
+		$transiciones = $expediente->tipo->transiciones->whereIn('id_paso_inicial',$pasosActuales)->whereNotIn('id_paso_siguiente',$pasos);
 		
 		$usuarios = User::All();
 		
@@ -159,7 +206,14 @@ class ExpedienteController extends Controller
      */
     public function edit(Expediente $expediente)
     {
-        //
+		//si el usuario actual tiene los roles adecuados
+		if(Auth::user()->hasRole('invitado')){
+			return abort(403, 'Unauthorized action.');
+		}
+		
+        $tipoExpedientes = TipoExpediente::All();
+		$clientes = Cliente::All();
+		return view('juridico.expediente.editarExpediente',['clientes' => $clientes, 'tipoExpedientes' => $tipoExpedientes, 'exp' => $expediente]);
     }
 
     /**
@@ -171,28 +225,43 @@ class ExpedienteController extends Controller
      */
     public function update(Request $request, Expediente $expediente)
     {
-        //
+		//si el usuario actual tiene los roles adecuados
+        if(Auth::user()->hasRole('invitado')){
+			return abort(403, 'Unauthorized action.');
+		}
+		
+		$expediente->tipo_id = $request->tipoexp;
+		$expediente->fecha_inicio = $request->fecha_inicio;
+		$expediente->user_id = Auth::user()->id;
+		
+		$expediente->save();
+		
+		//se borra la lista de usuarios y se actualiza a continuación
+		$expediente->clientes()->detach();
+		
+		foreach($request->clientes as $cliente){
+			$expediente->clientes()->attach($cliente);
+		}
+		
+		return redirect()->route('expediente.index')->with('success', "El expediente fue modificado correctamente.");
+
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Juridico\Expediente  $expediente
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Expediente $expediente)
-    {
-        //
-    }
-	
 	public function addPermiso(Request $request, Expediente $expediente)
 	{
 		$user = Auth::user();
 		
+		//si el usuario actual tiene los roles adecuados
 		if($user->hasRole('invitado')){
 			return abort(403, 'Unauthorized action.');
 		};
 		
+		//Se eliminan los permisos previos del usuario
+		if($expediente->permisosExpedientes->contains($request->usuario)){
+			$expediente->permisosExpedientes()->detach($request->usuario);
+		};
+		
+		//Se registran los permisos del usuario
 		$expediente->permisosExpedientes()->attach($request->usuario, ['id_tipo' => $request->tipoPermiso]);
 
 		return redirect()->back()->with('success', 'Permiso asignado correctamente');
@@ -202,10 +271,12 @@ class ExpedienteController extends Controller
 	{
 		$user = Auth::user();
 		
+		//si el usuario actual tiene los roles adecuados
 		if($user->hasRole('invitado')){
 			return abort(403, 'Unauthorized action.');
 		};
 		
+		//se eliminan los permisos del usuario
 		$expediente->permisosExpedientes()->detach($request->usuario);
 
 		return redirect()->back()->with('success', 'Permiso eliminado correctamente');

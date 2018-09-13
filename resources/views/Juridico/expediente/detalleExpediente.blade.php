@@ -1,36 +1,9 @@
-<div class="box box-success" id="detalle">
-					<div class="box-header">
-						<h3>Exp. {{$expediente->iue}}</h3>
-					</div>
-					<div class="box-body">
-						<div class="row">
-							<label for="tipoexp" class="control-label col-sm-3">TIPO</label>
-							<div class="col-sm-9">
-								{{$expediente->tipo->nombre}}
-							</div>
-						</div>
-						<div class="row">
-							<label for="iue" class="control-label col-sm-3">IUE</label>
-							<div class="col-sm-9">
-								{{$expediente->iue}}
-							</div>
-						</div>
-						<div class="row">
-							<label for="juzgado" class="control-label col-sm-3">JUZGADO</label>
-							<div class="col-sm-9">
-								{{$expediente->juzgado}}
-							</div>
-						</div>
-						<div class="row">
-							<label for="caratula" class="control-label col-sm-3">CARATULA</label>
-							<div class="col-sm-9">
-								{{$expediente->caratula}}
-							</div>
-						</div>
-						<div class="row">
-							<label for="clientes" class="control-label col-sm-3">CLIENTES</label>
-							<div class="col-sm-9">
-								@foreach($expediente->clientes as $cliente)
+<h4>IUE Expediente: {{$expediente->iue}}</h4>
+<hr>
+<p><strong>TIPO: </strong>{{$expediente->tipo->nombre}}</p>
+<p><strong>JUZGADO: </strong>{{$expediente->juzgado}}</p>
+<p><strong>CARATULA: </strong>{{$expediente->caratula}}</p>
+<p><strong>CLIENTES: </strong>@foreach($expediente->clientes as $cliente)
 									@if($cliente->persona_type === "App\Persona")
 										{{ $cliente->persona->apellido}}, {{ $cliente->persona->nombre}} - {{ $cliente->persona->tipodoc->nombre}} {{ $cliente->persona->documento}}
 									@else
@@ -39,36 +12,20 @@
 									@if (!$loop->last)
 										, 
 									@endif
-								@endforeach
-							</div>
-						</div>
-						<div class="row">
-							<label for="fecha_inicio" class="control-label col-sm-3">FECHA</label>
-							<div class="col-sm-9">
-								{{$expediente->fecha_inicio}}
-							</div>
-						</div>
-						<div class="row">
-							<label for="fecha_inicio" class="control-label col-sm-3">PASO ACTUAL</label>
-							<div class="col-sm-9">
-								<a class="label label-default" href="{{route('paso.show',$expediente->pasos->last())}}">{{$expediente->actual->nombre}}</a>
-							</div>
-						</div>
-						<div class="row">
-							<label for="fecha_inicio" class="control-label col-sm-3">USUARIO</label>
-							<div class="col-sm-9">
-								{{$expediente->usuario->name}} ({{$expediente->usuario->nombre}} {{$expediente->usuario->apellido}})
-							</div>
-						</div>
-					</div>
-					<div class="box-footer text-center">
-							
-								<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal">Transiciones <i class="fas fa-sitemap"></i></button>
+								@endforeach</p>
+<p><strong>FECHA INICIO: </strong>{{$expediente->fecha_inicio}}</p>
+<p>
+	<strong>PASO ACTUAL: </strong>
+	@foreach($expediente->pasos->where('fecha_fin',null) as $paso)
+		@if($paso->flujo == 0)
+			<a class="label label-success" href="{{route('paso.show',$paso)}}">{{$paso->tipo->nombre}}</a>
+		@else
+			<a class="label label-warning" href="{{route('paso.show',$paso)}}">{{$paso->tipo->nombre}}</a>
+		@endif
+	@endforeach
+</p>
+<p><strong>USUARIO: </strong>{{$expediente->usuario->name}} ({{$expediente->usuario->nombre}} {{$expediente->usuario->apellido}})</p>
+<p><strong>ESTADO: </strong>{{$expediente->estado->nombre}} </p>
+<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal"><i class="fas fa-sitemap"></i> Transiciones</button>
+<!--<button type="button" class="btn btn-primary btn-xs" ><i class="fas fa-sync-alt"></i> Actualizaciones</button> -->
 								
-								<button type="button" class="btn btn-primary btn-xs" >Actualizaciones <i class="fas fa-sync-alt"></i></button>
-								
-							
-						
-					</div>
-					
-				</div>

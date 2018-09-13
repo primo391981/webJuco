@@ -14,16 +14,16 @@
 			{{Session::get('success')}}
 		</div>
 @endif 
-<div class="row text-info">
+<div class="row">
 	<div class="col-xs-12">
-		<div class="panel">
+		<div class="panel panel-success text-success">
 				  <div class="panel-heading">
-					<div class="row">
-						<div class="col-sm-9"><h4>LISTADO EXPEDIENTES</h4></div>
+					<div class="btn-group pull-right">
 						@if(Auth::user()->hasRole('juridicoAdmin'))
-							<div class="col-sm-3 hidden-xs"><a href="{{ route('expediente.create') }}" class="btn btn-success pull-right" role="button"><i class="fas fa-plus"></i> nuevo expediente</a></div>				  
+							<a href="{{ route('expediente.create') }}" class="btn btn-success pull-right" role="button"><i class="fas fa-plus"></i></a>
 						@endif
 					</div>
+					<h4><i class="fas fa-book"></i> LISTADO EXPEDIENTES</h4>
 				  </div>
 				<div class="panel-body text-muted">					
 					@if(!is_null($expedientes))
@@ -36,6 +36,8 @@
 									<th>TIPO</th>
 									<th>IUE</th>
 									<th>CARATULA</th>
+									<th>CLIENTES</th>
+									<th>ESTADO</th>
 									<th>PASO</th>
 									<th></th>
 									<th></th>
@@ -48,16 +50,46 @@
 									<td>{{$expediente->tipo->nombre}}</td>
 									<td>{{$expediente->iue}}</td>
 									<td>{{$expediente->caratula}}</td>
-									<td>{{$expediente->actual->nombre}}</td>
+									<td>
+										@foreach($expediente->clientes as $cliente)
+											@if($cliente->persona_type == 'App\Empresa')
+												<i class="far fa-building"></i> {{$cliente->persona->razonSocial}}<br>
+											@else
+												<i class="fas fa-male"></i> {{$cliente->persona->nombre}} {{$cliente->persona->apellido}}<br>
+											@endif
+											
+										@endforeach
+									</td>
+									<td>{{$expediente->estado->nombre}}</td>
+									<td>
+										@foreach($expediente->pasos->where('fecha_fin',null) as $paso)
+											@if($paso->flujo == 0)
+												<a class="label label-success" href="{{route('paso.show',$paso)}}">{{$paso->tipo->nombre}}</a>
+											@else
+												<a class="label label-warning" href="{{route('paso.show',$paso)}}">{{$paso->tipo->nombre}}</a>
+											@endif
+										@endforeach
+									</td>
 									<td>
 										<form method="GET" action="{{route('expediente.show', $expediente)}}">																
 											<button type="submit"class="btn btn-info"><i class="fas fa-info-circle"></i></button>												
 										</form>
 									</td>				
 									<td>
-										<form method="GET" action="{{ route('expediente.edit', $expediente) }}">																
-											<button type="submit"class="btn btn-warning"><i class="far fa-edit"></i></button>												
-										</form>
+									@if(Auth::user()->hasRole('juridicoAdmin'))
+										
+											<form method="GET" action="{{ route('expediente.edit', $expediente) }}">
+												@if($expediente->pasos->count() > 1)
+													<fieldset disabled>
+												@endif
+												<button type="submit"class="btn btn-warning"><i class="far fa-edit"></i></button>
+												@if($expediente->pasos->count() > 1)
+													</fieldset>
+												@endif												
+												
+											</form>
+										
+									@endif
 									</td>
 								</tr>
 							@endforeach
@@ -69,9 +101,6 @@
 						<div class="alert alert-info">No hay expedientes registrados en el sistema.</div>
 					@endif
 				</div>
-				@if(Auth::user()->hasRole('juridicoAdmin'))
-					<div class="panel-footer"><a href="{{ route('expediente.create') }}" class="btn btn-success btn-block" role="button"><i class="fas fa-plus"></i> nuevo expediente</a></div>
-				@endif
 		</div>
 	</div>
 </div>

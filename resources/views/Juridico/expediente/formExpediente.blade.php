@@ -10,24 +10,21 @@
 								</div>			
 						</div>
 						<div class="form-group row">
-							<label for="iue" class="control-label col-sm-3">IUE *</label>
+							<label for="IUE" class="control-label col-sm-3">IUE *</label>
 							<div class="col-sm-9">
-								<div class="well well-sm">{{isset($exp) ? $exp->iue : $expediente->expediente }}</div>
-								<input id="IUE" type="hidden" name="IUE" value="{{isset($exp) ? $exp->iue : $expediente->expediente }}">
+								<input type="text" name="IUE" id="IUE" value="{{isset($exp) ? $exp->iue : $expediente->expediente }}" class="form-control" required>
 							</div>	
 						 </div>
 						 <div class="form-group row">
 							<label for="juzgado" class="control-label col-sm-3">JUZGADO *</label>
 							<div class="col-sm-9">
-								<div class="well well-sm">{{isset($exp) ? $exp->juzgado : $expediente->origen }}</div>
-								<input id="juzgado" type="hidden" name="juzgado" value="{{isset($exp) ? $exp->juzgado : $expediente->origen }}">
+								<input type="text" name="juzgado" value="{{isset($exp) ? $exp->juzgado : $expediente->origen }}" class="form-control" required>
 							</div>	
 						 </div>
 						 <div class="form-group row">
 							<label for="caratula" class="control-label col-sm-3">CARATULA *</label>
 							<div class="col-sm-9">
-								<div class="well well-sm">{{isset($exp) ? $exp->iue : $expediente->caratula }}</div>
-								<input id="caratula" type="hidden" name="caratula" value="{{isset($exp) ? $exp->iue : $expediente->caratula }}">
+								<textarea name="caratula" class="form-control" required>{{isset($exp) ? $exp->caratula : $expediente->caratula }}</textarea>
 							</div>	
 						 </div>
 						 
@@ -37,9 +34,9 @@
 									 <select class="js-example-responsive" name="clientes[]" multiple="multiple" style="width: 100%" required>
 										@foreach($clientes as $key => $cliente)
 											@if($cliente->persona_type === "App\Persona")
-												<option value="{{ $cliente->id }}" {{ old('clientes', isset($exp) ? $exp->clientes : '' ) == $key + 1 ? 'selected' : '' }}>{{ $cliente->persona->tipodoc->nombre }} {{ $cliente->persona->documento }} - {{ $cliente->persona->apellido }}, {{ $cliente->persona->nombre }} </option>
+												<option value="{{ $cliente->id }}" {{ old('clientes', isset($exp) ? ($exp->clientes->contains($cliente) ? $cliente->id: '') : '' ) == $key + 1 ? 'selected' : '' }}>{{ $cliente->persona->tipodoc->nombre }} {{ $cliente->persona->documento }} - {{ $cliente->persona->apellido }}, {{ $cliente->persona->nombre }} </option>
 											@else
-												<option value="{{ $cliente->id }}" {{ old('clientes', isset($exp) ? $exp->clientes : '' ) == $key + 1 ? 'selected' : '' }}> RUT {{ $cliente->persona->rut}} {{ $cliente->persona->razonSocial }}</option>
+												<option value="{{ $cliente->id }}" {{ old('clientes', isset($exp) ? ($exp->clientes->contains($cliente) ? $cliente->id: '') : '' ) == $key + 1 ? 'selected' : '' }}> RUT {{ $cliente->persona->rut}} {{ $cliente->persona->razonSocial }}</option>
 											@endif
 										@endforeach
 									</select>
@@ -59,13 +56,5 @@
 								@endif
 							</div>
 						</div>
-						
-						
-						<div class="form-group row">
-								<br>
-								<div class="col-xs-12 text-center">
-									<button type="submit" class="btn btn-success btn-lg" name="saveExpediente"><i class="fas fa-check"></i> Guardar</button>
-									<button type="submit" class="btn btn-info btn-lg" name="nextExpediente"><i class="fas fa-angle-right"></i> Siguiente Paso</button>
-								</div>
-						</div>
+
 					

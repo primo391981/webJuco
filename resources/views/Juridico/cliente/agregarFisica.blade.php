@@ -4,37 +4,40 @@
 
 @section('content')
 <br>
-<div class="row">
-	<!--solamente es visible en cel-->
-	<div class="col-xs-12 visible-xs"><a href="{{ route('cliente.index') }}" class="btn btn-success" style="margin-bottom:5%;" role="button"><i class="fas fa-list-ul"></i> Listado clientes</a></div>				  
-</div>
-
 @if (Session::has('error'))
 		<div class="alert alert-danger">
 			{{Session::get('error')}}
 		</div>
 @endif 
-
+<br>
 <div class="row">
-	<div class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2">
-		<div class="box panel-success">
+	<div class="col-xs-12">
+		
+		<div class="panel panel-success text-success">
 			<div class="panel-heading">
-				<div class="row">
-					<div class="col-sm-9"><h4>AGREGAR NUEVO CLIENTE - PERSONA FÍSICA</h4></div>
-					<div class="col-sm-3 hidden-xs"><a href="{{ route('cliente.index') }}" class="btn btn-success" role="button"><i class="fas fa-list-ul"></i> Listado clientes</a></div>
-				</div>
+
+
+				<a href="{{ route('cliente.index') }}" class="btn btn-success pull-right" role="button"><i class="fas fa-list-ul"></i></a>
+
+				<h4>AGREGAR NUEVO CLIENTE - <i class="fas fa-user"></i> PERSONA FÍSICA</h4>				
 			</div>
-			 <div class="panel-body text-success"> 
+			<div class="panel-body">
 				<form method="POST" action="{{ route('cliente.store') }}"class="form-horizontal" enctype="multipart/form-data" id="formPersona"> 
 					<input type="hidden" name="tipo_persona" value="fisica">
-				  @include('persona.formPersona', ['textoBoton' => 'Confirmar']) 
-				</form>
+				  @include('persona.formPersona') 
+
+				
 			</div>
-			<div class="panel-footer"><a href="{{ route('cliente.index') }}" class="btn btn-success btn-block" role="button"><i class="fas fa-list-ul"></i> Listado clientes</a></div>
-		</div>
-	</div>
-	
-</div>
+
+			<div class="panel-footer">
+				<button type="submit" class="btn btn-success btn-block"><i class="fas fa-check"></i> Confirmar</button>
+			</form>
+			</div>
+		</div><!--cierre panel-->
+		
+	</div><!--cierre col xs12-->
+
+</div><!--cierre row-->
     
 <script>
 
