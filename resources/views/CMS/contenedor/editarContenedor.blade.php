@@ -4,6 +4,17 @@
 
 @section('content')
 <br>
+@if (Session::has('error'))
+		<div class="alert alert-danger">
+			{{Session::get('error')}}
+		</div><br>
+@endif 
+
+@if (Session::has('success'))
+		<div class="alert alert-success">
+			{{Session::get('success')}}
+		</div><br>
+@endif 
 <div class="row">
 	<div class="col-xs-12 col-sm-12 col-md-7">
 		<div class="panel panel-info">

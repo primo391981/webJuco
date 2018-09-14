@@ -143,11 +143,17 @@ class ContenedorController extends Controller
 		$contenedor->tipo = $request->tipo;
 			
 		if($contenedor->id_itemmenu != $request->id_itemmenu){
-			$contenedor->id_itemmenu = $request->id_itemmenu;
-			//obtener el orden dentro de menuitem correspondiente
-			$menuitem = Menuitem::findOrFail($contenedor->id_itemmenu);
-			$orden = $menuitem->contenedores->count();
-			$contenedor->orden_menu = $orden + 1;
+			if($request->id_itemmenu == 0){
+				$contenedor->id_itemmenu = null;
+			} else {
+				$contenedor->id_itemmenu = $request->id_itemmenu;
+			
+				//obtener el orden dentro de menuitem correspondiente
+				$menuitem = Menuitem::find($contenedor->id_itemmenu);
+				$orden = $menuitem->contenedores->count();
+				$contenedor->orden_menu = $orden + 1;
+			}
+			
 		}
 		
 		$contenedor->color = $request->input('color');
@@ -167,7 +173,8 @@ class ContenedorController extends Controller
 		$contenedor->save();
 		
 		//dd($contenedor);
-		return redirect()->route('contenedor.edit',['contenedor' => $contenedor]);
+		return redirect()->back()->with('success','Modificaciones guardadas');
+		//('contenedor.edit',['contenedor' => $contenedor]);
 		//return redirect()->route('contenedor.index');
 		
 	}

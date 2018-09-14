@@ -25,6 +25,7 @@
 		<label for="id_itemmenu" class="control-label col-sm-3">Item de Menú:</label>
 		<div class="col-sm-9">
 			<select name="id_itemmenu" class="form-control" id="id_itemmenu">
+				<option value="0">ninguno</option>
 				@foreach($menuitems as $key => $menuitem)
 					<option value="{{ $menuitem->id }}" {{ old('id_itemmenu', isset($contenedor) ? $contenedor->id_itemmenu : '' ) == $key + 1 ? 'selected' : '' }}>{{ $menuitem->titulo }}</option>  
 				@endforeach
