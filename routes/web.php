@@ -161,6 +161,9 @@ Route::group(['middleware' => ['auth']], function () {
 	//recordatorios
 	Route::resource('recordatorio', 'Juridico\RecordatorioController')->middleware('role:juridicoAdmin,invitado');
 	
+	//reportes
+	Route::resource('reporte', 'Juridico\ReporteController')->middleware('role:juridicoAdmin');
+	
 	//Pasos expediente
 	Route::get('paso/download/{archivo}', 'Juridico\PasoController@download')->name('paso.download')->middleware('role:juridicoAdmin,invitado');
 	Route::get('paso/create/{expediente}/{paso}', 'Juridico\PasoController@create')->name('paso.create')->middleware('role:juridicoAdmin,invitado');
