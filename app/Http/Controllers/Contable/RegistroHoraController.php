@@ -135,7 +135,6 @@ class RegistroHoraController extends Controller
 	public function guardarMarcas(Request $request){
 		DB::beginTransaction();
 		try{
-			
 			$tiposHoras=TipoHora::All();			
 			$fecha=new Carbon($request->fecha);
 			$empleado=Empleado::find($request->idEmpleado);
@@ -147,44 +146,30 @@ class RegistroHoraController extends Controller
 						$registroHora=new RegistroHora;
 						$registroHora->idEmpleado=$request->idEmpleado;
 						$registroHora->fecha=$fecha->year.'-'.$fecha->month.'-'.$i;
-						
-						if($empleado->cargo->remuneracion->id==1 && $empleado->tipoHorario==1){
-							//mensual con horario habitual
 							
-							if($request->input($th->id.$i.'/'.$fecha->month)!="00:00:00" && $request->input($th->id.$i.'/'.$fecha->month)!="00:00"){
-								$registroHora->cantHoras=$request->input($th->id.$i.'/'.$fecha->month);
-								$registroHora->idTipoHora=$th->id;
-								$registroHora->save();
+							$guardarMarca=false;
+							if($th->id==1){
+								$guardarMarca=true;
 							}
-							elseif($th->id==1 && ($request->input($th->id.$i.'/'.$fecha->month)=="00:00:00" || $request->input($th->id.$i.'/'.$fecha->month)=="00:00") ){
-								$registroHora->cantHoras=$request->input($th->id.$i.'/'.$fecha->month);
-								$registroHora->idTipoHora=$th->id;
-								$registroHora->save();
-							}
-							
-						}
-						else{
-							//menusal horario flexible o jornalero
-							//si ese dia esta trabajado lo guarda
-							if($request->input('trabajado'.$i.'/'.$fecha->month)=='on'){		
-
+							else{
 								if($request->input($th->id.$i.'/'.$fecha->month)!="00:00:00" && $request->input($th->id.$i.'/'.$fecha->month)!="00:00"){
-									$registroHora->cantHoras=$request->input($th->id.$i.'/'.$fecha->month);
-									$registroHora->idTipoHora=$th->id;
-									$registroHora->save();
-								}
-								elseif($th->id==1 && ($request->input($th->id.$i.'/'.$fecha->month)=="00:00:00" || $request->input($th->id.$i.'/'.$fecha->month)=="00:00") ){
-									$registroHora->cantHoras=$request->input($th->id.$i.'/'.$fecha->month);
-									$registroHora->idTipoHora=$th->id;
-									$registroHora->save();
-								}
+									$guardarMarca=true;
+								}								
 							}
-						}
+							
+							if($guardarMarca){
+								$registroHora->cantHoras=$request->input($th->id.$i.'/'.$fecha->month);
+								$registroHora->idTipoHora=$th->id;
+								
+								if($empleado->tipoHorario==2 || $empleado->cargo->remuneracion->id==2 ){
+									$registroHora->tipoDia=$request->input('radio'.$i.'/'.$fecha->month);	
+								}
+								$registroHora->save();
+							}						
 					}
 				}
 			}
-						
-			$empleado=Empleado::find($request->idEmpleado);	
+			
 			DB::commit();
 			return redirect()->route('reloj.listaEmpleados')->with('success', "Las marcas reloj de ".$empleado->persona->nombre." ".$empleado->persona->apellido." para la fecha ".$fecha->month." / ".$fecha->year." fueron ingresadas correctamente.");			
 		}

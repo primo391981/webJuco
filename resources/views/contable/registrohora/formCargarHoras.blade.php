@@ -32,16 +32,16 @@
 				<hr>
 				
 				<div class="table-responsive">
-				<table class="table table-condensed table-hover">
+				<table class="table table-condensed">
 				<thead>
 					<tr>
 						
 						@if($empleado->cargo->remuneracion->id==1)
 							@if($empleado->tipoHorario==2)
-							<th class="text-center">#T</th>
+							<th>TIPO DE DIA</th>
 							@endif
 						@else 
-							<th class="text-center">#T</th>
+							<th>TIPO DE DIA</th>
 						@endif
 						<th class="text-center">#I</th>
 						<th>DÍA</th>
@@ -68,16 +68,31 @@
 						@if($empleado->cargo->remuneracion->id==1 && $empleado->tipoHorario==1)							
 							<tr class="{{$t[3]}}">
 						@else 
-							<tr>
+							<tr id="fila{{$t[1]}}">
 						@endif
 
 						
 						@if($empleado->cargo->remuneracion->id==1)
 							@if($empleado->tipoHorario==2)
-							<td class="warning text-center"><input type="checkbox" id="trabajado{{$t[1]}}" name="trabajado{{$t[1]}}" checked></td>
+							<td>
+								
+								<label class="radio-inline">
+								  <input type="radio" name="radio{{$t[1]}}" id="c{{$t[1]}}" value="c" checked onclick="myFunction(this.value,'{{$t[1]}}')" > C
+								</label>
+								<label class="radio-inline">
+								  <input type="radio" name="radio{{$t[1]}}" id="m{{$t[1]}}" value="m" onclick="myFunction(this.value,'{{$t[1]}}')"> M
+								</label>
+								<label class="radio-inline">
+								  <input type="radio" name="radio{{$t[1]}}" id="d{{$t[1]}}" value="d" onclick="myFunction(this.value,'{{$t[1]}}')"> D
+								</label>
+								
+							</td>
 							@endif
 						@else 
-							<td class="warning text-center"><input type="checkbox" id="trabajado{{$t[1]}}" name="trabajado{{$t[1]}}" checked></td>
+							<td> 
+								<label class="radio-inline"> <input type="radio" name="radio{{$t[1]}}" id="c{{$t[1]}}" value="c" checked onclick="myFunction(this.value,'{{$t[1]}}')" checked> C</label>
+								<label class="radio-inline"> <input type="radio" name="radio{{$t[1]}}" id="d{{$t[1]}}" value="d" onclick="myFunction(this.value,'{{$t[1]}}')"> D </label>
+							</td>
 						@endif
 						
 						<td class="success text-center"><input type="checkbox" id="6{{$t[1]}}" name="6{{$t[1]}}" value="00:30:00"></td>
@@ -115,6 +130,35 @@
 		</div><!--CIERRE DIV PANEL-->
 	</div>
 </div>
+<script>
+
+function myFunction(valor,dia) {    
+	
+	if(valor=='c'){
+		document.getElementById('1'+dia).value="08:00:00";
+		var x =document.getElementById("fila"+dia);
+		x.classList.add("default");
+		x.classList.remove("danger");
+		x.classList.remove("info");
+		
+	}
+	else if(valor=='m'){
+		document.getElementById("1"+dia).value="04:00:00";
+		var x =document.getElementById("fila"+dia);
+		x.classList.add("info");
+		x.classList.remove("danger");
+		x.classList.remove("default");
+	}
+	else{
+		document.getElementById("1"+dia).value="00:00:00";
+		var x =document.getElementById("fila"+dia);
+		x.classList.add("danger");
+		x.classList.remove("default");
+		x.classList.remove("info");
+	}
+	
+}
+
 </script>
 
 @endsection
