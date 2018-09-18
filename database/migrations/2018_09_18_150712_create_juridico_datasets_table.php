@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateJuridicoReportesTable extends Migration
+class CreateJuridicoDatasetsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,15 @@ class CreateJuridicoReportesTable extends Migration
      */
     public function up()
     {
-        Schema::create('juridico_reportes', function (Blueprint $table) {
+        Schema::create('juridico_datasets', function (Blueprint $table) {
             $table->increments('id');
-			$table->date('fecha_desde');
-			$table->date('fecha_hasta');
-			
+			$table->integer('id_reporte')->unsigned();
+			$table->text('dataset');
             $table->timestamps();
+			
+			$table->foreign('id_reporte')->references('id')->on('juridico_reportes')->onDelete('cascade');
         });
+		
     }
 
     /**
@@ -29,6 +31,6 @@ class CreateJuridicoReportesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('juridico_reportes');
+        Schema::dropIfExists('juridico_datasets');
     }
 }
