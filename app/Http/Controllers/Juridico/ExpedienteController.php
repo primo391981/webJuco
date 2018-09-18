@@ -46,7 +46,12 @@ class ExpedienteController extends Controller
 		}
 		
 		$wsdl = "http://www.expedientes.poderjudicial.gub.uy/wsConsultaIUE.php?wsdl";    
-		$client = new SoapClient($wsdl); 
+		try {
+			$client = new SoapClient($wsdl);
+		} catch(SoapFault $e) {
+			return back()->withInput()->withError('El sistema del Poder Judicial no se encuentra disponible en este momento. Haga click <a href='.route('expediente.create.manual').'>aquí</a> para ingresar un iue de forma manual.');
+		}
+		 
 		$iue = $request->iue;
 		
 		$exp = Expediente::where(DB::raw('REPLACE(iue, " ", "")'),str_replace(' ','',$iue))->get();

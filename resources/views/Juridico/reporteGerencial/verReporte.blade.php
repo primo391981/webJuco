@@ -2,119 +2,56 @@
 
 @section('librerias')
 	<!-- Librerias para reportes -->
-<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.2.2/d3.v3.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/uvCharts/1.1.5/uvcharts.min.js"></script>
-  
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
 @endsection
 
 @section('content')
-<div class="col-md-6">
-</div>
-<div class="col-md-6">
-	<div id="uv-div" class="col-md-12"></div>
-</div>
 
+<div class="col-md-12">
+	<div class="col-md-6">
+		<canvas id="myChart"></canvas>
+	</div>
+	<div class="col-md-6">
+		<canvas id="myChart2"></canvas>
+	</div>
+</div>
 	
 <script>
-var graphdef = {
-	categories : ['uvCharts', 'matisse', 'bot-bot', 'SocialByWay'],
-	dataset : {
-		'uvCharts' : [
-			{ name : '2009', value : 32 },
-			{ name : '2010', value : 60 },
-			{ name : '2011', value : 97 },
-			{ name : '2012', value : 560 },
-			{ name : '2013', value : 999 }
-		],
-		
-		'matisse' : [
-			{ name : '2009', value : 58 },
-			{ name : '2010', value : 75 },
-			{ name : '2011', value : 90 },
-			{ name : '2012', value : 740 },
-			{ name : '2013', value : 890 }		
-		],
-		
-		'bot-bot' : [
-			{ name : '2009', value : 43 },
-			{ name : '2010', value : 88 },
-			{ name : '2011', value : 100 },
-			{ name : '2012', value : 420 },
-			{ name : '2013', value : 769 }	
-		],
-		
-		'SocialByWay' : [
-			{ name : '2009', value : 88 },
-			{ name : '2010', value : 120 },
-			{ name : '2011', value : 157 },
-			{ name : '2012', value : 450 },
-			{ name : '2013', value : 1024 }	
-		],
-		
-		'WaveMaker' : [
-			{ name : '2009', value : 32 },
-			{ name : '2010', value : 60 },
-			{ name : '2011', value : 97 },
-			{ name : '2012', value : 560 },
-			{ name : '2013', value : 999 }	
-		]
-	}
-}
+var ctx = document.getElementById("myChart").getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'pie',
+    data: {"labels":["Civil","Laboral - Mayor Cuant\u00eda","Laboral - Menor Cuant\u00eda","Familia","Penal"],"datasets":[{"data":[1,0,0,1,0],"backgroundColor":["rgba(255, 99, 132, 0.5)","rgba(54, 162, 235, 0.5)","rgba(255, 206, 86, 0.5)","rgba(75, 192, 192, 0.5)","rgba(153, 102, 255, 0.5)","rgba(255, 159, 64, 0.5)"],"borderColor":["rgba(255,99,132,1)","rgba(54, 162, 235, 1)","rgba(255, 206, 86, 1)","rgba(75, 192, 192, 1)","rgba(153, 102, 255, 1)","rgba(255, 159, 64, 1)"],"borderWidth":1}]}
+});
 
-var chart = uv.chart ('Bar', graphdef, {
-	meta : {
-		caption : 'Usage over years',
-		subcaption : 'among Imaginea OS products',
-		hlabel : 'Years',
-		vlabel : 'Number of users',
-		vsublabel : 'in thousands'
-	}
-})
-
-var graphdef_bar = {
-	categories : ['uvCharts'],
-	dataset : {
-		'uvCharts' : [
-			{ name : '2009', value : 32 },
-			{ name : '2010', value : 60 },
-			{ name : '2011', value : 97 },
-			{ name : '2012', value : 560 },
-			{ name : '2013', value : 150 }
-		]
-	}
-}
-
-var chart = uv.chart ('Bar', graphdef_bar, {
-	meta : {
-		caption : 'Usage over años',
-		subcaption : 'among Imaginea OS products',
-		hlabel : 'Years',
-		vlabel : 'Number of users',
-		vsublabel : 'in thousands'
-	}
-})
-
-var chart = uv.chart ('line', graphdef	, {
-	meta : {
-		caption : 'Usage over years',
-		subcaption : 'among Imaginea OS products',
-		hlabel : 'Years',
-		vlabel : 'Number of users',
-		vsublabel : 'in thousands'
-	}
-})
-console.log(uv);
-
-var chart = uv.chart ('line', graphdef	, {
-	meta : {
-		caption : 'Usage over years',
-		subcaption : 'among Imaginea OS products',
-		hlabel : 'Years',
-		vlabel : 'Number of users',
-		vsublabel : 'in thousands'
-	}
-})
-console.log(uv);
+var ctx = document.getElementById("myChart2").getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+        datasets: [{
+            label: '# of Votes',
+            data: [12, 19, 3, 5, 2, 3],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.5)',
+                'rgba(54, 162, 235, 0.5)',
+                'rgba(255, 206, 86, 0.5)',
+                'rgba(75, 192, 192, 0.5)',
+                'rgba(153, 102, 255, 0.5)',
+                'rgba(255, 159, 64, 0.5)'
+            ],
+            borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    
+});
 
 </script>
 
