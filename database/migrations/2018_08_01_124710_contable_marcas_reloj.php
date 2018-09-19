@@ -19,6 +19,7 @@ class ContableMarcasReloj extends Migration
 			$table->integer('idTipoHora');
 			$table->time('cantHoras');
 			$table->date('fecha');
+			$table->char('tipoDia', 1)->nullable();
             $table->timestamps();
         });
     }
