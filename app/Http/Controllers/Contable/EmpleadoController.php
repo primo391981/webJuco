@@ -39,10 +39,16 @@ class EmpleadoController extends Controller
 				return back()->withInput()->withError("Debe seleccionar una empresa.");
 			}
 			else{
-				if($request->fechaInicio>$request->fechaFin){
-					return back()->withInput()->withError("La fecha de fin debe ser mayor a la fecha de inicio.");
-				} else {
-					$empresa=Empresa::find($request->idempresa);
+				
+				$fechaFin='2118-01-01';
+				if($request->fechaFin!=null){
+					if($request->fechaInicio>$request->fechaFin){
+						return back()->withInput()->withError("La fecha de fin debe ser mayor a la fecha de inicio.");
+					}
+					$fechaFin=$request->fechaFin;
+				}
+				
+				 	$empresa=Empresa::find($request->idempresa);
 					$persona=Persona::find($idPer);
 					
 					$noc=false;
@@ -57,9 +63,22 @@ class EmpleadoController extends Controller
 					if($request->esp=='on'){
 						$esp=true;
 					}
-					$persona->empresas()->save($empresa, ['idCargo'=>$request->cargo,'fechaDesde'=>$request->fechaInicio,'fechaHasta'=>$request->fechaFin,'monto'=>$request->monto,'valorHora'=>$request->valorhr,'nocturnidad'=>$noc,'pernocte'=>$per,'espera'=>$esp,'tipoHorario'=>$request->tipo]);
+					
+					//si empresa seleccionado grupo ==12 sn/200 else sn/30/8
+					$valorHr=0;
+					if($empresa->grupo==12){
+						$valorHr=$request->monto/200;
+					}
+					else{
+						$valorHr=$request->monto/30/8;
+					}
+					if($valorHr==0 || $valorHr<0 ){
+						return back()->withInput()->withError("El valor del sueldo no aceptado.");
+					}
+					
+					$persona->empresas()->save($empresa, ['idCargo'=>$request->cargo,'fechaDesde'=>$request->fechaInicio,'fechaHasta'=>$fechaFin,'monto'=>$request->monto,'valorHora'=>$valorHr,'nocturnidad'=>$noc,'pernocte'=>$per,'espera'=>$esp,'tipoHorario'=>$request->tipo]);
 					return redirect()->route('persona.show',['id' => $idPer]);
-				}
+				
 			}
 		}
 		catch(Exception $e){

@@ -22,7 +22,7 @@ class ContableEmpleados extends Migration
 			$table->date('fechaHasta');
 			$table->integer('monto');
 			$table->boolean('horarioCargado')->default(false);
-			$table->integer('valorHora');
+			$table->decimal('valorHora', 8, 3);
 			$table->boolean('nocturnidad')->default(false);
 			$table->boolean('pernocte')->default(false);
 			$table->boolean('espera')->default(false);

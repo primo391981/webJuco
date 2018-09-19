@@ -83,10 +83,13 @@
 														<h4 class="modal-title">DESVINCULAR EMPLEADO DE EMPRESA</h4>
 													  </div>
 													  <div class="modal-body">
+														<form>
 														<p>Está seguro que desea desvincular al empleado <strong>{{$persona->nombre}} {{$persona->apellido}}</strong> de la empresa <strong>{{$empr->nombreFantasia}}</strong> ?</p>
+														
 													  </div>
 													  <div class="modal-footer">
 														<button type="submit"class="btn btn-danger" formaction="{{route('empleado.desvincularEmpresa')}}" formmethod="post"><i class="fas fa-trash-alt"></i> Aceptar</button>
+														</form>
 														<button type="button" class="btn btn-warning" data-dismiss="modal" autofocus><i class="fas fa-times"></i> Cancelar</button>
 													  </div>
 													</div>
@@ -116,11 +119,20 @@
 									</div>
 									<div class="row col-xs-12">
 										<p>Categoria: {{$empr->pivot->cargo->nombre}}</p>
-										<p>Remuneracion: {{$empr->pivot->cargo->remuneracion->nombre}} {{$empr->pivot->tipoHorario}}</p>
+										<p>Remuneracion: {{$empr->pivot->cargo->remuneracion->nombre}}</p>
+										@if($empr->pivot->tipoHorario==1 && $empr->pivot->cargo->remuneracion->id==1)
+											<p>Horario: Habitual</p>
+										@elseif($empr->pivot->tipoHorario==2 && $empr->pivot->cargo->remuneracion->id==1)
+											<p>Horario: Flexible</p>
+										@endif
 										<p>Inicio: {{$empr->pivot->fechaDesde}}</p>
-										<p>Egreso: {{$empr->pivot->fechaHasta}}</p>
+										@if($empr->pivot->fechaHasta=='2118-01-01')
+											<p>Egreso: No tiene fecha limite.</p>
+										@else
+											<p>Egreso: {{$empr->pivot->fechaHasta}}</p>
+										@endif
+										
 										<p>Monto: {{$empr->pivot->monto}}</p>
-										<p>Valor Hora: {{$empr->pivot->valorHora}}</p>
 										@if($empr->pivot->espera==true)
 											<p>Tiene horas de espera.</p>
 										@endif

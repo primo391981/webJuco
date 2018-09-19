@@ -71,7 +71,7 @@
 						</div>	
 					</div>
 					<div class="form-group row">
-						<label for="fechaInicio" class="control-label col-sm-3">FECHA INICIO </label>
+						<label for="fechaInicio" class="control-label col-sm-3">FECHA INICIO *</label>
 						<div class="col-sm-6">
 							<input type="date" name="fechaInicio" id="fechaInicio" class="form-control" value="{{ old('fechaInicio') }}" required >
 						</div>	
@@ -79,19 +79,13 @@
 					<div class="form-group row">
 						<label for="fechaFin" class="control-label col-sm-3">FECHA FIN </label>
 						<div class="col-sm-6">
-							<input type="date" name="fechaFin" id="fechaFin" class="form-control" value="{{ old('fechaFin') }}" required>
+							<input type="date" name="fechaFin" id="fechaFin" class="form-control" value="{{ old('fechaFin') }}">
 						</div>	
 					</div>
 					<div class="form-group row">
-						<label for="monto" class="control-label col-sm-3">MONTO </label>
+						<label for="monto" class="control-label col-sm-3">MONTO *</label>
 						<div class="col-sm-6">
 							<input type="number" name="monto" id="monto" class="form-control" value="{{ old('monto') }}" min="1" required>
-						</div>	
-					</div>
-					<div class="form-group row">
-						<label for="valorhr" class="control-label col-sm-3">VALOR HORA </label>
-						<div class="col-sm-6">
-							<input type="number" name="valorhr" id="valorhr" class="form-control" value="{{ old('valorhr') }}" min="1" required>
 						</div>	
 					</div>
 					<div class="form-group row">
