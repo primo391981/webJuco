@@ -35,8 +35,16 @@
 				<table id="" class="table table-condensed table-hover">
 				<thead>
 					<tr>
+						@if($empleado->cargo->remuneracion->id==1)
+							@if($empleado->tipoHorario==2)
+							<th>TIPO DE DIA</th>
+							@endif
+						@else 
+							<th>TIPO DE DIA</th>
+						@endif
+						<th class="text-center">#I</th>
 						<th>DÍA</th>
-						<th>HORAS COMUNES</th>
+						<th>HORAS</th>
 						<th>HORAS EXTRAS</th>
 						@if($empleado->espera==true)
 						<th>HORAS ESPERA</th>
@@ -52,48 +60,89 @@
 				<tbody>
 					<form action="{{route('reloj.guardarMarcasEdit')}}" method="post">
 					@csrf
-					<input id="idEmpleado" name="idEmpleado" type="hidden" value="{{$idEmpleado}}"/>
+					<input id="idEmpleado" name="idEmpleado" type="hidden" value="{{$empleado->id}}"/>
 					<input id="fecha" name="fecha" type="hidden" value="{{$fecha}}"/>
 					
 					@foreach ($total as $t)					
-					<tr class="{{$t[2]}}">
-						<td>{{$t[0]}} - {{$t[1]}}</td>							
-							@foreach($tiposHoras as $th)
-								@php $dibujo=false; @endphp
-								@foreach($t[3] as $reg)										
-										@if($th->id==$reg->idTipoHora)
-											@if($th->id!=1)
-												<td  bgcolor="#bababa"><input type="time" class="form-control" id="{{$th->id}}{{$t[1]}}" name="{{$th->id}}{{$t[1]}}" value="{{$reg->cantHoras}}" /></td>
-											@else
-												<td> <input type="time" class="form-control" id="{{$th->id}}{{$t[1]}}" name="{{$th->id}}{{$t[1]}}" value="{{$reg->cantHoras}}" min="00:00:00" max="08:00:00" {{$t[2]==="danger" ? 'readonly' : '' }} /></td>
+						@if($empleado->cargo->remuneracion->id==1 && $empleado->tipoHorario==1)							
+							<tr class="{{$t[3]}}">
+						@else 
+							<tr id="fila{{$t[1]}}" class="{{$t[3]}}">
+						@endif
+						
+						@foreach($t[2] as $reg)	
+							@if($empleado->cargo->remuneracion->id==1)
+											@if($empleado->tipoHorario==2)
+											<td>
+												
+												<label class="radio-inline">
+												  <input type="radio" name="radio{{$t[1]}}"  id="c{{$t[1]}}" value="c" onclick="myFunction(this.value,'{{$t[1]}}')" {{ ($reg->tipoDia=='c')? 'checked' : '' }}> C
+												</label>
+												<label class="radio-inline">
+												  <input type="radio" name="radio{{$t[1]}}" id="m{{$t[1]}}" value="m" onclick="myFunction(this.value,'{{$t[1]}}')" {{ ($reg->tipoDia=='m')? 'checked' : '' }}> M
+												</label>
+												<label class="radio-inline">
+												  <input type="radio" name="radio{{$t[1]}}" id="d{{$t[1]}}" value="d" onclick="myFunction(this.value,'{{$t[1]}}')" {{ ($reg->tipoDia=='d')? 'checked' : '' }}> D
+												</label>
+												
+											</td>
 											@endif
-											@php $dibujo=true; @endphp
-											@break;
-										@endif
-								@endforeach
-								@if($dibujo==false)
-									@switch($th->id)
-										@case(2)
-											<td><input type="time" class="form-control" id="{{$th->id}}{{$t[1]}}" name="{{$th->id}}{{$t[1]}}" value="00:00:00" /></td>
-											@break
-										@case(3)
-											@if($empleado->espera==true)
-											<td><input type="time" class="form-control" id="{{$th->id}}{{$t[1]}}" name="{{$th->id}}{{$t[1]}}" value="00:00:00"/></td>
+										@else 
+											<td> 
+												<label class="radio-inline"> <input type="radio" name="radio{{$t[1]}}" id="c{{$t[1]}}" value="c" onclick="myFunction(this.value,'{{$t[1]}}')" {{ ($reg->tipoDia=='c')? 'checked' : '' }}> C</label>
+												<label class="radio-inline"> <input type="radio" name="radio{{$t[1]}}" id="d{{$t[1]}}" value="d" onclick="myFunction(this.value,'{{$t[1]}}')" {{ ($reg->tipoDia=='d')? 'checked' : '' }}> D </label>
+											</td>
+							@endif
+							@break
+						@endforeach	
+
+						
+						@php $tieneMedia=false; @endphp
+						@foreach($t[2] as $reg)										
+							@if($reg->idTipoHora==6)
+								<td class="success text-center"><input type="checkbox" id="6{{$t[1]}}" name="6{{$t[1]}}" value="00:30:00" checked></td>
+								@php $tieneMedia=true; @endphp
+							@endif
+						@endforeach
+						@if($tieneMedia==false)
+							<td class="success text-center"><input type="checkbox" id="6{{$t[1]}}" name="6{{$t[1]}}" value="00:30:00"></td>
+						@endif
+						
+						<td>{{$t[0]}} - {{$t[1]}}</td>
+						
+						@foreach($tiposHoras as $th)
+									@php $dibujo=false; @endphp
+									@foreach($t[2] as $reg)										
+											@if($th->id==$reg->idTipoHora && $th->id!=6)
+												<td><input type="time" class="form-control input-sm" id="{{$th->id}}{{$t[1]}}" name="{{$th->id}}{{$t[1]}}" value="{{$reg->cantHoras}}"min="00:00:00" max="08:00:00"/></td>
+												@php $dibujo=true; @endphp
+												@break;
 											@endif
-											@break
-										@case(4)
-											@if($empleado->nocturnidad==true)
-											<td><input type="time" class="form-control" id="{{$th->id}}{{$t[1]}}" name="{{$th->id}}{{$t[1]}}" value="00:00:00"/></td>
-											@endif
-											@break
-										@case(5)
-											@if($empleado->pernocte==true)
-											<td><input type="time" class="form-control" id="{{$th->id}}{{$t[1]}}" name="{{$th->id}}{{$t[1]}}" value="00:00:00"/></td>
-											@endif
-											@break	
-									@endswitch		
-								@endif	
-							@endforeach							
+									@endforeach
+									@if($dibujo==false)
+										@switch($th->id)
+											@case(2)
+												<td><input type="time" class="form-control input-sm" id="2{{$t[1]}}" name="2{{$t[1]}}" value="00:00:00"/></td>
+												@break
+											@case(3)
+												@if($empleado->espera==true)
+												<td><input type="time" class="form-control input-sm" id="3{{$t[1]}}" name="3{{$t[1]}}" value="00:00:00"/></td>
+												@endif
+												@break
+											@case(4)
+												@if($empleado->nocturnidad==true)
+												<td><input type="time" class="form-control input-sm" id="4{{$t[1]}}" name="4{{$t[1]}}" value="00:00:00" /></td>
+												@endif
+												@break
+											@case(5)
+												@if($empleado->pernocte==true)
+												<td><input type="time" class="form-control input-sm" id="5{{$t[1]}}" name="5{{$t[1]}}" value="00:00:00" /></td>
+												@endif
+												@break	
+										@endswitch		
+									@endif	
+								@endforeach		
+						
 					</tr>
 					@endforeach
 				</tbody>
@@ -109,6 +158,36 @@
 		</div><!--CIERRE DIV PANEL-->
 	</div>
 </div>
+<script>
 
+function myFunction(valor,dia) {    
+	
+	if(valor=='c'){
+		document.getElementById('1'+dia).value="08:00:00";
+		var x =document.getElementById("fila"+dia);
+		x.classList.add("default");
+		x.classList.remove("danger");
+		x.classList.remove("info");
+		
+	}
+	else if(valor=='m'){
+		document.getElementById("1"+dia).value="04:00:00";
+		var x =document.getElementById("fila"+dia);
+		x.classList.add("info");
+		x.classList.remove("danger");
+		x.classList.remove("default");
+	}
+	else{
+		
+		document.getElementById("1"+dia).value="00:00:00";
+		var x =document.getElementById("fila"+dia);
+		x.classList.add("danger");
+		x.classList.remove("default");
+		x.classList.remove("info");
+	}
+	
+}
+
+</script>
 @endsection
 

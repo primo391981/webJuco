@@ -22,7 +22,10 @@
 	<div class="col-xs-12">
 		
 		<div class="panel panel-warning text-warning">
-			<div class="panel-heading"><h4><i class="far fa-clock"></i> INFORMACIÓN MARCAS RELOJ </h4></div>
+			<div class="panel-heading">
+			<a class="btn btn-warning pull-right" href="{{ route('reloj.listaEmpleados') }}" role="button" data-toggle="tooltip" title="Listado marcas reloj"><i class="fas fa-list-ul"></i></a>
+			<h4><i class="far fa-clock"></i> INFORMACIÓN MARCAS RELOJ </h4>
+			</div>
 			<div class="panel-body">
 				<div class="row">
 					<div class="col-xs-12"><p><i class="far fa-calendar-alt"></i> {{$mes}}/{{$anio}}</p></div>
@@ -35,13 +38,6 @@
 				<table id="tableMarcas" class="table table-condensed table-hover">
 				<thead>
 					<tr>						
-						@if($empleado->cargo->remuneracion->id==1)
-							@if($empleado->tipoHorario==2)
-							<th class="text-center">#T</th>
-							@endif
-						@else 
-							<th class="text-center">#T</th>
-						@endif
 						<th class="text-center">#I</th>
 						<th>DÍA</th>
 						<th>HORAS</th>
@@ -58,39 +54,32 @@
 					</tr>
 				</thead>
 				<tbody>
-					<form action="{{route('reloj.guardarMarcasEdit')}}" method="post">
-					@csrf
-					<input id="idEmpleado" name="idEmpleado" type="hidden" value="{{$empleado->id}}"/>
-					<input id="fecha" name="fecha" type="hidden" value="{{$fecha}}"/>
 					
 					@foreach ($total as $t)					
-						@if($empleado->cargo->remuneracion->id==1 && $empleado->tipoHorario==1)							
-								<tr class="{{$t[3]}}">
-								
-								@php $dibujoIntermedio=false; @endphp
+						<tr class="{{$t[3]}}">
+								@php $tieneMedia=false; @endphp
 								@foreach($t[2] as $reg)										
 									@if($reg->idTipoHora==6)
-										<td class="text-center success">SI</td>
-										@php $dibujoIntermedio=true; @endphp
+										<td class="success"> SI </td>
+										@php $tieneMedia=true; @endphp
 									@endif
 								@endforeach
-								
-								@if($dibujoIntermedio==false)
-									<td></td>
+								@if($tieneMedia==false)
+									<td class="success"> - </td>
 								@endif
 								
-								<td>{{$t[0]}} - {{$t[1]}}</td>							
-								
+								<td>{{$t[0]}} - {{$t[1]}}</td>
+							
+							
 								@foreach($tiposHoras as $th)
 									@php $dibujo=false; @endphp
 									@foreach($t[2] as $reg)										
 											@if($th->id==$reg->idTipoHora)
 												@if($th->id!=1 && $th->id!=6)
-													<td  bgcolor="#bababa">{{$reg->cantHoras}}</td>
-												@else
-													@if($th->id!=6)
+													<td class="warning">{{$reg->cantHoras}}</td>
+												@endif
+												@if($th->id==1)
 													<td>{{$reg->cantHoras}}</td>
-													@endif
 												@endif
 												@php $dibujo=true; @endphp
 												@break;
@@ -118,15 +107,17 @@
 												@break	
 										@endswitch		
 									@endif	
-								@endforeach							
-							</tr>						
+								@endforeach			
+						</tr>
 					@endforeach
 				</tbody>
 			</table>
 			</div><!--cierra div table responsive-->
 				
 			</div><!--CIERRE DIV PANELBODY-->
-			
+			<div class="panel-footer">
+				<a class="btn btn-warning btn-block" href="{{ route('reloj.listaEmpleados') }}" role="button" data-toggle="tooltip" title="Listado marcas reloj"><i class="fas fa-list-ul"></i> Listado empleados marcas reloj</a>
+			</div><!--CIERRE DIV PANELFOOTER-->
 			
 		</div><!--CIERRE DIV PANEL-->
 	</div>

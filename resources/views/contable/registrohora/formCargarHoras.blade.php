@@ -34,8 +34,7 @@
 				<div class="table-responsive">
 				<table class="table table-condensed">
 				<thead>
-					<tr>
-						
+					<tr>						
 						@if($empleado->cargo->remuneracion->id==1)
 							@if($empleado->tipoHorario==2)
 							<th>TIPO DE DIA</th>
