@@ -98,6 +98,8 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::resource('persona', 'PersonaController')->middleware('role:contableAdmin');
 	
 	//empleado
+	Route::post('empleado/contrato/editar/guardar', 'Contable\EmpleadoController@guardarEditContrato')->name('empleado.guardarEditContrato')->middleware('role:contableAdmin');
+	Route::get('empleado/contrato/editar/{idEmpleado}', 'Contable\EmpleadoController@editarContrato')->name('empleado.editarContrato')->middleware('role:contableAdmin');
 	Route::get('empleado/search', 'Contable\EmpleadoController@search')->name('empleado.search')->middleware('role:contableAdmin');
 	Route::post('asociarEmpresa/{idpersona}', 'Contable\EmpleadoController@asociarEmpresa')->name('empleado.asociarEmpresa')->middleware('role:contableAdmin');
 	Route::get('formCrear/{idpersona}', 'Contable\EmpleadoController@formCrear')->name('empleado.formCrear')->middleware('role:contableAdmin');

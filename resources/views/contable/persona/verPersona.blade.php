@@ -85,6 +85,23 @@
 													  <div class="modal-body">
 														<form>
 														<p>Está seguro que desea desvincular al empleado <strong>{{$persona->nombre}} {{$persona->apellido}}</strong> de la empresa <strong>{{$empr->nombreFantasia}}</strong> ?</p>
+														<hr>
+														<div class="form-group row">
+																<label for="motivo" class="control-label col-sm-3">MOTIVO *</label>
+																<div class="col-sm-9">
+																	<select name="motivo" class="form-control" id="motivo">
+																		@foreach($bajaMotivos as $bm)
+																			<option value="{{ $bm->id }}">{{ $bm->nombre }}</option>  
+																		@endforeach
+																	</select>
+																</div>			
+														</div>
+														<div class="form-group row">
+																<label for="comentario" class="control-label col-sm-3">COMENTARIO *</label>
+																<div class="col-sm-9">
+																	<input type="text" id="comentario" class="form-control" name="comentario"/>
+																</div>			
+														</div>
 														
 													  </div>
 													  <div class="modal-footer">
@@ -114,7 +131,7 @@
 											<p><strong>DETALLE CONTRATO</strong></p>
 										</div>
 										<div class="col-xs-2">
-											<button type="submit"class="btn btn-warning btn-xs pull-right" formaction="#" formmethod="post" style="margin-bottom:5px;"><i class="far fa-edit"></i></button>
+											<a href="{{route('empleado.editarContrato',[$empr->pivot->id])}}" style="margin-bottom:5px;" class="btn btn-warning btn-xs pull-right" role="button"><i class="far fa-edit"></i></a>
 										</div>
 									</div>
 									<div class="row col-xs-12">

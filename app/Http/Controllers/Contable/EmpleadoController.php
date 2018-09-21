@@ -72,9 +72,6 @@ class EmpleadoController extends Controller
 					else{
 						$valorHr=$request->monto/30/8;
 					}
-					if($valorHr==0 || $valorHr<0 ){
-						return back()->withInput()->withError("El valor del sueldo no aceptado.");
-					}
 					
 					$persona->empresas()->save($empresa, ['idCargo'=>$request->cargo,'fechaDesde'=>$request->fechaInicio,'fechaHasta'=>$fechaFin,'monto'=>$request->monto,'valorHora'=>$valorHr,'nocturnidad'=>$noc,'pernocte'=>$per,'espera'=>$esp,'tipoHorario'=>$request->tipo]);
 					return redirect()->route('persona.show',['id' => $idPer]);
@@ -290,11 +287,12 @@ class EmpleadoController extends Controller
 	public function desvincularEmpresa(Request $request){
 		try{
 			dd($request);
-			$fechaHoy= Carbon::today('America/Montevideo');
-			Empleado::where('id', $request->idEmpleado)->where('idEmpresa', $request->idEmpresa)->update(['habilitado' => false,'fechaBaja'=>$fechaHoy->year.'-'.$fechaHoy->month.'-'.$fechaHoy->day]);
+			//$fechaHoy= Carbon::today('America/Montevideo');
 			$empleado=Empleado::find($request->idEmpleado);
 			
-			return redirect()->action('PersonaController@show', ['id' => $empleado->idPersona])->withInput()->with('success','La desvinculación de la empresa '.$empelado->empresa->nombreFantasia.' se realizó correctamente.');
+			$empleado->delete;
+			
+			return redirect()->action('PersonaController@show', ['id' => $empleado->idPersona])->withInput()->with('success','La desvinculación de la empresa '.$empleado->empresa->nombreFantasia.' se realizó correctamente.');
 		}
 		catch(Exception $e){
 			return back()->withInput()->withError("Error en el sistema");
@@ -317,4 +315,60 @@ class EmpleadoController extends Controller
 				]);
 			}
     }
+	
+	public function editarContrato($idEmpleado){
+		try{
+			$empleado=Empleado::find($idEmpleado);
+			$cargos=Cargo::All();
+			return view('contable.empleado.editarContrato',['cargos'=>$cargos,'empleado'=>$empleado]);
+			
+		}
+		catch(Exception $e){
+			return back()->withInput()->withError("Error en el sistema");
+		}
+	}
+	
+	public function guardarEditContrato(Request $request){
+		try{
+			dd($request);
+			$fechaFin='2118-01-01';
+			if($request->fechaFin!=null){
+				if($request->fechaInicio>$request->fechaFin){
+					return back()->withInput()->withError("La fecha de fin debe ser mayor a la fecha de inicio.");
+				}
+				$fechaFin=$request->fechaFin;
+			}
+				
+				 	$empresa=Empresa::find($request->idempresa);
+					$persona=Persona::find($idPer);
+					
+					$noc=false;
+					$per=false;
+					$esp=false;
+					if($request->per=='on'){
+						$per=true;
+					}
+					if($request->noc=='on'){
+						$noc=true;
+					}
+					if($request->esp=='on'){
+						$esp=true;
+					}
+					
+					//si empresa seleccionado grupo ==12 sn/200 else sn/30/8
+					$valorHr=0;
+					if($empresa->grupo==12){
+						$valorHr=$request->monto/200;
+					}
+					else{
+						$valorHr=$request->monto/30/8;
+					}
+					
+			
+		}
+		catch(Exception $e){
+			return back()->withInput()->withError("Error en el sistema");
+		}
+	}
+	
 }

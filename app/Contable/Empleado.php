@@ -3,9 +3,10 @@
 namespace App\Contable;
 
 use Illuminate\Database\Eloquent\Relations\Pivot;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 class Empleado extends Pivot
 {
+use SoftDeletes;
     protected $table='contable_empleados';	
 	
 	public function persona() {

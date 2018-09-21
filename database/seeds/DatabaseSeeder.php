@@ -58,7 +58,6 @@ class DatabaseSeeder extends Seeder
 			RegistrosTableSeeder::class,
 			TipoPagoTableSeeder::class,
 			ParametrosGeneralesTableSeeder::class,
-			BajaMotivosTableSeeder::class,
 			//Prueba Horarios
 			EmpleadosTableSeeder::class,
 			HorariosEmpleadoTableSeeder::class,
@@ -68,7 +67,9 @@ class DatabaseSeeder extends Seeder
 			PagosAdelantosTableSeeder::class,
 			PagosPartidasExtrasTableSeeder::class,
 			TipoRecibosTableSeeder::class,
-			ConceptoRecibosTableSeeder::class
+			ConceptoRecibosTableSeeder::class,
+			BajaMotivosTableSeeder::class
+			
 		]);	
     }
 }

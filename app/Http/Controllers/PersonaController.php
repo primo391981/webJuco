@@ -14,6 +14,7 @@ use App\Contable\Registro;
 use App\EstadoCivil;
 use App\Contable\HorarioEmpleado;
 use App\Contable\HorarioPorDia;
+use App\Contable\BajaMotivo;
 use Carbon\Carbon;
 
 use Exception;
@@ -76,8 +77,9 @@ class PersonaController extends Controller
 			$persona=Persona::find($id);
 			$dias=Dia::All();
 			$registros=Registro::All();
+			$motivos=BajaMotivo::All();
 			
-			return view('contable.persona.verPersona',['persona'=>$persona,'dias'=>$dias,'registros'=>$registros]);
+			return view('contable.persona.verPersona',['persona'=>$persona,'dias'=>$dias,'registros'=>$registros,'bajaMotivos'=>$motivos]);
 		}
 		catch(Exception $e){
 			return back()->withInput()->withError("Problemas en el sistema, intente nuevamente o contacte al administrador.");
