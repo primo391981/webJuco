@@ -65,12 +65,20 @@ class EmpleadoController extends Controller
 					}
 					
 					//si empresa seleccionado grupo ==12 sn/200 else sn/30/8
+					
+					$cargo=Cargo::find($request->cargo);
 					$valorHr=0;
-					if($empresa->grupo==12){
-						$valorHr=$request->monto/200;
+					
+					if($cargo->id_remuneracion==1){
+						if($empresa->grupo==12){
+							$valorHr=$request->monto/200;
+						}
+						else{
+							$valorHr=($request->monto/30)/8;
+						}
 					}
 					else{
-						$valorHr=$request->monto/30/8;
+						$valorHr=$request->monto/8;
 					}
 					
 					$persona->empresas()->save($empresa, ['idCargo'=>$request->cargo,'fechaDesde'=>$request->fechaInicio,'fechaHasta'=>$fechaFin,'monto'=>$request->monto,'valorHora'=>$valorHr,'nocturnidad'=>$noc,'pernocte'=>$per,'espera'=>$esp,'tipoHorario'=>$request->tipo]);

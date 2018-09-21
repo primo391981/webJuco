@@ -111,7 +111,7 @@
 													@foreach($empRecibo->detallesRecibos as $dt)
 													<div class="row">
 														@if ($loop->last)
-														<div class="col-xs-4"><p><strong>{{$dt->conceptoRecibo->nombre}} 
+														<div class="col-xs-4"><p><strong>{{$dt->conceptoRecibo->id}} - {{$dt->conceptoRecibo->nombre}} 
 															@if(isset($dt->porcentaje)) 
 																/ {{$dt->porcentaje}} 
 															@endif</strong></p></div>
@@ -119,7 +119,7 @@
 														<div class="col-xs-3"><p>{{$dt->cantHoras}}</p></div>
 														<div class="col-xs-2"><p><strong>$ {{$dt->monto}}</strong></p></div>
 														@else
-														<div class="col-xs-4"><p>{{$dt->conceptoRecibo->nombre}} 
+														<div class="col-xs-4"><p>{{$dt->conceptoRecibo->id}} -  {{$dt->conceptoRecibo->nombre}} 
 															@if(isset($dt->porcentaje)) 
 																/ {{$dt->porcentaje}} 
 															@endif</p></div>
