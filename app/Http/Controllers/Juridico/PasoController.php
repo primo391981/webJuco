@@ -19,6 +19,34 @@ use App\Mail\SendMailable;
 
 class PasoController extends Controller
 {
+	private function tipoArchivo($archivo){
+		//se obtiene el tipo de archivo y se lo registra
+		$tipoArchivo = Storage::mimeType($archivo);
+		
+		switch(substr($tipoArchivo,0,4)){
+			case "text": $id_tipo = 1;
+					break;
+			case "imag": $id_tipo = 2;
+					break;
+			case "vide": $id_tipo = 3;
+					break;
+			case "audi": $id_tipo = 4;
+					break;
+			default: $id_tipo = 5;
+					break;
+		}
+		
+		return $id_tipo;
+		
+	}
+	
+	private function checkRole($user, $expediente){
+		if($user->hasRole('invitado')){
+			if(!$user->permisosEscritura->contains($expediente)){
+				return abort(403, 'Unauthorized action.');
+			}; 
+		};
+	}
     /**
      * Show the form for creating a new resource.
      *
@@ -33,11 +61,13 @@ class PasoController extends Controller
 		$user = Auth::user();
 		
 		//si el usuario tiene el rol adecuado
-		if($user->hasRole('invitado')){
+		/*if($user->hasRole('invitado')){
 			if(!$user->permisosEscritura->contains($exp)){
 				return abort(403, 'Unauthorized action.');
 			}; 
-		};
+		};*/
+		
+		$this->checkRole($user,$exp);
 		
 		//transicion correspondiente
 		$tran = Transicion::find($transicion);
@@ -70,11 +100,7 @@ class PasoController extends Controller
 		$transicion = Transicion::find($request->transicion_id);
 		
 		//si el usaurio tiene el rol adecuado
-		if($user->hasRole('invitado')){
-			if(!$user->permisosEscritura->contains($expediente)){
-				return abort(403, 'Unauthorized action.');
-			}; 
-		};
+		$this->checkRole($user,$expediente);
 				
 		//si no existe el paso en el expediente		
 		if($expediente->pasos->where('id_tipo',$request->tipoPaso_id)->count() == 0){
@@ -128,21 +154,8 @@ class PasoController extends Controller
 				$file->nombre_archivo = $documento->getClientOriginalName();
 				
 				//se obtiene el tipo de archivo y se lo registra
-				$tipoArchivo = Storage::mimeType($file->archivo);
-				
-				switch(substr($tipoArchivo,0,4)){
-				case "text": $file->id_tipo = 1;
-						break;
-				case "imag": $file->id_tipo = 2;
-						break;
-				case "vide": $file->id_tipo = 3;
-						break;
-				case "audi": $file->id_tipo = 4;
-						break;
-				default: $file->id_tipo = 5;
-						break;
-				}
-				
+				$file->id_tipo = $this->tipoArchivo($file->archivo);
+			
 				//se guardan los cambios
 				$file->save();
 			}
@@ -196,11 +209,7 @@ class PasoController extends Controller
 		$expediente = $paso->expediente;
 	   
 		//si el usuario tiene el rol adecuado
-		if($user->hasRole('invitado')){
-			if(!$user->permisosExpedientes->contains($expediente)){
-				return abort(403, 'Unauthorized action.');
-			};
-		};
+		$this->checkRole($user,$expediente);
 	  
 		//se obtienen las transiciones posibles
 		$transiciones = $expediente->tipo->transiciones->where('id_paso_inicial',$expediente->paso_actual);
@@ -223,11 +232,7 @@ class PasoController extends Controller
 		$exp = $paso->expediente;
 		
 		//si el usuario tiene el rol adecuado
-		if($user->hasRole('invitado')){
-			if(!$user->permisosEscritura->contains($exp)){
-				return abort(403, 'Unauthorized action.');
-			}; 
-		};
+		$this->checkRole($user,$exp);
 				
 		//solo es posible editar el paso actual en el que se encuentra un expediente
 		if( $paso->fecha_fin == null ){
@@ -253,11 +258,7 @@ class PasoController extends Controller
 		$expediente = $paso->expediente;	
 		
 		//si el usuario tiene el rol adecuado
-		if($user->hasRole('invitado')){
-			if(!$user->permisosEscritura->contains($expediente)){
-				return abort(403, 'Unauthorized action.');
-			}; 
-		};
+		$this->checkRole($user,$expediente);
 		
 		$paso->comentario = $request->comentarios;
 		$paso->save();
@@ -278,19 +279,8 @@ class PasoController extends Controller
 				$file->nombre_archivo = $documento->getClientOriginalName();
 				$tipoArchivo = Storage::mimeType($file->archivo);
 				
-				//se registra el tipo de archivo
-				switch(substr($tipoArchivo,0,4)){
-				case "text": $file->id_tipo = 1;
-						break;
-				case "imag": $file->id_tipo = 2;
-						break;
-				case "vide": $file->id_tipo = 3;
-						break;
-				case "audi": $file->id_tipo = 4;
-						break;
-				default: $file->id_tipo = 5;
-						break;
-				}
+				//se obtiene el tipo de archivo y se lo registra
+				$file->id_tipo = $this->tipoArchivo($file->archivo);
 				
 				//se guardan los cambios
 				$file->save();
@@ -321,16 +311,6 @@ class PasoController extends Controller
 	// inicia descarga del archivo indicado como parámetro
 	public function download(Archivo $archivo)
 	{
-		//se obtiene el usuario registrado
-		$user = Auth::user();
-		
-		//si el usuario tiene el rol adecuado
-		if($user->hasRole('invitado')){
-			if(!$user->permisosExpedientes->contains($expediente)){
-				return abort(403, 'Unauthorized action.');
-			};
-		};
-		
 		//se general la url
 		$url = Storage::url($archivo->archivo);
 		
