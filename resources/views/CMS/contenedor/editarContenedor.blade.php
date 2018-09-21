@@ -16,79 +16,84 @@
 		</div><br>
 @endif 
 <div class="row">
-	<div class="col-xs-12 col-sm-12 col-md-7">
+	<div class="col-xs-12">
 		<div class="panel panel-info">
-			<div class="panel-heading text-center"><h4>Editar contenedor</h4></div>
-			<div class="panel-body text-info">
+			<div class="panel-heading">
+				<div class="btn-group pull-right">	
+					<a href="{{ route('contenedor.index') }}" class="btn btn-info pull-right" role="button"><i class="fas fa-list-ul"></i></a>				  
+				</div>
+				<h4>EDITAR CONTENEDOR</h4>
+			</div>	
+			
+			<div class="panel-body text-muted">
+				<div class="col-xs-12 col-md-7">
+					<div class="row">
+						<div class="col-xs-12">
+							<h4>CONTENEDOR</h4>
+							<hr class="hidden-xs hidden-sm">
+						</div>
+					</div>
 					<form method="POST" action="{{ route('contenedor.update', ['contenedor' => $contenedor]) }}" class="form-horizontal">
-					{{ method_field('PUT') }}
+					@method('PUT')
+					@csrf
 					@include('cms.contenedor.formContenedor', ['textoBoton' => 'Confirmar'])		
 					</form>
+				</div>
+				<div class="col-xs-12 col-md-5">
+				
+					<div class="row">
+						<div class="col-xs-12">
+							<button class="btn btn-primary pull-right" data-toggle="modal" data-target="#myModal"> <i class="fas fa-plus"></i></button>
+							<h4>CONTENIDOS ASOCIADOS</h4>
+							<hr class="hidden-xs hidden-sm">
+						</div>
+					</div>
+					@foreach($contenedor->contenidos->sortBy('orden') as $contenido)
+						<div class="row">
+							<div class="col-xs-4">
+								<p class="text-center">{{ $contenido->id }} {{ $contenido->titulo }}</p>
+							</div>
+							<div class="col-xs-2">
+								<form class="form-inline" action="{{ route('contenido.deassign') }}" method="POST">
+									{{ csrf_field() }}
+									<input type="hidden" name="contenedor_id" value="{{ $contenedor->id }}">
+									<input type="hidden" name="contenido_id" value="{{ $contenido->id }}">
+									<button class="btn btn-link" type="submit" data-toggle="tooltip" title="Eliminar"><i class="far fa-trash-alt" aria-hidden="true"></i></button>
+								</form>
+							</div>				
+							<div class="col-xs-2">
+								<a class="btn btn-link" role="button" href="{{ route('contenido.edit', ['contenido' => $contenido]) }}" data-toggle="tooltip" title="Editar">
+								<i class="far fa-edit" aria-hidden="true"></i></a>
+							</div>
+							<div class="col-xs-2">
+								@if($contenido->pivot->orden != 1)
+									<form  method="POST" class="form-inline" action="{{ route('contenido.up') }}">
+										{{ csrf_field() }}
+										<input type="hidden" name="contenedor_id" value="{{ $contenedor->id }}">
+										<input type="hidden" name="contenido_id" value="{{ $contenido->id }}">
+										<button class="btn btn-link" type="submit" data-toggle="tooltip" title="Subir nivel"><i class="fas fa-level-up-alt" aria-hidden="true"></i></button>
+									</form>
+								@else
+									<button class="btn btn-link" style="color:red;" disabled><i class="fas fa-level-up-alt"></i></button>
+								@endif												
+							</div>
+							<div class="col-xs-2">
+								@if($contenido->pivot->orden < count($contenedor->contenidos))
+									<form method="POST" class="form-inline" action="{{ route('contenido.down') }}" >
+										{{ csrf_field() }}
+										<input type="hidden" name="contenedor_id" value="{{ $contenedor->id }}">
+										<input type="hidden" name="contenido_id" value="{{ $contenido->id }}">
+										<button class="btn btn-link" type="submit" data-toggle="tooltip" title="Bajar nivel"><i class="fas fa-level-down-alt" aria-hidden="true"></i></button>
+									</form>
+								@else
+									<button class="btn btn-link" style="color:red;" disabled><i class="fas fa-level-down-alt"></i></button>												
+								@endif
+							</div>
+						</div>
+						<hr>
+					@endforeach
+				</div>
 			</div>
-			<div class="panel-footer"><a href="{{ route('contenedor.index') }}" class="btn btn-info btn-block" role="button"><i class="fas fa-list-ul"></i> Listado contenedores</a></div>
-		</div>
-	</div>
-	
-	<div class="col-xs-12 col-sm-12 col-md-5">
-		
-		<div class="panel panel-info">
-			<div class="panel-heading text-center"><h4>Contenidos</h4></div>
-			<div class="panel-body text-info">
-														
-								<!--<label for="contenidos" class="col-md-2 control-label"><a id="contenidos"></a>Contenidos</label>-->
-									@foreach($contenedor->contenidos->sortBy('orden') as $contenido)
-									<div class="row">
-										<!--<div class="form-group">-->
-											<div class="col-xs-4">
-												<p class="text-center">{{ $contenido->id }} {{ $contenido->titulo }}</p>
-											</div>
-											<div class="col-xs-2">
-												<form class="form-inline" action="{{ route('contenido.deassign') }}" method="POST">
-													{{ csrf_field() }}
-													<input type="hidden" name="contenedor_id" value="{{ $contenedor->id }}">
-													<input type="hidden" name="contenido_id" value="{{ $contenido->id }}">
-													<button class="btn btn-link" type="submit" data-toggle="tooltip" title="Eliminar"><i class="far fa-trash-alt" aria-hidden="true"></i></button>
-												</form>
-											</div>				
-											<div class="col-xs-2">
-												<a class="btn btn-link" role="button" href="{{ route('contenido.edit', ['contenido' => $contenido]) }}" data-toggle="tooltip" title="Editar">
-												<i class="far fa-edit" aria-hidden="true"></i></a>
-											</div>
-											<div class="col-xs-2">
-												@if($contenido->pivot->orden != 1)
-												<form  method="POST" class="form-inline" action="{{ route('contenido.up') }}">
-													{{ csrf_field() }}
-													<input type="hidden" name="contenedor_id" value="{{ $contenedor->id }}">
-													<input type="hidden" name="contenido_id" value="{{ $contenido->id }}">
-													<button class="btn btn-link" type="submit" data-toggle="tooltip" title="Subir nivel"><i class="fas fa-level-up-alt" aria-hidden="true"></i></button>
-												</form>
-												@else
-													<button class="btn btn-link" style="color:red;" disabled><i class="fas fa-level-up-alt"></i></button>
-												@endif												
-											</div>
-											<div class="col-xs-2">
-												@if($contenido->pivot->orden < count($contenedor->contenidos))
-													<form method="POST" class="form-inline" action="{{ route('contenido.down') }}" >
-													{{ csrf_field() }}
-													<input type="hidden" name="contenedor_id" value="{{ $contenedor->id }}">
-													<input type="hidden" name="contenido_id" value="{{ $contenido->id }}">
-													<button class="btn btn-link" type="submit" data-toggle="tooltip" title="Bajar nivel"><i class="fas fa-level-down-alt" aria-hidden="true"></i></button>
-													</form>
-												@else
-													<button class="btn btn-link" style="color:red;" disabled><i class="fas fa-level-down-alt"></i></button>												
-												@endif
-											</div>
-										<!--</div>-->
-									</div>
-									<hr>
-									@endforeach
-								
-							
-						
-			</div>
-			<div class="panel-footer"><button class="btn btn-info btn-block" data-toggle="modal" data-target="#myModal"><i class="fas fa-hands-helping"></i> Asociar contenido</button>
-			</div>
-			
 		</div>
 	</div>
 </div><!--CIERRA ROW-->
