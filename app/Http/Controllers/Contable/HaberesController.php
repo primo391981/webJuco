@@ -95,7 +95,6 @@ class HaberesController extends Controller
 					$habilita->push($totalExtras);
 					
 					$habilitadas->push($habilita);
-					//dd($habilitadas);
 					$cantHabilitados ++;
 				}
 				
@@ -169,7 +168,10 @@ class HaberesController extends Controller
 						
 						//Obtiene monto de Salario Nominal Gravado y no Gravado, sumando todos los conceptos (víaticos y partidas extras)
 						$montoSalario = $this->obtenerMontosSalarioNominal($fecha, $empleado, $cargo, $horasRecibo, $montoAntiguedad);
-						$montoSalarioGravado=$montoSalario[40];
+						//Monto del salario Gravado
+						$montoSalarioGravado = $montoSalario[40];
+						$montoSalarioNominal = $montoSalario[46];
+						
 						//Carga Detalles
 						$cant=count($montoSalario);					
 						for($j=0;$j<$cant;$j++){
@@ -222,7 +224,7 @@ class HaberesController extends Controller
 							$descIRPFPrimario=0;
 							$deducionesIRPF=0;
 						}
-											
+						
 						$datosRecibo->push($this->obtenerDetalle(16,$descIRPFPrimario,'NA'));
 						$datosRecibo->push($this->obtenerDetalle(17,$deducionesIRPF,'NA'));
 						
@@ -234,13 +236,12 @@ class HaberesController extends Controller
 						$montoViatico=$this->obtenerPagos($fecha,$empleado,1);
 						$datosRecibo->push($this->obtenerDetalle(10,$montoViatico,'NA'));
 						
-						
 						//Suma de descuentos
 						$sumaDescuentos=$aportesSegSoc + $descIRPF + $montoAdelanto;
 						$datosRecibo->push($this->obtenerDetalle(20,$sumaDescuentos,'NA'));
 						
 						//Cálculo Sueldo Luíqido
-						$sueldoLiquido = $montoSalarioGravado - $sumaDescuentos;
+						$sueldoLiquido = $montoSalarioNominal - $sumaDescuentos - $montoViatico;//Agregar Fictos
 						$datosRecibo->push($this->obtenerDetalle(21,$sueldoLiquido,'NA'));
 						
 						//Guarda encabezado del recibo
@@ -698,9 +699,8 @@ class HaberesController extends Controller
 			$salarios->push($horasRecibo[0]);
 			
 		}
-		else{
-			
-			//empleado jornalero
+		else
+		{//empleado jornalero
 			//Horas del mes
 			$salNominalGravado = $empleado->valorHora * $horasRecibo[0];
 			//Sueldo Jornal
@@ -708,20 +708,27 @@ class HaberesController extends Controller
 			$salarios->push(1);
 			$salarios->push($salNominalGravado);
 			
-		}
-				
+			//Jornalero no tiene descuento por faltas
 			$salarios->push(3);
-			if ($horasRecibo[8] > 0)
-			{//Suma el valor de Días de Licencia Gozadas en el mes
-				$salarios->push(9);
-			}
-			else			
-				$salarios->push(0);				
-				
+			$salarios->push(0);
+			$salarios->push(0);
+			$salarios->push(0);
+		}
+		
+		$salarios->push(3);
+		if ($horasRecibo[8] > 0)
+		{//Suma el valor de Días de Licencia Gozadas en el mes
+			$salarios->push(9);
+		}
+		else			
+			$salarios->push(0);				
+		
+		if ($cargo->id_remuneracion == 1)
+		{//El empleado es mensual.		
 			$salNominalGravado += ($empleado->monto / 30) * $horasRecibo[8];
 			$salarios->push(($empleado->monto / 30) * $horasRecibo[8]);
 			$salarios->push($horasRecibo[8]);//Cant. Días de licencia
-				
+			
 			//Descanso Semanal Trabajado
 			$salNominalGravado += ($empleado->valorHora) * $horasRecibo[2];
 			
@@ -729,7 +736,22 @@ class HaberesController extends Controller
 			$salarios->push(2);
 			$salarios->push(($empleado->valorHora) * $horasRecibo[2]);
 			$salarios->push($horasRecibo[2]);
+		}
+		else
+		{//El empleado es jornalero.		
+			$salNominalGravado += $empleado->monto * $horasRecibo[8];
+			$salarios->push(($empleado->monto) * $horasRecibo[8]);
+			$salarios->push($horasRecibo[8]);//Cant. Días de licencia
 			
+			//Descanso Semanal Trabajado
+			$salNominalGravado += ($empleado->valorHora * 2) * $horasRecibo[2];
+			
+			$salarios->push(3);
+			$salarios->push(2);
+			$salarios->push(($empleado->valorHora * 2) * $horasRecibo[2]);
+			$salarios->push($horasRecibo[2]);
+		}
+					
 			//Horas extras
 			$salNominalGravado += ($empleado->valorHora * 2) * $horasRecibo[1];
 			
@@ -775,13 +797,12 @@ class HaberesController extends Controller
 			$salarios->push(8);
 			$salarios->push($montoAntiguedad);
 			
-			//Obtiene los pagos
-			
+			//Obtiene los pagos Viáticos/Partidas Extras/Fictos			
 			$pagos=Pago::where([['idEmpleado','=',$empleado->id],['fecha','=',$fecha]])->get();
 			//Recorre Pagos
 			foreach($pagos as $p)
 			{
-				if($p->idTipoPago==1 || $p->idTipoPago==3)
+				if($p->idTipoPago != 2)
 				{
 					if($p->gravado == 1)
 					{
@@ -793,7 +814,6 @@ class HaberesController extends Controller
 				}				
 			}
 		
-				
 		$salarios->push(2);
 		$salarios->push(11);
 		$salarios->push($salNominalGravado);
@@ -805,7 +825,7 @@ class HaberesController extends Controller
 		$salarios->push(2);
 		$salarios->push(13);
 		$salarios->push($salNominalNoGravado+$salNominalGravado);
-		
+	
 		return $salarios;
 	}
 	

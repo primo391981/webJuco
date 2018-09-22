@@ -380,13 +380,13 @@
 		<div class="form-group">
 				<label class="control-label col-sm-3">GRAVADO </label>
 				<div class="col-sm-9">
-					<input type="checkbox" id="gravado" name="gravado"  onclick="habilitarPorcentajeV()">
+					<input type="checkbox" id="gravadoEx" name="gravadoEx"  onclick="habilitarPorcentajeEx()">
 				</div>
 		</div>
 		<div class="form-group">
 				<label class="control-label col-sm-3">PORCENTAJE </label>
 				<div class="col-sm-9">
-					<input class="form-control" type="number" id="porcentaje" name="porcentaje" min="1" required disabled>
+					<input class="form-control" type="number" id="porcentajeEx" name="porcentajeEx" min="1" required disabled>
 				</div>
 		</div>
 		
@@ -438,6 +438,15 @@ function habilitarPorcentajeV() {
         document.getElementById("porcentaje").disabled = false;
     } else {
        document.getElementById("porcentaje").disabled = true;
+    }
+}
+
+function habilitarPorcentajeEx() {
+    var checkBox = document.getElementById("gravadoEx");
+    if (checkBox.checked == true){
+        document.getElementById("porcentajeEx").disabled = false;
+    } else {
+       document.getElementById("porcentajeEx").disabled = true;
     }
 }
 

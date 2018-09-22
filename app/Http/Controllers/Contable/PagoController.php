@@ -251,8 +251,9 @@ class PagoController extends Controller
 		$datos=0;
 		try{
 			$fechaPago= new Carbon($request->fecha);
+			
 			//Se tiene que setear datos antes del save por si ocurre un error y vuelva con los datos que ya tenia.
-			$datos=$this->listaEmpleadosHaberes($request->idEmpleado,$fechaPago);
+			$datos = $this->listaEmpleadosHaberes($request->idEmpleado,$fechaPago);
 			
 			$pago = new Pago;
 			$pago->idEmpleado = $request->idEmpleado;
@@ -276,6 +277,7 @@ class PagoController extends Controller
 			$pago->save();						
 			//todo ok vuelve con los viaticos actualizados
 			$datos=$this->listaEmpleadosHaberes($request->idEmpleado,$fechaPago);
+			
 			return view('contable.haberes.listaEmpleadosHaberes', ['habilitadas' => $datos[0], 'calculo' => $request->calculo, 'fecha' => $fechaPago, 'cantHabilitados' => $datos[1]])->with('okMsg', 'El viatico se cargo correctamente.');
 		}
 		 catch(Exception $e){
@@ -297,9 +299,9 @@ class PagoController extends Controller
 			$pago->monto = $request->monto;
 			$pago->descripcion = $request->desc;
 			
-			if (isset ($request->gravado)){
+			if (isset ($request->gravadoEx)){
 				$pago->gravado=1;
-				$pago->porcentaje = $request->porcentaje;		
+				$pago->porcentaje = $request->porcentajeEx;		
 			}
 			else{
 				$pago->gravado=0;
@@ -356,11 +358,14 @@ class PagoController extends Controller
 	}
 	
 	
-	private function listaEmpleadosHaberes($idEmpleado,$fecha){
-			$empresa=Empresa::where('id','=',$idEmpleado)->first();			
-			$personas=$empresa->personas;
+	private function listaEmpleadosHaberes($idEmpleado,$fecha)
+	{
+		$empleado = Empleado::find($idEmpleado);
+			$empresa = Empresa::where('id','=',$empleado->idEmpresa)->first();			
+			$personas = $empresa->personas;
 			$habilitadas=collect([]);
 			$cantHabilitados = 0;
+			
 			foreach($personas as $persona){
 				$fDesde=new Carbon($persona->pivot->fechaDesde);
 				$fHasta=new Carbon($persona->pivot->fechaHasta);
