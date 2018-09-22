@@ -83,10 +83,30 @@
 														<h4 class="modal-title">DESVINCULAR EMPLEADO DE EMPRESA</h4>
 													  </div>
 													  <div class="modal-body">
+														<form>
 														<p>Está seguro que desea desvincular al empleado <strong>{{$persona->nombre}} {{$persona->apellido}}</strong> de la empresa <strong>{{$empr->nombreFantasia}}</strong> ?</p>
+														<hr>
+														<div class="form-group row">
+																<label for="motivo" class="control-label col-sm-3">MOTIVO *</label>
+																<div class="col-sm-9">
+																	<select name="motivo" class="form-control" id="motivo">
+																		@foreach($bajaMotivos as $bm)
+																			<option value="{{ $bm->id }}">{{ $bm->nombre }}</option>  
+																		@endforeach
+																	</select>
+																</div>			
+														</div>
+														<div class="form-group row">
+																<label for="comentario" class="control-label col-sm-3">COMENTARIO *</label>
+																<div class="col-sm-9">
+																	<input type="text" id="comentario" class="form-control" name="comentario"/>
+																</div>			
+														</div>
+														
 													  </div>
 													  <div class="modal-footer">
 														<button type="submit"class="btn btn-danger" formaction="{{route('empleado.desvincularEmpresa')}}" formmethod="post"><i class="fas fa-trash-alt"></i> Aceptar</button>
+														</form>
 														<button type="button" class="btn btn-warning" data-dismiss="modal" autofocus><i class="fas fa-times"></i> Cancelar</button>
 													  </div>
 													</div>
@@ -111,16 +131,25 @@
 											<p><strong>DETALLE CONTRATO</strong></p>
 										</div>
 										<div class="col-xs-2">
-											<button type="submit"class="btn btn-warning btn-xs pull-right" formaction="#" formmethod="post" style="margin-bottom:5px;"><i class="far fa-edit"></i></button>
+											<a href="{{route('empleado.editarContrato',[$empr->pivot->id])}}" style="margin-bottom:5px;" class="btn btn-warning btn-xs pull-right" role="button"><i class="far fa-edit"></i></a>
 										</div>
 									</div>
 									<div class="row col-xs-12">
 										<p>Categoria: {{$empr->pivot->cargo->nombre}}</p>
-										<p>Remuneracion: {{$empr->pivot->cargo->remuneracion->nombre}} {{$empr->pivot->tipoHorario}}</p>
+										<p>Remuneracion: {{$empr->pivot->cargo->remuneracion->nombre}}</p>
+										@if($empr->pivot->tipoHorario==1 && $empr->pivot->cargo->remuneracion->id==1)
+											<p>Horario: Habitual</p>
+										@elseif($empr->pivot->tipoHorario==2 && $empr->pivot->cargo->remuneracion->id==1)
+											<p>Horario: Flexible</p>
+										@endif
 										<p>Inicio: {{$empr->pivot->fechaDesde}}</p>
-										<p>Egreso: {{$empr->pivot->fechaHasta}}</p>
+										@if($empr->pivot->fechaHasta=='2118-01-01')
+											<p>Egreso: No tiene fecha limite.</p>
+										@else
+											<p>Egreso: {{$empr->pivot->fechaHasta}}</p>
+										@endif
+										
 										<p>Monto: {{$empr->pivot->monto}}</p>
-										<p>Valor Hora: {{$empr->pivot->valorHora}}</p>
 										@if($empr->pivot->espera==true)
 											<p>Tiene horas de espera.</p>
 										@endif

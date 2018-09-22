@@ -24,14 +24,12 @@ class EmpresaRequest extends FormRequest
     public function rules()
     {
         return [
-            'rut'=>'required|unique:empresa,rut,'.$this->empresa,
-			'razonSocial'=>'required',
-			'nombreFantasia'=>'required|unique:empresa,nombreFantasia,'.$this->empresa,
-			'numBps'=>'nullable|unique:empresa,numBps,'.$this->empresa,
-			'numBse'=>'nullable|unique:empresa,numBse,'.$this->empresa,
-			'numMtss'=>'nullable|unique:empresa,numMtss,'.$this->empresa,
-			'email'=>'email|nullable|unique:empresa,email,'.$this->empresa,
-			
-        ];
+            'razonSocial'=>'required',
+			'nombreFantasia'=>'required',
+			'numBps'=>'nullable',
+			'numBse'=>'nullable',
+			'numMtss'=>'nullable',
+			'email'=>'email|nullable'
+		];
     }
 }

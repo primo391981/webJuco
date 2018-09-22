@@ -95,7 +95,6 @@ class HaberesController extends Controller
 					$habilita->push($totalExtras);
 					
 					$habilitadas->push($habilita);
-					//dd($habilitadas);
 					$cantHabilitados ++;
 				}
 				
@@ -136,33 +135,43 @@ class HaberesController extends Controller
 						
 						$cargo = Cargo::find($empleado->idCargo);
 						
-						if ($cargo->id_remuneracion == 1)
-						{//El empleado es mensual.
-							//Obtiene las horas que debe realizar por contrato
-							$horasMesContrato = $this->obtenerHorasContratoMes($fecha, $empleado->id);
-							//Obtiene las horas efectivamente trabajadas
-							$horasMesTrabajado = $this->obtenerHorasTrabajadasMes($fecha, $empleado->id);
-							//Obtiene las horas a descontar, Horas Extras y Horas Extras Especiales
-							$horasRecibo = $this->obtenerHorasDescuentoYExtras($fecha, $horasMesContrato, $horasMesTrabajado[0]);
+						if ($cargo->id_remuneracion == 1 && $empleado->tipoHorario==1)
+						{//El empleado es mensual y horario habitual.
 							
-							/*Horas Recibo contiene: 
-							-Horas Descuento
-							-Horas Extras en Día común
-							-Horas  Descanso Trabajado
-							-Horas Extras Descanso Trabajado*/
-							//Agregar horas de nocturnidad, percnote, espera y Descanso Intermedio Trabajado.
-							$horasRecibo->push($horasMesTrabajado[1]);//Horas Espera
-							$horasRecibo->push($horasMesTrabajado[2]);//Horas Nocturnidad
-							$horasRecibo->push($horasMesTrabajado[3]);//Horas Percnote
-							$horasRecibo->push($horasMesTrabajado[4]);//Horas Trabajadas Descanso Intermedio
-							$horasRecibo->push($request->input('lic'.$i));//Días de Licencia Gozados
-								
-							//Cálcula Antigüedad si corresponde						
-							$montoAntiguedad = $this->obtenerAntiguedad($fecha, $empleado, $cargo);
+								//Obtiene las horas que debe realizar por contrato
+								$horasMesContrato = $this->obtenerHorasContratoMes($fecha, $empleado->id);
+								//Obtiene las horas efectivamente trabajadas
+								$horasMesTrabajado = $this->obtenerHorasTrabajadasMes($fecha, $empleado->id);
+								//Obtiene las horas a descontar, Horas Extras y Horas Extras Especiales
+								$horasRecibo = $this->obtenerHorasDescuentoYExtras($fecha,$cargo,$horasMesTrabajado[0],$horasMesContrato);
+						} 
+						else{
+							//El empleado es mensual y horario flexible  o jornalero
+							$horasMesTrabajado = $this->obtenerHorasTrabajadasMes($fecha, $empleado->id);
+							$horasRecibo = $this->obtenerHorasDescuentoYExtras($fecha,$cargo,$horasMesTrabajado[0]);
 						}
+						
+						/*Horas Recibo contiene: 
+						-Horas Descuento o horas Jornal
+						-Horas Extras en Día común
+						-Horas  Descanso Trabajado
+						-Horas Extras Descanso Trabajado*/
+						//Agregar horas de nocturnidad, percnote, espera y Descanso Intermedio Trabajado.
+						$horasRecibo->push($horasMesTrabajado[1]);//Horas Espera
+						$horasRecibo->push($horasMesTrabajado[2]);//Horas Nocturnidad
+						$horasRecibo->push($horasMesTrabajado[3]);//Horas Percnote
+						$horasRecibo->push($horasMesTrabajado[4]);//Horas Trabajadas Descanso Intermedio
+						$horasRecibo->push($request->input('lic'.$i));//Días de Licencia Gozados
+						
+						//Cálcula Antigüedad si corresponde						
+						$montoAntiguedad = $this->obtenerAntiguedad($fecha, $empleado, $cargo);
+						
 						//Obtiene monto de Salario Nominal Gravado y no Gravado, sumando todos los conceptos (víaticos y partidas extras)
 						$montoSalario = $this->obtenerMontosSalarioNominal($fecha, $empleado, $cargo, $horasRecibo, $montoAntiguedad);
-					
+						//Monto del salario Gravado
+						$montoSalarioGravado = $montoSalario[40];
+						$montoSalarioNominal = $montoSalario[46];
+						
 						//Carga Detalles
 						$cant=count($montoSalario);					
 						for($j=0;$j<$cant;$j++){
@@ -215,7 +224,7 @@ class HaberesController extends Controller
 							$descIRPFPrimario=0;
 							$deducionesIRPF=0;
 						}
-											
+						
 						$datosRecibo->push($this->obtenerDetalle(16,$descIRPFPrimario,'NA'));
 						$datosRecibo->push($this->obtenerDetalle(17,$deducionesIRPF,'NA'));
 						
@@ -227,13 +236,12 @@ class HaberesController extends Controller
 						$montoViatico=$this->obtenerPagos($fecha,$empleado,1);
 						$datosRecibo->push($this->obtenerDetalle(10,$montoViatico,'NA'));
 						
-						
 						//Suma de descuentos
 						$sumaDescuentos=$aportesSegSoc + $descIRPF + $montoAdelanto;
 						$datosRecibo->push($this->obtenerDetalle(20,$sumaDescuentos,'NA'));
 						
 						//Cálculo Sueldo Luíqido
-						$sueldoLiquido = $empleado->monto - $sumaDescuentos;
+						$sueldoLiquido = $montoSalarioNominal - $sumaDescuentos - $montoViatico;//Agregar Fictos
 						$datosRecibo->push($this->obtenerDetalle(21,$sueldoLiquido,'NA'));
 						
 						//Guarda encabezado del recibo
@@ -319,20 +327,27 @@ class HaberesController extends Controller
 				switch ($th->id)
 				{		
 					case 1:
-					//hora común	
+					//hora común
 							$horasRealizadasDia->push($i."/".$fecha->month);
-							$horasRealizadasDia->push($horasReg->cantHoras);							
-						break;
-					case 2:
-					//hora extra							
-							if ($horasReg != null)
-							{
+							if($horasReg->tipoDia==null){
 								$horasRealizadasDia->push($horasReg->cantHoras);
 							}
-							else	
-							{
-								$horasRealizadasDia->push("00:00:00");								
+							else{
+								$horasRealizadasDia->push($horasReg->tipoDia);
+								$horasRealizadasDia->push($horasReg->cantHoras);								
 							}
+						break;
+					case 2:
+					//hora extra
+								if ($horasReg != null)
+								{
+									$horasRealizadasDia->push($horasReg->cantHoras);
+								}
+								else	
+								{
+									$horasRealizadasDia->push("00:00:00");								
+								}
+							
 						break;
 					case 3:
 					//hora espera							
@@ -390,7 +405,6 @@ class HaberesController extends Controller
 				}
 				
 			}
-			
 			$horasRealizadasMes->push($horasRealizadasDia);			
 		}
 		
@@ -450,9 +464,9 @@ class HaberesController extends Controller
 	}	
 
 	//Devuelve la cantidad de horas comunes a descontar y horas extras dobles y 2.5 a pagar
-	private function obtenerHorasDescuentoYExtras($fecha, $horasMesContrato, $horasMesTrabajado)
+	private function obtenerHorasDescuentoYExtras($fecha,$cargo, $horasMesTrabajado, $horasMesContrato=null)
 	{
-		$cantHorasDescuento = 0;
+		$cantHoras = 0;
 		$cantHorasExtras = 0;
 		$cantHorasDescansoTrabajado = 0;
 		$cantHoraExtraDescansoTrabajado = 0;
@@ -461,30 +475,78 @@ class HaberesController extends Controller
 		//dd($horasMesContrato);	
 		for($i=0;$i<$fecha->daysInMonth;$i++)
 		{
-			//Suma de horas a descontar por diferencia
-			if ($horasMesContrato[$i][1] > $horasMesTrabajado[$i][1])
-			{
-				$horaContrato = Carbon::createFromTimeString($horasMesContrato[$i][1]);
-				$horaReal = Carbon::createFromTimeString($horasMesTrabajado[$i][1]);
-				$difHora = $horaContrato->hour - $horaReal->hour;
+			$horasExtrasDia = 0;
+			
+			if($horasMesContrato!=null){
+				//Suma de horas a descontar por diferencia
+				if ($horasMesContrato[$i][1] > $horasMesTrabajado[$i][1])
+				{
+					$horaContrato = Carbon::createFromTimeString($horasMesContrato[$i][1]);
+					$horaReal = Carbon::createFromTimeString($horasMesTrabajado[$i][1]);
+					$difHora = $horaContrato->hour - $horaReal->hour;
+					
+					$cantHoras = $cantHoras - $difHora;
+				}
 				
-				$cantHorasDescuento = $cantHorasDescuento - $difHora;
+				//Suma horas de Descanso Trabajado para días Descanso y Medio Día.
+				if($horasMesContrato[$i][2] != 1 && $horasMesContrato[$i][1] < $horasMesTrabajado[$i][1])
+				{
+					$horaContrato = Carbon::createFromTimeString($horasMesContrato[$i][1]);
+					$horaReal = Carbon::createFromTimeString($horasMesTrabajado[$i][1]);
+					$difHora = $horaReal->hour - $horaContrato->hour;
+					
+					$cantHorasDescansoTrabajado += $difHora;
+				}
+				$horasExtrasDia = Carbon::createFromTimeString($horasMesTrabajado[$i][2]);
+				$valorSwitch=$horasMesContrato[$i][2];
+			}
+			else{				
+					//suma horas a descontar de diferencias y horas de Descanso Trabajado para días Descanso y Medio Día empleado mensual felxible
+					switch($horasMesTrabajado[$i][1]){
+						case 'c':
+								if($cargo->id_remuneracion == 1){
+									$horaReal = Carbon::createFromTimeString($horasMesTrabajado[$i][2]);
+									$difHora = 8 - $horaReal->hour;								
+									$cantHoras = $cantHoras - $difHora;
+								}
+								else{
+									//suma cantidad de horas comunes del empleado jornalero
+									$hr=Carbon::createFromTimeString($horasMesTrabajado[$i][2]);
+									$cantHoras = $cantHoras+$hr->hour;
+								}
+								$valorSwitch=1;
+							break;
+						case 'm':
+								$horaReal = Carbon::createFromTimeString($horasMesTrabajado[$i][2]);
+								$difHora = 4 - $horaReal->hour;
+								if($difHora>0){
+									$cantHoras = $cantHoras - $difHora;
+								}
+								else{
+									$cantHorasDescansoTrabajado = $cantHorasDescansoTrabajado - $difHora;
+								}
+								$valorSwitch=2;
+							break;
+						case 'd':
+								if($cargo->id_remuneracion == 1){
+									$horaReal = Carbon::createFromTimeString($horasMesTrabajado[$i][2]);
+									$cantHorasDescansoTrabajado = $cantHorasDescansoTrabajado + $horaReal->hour;
+								}
+								else{
+									//suma cantidad de horas comunes del empleado jornalero en dia descanso
+									$cantHorasDescansoTrabajado += Carbon::createFromTimeString($horasMesTrabajado[$i][2])->hour;
+								}
+								$valorSwitch=3;
+							break;
+					}
+				
+				
+				$horasExtrasDia = Carbon::createFromTimeString($horasMesTrabajado[$i][3]);
 			}
 			
-			//Suma horas de Descanso Trabajado para días Descanso y Medio Día.
-			if($horasMesContrato[$i][2] != 1 && $horasMesContrato[$i][1] < $horasMesTrabajado[$i][1])
-			{
-				$horaContrato = Carbon::createFromTimeString($horasMesContrato[$i][1]);
-				$horaReal = Carbon::createFromTimeString($horasMesTrabajado[$i][1]);
-				$difHora = $horaReal->hour - $horaContrato->hour;
-				
-				$cantHorasDescansoTrabajado += $difHora;
-			}
-			
-			//dd($cantHorasDescuento);
-			$horasExtrasDia = Carbon::createFromTimeString($horasMesTrabajado[$i][2]);
 			//Suma de horas Extras
-			switch ($horasMesContrato[$i][2])
+			
+			switch ($valorSwitch)
 			{
 				case 1:
 						//JORNADA COMPLETA
@@ -530,11 +592,11 @@ class HaberesController extends Controller
 			}			
 		}
 		
-		$horasEmpl->push($cantHorasDescuento);
+		$horasEmpl->push($cantHoras);
 		$horasEmpl->push($cantHorasExtras);
 		$horasEmpl->push($cantHorasDescansoTrabajado);
 		$horasEmpl->push($cantHoraExtraDescansoTrabajado);
-		
+		//dd($horasEmpl);
 		return $horasEmpl;
 	}
 	
@@ -618,11 +680,12 @@ class HaberesController extends Controller
 		{//El empleado es mensual.
 			//Horas del mes
 			$salNominalGravado = $empleado->monto;
-			//Sueldo/Jornal
+			//Sueldo nominal
 			$salarios->push(2);
 			$salarios->push(1);
 			$salarios->push($salNominalGravado);
 			
+			//Descuento por faltas
 			$salarios->push(3);
 			if ($horasRecibo[0] < 0)
 			{//Resta de valor por faltas
@@ -631,22 +694,41 @@ class HaberesController extends Controller
 			else
 				$salarios->push(0);
 			
-			$salNominalGravado += ($empleado->monto /30/8) * $horasRecibo[0];
-			$salarios->push(($empleado->monto /30/8) * $horasRecibo[0]);
+			$salNominalGravado += ($empleado->valorHora) * $horasRecibo[0];
+			$salarios->push(($empleado->valorHora) * $horasRecibo[0]);
 			$salarios->push($horasRecibo[0]);
-				
+			
+		}
+		else
+		{//empleado jornalero
+			//Horas del mes
+			$salNominalGravado = $empleado->valorHora * $horasRecibo[0];
+			//Sueldo Jornal
+			$salarios->push(2);
+			$salarios->push(1);
+			$salarios->push($salNominalGravado);
+			
+			//Jornalero no tiene descuento por faltas
 			$salarios->push(3);
-			if ($horasRecibo[8] > 0)
-			{//Suma el valor de Días de Licencia Gozadas en el mes
-				$salarios->push(9);
-			}
-			else			
-				$salarios->push(0);				
-				
+			$salarios->push(0);
+			$salarios->push(0);
+			$salarios->push(0);
+		}
+		
+		$salarios->push(3);
+		if ($horasRecibo[8] > 0)
+		{//Suma el valor de Días de Licencia Gozadas en el mes
+			$salarios->push(9);
+		}
+		else			
+			$salarios->push(0);				
+		
+		if ($cargo->id_remuneracion == 1)
+		{//El empleado es mensual.		
 			$salNominalGravado += ($empleado->monto / 30) * $horasRecibo[8];
 			$salarios->push(($empleado->monto / 30) * $horasRecibo[8]);
 			$salarios->push($horasRecibo[8]);//Cant. Días de licencia
-				
+			
 			//Descanso Semanal Trabajado
 			$salNominalGravado += ($empleado->valorHora) * $horasRecibo[2];
 			
@@ -654,7 +736,22 @@ class HaberesController extends Controller
 			$salarios->push(2);
 			$salarios->push(($empleado->valorHora) * $horasRecibo[2]);
 			$salarios->push($horasRecibo[2]);
+		}
+		else
+		{//El empleado es jornalero.		
+			$salNominalGravado += $empleado->monto * $horasRecibo[8];
+			$salarios->push(($empleado->monto) * $horasRecibo[8]);
+			$salarios->push($horasRecibo[8]);//Cant. Días de licencia
 			
+			//Descanso Semanal Trabajado
+			$salNominalGravado += ($empleado->valorHora * 2) * $horasRecibo[2];
+			
+			$salarios->push(3);
+			$salarios->push(2);
+			$salarios->push(($empleado->valorHora * 2) * $horasRecibo[2]);
+			$salarios->push($horasRecibo[2]);
+		}
+					
 			//Horas extras
 			$salNominalGravado += ($empleado->valorHora * 2) * $horasRecibo[1];
 			
@@ -700,13 +797,12 @@ class HaberesController extends Controller
 			$salarios->push(8);
 			$salarios->push($montoAntiguedad);
 			
-			//Obtiene los pagos
-			
+			//Obtiene los pagos Viáticos/Partidas Extras/Fictos			
 			$pagos=Pago::where([['idEmpleado','=',$empleado->id],['fecha','=',$fecha]])->get();
 			//Recorre Pagos
 			foreach($pagos as $p)
 			{
-				if($p->idTipoPago==1 || $p->idTipoPago==3)
+				if($p->idTipoPago != 2)
 				{
 					if($p->gravado == 1)
 					{
@@ -717,8 +813,7 @@ class HaberesController extends Controller
 						$salNominalNoGravado += $p->monto;
 				}				
 			}
-		}
-				
+		
 		$salarios->push(2);
 		$salarios->push(11);
 		$salarios->push($salNominalGravado);
@@ -730,7 +825,7 @@ class HaberesController extends Controller
 		$salarios->push(2);
 		$salarios->push(13);
 		$salarios->push($salNominalNoGravado+$salNominalGravado);
-		
+	
 		return $salarios;
 	}
 	
