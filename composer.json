@@ -28,7 +28,11 @@
         ],
         "psr-4": {
             "App\\": "app/"
-        }
+        },
+		"files": [
+        "app/Http/Controllers/Juridico/funciones.php" 
+		]
+		
     },
     "autoload-dev": {
         "psr-4": {

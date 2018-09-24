@@ -78,7 +78,6 @@ class ClienteController extends Controller
 		
 		$estados = EstadoCivil::All();
 				
-		
 		return view('juridico.cliente.agregarFisica', ['tiposdoc' => $tiposdoc, 'estados' => $estados]);
     }
 	

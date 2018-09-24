@@ -15,9 +15,16 @@ use SoapClient;
 use SoapFault;
 use Auth;
 use DB;
+use Carbon\Carbon;
 
 class ExpedienteController extends Controller
 {
+	private function checkPermiso(){
+		if(Auth::user()->hasRole('invitado')){
+			return abort(403, 'Unauthorized action.');
+		}
+	}
+	
 	/**
      * Display a listing of the resource.
      *
@@ -41,17 +48,8 @@ class ExpedienteController extends Controller
 	//función que accede al webservice del Poder Judicial para obtener los datos del expediente
 	public function search(Request $request){
 		
-		if(Auth::user()->hasRole('invitado')){
-			return abort(403, 'Unauthorized action.');
-		}
+		$this->checkPermiso();
 		
-		$wsdl = "http://www.expedientes.poderjudicial.gub.uy/wsConsultaIUE.php?wsdl";    
-		try {
-			$client = new SoapClient($wsdl);
-		} catch(SoapFault $e) {
-			return back()->withInput()->withError('El sistema del Poder Judicial no se encuentra disponible en este momento. Haga click <a href='.route('expediente.create.manual').'>aquí</a> para ingresar un iue de forma manual.');
-		}
-		 
 		$iue = $request->iue;
 		
 		$exp = Expediente::where(DB::raw('REPLACE(iue, " ", "")'),str_replace(' ','',$iue))->get();
@@ -61,10 +59,13 @@ class ExpedienteController extends Controller
 		}
 		
 		try { 
+			$wsdl = "http://www.expedientes.poderjudicial.gub.uy/wsConsultaIUE.php?wsdl";    
+			$client = new SoapClient($wsdl);
 			$expediente = $client->ConsultaIUE($iue);
         } catch (SoapFault $e) { 
 			return back()->withInput()->withError('El sistema del Poder Judicial no se encuentra disponible en este momento. Haga click <a href='.route('expediente.create.manual').'>aquí</a> para ingresar un iue de forma manual.');
-		} 		
+		} 	
+		
 		if($expediente->estado === "EL EXPEDIENTE NO SE ENCUENTRA EN EL SISTEMA"){
 			return back()->withInput()->withError('El expediente no se encuentra en el sistema del Poder Judicial. Haga click <a href='.route('expediente.create.manual').'>aquí</a> para ingresar un iue de forma manual.');
 		} elseif($expediente->estado === "EL EXPEDIENTE MANTIENE RESERVA") {
@@ -81,9 +82,8 @@ class ExpedienteController extends Controller
 	//Creación manual de un expediente
 	public function createManual()
     {
-        if(Auth::user()->hasRole('invitado')){
-			return abort(403, 'Unauthorized action.');
-		};
+        //solo usuarios admin
+		$this->checkPermiso();
 		
 		$tipoExpedientes = TipoExpediente::All();
 		$clientes = Cliente::All();
@@ -98,9 +98,8 @@ class ExpedienteController extends Controller
      */
     public function create()
     {
-        if(Auth::user()->hasRole('invitado')){
-			return abort(403, 'Unauthorized action.');
-		};
+		//solo usuarios admin
+        $this->checkPermiso();
 		
 		return view('juridico.expediente.webserviceExpediente');
     }
@@ -114,9 +113,7 @@ class ExpedienteController extends Controller
     public function store(Request $request)
     {
 		//solo usuarios admin
-		if(Auth::user()->hasRole('invitado')){
-			return abort(403, 'Unauthorized action.');
-		}
+		$this->checkPermiso();
 		
 		//dd($request);
 		
@@ -153,6 +150,10 @@ class ExpedienteController extends Controller
 		
 		$paso->save();
 		
+		//se crea una notificación y se envía por mail
+		$msg = Carbon::now()." - El expediente ".$expediente->iue." ha sido creado por le usuario ".Auth::user()->name.".";
+		notificacion($paso, $msg, $expediente);
+		
 		//Creación del paso de creación del expediente
 		if ($request->exists('nextExpediente')){
 			return view('juridico.expediente.agregarPaso', ['expediente' => $expediente, 'numero_paso' => 1, 'nombre_paso' => "Adjuntar Demanda"])->with('success', "El expediente se creó correctamente.");
@@ -187,7 +188,6 @@ class ExpedienteController extends Controller
 		$pasos = array();
 		
 		foreach($expediente->pasos as $paso){
-			
 			array_push($pasos,$paso->id_tipo);
 			if($paso->fecha_fin == null){
 				array_push($pasosActuales,$paso->id_tipo);
@@ -212,9 +212,7 @@ class ExpedienteController extends Controller
     public function edit(Expediente $expediente)
     {
 		//si el usuario actual tiene los roles adecuados
-		if(Auth::user()->hasRole('invitado')){
-			return abort(403, 'Unauthorized action.');
-		}
+		$this->checkPermiso();
 		
         $tipoExpedientes = TipoExpediente::All();
 		$clientes = Cliente::All();
@@ -231,9 +229,7 @@ class ExpedienteController extends Controller
     public function update(Request $request, Expediente $expediente)
     {
 		//si el usuario actual tiene los roles adecuados
-        if(Auth::user()->hasRole('invitado')){
-			return abort(403, 'Unauthorized action.');
-		}
+        $this->checkPermiso();
 		
 		$expediente->tipo_id = $request->tipoexp;
 		$expediente->fecha_inicio = $request->fecha_inicio;
@@ -254,12 +250,8 @@ class ExpedienteController extends Controller
 
 	public function addPermiso(Request $request, Expediente $expediente)
 	{
-		$user = Auth::user();
-		
 		//si el usuario actual tiene los roles adecuados
-		if($user->hasRole('invitado')){
-			return abort(403, 'Unauthorized action.');
-		};
+		$this->checkPermiso();
 		
 		//Se eliminan los permisos previos del usuario
 		if($expediente->permisosExpedientes->contains($request->usuario)){
@@ -274,12 +266,8 @@ class ExpedienteController extends Controller
 	
 	public function delPermiso(Request $request, Expediente $expediente)
 	{
-		$user = Auth::user();
-		
 		//si el usuario actual tiene los roles adecuados
-		if($user->hasRole('invitado')){
-			return abort(403, 'Unauthorized action.');
-		};
+		$this->checkPermiso();
 		
 		//se eliminan los permisos del usuario
 		$expediente->permisosExpedientes()->detach($request->usuario);

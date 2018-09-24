@@ -31,9 +31,10 @@ class WebServiceController extends Controller
         print "</pre>";
 		*/
 		dd($values);
-		foreach($values->movimientos as $movimiento){
+		/*foreach($values->movimientos as $movimiento){
 			
 		}
+		*/
 		//dd($client);
 	}
 }

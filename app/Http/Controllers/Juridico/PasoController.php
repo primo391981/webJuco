@@ -7,7 +7,7 @@ use App\Juridico\TipoPaso;
 use App\Juridico\Expediente;
 use App\Juridico\Archivo;
 use App\Juridico\TipoArchivo;
-use App\Juridico\Notificacion;
+
 use App\Juridico\Transicion;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -18,7 +18,31 @@ use Mail;
 use App\Mail\SendMailable;
 
 class PasoController extends Controller
-{
+{	
+	private function saveArchivo($iue,$documentos,$pasoId){
+		
+		//se crea el nombre del directorio
+		$directorio = $iue;
+		$directorio = str_slug($directorio);
+			
+		//por cada adjunto
+		foreach($documentos as $key => $documento){
+			//se registra el archivo
+			$file = new Archivo();
+			$file->owner_id = $pasoId;
+			$file->owner_type = "App\Juridico\Paso";
+			$file->archivo = $documento->storeAs('expedientes/'.$directorio, $documento->getClientOriginalName());
+			$file->nombre_archivo = $documento->getClientOriginalName();
+			$tipoArchivo = Storage::mimeType($file->archivo);
+			
+			//se obtiene el tipo de archivo y se lo registra
+			$file->id_tipo = $this->tipoArchivo($file->archivo);
+			
+			//se guardan los cambios
+			$file->save();
+		}
+	}
+	
 	private function tipoArchivo($archivo){
 		//se obtiene el tipo de archivo y se lo registra
 		$tipoArchivo = Storage::mimeType($archivo);
@@ -135,45 +159,13 @@ class PasoController extends Controller
 		
 		//si hay archivos, se adjuntan al paso	
 		if ($request->hasFile('documentos')) {
-			//se genera le nombre de carpeta para el almacenamiento
-			$directorio = $expediente->iue;
-			$directorio = str_slug($directorio);
-			
-			//por cada archivo
-			foreach($request->documentos as $key => $documento){
-				
-				//se crea un nuevo registro
-				$file = new Archivo();
-				
-				//se registra que corresponde a un paso
-				$file->owner_id = $paso->id;
-				$file->owner_type = "App\Juridico\Paso";
-				
-				//se guarda el archivo en la ubicación correspondiente
-				$file->archivo = $documento->storeAs('expedientes/'.$directorio, $documento->getClientOriginalName());
-				$file->nombre_archivo = $documento->getClientOriginalName();
-				
-				//se obtiene el tipo de archivo y se lo registra
-				$file->id_tipo = $this->tipoArchivo($file->archivo);
-			
-				//se guardan los cambios
-				$file->save();
-			}
-			
+			$this->saveArchivo($expediente->iue, $request->documentos, $paso->id);
 		}	
 		
-		
-		//se crea una notificación
-		$notificacion = new Notificacion();
-		$notificacion->id_paso = $paso->id;
-		$notificacion->id_user = $paso->id_usuario;
-		$notificacion->id_tipo = 1; //tipo info
-		$notificacion->fecha_envio = Carbon::now();
-		$notificacion->estado = 0; //se envía una notificación por mail.
-		$notificacion->mensaje = Carbon::now()." - El expediente ".$expediente->iue." ha sido modificado por el usuario ".Auth::user()->name.".";
-		
-		$notificacion->save();
-		
+		//se crea una notificación y se envía por mail
+		$msg = Carbon::now()." - El expediente ".$expediente->iue." ha sido modificado por el usuario ".Auth::user()->name.".";
+		notificacion($paso, $msg, $expediente);
+			
 		//se actualiza el estado del expediente	
 		if($paso->id_tipo == 12){
 			$expediente->estado_id = 5;
@@ -182,16 +174,8 @@ class PasoController extends Controller
 		}
 		$expediente->save();
 			
-		// envío de mail, notificación de modificación	
-		Mail::to($expediente->usuario->email)->send(new SendMailable($notificacion->mensaje));
-		foreach($expediente->permisosExpedientes as $usuario){
-			Mail::to($usuario->email)->send(new SendMailable($notificacion->mensaje));
-		}
-		// fin envío de mail
-	
 		return redirect()->route('expediente.show',$expediente)->with("success","El expediente fue modificado correctamente.");
-		
-		
+
     }
 
     /**
@@ -263,47 +247,14 @@ class PasoController extends Controller
 		$paso->comentario = $request->comentarios;
 		$paso->save();
 		
-		//si hay archivos adjuntos se registran
+		//si hay archivos, se adjuntan al paso	
 		if ($request->hasFile('documentos')) {
-			//se crea el nombre del directorio
-			$directorio = $expediente->iue;
-			$directorio = str_slug($directorio);
-			
-			//por cada adjunto
-			foreach($request->documentos as $key => $documento){
-				//se registra el archivo
-				$file = new Archivo();
-				$file->owner_id = $paso->id;
-				$file->owner_type = "App\Juridico\Paso";
-				$file->archivo = $documento->storeAs('expedientes/'.$directorio, $documento->getClientOriginalName());
-				$file->nombre_archivo = $documento->getClientOriginalName();
-				$tipoArchivo = Storage::mimeType($file->archivo);
-				
-				//se obtiene el tipo de archivo y se lo registra
-				$file->id_tipo = $this->tipoArchivo($file->archivo);
-				
-				//se guardan los cambios
-				$file->save();
-			}
-		}	
+			$this->saveArchivo($expediente->iue, $request->documentos, $paso->id);
+		}
 		
-		//se crea una notificacion
-		$notificacion = new Notificacion();
-		$notificacion->id_paso = $paso->id;
-		$notificacion->id_user = $paso->id_usuario;
-		$notificacion->id_tipo = 1; //tipo info
-		$notificacion->fecha_envio = Carbon::now();
-		$notificacion->estado = 1; //se envía una notificación por mail.
-		$notificacion->mensaje = "El expediente ".$expediente->iue." ha sido modificado.";
-		
-		$notificacion->save();
-		
-		// envío de mail, pruebas	
-		$mensaje = "mail de prueba de juco";
-        Mail::to($expediente->usuario->email)->send(new SendMailable($notificacion->mensaje));
-		
-		// fin envío de mail
-	
+		//se crea una notificación y se envía por mail
+		$msg = Carbon::now()." - El expediente ".$expediente->iue." ha sido modificado por el usuario ".Auth::user()->name.".";
+		notificacion($paso, $msg, $expediente);
 		 					
 		return redirect()->route('paso.show',$paso)->with("success","El expediente fue modificado correctamente.");
     }
