@@ -57,7 +57,7 @@
 								<select id="calculo" class="form-control" name="calculo" required autofocus>
 									<option value="">-- Seleccione cálculo --</option>
 								@foreach($tiposHaberes as $tipo)
-									<option value="{{$tipo->nombre}}">{{$tipo->nombre}}</option>
+									<option value="{{$tipo->id}}">{{$tipo->nombre}}</option>
 								@endforeach
 								</select>							
 							</div>	
@@ -73,10 +73,7 @@
 									</span>
 								@endif
 							</div>	
-						</div>
-			
-			
-			
+						</div>					
 			</div>
 			<div class="panel-footer">
 				<button type="submit" id="cargar" name="cargar" class="btn btn-warning btn-block" onClick=""><i class="fas fa-check"></i> Cargar Empleados</button>

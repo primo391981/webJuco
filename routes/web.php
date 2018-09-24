@@ -139,6 +139,7 @@ Route::group(['middleware' => ['auth']], function () {
 	
 	//haberes
 	Route::post('haberes/empleados','Contable\HaberesController@listaEmpleados')->name('haberes.listaEmpleados')->middleware('role:contableAdmin');
+	Route::post('haberes/aguinaldo','Contable\HaberesController@calculoAguinaldo')->name('haberes.calculoAguinaldo')->middleware('role:contableAdmin');	
 	Route::resource('haberes', 'Contable\HaberesController')->middleware('role:contableAdmin');
 	
 	//JURIDICO

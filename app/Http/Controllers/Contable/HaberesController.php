@@ -45,63 +45,139 @@ class HaberesController extends Controller
 			$habilitadas=collect([]);
 			$cantHabilitados = 0;
 			$hayUno=false;
-			foreach($personas as $persona)
+			
+			switch ($request->calculo)
 			{
-				$fecha=new Carbon($request->mes."-01");
+				case 1:
+						$fechaAux = new Carbon($request->mes."-01");
+						$fecha = new Carbon($request->mes."-".$fechaAux->daysInMonth);
+					break;
+				case 2: $fecha=new Carbon($request->mes."-31");
+					break;
+				case 3: $fecha=new Carbon($request->mes."-30");	
+					break;
+			}
+				
+			foreach($personas as $persona)
+			{				
 				$fDesde=new Carbon($persona->pivot->fechaDesde);
 				$fHasta=new Carbon($persona->pivot->fechaHasta);
+				//Verifica si el empleado tiene contrato vigente
 				if($fecha->between($fDesde,$fHasta))
 				{
 					$habilita=collect([]);
 					$habilita->push($persona);					
-					$regHora=RegistroHora::where([['idEmpleado','=',$persona->pivot->id],['fecha','=',$fecha]])->first();
-					if($regHora!=null)
-					{
-						$habilita->push('1');
-						$hayUno=true;
-					}
-					else
-					{
-						$habilita->push('0');
-					}
-					$pagos=Pago::where([['idEmpleado','=',$persona->pivot->id],['fecha','=',$fecha]])->get();
 					
-					$totalViaticos=0;
-					$totalAdelantos=0;
-					$totalExtras=0;
-					
-					foreach($pagos as $p)
+					switch ($request->calculo)
 					{
-						if($p->idTipoPago==1)
-						{
-							$totalViaticos+=$p->monto;
-						}
-						else
-						{
-							if ($p->idTipoPago==2)
-							{
-								$totalAdelantos+=$p->monto;
-							}
-							else
-							{
-								$totalExtras+=$p->monto;
-							}
-						}
+						case 1:
+								$regHora=RegistroHora::where([['idEmpleado','=',$persona->pivot->id],['fecha','=',$fecha]])->first();
 						
+								if($regHora!=null)
+								{
+									$habilita->push('1');
+									$hayUno=true;
+								}
+								else
+								{
+									$habilita->push('0');
+								}
+								$pagos=Pago::where([['idEmpleado','=',$persona->pivot->id],['fecha','=',$fecha]])->get();
+								
+								$totalViaticos=0;
+								$totalAdelantos=0;
+								$totalExtras=0;
+								
+								foreach($pagos as $p)
+								{
+									if($p->idTipoPago==1)
+									{
+										$totalViaticos+=$p->monto;
+									}
+									else
+									{
+										if ($p->idTipoPago==2)
+										{
+											$totalAdelantos+=$p->monto;
+										}
+										else
+										{
+											$totalExtras+=$p->monto;
+										}
+									}
+									
+								}
+								
+								$habilita->push($totalViaticos);
+								$habilita->push($totalAdelantos);
+								$habilita->push($totalExtras);
+							break;
+						case 2:
+								$i = 12;
+								$anio = $fecha->year - 1;
+								
+								while($i!=6)
+								{
+									$recibo = ReciboEmpleado::where([['idEmpleado','=',$persona->pivot->id],['fechaRecibo', '=', $anio.'-'.$i.'-01']])->first();
+									
+									if ($recibo != null)
+									{
+										$detalleNominal = $recibo->detallesRecibos->where('idConceptoRecibo','=',13)->first();
+										$habilita->push($detalleNominal->monto);
+									}
+									else
+										$habilita->push(0);
+									
+									if ($i == 12)
+									{
+										$i = 1;
+										$anio ++;
+									}
+									else
+										$i ++;									
+								}
+							break;
+						case 3:
+								$i = 6;
+									
+								while($i!=12)
+								{
+									$recibo = ReciboEmpleado::where([['idEmpleado','=',$persona->pivot->id],['fechaRecibo', '=', $fecha->year.'-'.$i.'-01']])->first();
+									
+									if ($recibo != null)
+									{
+										$detalleNominal = $recibo->detallesRecibos->where('idConceptoRecibo','=',13)->first();
+										$habilita->push($detalleNominal->monto);
+									}
+									else
+										$habilita->push(0);
+									
+									$i ++;									
+								}
+							break;
 					}
-					
-					$habilita->push($totalViaticos);
-					$habilita->push($totalAdelantos);
-					$habilita->push($totalExtras);
 					
 					$habilitadas->push($habilita);
 					$cantHabilitados ++;
 				}
 				
 			}
-			return view('contable.haberes.listaEmpleadosHaberes', ['habilitadas' => $habilitadas, 'calculo' => $request->calculo, 'fecha' => $fecha, 'cantHabilitados' => $cantHabilitados,'hayUnoHab'=>$hayUno]);			
+			
+			switch ($request->calculo)
+			{
+				case 1:
+						return view('contable.haberes.listaEmpleadosHaberes', ['habilitadas' => $habilitadas, 'calculo' => $request->calculo, 'fecha' => $fecha, 'cantHabilitados' => $cantHabilitados, 'hayUnoHab'=>$hayUno]);	
+					break;
+				case 2: 
+						return view('contable.haberes.listaEmpleadosAguinaldo', ['habilitadas' => $habilitadas, 'calculo' => $request->calculo, 'fecha' => $fecha, 'cantHabilitados' => $cantHabilitados]);	
+					break;
+				case 3: 
+						return view('contable.haberes.listaEmpleadosAguinaldo', ['habilitadas' => $habilitadas, 'calculo' => $request->calculo, 'fecha' => $fecha, 'cantHabilitados' => $cantHabilitados]);
+					break;
+			}
+					
 		}
-		catch(Exception $e){
+		catch(Exception $e){ 
 			return back()->withInput()->withError("Error en el sistema.");
 		}		
 	}
@@ -112,6 +188,7 @@ class HaberesController extends Controller
         //
     }
 
+	
 	//Guarda los datos del cálculo de sueldos con los detalles correspondientes al recibo del mismo.
     public function store(Request $request)
     {
@@ -249,7 +326,7 @@ class HaberesController extends Controller
 						$recibo->idEmpleado = $empleado->id;
 						$recibo->idTipoRecibo = 1; //Sueldo
 						$hoy = Carbon::today();
-						$recibo->fechaRecibo = $hoy->year.'-'.$hoy->month.'-'.$hoy->day;
+						$recibo->fechaRecibo = $fecha->year.'-'.$fecha->month.'-01';
 						$recibo->fechaPago = $hoy->year.'-'.$hoy->month.'-'.$hoy->day;
 						
 						$recibo->save();
@@ -284,7 +361,8 @@ class HaberesController extends Controller
 									$detalleRecibo->cantHoras=0;							
 								}						
 								
-								$detalleRecibo->monto=$dtr[1];					
+								$detalleRecibo->monto=$dtr[1];	
+								
 								if($dtr[0]==14 || $dtr[0]==15 || $dtr[0]==18)
 								{//BPS/Fonasa/FRL
 										$detalleRecibo->porcentaje=$dtr[2];						
@@ -304,6 +382,185 @@ class HaberesController extends Controller
 				
     }
 
+	//Guarda los datos del cálculo de aguinaldos con los detalles correspondientes al recibo del mismo.
+    public function calculoAguinaldo(Request $request)
+    {
+		$empleadosRecibo=collect([]);
+	   
+		for ( $i = 1; $i <= $request->cantHabilitados; $i++)
+		{//Recorre los empleados de la empresa.
+			$datosRecibo = collect([]);
+	
+			if ($request->input($i.'hab') != null)
+			{//Cálcula aguinaldo de cada empleado		
+				$idEmpleado = $request->input($i.'hab');
+					
+				$empleado = Empleado::find($idEmpleado);
+				//Suma del monto total de sueldos percibidos el empleado para el cálculo del aguinaldo
+				$montoTotal = 0;
+				
+				switch ($request->calculo)
+				{
+					case 2:
+							$i = 12;
+							$anio = $fecha->year - 1;
+							
+							while($i!=6)
+							{
+								$recibo = ReciboEmpleado::where([['idEmpleado','=',$empleado->id],['fechaRecibo', '=', $anio.'-'.$i.'-01']])->first();
+								
+								if ($recibo != null)
+								{
+									$detalleNominal = $recibo->detallesRecibos->where('idConceptoRecibo','=',13)->first();
+									$montoTotal += $detalleNominal->monto;
+								}
+								else
+									$habilita->push(0);
+								
+								if ($i == 12)
+								{
+									$i = 1;
+									$anio ++;
+								}
+								else
+									$i ++;									
+							}
+						break;
+					case 3:
+							$i = 6;
+								
+							while($i!=12)
+							{
+								$recibo = ReciboEmpleado::where([['idEmpleado','=',$empleado->id],['fechaRecibo', '=', $fecha->year.'-'.$i.'-01']])->first();
+								
+								if ($recibo != null)
+								{
+									$detalleNominal = $recibo->detallesRecibos->where('idConceptoRecibo','=',13)->first();
+									$montoTotal += $detalleNominal->monto;
+								}
+								else
+									$habilita->push(0);
+								
+								$i ++;									
+							}
+						break;
+				}
+				//Monto del aguinaldo.
+				$montoAguinaldo = $montoTotal / 12;
+				//Aguinaldo
+				$datosRecibo->push($this->obtenerDetalle(22,$montoAguinaldo,'NA'));
+				//Totales
+				$datosRecibo->push($this->obtenerDetalle(11,$montoAguinaldo,'NA'));
+				$datosRecibo->push($this->obtenerDetalle(12,0,'NA'));
+				$datosRecibo->push($this->obtenerDetalle(13,$montoAguinaldo,'NA'));
+				
+				//Cálculo de Descuentos
+				//Valor de BPC del mes a calcular
+				$valorBPC = $this->obtenerValorActual($fecha, 'BPC');
+
+				//Cálculo de descuento de Fonasa (porcentaje, monto)
+				$valoresFonasa = $this->obtenerDescuentoFonasa($empleado, $montoAguinaldo, $valorBPC);
+				
+				$porcFonasa = $valoresFonasa[0];
+				$descFonasa = $valoresFonasa[1];
+				$datosRecibo->push($this->obtenerDetalle(15,$descFonasa,$porcFonasa));
+				
+				//Cálculo de descuento de BPS
+				$porcBPS = $this->obtenerValorActual($fecha, 'BPS');
+				$descBPS = $montoAguinaldo * ($porcBPS / 100);
+				$datosRecibo->push($this->obtenerDetalle(14,$descBPS,$porcBPS));
+				
+				//Cálculo de descuento de FRL
+				$porcFRL = $this->obtenerValorActual($fecha, 'FRL');
+				$descFRL = $montoAguinaldo * ($porcFRL / 100);
+				$datosRecibo->push($this->obtenerDetalle(18,$descFRL,$porcFRL));
+				
+				//Cálculo de descuento de IRPF Primario
+				$descIRPFPrimario = $this->obtenerDescuentoIRPFPrimario($fecha, $empleado, $montoAguinaldo, $valorBPC);
+				
+				//Cálculo de deducciones de IRPF
+				$aportesSegSoc = $descFonasa + $descBPS + $descFRL;
+				
+				$deducionesIRPF = $this->obtenerDeduccionesIRPF($fecha, $empleado, $montoAguinaldo, $valorBPC, $aportesSegSoc);
+				
+				//IRPF final a pagar
+				$descIRPF = $descIRPFPrimario - $deducionesIRPF;
+				
+				if ($descIRPF < 0)
+				{
+					$descIRPFPrimario=0;
+					$deducionesIRPF=0;
+				}
+				
+				$datosRecibo->push($this->obtenerDetalle(16,$descIRPFPrimario,'NA'));
+				$datosRecibo->push($this->obtenerDetalle(17,$deducionesIRPF,'NA'));
+				
+				//Suma de descuentos
+				$sumaDescuentos = $aportesSegSoc + $descIRPF;
+				$datosRecibo->push($this->obtenerDetalle(20,$sumaDescuentos,'NA'));
+				
+				//Cálculo Aguinaldo Luíqido
+				$aguinaldoLiquido = $montoAguinaldo - $sumaDescuentos;
+				$datosRecibo->push($this->obtenerDetalle(21,$aguinaldoLiquido,'NA'));
+				
+				//Guarda encabezado del recibo
+				$recibo = new ReciboEmpleado;
+				$recibo->idEmpleado = $empleado->id;
+				$recibo->idTipoRecibo = $request->calculo;
+				$hoy = Carbon::today();
+				$recibo->fechaRecibo = $fecha->year.'-'.$fecha->month.'-01';
+				$recibo->fechaPago = $hoy->year.'-'.$hoy->month.'-'.$hoy->day;
+				
+				$recibo->save();
+				
+				$UltimoReciboEmpleado = ReciboEmpleado::where('idEmpleado','=',$empleado->id)->orderBy('id','desc')->first();
+				dd($datosRecibo);	
+				//Guarda detalles del recibo
+				foreach($datosRecibo as $dtr)
+				{
+					if ($dtr[0]!=0)
+					{
+						$detalleRecibo = new DetalleRecibo;
+						/*$table->integer('idConceptoRecibo')->unsigned();
+						$table->decimal('cantDias', 4, 1);
+						$table->decimal('cantHoras', 4, 1);
+						$table->decimal('monto', 8, 2);
+						$table->decimal('porcentaje', 8, 2);
+						*/
+						$detalleRecibo->idConceptoRecibo=$dtr[0];
+						if($dtr[0]==9)
+						{//Días de Licencia Gozada
+							$detalleRecibo->cantDias = $dtr[2];
+						}
+						else
+							$detalleRecibo->cantDias = 0;
+						
+						if(($dtr[0]>=2 && $dtr[0]<=7) || $dtr[0]==22)
+						{
+							$detalleRecibo->cantHoras=$dtr[2];
+						}
+						else{
+							$detalleRecibo->cantHoras=0;							
+						}						
+						
+						$detalleRecibo->monto=$dtr[1];	
+						
+						if($dtr[0]==14 || $dtr[0]==15 || $dtr[0]==18)
+						{//BPS/Fonasa/FRL
+								$detalleRecibo->porcentaje=$dtr[2];						
+						}
+						$detalleRecibo->idRecibo=$UltimoReciboEmpleado->id;
+						
+						$detalleRecibo->save();	
+					}
+				}
+				
+				$empleadosRecibo->push($UltimoReciboEmpleado);
+			}
+		
+	}
+	
+	
 	//Devuelve array con horas que TRABAJO el empleado en el mes indicado.
  	private function obtenerHorasTrabajadasMes ($fecha, $idEmpleado)
 	{
