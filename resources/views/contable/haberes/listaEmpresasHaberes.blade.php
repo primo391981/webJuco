@@ -90,12 +90,15 @@ function obtenerCalculo() {
 	var f = new Date();
 	if(x==2){
 		document.getElementById("mes").value = f.getFullYear()+"-06";
+		document.getElementById("mes").readOnly = true;
 	}
 	else if(x==3){
 		document.getElementById("mes").value = f.getFullYear()+"-12";
+		document.getElementById("mes").readOnly = true;
 	}
 	else{
 		document.getElementById("mes").value = f.getFullYear()+"-0"+f.getMonth();
+		document.getElementById("mes").readOnly = false;
 	}
 }
 

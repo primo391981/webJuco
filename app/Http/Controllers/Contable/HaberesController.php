@@ -39,7 +39,7 @@ class HaberesController extends Controller
 	
 	//Lista los empleados que se encuentran con contrato para el mes/año seleccionado para el cálculo, indicndo si están habilitados con sus horas del mes ya cargadas y totales de Adelantos/Viáticos/Partidas Extras.
 	public function listaEmpleados(Request $request){
-		//try{			
+		try{			
 			$empresa=Empresa::where('rut','=',$request->rut)->first();			
 			$personas=$empresa->personas;
 			$habilitadas=collect([]);
@@ -50,14 +50,15 @@ class HaberesController extends Controller
 			
 			switch ($request->calculo)
 			{
-				case 1:	$fecha = new Carbon($request->mes."-".$fechaAux->daysInMonth);
+				case 1:
+				case 4:	$fecha = new Carbon($request->mes."-".$fechaAux->daysInMonth);
 					break;
 				case 2: $fecha=new Carbon($fechaAux->year."-05-31");
 					break;
 				case 3: $fecha=new Carbon($fechaAux->year."-11-30");		
 					break;
 			}
-		
+				
 			foreach($personas as $persona)
 			{		
 				$fDesde=new Carbon($persona->pivot->fechaDesde);
@@ -177,13 +178,17 @@ class HaberesController extends Controller
 				case 3: 
 						return view('contable.haberes.listaEmpleadosAguinaldo', ['habilitadas' => $habilitadas, 'calculo' => $request->calculo, 'fecha' => $fecha, 'cantHabilitados' => $cantHabilitados]);
 					break;
+				case 4: 
+						$diaMax = $fecha->daysInMonth;
+						
+						return view('contable.haberes.listaEmpleadosSalVacacional', ['habilitadas' => $habilitadas, 'calculo' => $request->calculo, 'fecha' => $fecha, 'diaMax' => $diaMax,'cantHabilitados' => $cantHabilitados]);
+					break;
 			}
 			
-		//}
-		/*catch(Exception $e){ 
+		}
+		catch(Exception $e){ 
 			return back()->withInput()->withError("Error en el sistema.");
 		}
-*/		
 	}
 
   
@@ -286,6 +291,9 @@ class HaberesController extends Controller
 				$porcFRL = $this->obtenerValorActual($fecha, 'FRL');
 				$descFRL = $montoSalario[40] * ($porcFRL / 100);
 				$datosRecibo->push($this->obtenerDetalle(18,$descFRL,$porcFRL));
+				
+				//Obtener Salario Vacacional del mes y sumarlo al Salario para cálculo de IRPF
+	/////////////////
 				
 				//Sumar 6% si Salario Nominal Gravado supera 10 BPC
 				if ($montoSalario[40] >= (10 * $valorBPC))
@@ -504,6 +512,122 @@ class HaberesController extends Controller
 				$hoy = Carbon::today();
 				
 				$fecha->addDay();
+				$recibo->fechaRecibo = $fecha->year.'-'.$fecha->month.'-'.$fecha->day;
+				$recibo->fechaPago = $hoy->year.'-'.$hoy->month.'-'.$hoy->day;
+				
+				$existe = ReciboEmpleado::where([['idEmpleado','=',$empleado->id],['idTipoRecibo','=',$request->calculo], ['fechaRecibo','=',$recibo->fechaRecibo]])->first();
+				
+				if ($existe == null)
+					$recibo->save();
+				else
+				{
+					$dt = DetalleRecibo::where('idRecibo','=',$existe->id)->delete();
+					$existe->delete();
+					
+					$recibo->save();
+				}
+				//Obtengo último recibo guardado
+				$UltimoReciboEmpleado = ReciboEmpleado::where([['idEmpleado','=',$empleado->id],['idTipoRecibo','=',$request->calculo], ['fechaRecibo','=',$recibo->fechaRecibo]])->first();
+					
+				//Guarda detalles del recibo
+				foreach($datosRecibo as $dtr)
+				{
+					if ($dtr[0]!=0)
+					{
+						$detalleRecibo = new DetalleRecibo;
+						/*$table->integer('idConceptoRecibo')->unsigned();
+						$table->decimal('cantDias', 4, 1);
+						$table->decimal('cantHoras', 4, 1);
+						$table->decimal('monto', 8, 2);
+						$table->decimal('porcentaje', 8, 2);
+						*/
+						$detalleRecibo->idConceptoRecibo=$dtr[0];
+							
+						$detalleRecibo->monto=$dtr[1];	
+						
+						if($dtr[0]==14 || $dtr[0]==15 || $dtr[0]==18)
+						{//BPS/Fonasa/FRL
+							$detalleRecibo->porcentaje=$dtr[2];						
+						}
+						
+						$detalleRecibo->idRecibo = $UltimoReciboEmpleado->id;
+						
+						$detalleRecibo->save();	
+					}
+				}
+				
+				$empleadosRecibo->push($UltimoReciboEmpleado);
+			}
+		}
+		$tipoRecibo = TipoRecibo::find($request->calculo);
+		
+		return view('contable.haberes.listaEmpleadosRecibos', ['empleadosRecibo' => $empleadosRecibo,'fechaMes'=>$fecha->month,'fechaAnio'=>$fecha->year,'calculo'=>$tipoRecibo]);
+	}
+	
+	
+	//Guarda los datos del cálculo de aguinaldos con los detalles correspondientes al recibo del mismo.
+    public function calculoSalVacacional(Request $request)
+    {
+		dd($request);
+		
+		$fecha = new Carbon($request->fecha);
+		$empleadosRecibo=collect([]);
+		
+		for ( $i = 1; $i <= $request->cantHabilitados; $i++)
+		{//Recorre los empleados de la empresa.
+			$datosRecibo = collect([]);
+	
+			if ($request->input($i.'hab') != null)
+			{//Cálcula salario vacacional de cada empleado		
+				$idEmpleado = $request->input($i.'hab');
+					
+				$empleado = Empleado::find($idEmpleado);
+				//Obtiene cantidad de días de licencia a usufructuar.
+				$diasLicencia = $request->input('lic'.$i);
+				
+				//Obtener monto del salario Nominal
+				$salarioNominal = $empleado->monto;
+					
+				//Cálculo de Descuentos
+				//Valor de BPC del mes a calcular
+				$valorBPC = $this->obtenerValorActual($fecha, 'BPC');
+				//Cálculo de descuento de Fonasa (porcentaje, monto)
+				$valoresFonasa = $this->obtenerDescuentoFonasa($empleado, $montoAguinaldo, $valorBPC);
+				
+				$porcFonasa = $valoresFonasa[0];
+				$descFonasa = $valoresFonasa[1];
+				$datosRecibo->push($this->obtenerDetalle(15,0,$porcFonasa));
+				
+				//Cálculo de descuento de BPS
+				$porcBPS = $this->obtenerValorActual($fecha, 'BPS');
+				$descBPS = $montoAguinaldo * ($porcBPS / 100);
+				$datosRecibo->push($this->obtenerDetalle(14,0,$porcBPS));
+				
+				//Cálculo de descuento de FRL
+				$porcFRL = $this->obtenerValorActual($fecha, 'FRL');
+				$descFRL = $montoAguinaldo * ($porcFRL / 100);
+				$datosRecibo->push($this->obtenerDetalle(18,0,$porcFRL));
+				
+				//Aportes Seguridad Social
+				$aportesSegSoc = $descFonasa + $descBPS + $descFRL;
+					
+				//Calcular el monto del Salario Vacacional: Mensual=(Sueldo Líq/30)*diasLicencia, Jornalero=Jornal Líq*diasLicenecia
+				if ($empleado->cargo->remuneracion->id == 1)
+					$salVacacional = (($salarioNominal - $aportesSegSoc) / 30) * $diasLicencia;
+				else
+					$salVacacional = ($salarioNominal - $aportesSegSoc) * $diasLicencia;
+				
+				$datosRecibo->push($this->obtenerDetalle(24,$salVacacional,'NA'));
+				$datosRecibo->push($this->obtenerDetalle(12,$salVacacional,'NA'));
+				$datosRecibo->push($this->obtenerDetalle(13,$salVacacional,'NA'));
+				$datosRecibo->push($this->obtenerDetalle(21,$salVacacional,'NA'));
+				
+				//Guarda encabezado del recibo
+				$recibo = new ReciboEmpleado;
+				$recibo->idEmpleado = $empleado->id;
+				$recibo->idTipoRecibo = $request->calculo;
+				$hoy = Carbon::today();
+					
 				$recibo->fechaRecibo = $fecha->year.'-'.$fecha->month.'-'.$fecha->day;
 				$recibo->fechaPago = $hoy->year.'-'.$hoy->month.'-'.$hoy->day;
 				

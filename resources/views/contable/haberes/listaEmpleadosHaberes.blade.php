@@ -31,7 +31,7 @@
 		
 		<div class="panel panel-warning text-warning">
 			<div class="panel-heading">
-				<h4><i class="fas fa-users"></i> LISTADO DE EMPLEADOS {{$calculo}} </h4>				
+				<h4><i class="fas fa-users"></i> LISTADO DE EMPLEADOS - SUELDOS </h4>				
 			</div>
 			<div class="panel-body">
 			<form method="POST" action="{{ route('haberes.store') }}">		
