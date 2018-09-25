@@ -1,5 +1,9 @@
 <?php
 
+use \App\Juridico\Notificacion;
+use Carbon\Carbon;
+use \App\Mail\SendMailable;
+
 	function notificacion($paso, $mensaje, $expediente){
 		
 		//se crea una notificacion
@@ -17,7 +21,7 @@
 		Mail::to($expediente->usuario->email)->send(new SendMailable($notificacion->mensaje));
 		
 		foreach($expediente->permisosExpedientes as $usuario){
-			Mail::to($usuario->email)->send(new SendMailable($notificacion->mensaje));
+			\Mail::to($usuario->email)->send(new SendMailable($notificacion->mensaje));
 		}
 		// fin envío de mail
 	}

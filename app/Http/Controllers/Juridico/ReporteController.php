@@ -10,8 +10,6 @@ use App\Juridico\Estado;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-
-
 class ReporteController extends Controller
 {
     /**
@@ -146,12 +144,18 @@ class ReporteController extends Controller
 		$dataset->save();
 		// fin dataset estado de expedientes
 		
-		return redirect()->route('reporte.show',$reporte);
-    }
-	
-	
-	
-	
+		// dataset total de expedientes
+		$data = $expedientes->count();
+		
+		$dataset = new Dataset();
+		$dataset->id_reporte = $reporte->id;
+		$dataset->dataset = $data;
+		
+		$dataset->save();
+		// fin de dataset total de expedientes
+		return redirect()->route('reporte.show',['reporte' => $reporte]);
+    
+	}
 
     /**
      * Display the specified resource.

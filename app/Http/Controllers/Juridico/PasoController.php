@@ -14,8 +14,6 @@ use App\Http\Controllers\Controller;
 use Auth;
 use Storage;
 use Carbon\Carbon;
-use Mail;
-use App\Mail\SendMailable;
 
 class PasoController extends Controller
 {	
