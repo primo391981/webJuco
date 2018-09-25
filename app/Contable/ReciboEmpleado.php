@@ -3,12 +3,10 @@
 namespace App\Contable;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ReciboEmpleado extends Model
 {
-	use SoftDeletes;
-    protected $table = 'contable_recibos_empleado';
+	protected $table = 'contable_recibos_empleado';
 	
 	protected $dates = ['deleted_at'];
 	

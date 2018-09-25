@@ -122,5 +122,10 @@ class ConceptoRecibosTableSeeder extends Seeder
             'nombre' => 'Faltas',
 			'descripcion' => 'Faltas',
         ]);
+		
+		DB::table('contable_conceptos_recibo')->insert([
+            'nombre' => 'Aguinaldo',
+			'descripcion' => 'Aguinaldo',
+        ]);
     }
 }

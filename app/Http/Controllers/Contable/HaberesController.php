@@ -32,34 +32,34 @@ class HaberesController extends Controller
     public function index()
     {
         $empresas = Empresa::with('personas')->get();
-		//$empresas=Empresa::All();
+		
 		$tiposHaberes = TipoRecibo::All();		
         return view('contable.haberes.listaEmpresasHaberes', ['empresas' => $empresas, 'tiposHaberes' => $tiposHaberes]);
     }
 	
 	//Lista los empleados que se encuentran con contrato para el mes/año seleccionado para el cálculo, indicndo si están habilitados con sus horas del mes ya cargadas y totales de Adelantos/Viáticos/Partidas Extras.
 	public function listaEmpleados(Request $request){
-		try{			
+		//try{			
 			$empresa=Empresa::where('rut','=',$request->rut)->first();			
 			$personas=$empresa->personas;
 			$habilitadas=collect([]);
 			$cantHabilitados = 0;
 			$hayUno=false;
+
+			$fechaAux = new Carbon($request->mes."-01");
 			
 			switch ($request->calculo)
 			{
-				case 1:
-						$fechaAux = new Carbon($request->mes."-01");
-						$fecha = new Carbon($request->mes."-".$fechaAux->daysInMonth);
+				case 1:	$fecha = new Carbon($request->mes."-".$fechaAux->daysInMonth);
 					break;
-				case 2: $fecha=new Carbon($request->mes."-31");
+				case 2: $fecha=new Carbon($fechaAux->year."-05-31");
 					break;
-				case 3: $fecha=new Carbon($request->mes."-30");	
+				case 3: $fecha=new Carbon($fechaAux->year."-11-30");		
 					break;
 			}
-				
+		
 			foreach($personas as $persona)
-			{				
+			{		
 				$fDesde=new Carbon($persona->pivot->fechaDesde);
 				$fHasta=new Carbon($persona->pivot->fechaHasta);
 				//Verifica si el empleado tiene contrato vigente
@@ -118,7 +118,7 @@ class HaberesController extends Controller
 								
 								while($i!=6)
 								{
-									$recibo = ReciboEmpleado::where([['idEmpleado','=',$persona->pivot->id],['fechaRecibo', '=', $anio.'-'.$i.'-01']])->first();
+									$recibo = ReciboEmpleado::where([['idEmpleado','=',$persona->pivot->id],['idTipoRecibo','=',1],['fechaRecibo', '=', $anio.'-'.$i.'-01']])->first();
 									
 									if ($recibo != null)
 									{
@@ -139,10 +139,11 @@ class HaberesController extends Controller
 							break;
 						case 3:
 								$i = 6;
-									
+								$anio = $fecha->year;
+								
 								while($i!=12)
-								{
-									$recibo = ReciboEmpleado::where([['idEmpleado','=',$persona->pivot->id],['fechaRecibo', '=', $fecha->year.'-'.$i.'-01']])->first();
+								{									
+									$recibo = ReciboEmpleado::where([['idEmpleado','=',$persona->pivot->id],['idTipoRecibo','=',1],['fechaRecibo', '=', $anio.'-'.$i.'-01']])->first();
 									
 									if ($recibo != null)
 									{
@@ -150,19 +151,21 @@ class HaberesController extends Controller
 										$habilita->push($detalleNominal->monto);
 									}
 									else
+									{
 										$habilita->push(0);
+									}
 									
 									$i ++;									
 								}
+								
 							break;
 					}
 					
 					$habilitadas->push($habilita);
 					$cantHabilitados ++;
-				}
-				
+				}				
 			}
-			
+
 			switch ($request->calculo)
 			{
 				case 1:
@@ -175,11 +178,12 @@ class HaberesController extends Controller
 						return view('contable.haberes.listaEmpleadosAguinaldo', ['habilitadas' => $habilitadas, 'calculo' => $request->calculo, 'fecha' => $fecha, 'cantHabilitados' => $cantHabilitados]);
 					break;
 			}
-					
-		}
-		catch(Exception $e){ 
+			
+		//}
+		/*catch(Exception $e){ 
 			return back()->withInput()->withError("Error en el sistema.");
-		}		
+		}
+*/		
 	}
 
   
@@ -192,274 +196,82 @@ class HaberesController extends Controller
 	//Guarda los datos del cálculo de sueldos con los detalles correspondientes al recibo del mismo.
     public function store(Request $request)
     {
-			   $sueldoNominalGravado = 0;
-			   $sueldoNominalNoGravado = 0;
-			   $montoHorasFaltantes = 0;
-			   $montoAntiguedad = 0;
-			   
-			   $fecha = new Carbon($request->fecha);
-			   $empleadosRecibo=collect([]);
-			   
-				for ( $i = 1; $i <= $request->cantHabilitados; $i++)
-				{//Recorre los empleados de la empresa.
-					$datosRecibo = collect([]);
-						
-					if ($request->input($i.'hab') != null)
-					{//Cálcula sueldo de cada empleado					
-						$idEmpleado = $request->input($i.'hab');
-						
-						$empleado = Empleado::find($idEmpleado);
-						
-						$cargo = Cargo::find($empleado->idCargo);
-						
-						if ($cargo->id_remuneracion == 1 && $empleado->tipoHorario==1)
-						{//El empleado es mensual y horario habitual.
-							
-								//Obtiene las horas que debe realizar por contrato
-								$horasMesContrato = $this->obtenerHorasContratoMes($fecha, $empleado->id);
-								//Obtiene las horas efectivamente trabajadas
-								$horasMesTrabajado = $this->obtenerHorasTrabajadasMes($fecha, $empleado->id);
-								//Obtiene las horas a descontar, Horas Extras y Horas Extras Especiales
-								$horasRecibo = $this->obtenerHorasDescuentoYExtras($fecha,$cargo,$horasMesTrabajado[0],$horasMesContrato);
-						} 
-						else{
-							//El empleado es mensual y horario flexible  o jornalero
-							$horasMesTrabajado = $this->obtenerHorasTrabajadasMes($fecha, $empleado->id);
-							$horasRecibo = $this->obtenerHorasDescuentoYExtras($fecha,$cargo,$horasMesTrabajado[0]);
-						}
-						
-						/*Horas Recibo contiene: 
-						-Horas Descuento o horas Jornal
-						-Horas Extras en Día común
-						-Horas  Descanso Trabajado
-						-Horas Extras Descanso Trabajado*/
-						//Agregar horas de nocturnidad, percnote, espera y Descanso Intermedio Trabajado.
-						$horasRecibo->push($horasMesTrabajado[1]);//Horas Espera
-						$horasRecibo->push($horasMesTrabajado[2]);//Horas Nocturnidad
-						$horasRecibo->push($horasMesTrabajado[3]);//Horas Percnote
-						$horasRecibo->push($horasMesTrabajado[4]);//Horas Trabajadas Descanso Intermedio
-						$horasRecibo->push($request->input('lic'.$i));//Días de Licencia Gozados
-						
-						//Cálcula Antigüedad si corresponde						
-						$montoAntiguedad = $this->obtenerAntiguedad($fecha, $empleado, $cargo);
-						
-						//Obtiene monto de Salario Nominal Gravado y no Gravado, sumando todos los conceptos (víaticos y partidas extras)
-						$montoSalario = $this->obtenerMontosSalarioNominal($fecha, $empleado, $cargo, $horasRecibo, $montoAntiguedad);
-						//Monto del salario Gravado
-						$montoSalarioGravado = $montoSalario[40];
-						$montoSalarioNominal = $montoSalario[46];
-						
-						//Carga Detalles
-						$cant=count($montoSalario);					
-						for($j=0;$j<$cant;$j++){
-							$detalle=collect([]);						
-							$cantParam=$montoSalario[$j];
-							
-							for($x=1;$x<=$cantParam;$x++){
-								$detalle->push($montoSalario[$j+$x]);
-							}
-							$j=$j+$cantParam;
-							$datosRecibo->push($detalle);
-						}
-					
-						//Descuentos
-						//Valor de BPC del mes a calcular
-						$valorBPC = $this->obtenerValorActual($fecha, 'BPC');
-	
-						//Cálculo de descuento de Fonasa (porcentaje, monto)
-						$valoresFonasa = $this->obtenerDescuentoFonasa($empleado, $montoSalario[40], $valorBPC);
-						
-						$porcFonasa = $valoresFonasa[0];
-						$descFonasa = $valoresFonasa[1];
-						$datosRecibo->push($this->obtenerDetalle(15,$descFonasa,$porcFonasa));
-						
-						//Cálculo de descuento de BPS
-						$porcBPS = $this->obtenerValorActual($fecha, 'BPS');
-						$descBPS = $montoSalario[40] * ($porcBPS / 100);
-						$datosRecibo->push($this->obtenerDetalle(14,$descBPS,$porcBPS));
-						
-						//Cálculo de descuento de FRL
-						$porcFRL = $this->obtenerValorActual($fecha, 'FRL');
-						$descFRL = $montoSalario[40] * ($porcFRL / 100);
-						$datosRecibo->push($this->obtenerDetalle(18,$descFRL,$porcFRL));
-						
-						//Sumar 6% si Salario Nominal Gravado supera 10 BPC
-						if ($montoSalario[40] >= (10 * $valorBPC))
-							$montoSalario[40] = $montoSalario[40] * 1.06;
-						
-						//Cálculo de descuento de IRPF Primario
-						$descIRPFPrimario = $this->obtenerDescuentoIRPFPrimario($fecha, $empleado, $montoSalario[40], $valorBPC);
-						
-						//Cálculo de deducciones de IRPF
-						$aportesSegSoc = $descFonasa + $descBPS + $descFRL;
-						$deducionesIRPF = $this->obtenerDeduccionesIRPF($fecha, $empleado, $montoSalario[40], $valorBPC, $aportesSegSoc);
-						
-						//IRPF final a pagar
-						$descIRPF = $descIRPFPrimario - $deducionesIRPF;
-						
-						if ($descIRPF < 0){
-							$descIRPFPrimario=0;
-							$deducionesIRPF=0;
-						}
-						
-						$datosRecibo->push($this->obtenerDetalle(16,$descIRPFPrimario,'NA'));
-						$datosRecibo->push($this->obtenerDetalle(17,$deducionesIRPF,'NA'));
-						
-						//Adelantos de empleado
-						$montoAdelanto=$this->obtenerPagos($fecha,$empleado,2);
-						$datosRecibo->push($this->obtenerDetalle(19,$montoAdelanto,'NA'));
-						
-						//Viaticos empleado
-						$montoViatico=$this->obtenerPagos($fecha,$empleado,1);
-						$datosRecibo->push($this->obtenerDetalle(10,$montoViatico,'NA'));
-						
-						//Suma de descuentos
-						$sumaDescuentos=$aportesSegSoc + $descIRPF + $montoAdelanto;
-						$datosRecibo->push($this->obtenerDetalle(20,$sumaDescuentos,'NA'));
-						
-						//Cálculo Sueldo Luíqido
-						$sueldoLiquido = $montoSalarioNominal - $sumaDescuentos - $montoViatico;//Agregar Fictos
-						$datosRecibo->push($this->obtenerDetalle(21,$sueldoLiquido,'NA'));
-						
-						//Guarda encabezado del recibo
-						$recibo = new ReciboEmpleado;
-						$recibo->idEmpleado = $empleado->id;
-						$recibo->idTipoRecibo = 1; //Sueldo
-						$hoy = Carbon::today();
-						$recibo->fechaRecibo = $fecha->year.'-'.$fecha->month.'-01';
-						$recibo->fechaPago = $hoy->year.'-'.$hoy->month.'-'.$hoy->day;
-						
-						$recibo->save();
-						
-						$UltimoReciboEmpleado = ReciboEmpleado::where('idEmpleado','=',$empleado->id)->orderBy('id','desc')->first();
-						
-						//Guarda detalles del recibo
-						foreach($datosRecibo as $dtr)
-						{
-							if ($dtr[0]!=0)
-							{
-								$detalleRecibo = new DetalleRecibo;
-								/*$table->integer('idConceptoRecibo')->unsigned();
-								$table->decimal('cantDias', 4, 1);
-								$table->decimal('cantHoras', 4, 1);
-								$table->decimal('monto', 8, 2);
-								$table->decimal('porcentaje', 8, 2);
-								*/
-								$detalleRecibo->idConceptoRecibo=$dtr[0];
-								if($dtr[0]==9)
-								{//Días de Licencia Gozada
-									$detalleRecibo->cantDias = $dtr[2];
-								}
-								else
-									$detalleRecibo->cantDias = 0;
-								
-								if(($dtr[0]>=2 && $dtr[0]<=7) || $dtr[0]==22)
-								{
-									$detalleRecibo->cantHoras=$dtr[2];
-								}
-								else{
-									$detalleRecibo->cantHoras=0;							
-								}						
-								
-								$detalleRecibo->monto=$dtr[1];	
-								
-								if($dtr[0]==14 || $dtr[0]==15 || $dtr[0]==18)
-								{//BPS/Fonasa/FRL
-										$detalleRecibo->porcentaje=$dtr[2];						
-								}
-								$detalleRecibo->idRecibo=$UltimoReciboEmpleado->id;
-								
-								$detalleRecibo->save();	
-							}
-						}
-						
-						$empleadosRecibo->push($UltimoReciboEmpleado);
-					/*dd($montoSalario[40].' '.$descBPS.' '.$descFonasa.' '.$descFRL.' Suma: '.($descBPS+$descFonasa+$descFRL).' Deducciones '.$deducionesIRPF.' IRPF Primario '.$descIRPFPrimario.' DescIRPF: '.$descIRPF.' Sueldo Liq:'.$sueldoLiquido);*/
-					}
-				}
-				
-				return view('contable.haberes.listaEmpleadosRecibos', ['empleadosRecibo' => $empleadosRecibo,'fechaMes'=>$fecha->month,'fechaAnio'=>$fecha->year,'calculo'=>$request->calculo]);
-				
-    }
+		$sueldoNominalGravado = 0;
+		$sueldoNominalNoGravado = 0;
+		$montoHorasFaltantes = 0;
+		$montoAntiguedad = 0;
 
-	//Guarda los datos del cálculo de aguinaldos con los detalles correspondientes al recibo del mismo.
-    public function calculoAguinaldo(Request $request)
-    {
+		$fecha = new Carbon($request->fecha);
 		$empleadosRecibo=collect([]);
 	   
 		for ( $i = 1; $i <= $request->cantHabilitados; $i++)
 		{//Recorre los empleados de la empresa.
 			$datosRecibo = collect([]);
-	
+				
 			if ($request->input($i.'hab') != null)
-			{//Cálcula aguinaldo de cada empleado		
+			{//Cálcula sueldo de cada empleado					
 				$idEmpleado = $request->input($i.'hab');
-					
+				
 				$empleado = Empleado::find($idEmpleado);
-				//Suma del monto total de sueldos percibidos el empleado para el cálculo del aguinaldo
-				$montoTotal = 0;
 				
-				switch ($request->calculo)
-				{
-					case 2:
-							$i = 12;
-							$anio = $fecha->year - 1;
-							
-							while($i!=6)
-							{
-								$recibo = ReciboEmpleado::where([['idEmpleado','=',$empleado->id],['fechaRecibo', '=', $anio.'-'.$i.'-01']])->first();
-								
-								if ($recibo != null)
-								{
-									$detalleNominal = $recibo->detallesRecibos->where('idConceptoRecibo','=',13)->first();
-									$montoTotal += $detalleNominal->monto;
-								}
-								else
-									$habilita->push(0);
-								
-								if ($i == 12)
-								{
-									$i = 1;
-									$anio ++;
-								}
-								else
-									$i ++;									
-							}
-						break;
-					case 3:
-							$i = 6;
-								
-							while($i!=12)
-							{
-								$recibo = ReciboEmpleado::where([['idEmpleado','=',$empleado->id],['fechaRecibo', '=', $fecha->year.'-'.$i.'-01']])->first();
-								
-								if ($recibo != null)
-								{
-									$detalleNominal = $recibo->detallesRecibos->where('idConceptoRecibo','=',13)->first();
-									$montoTotal += $detalleNominal->monto;
-								}
-								else
-									$habilita->push(0);
-								
-								$i ++;									
-							}
-						break;
+				$cargo = Cargo::find($empleado->idCargo);
+				
+				if ($cargo->id_remuneracion == 1 && $empleado->tipoHorario==1)
+				{//El empleado es mensual y horario habitual.
+					
+						//Obtiene las horas que debe realizar por contrato
+						$horasMesContrato = $this->obtenerHorasContratoMes($fecha, $empleado->id);
+						//Obtiene las horas efectivamente trabajadas
+						$horasMesTrabajado = $this->obtenerHorasTrabajadasMes($fecha, $empleado->id);
+						//Obtiene las horas a descontar, Horas Extras y Horas Extras Especiales
+						$horasRecibo = $this->obtenerHorasDescuentoYExtras($fecha,$cargo,$horasMesTrabajado[0],$horasMesContrato);
+				} 
+				else{
+					//El empleado es mensual y horario flexible  o jornalero
+					$horasMesTrabajado = $this->obtenerHorasTrabajadasMes($fecha, $empleado->id);
+					$horasRecibo = $this->obtenerHorasDescuentoYExtras($fecha,$cargo,$horasMesTrabajado[0]);
 				}
-				//Monto del aguinaldo.
-				$montoAguinaldo = $montoTotal / 12;
-				//Aguinaldo
-				$datosRecibo->push($this->obtenerDetalle(22,$montoAguinaldo,'NA'));
-				//Totales
-				$datosRecibo->push($this->obtenerDetalle(11,$montoAguinaldo,'NA'));
-				$datosRecibo->push($this->obtenerDetalle(12,0,'NA'));
-				$datosRecibo->push($this->obtenerDetalle(13,$montoAguinaldo,'NA'));
 				
-				//Cálculo de Descuentos
+				/*Horas Recibo contiene: 
+				-Horas Descuento o horas Jornal
+				-Horas Extras en Día común
+				-Horas  Descanso Trabajado
+				-Horas Extras Descanso Trabajado*/
+				//Agregar horas de nocturnidad, percnote, espera y Descanso Intermedio Trabajado.
+				$horasRecibo->push($horasMesTrabajado[1]);//Horas Espera
+				$horasRecibo->push($horasMesTrabajado[2]);//Horas Nocturnidad
+				$horasRecibo->push($horasMesTrabajado[3]);//Horas Percnote
+				$horasRecibo->push($horasMesTrabajado[4]);//Horas Trabajadas Descanso Intermedio
+				$horasRecibo->push($request->input('lic'.$i));//Días de Licencia Gozados
+				
+				//Cálcula Antigüedad si corresponde						
+				$montoAntiguedad = $this->obtenerAntiguedad($fecha, $empleado, $cargo);
+				
+				//Obtiene monto de Salario Nominal Gravado y no Gravado, sumando todos los conceptos (víaticos y partidas extras)
+				$montoSalario = $this->obtenerMontosSalarioNominal($fecha, $empleado, $cargo, $horasRecibo, $montoAntiguedad);
+				//Monto del salario Gravado
+				$montoSalarioGravado = $montoSalario[40];
+				$montoSalarioNominal = $montoSalario[46];
+				
+				//Carga Detalles
+				$cant=count($montoSalario);					
+				for($j=0;$j<$cant;$j++){
+					$detalle=collect([]);						
+					$cantParam=$montoSalario[$j];
+					
+					for($x=1;$x<=$cantParam;$x++){
+						$detalle->push($montoSalario[$j+$x]);
+					}
+					$j=$j+$cantParam;
+					$datosRecibo->push($detalle);
+				}
+			
+				//Descuentos
 				//Valor de BPC del mes a calcular
 				$valorBPC = $this->obtenerValorActual($fecha, 'BPC');
 
 				//Cálculo de descuento de Fonasa (porcentaje, monto)
-				$valoresFonasa = $this->obtenerDescuentoFonasa($empleado, $montoAguinaldo, $valorBPC);
+				$valoresFonasa = $this->obtenerDescuentoFonasa($empleado, $montoSalario[40], $valorBPC);
 				
 				$porcFonasa = $valoresFonasa[0];
 				$descFonasa = $valoresFonasa[1];
@@ -467,27 +279,29 @@ class HaberesController extends Controller
 				
 				//Cálculo de descuento de BPS
 				$porcBPS = $this->obtenerValorActual($fecha, 'BPS');
-				$descBPS = $montoAguinaldo * ($porcBPS / 100);
+				$descBPS = $montoSalario[40] * ($porcBPS / 100);
 				$datosRecibo->push($this->obtenerDetalle(14,$descBPS,$porcBPS));
 				
 				//Cálculo de descuento de FRL
 				$porcFRL = $this->obtenerValorActual($fecha, 'FRL');
-				$descFRL = $montoAguinaldo * ($porcFRL / 100);
+				$descFRL = $montoSalario[40] * ($porcFRL / 100);
 				$datosRecibo->push($this->obtenerDetalle(18,$descFRL,$porcFRL));
 				
+				//Sumar 6% si Salario Nominal Gravado supera 10 BPC
+				if ($montoSalario[40] >= (10 * $valorBPC))
+					$montoSalario[40] = $montoSalario[40] * 1.06;
+				
 				//Cálculo de descuento de IRPF Primario
-				$descIRPFPrimario = $this->obtenerDescuentoIRPFPrimario($fecha, $empleado, $montoAguinaldo, $valorBPC);
+				$descIRPFPrimario = $this->obtenerDescuentoIRPFPrimario($fecha, $empleado, $montoSalario[40], $valorBPC);
 				
 				//Cálculo de deducciones de IRPF
 				$aportesSegSoc = $descFonasa + $descBPS + $descFRL;
-				
-				$deducionesIRPF = $this->obtenerDeduccionesIRPF($fecha, $empleado, $montoAguinaldo, $valorBPC, $aportesSegSoc);
+				$deducionesIRPF = $this->obtenerDeduccionesIRPF($fecha, $empleado, $montoSalario[40], $valorBPC, $aportesSegSoc);
 				
 				//IRPF final a pagar
 				$descIRPF = $descIRPFPrimario - $deducionesIRPF;
 				
-				if ($descIRPF < 0)
-				{
+				if ($descIRPF < 0){
 					$descIRPFPrimario=0;
 					$deducionesIRPF=0;
 				}
@@ -495,26 +309,45 @@ class HaberesController extends Controller
 				$datosRecibo->push($this->obtenerDetalle(16,$descIRPFPrimario,'NA'));
 				$datosRecibo->push($this->obtenerDetalle(17,$deducionesIRPF,'NA'));
 				
+				//Adelantos de empleado
+				$montoAdelanto=$this->obtenerPagos($fecha,$empleado,2);
+				$datosRecibo->push($this->obtenerDetalle(19,$montoAdelanto,'NA'));
+				
+				//Viaticos empleado
+				$montoViatico=$this->obtenerPagos($fecha,$empleado,1);
+				$datosRecibo->push($this->obtenerDetalle(10,$montoViatico,'NA'));
+				
 				//Suma de descuentos
-				$sumaDescuentos = $aportesSegSoc + $descIRPF;
+				$sumaDescuentos=$aportesSegSoc + $descIRPF + $montoAdelanto;
 				$datosRecibo->push($this->obtenerDetalle(20,$sumaDescuentos,'NA'));
 				
-				//Cálculo Aguinaldo Luíqido
-				$aguinaldoLiquido = $montoAguinaldo - $sumaDescuentos;
-				$datosRecibo->push($this->obtenerDetalle(21,$aguinaldoLiquido,'NA'));
+				//Cálculo Sueldo Luíqido
+				$sueldoLiquido = $montoSalarioNominal - $sumaDescuentos - $montoViatico;//Agregar Fictos
+				$datosRecibo->push($this->obtenerDetalle(21,$sueldoLiquido,'NA'));
 				
 				//Guarda encabezado del recibo
 				$recibo = new ReciboEmpleado;
 				$recibo->idEmpleado = $empleado->id;
-				$recibo->idTipoRecibo = $request->calculo;
+				$recibo->idTipoRecibo = 1; //Sueldo
 				$hoy = Carbon::today();
+
 				$recibo->fechaRecibo = $fecha->year.'-'.$fecha->month.'-01';
 				$recibo->fechaPago = $hoy->year.'-'.$hoy->month.'-'.$hoy->day;
 				
-				$recibo->save();
+				$existe = ReciboEmpleado::where([['idEmpleado','=',$empleado->id],['idTipoRecibo','=',$request->calculo], ['fechaRecibo','=',$recibo->fechaRecibo]])->first();
+		
+				if ($existe == null)
+					$recibo->save();
+				else
+				{
+					$dt = DetalleRecibo::where('idRecibo','=',$existe->id)->delete();
+					$existe->delete();
+					
+					$recibo->save();
+				}
 				
-				$UltimoReciboEmpleado = ReciboEmpleado::where('idEmpleado','=',$empleado->id)->orderBy('id','desc')->first();
-				dd($datosRecibo);	
+				$UltimoReciboEmpleado = ReciboEmpleado::where([['idEmpleado','=',$empleado->id],['idTipoRecibo','=',$request->calculo], ['fechaRecibo','=',$recibo->fechaRecibo]])->first();
+				
 				//Guarda detalles del recibo
 				foreach($datosRecibo as $dtr)
 				{
@@ -557,7 +390,170 @@ class HaberesController extends Controller
 				
 				$empleadosRecibo->push($UltimoReciboEmpleado);
 			}
+		}
+		$tipoRecibo = TipoRecibo::find($request->calculo);
 		
+		return view('contable.haberes.listaEmpleadosRecibos', ['empleadosRecibo' => $empleadosRecibo,'fechaMes'=>$fecha->month,'fechaAnio'=>$fecha->year,'calculo'=>$tipoRecibo]);
+				
+    }
+
+	//Guarda los datos del cálculo de aguinaldos con los detalles correspondientes al recibo del mismo.
+    public function calculoAguinaldo(Request $request)
+    {
+		$fecha = new Carbon($request->fecha);
+		$empleadosRecibo=collect([]);
+		
+		for ( $i = 1; $i <= $request->cantHabilitados; $i++)
+		{//Recorre los empleados de la empresa.
+			$datosRecibo = collect([]);
+	
+			if ($request->input($i.'hab') != null)
+			{//Cálcula aguinaldo de cada empleado		
+				$idEmpleado = $request->input($i.'hab');
+					
+				$empleado = Empleado::find($idEmpleado);
+				//Suma del monto total de sueldos percibidos el empleado para el cálculo del aguinaldo
+				$montoTotal = 0;
+				
+				switch ($request->calculo)
+				{
+					case 2:
+							$i = 12;
+							$anio = $fecha->year - 1;
+							
+							while($i!=6)
+							{
+								$recibo = ReciboEmpleado::where([['idEmpleado','=',$empleado->id],['idTipoRecibo','=',1],['fechaRecibo', '=', $anio.'-'.$i.'-01']])->first();
+								
+								if ($recibo != null)
+								{
+									$detalleNominal = $recibo->detallesRecibos->where('idConceptoRecibo','=',13)->first();
+									$montoTotal += $detalleNominal->monto;
+								}
+								
+								if ($i == 12)
+								{
+									$i = 1;
+									$anio ++;
+								}
+								else
+									$i ++;									
+							}
+						break;
+					case 3:
+							$i = 6;
+								
+							while($i!=12)
+							{
+								$recibo = ReciboEmpleado::where([['idEmpleado','=',$empleado->id],['idTipoRecibo','=',1],['fechaRecibo', '=', $fecha->year.'-'.$i.'-01']])->first();
+								
+								if ($recibo != null)
+								{
+									$detalleNominal = $recibo->detallesRecibos->where('idConceptoRecibo','=',13)->first();
+									$montoTotal += $detalleNominal->monto;
+								}
+									
+								$i ++;									
+							}
+						break;
+				}
+				//Monto del aguinaldo.
+				$montoAguinaldo = $montoTotal / 12;
+				//Aguinaldo
+				$datosRecibo->push($this->obtenerDetalle(23,$montoAguinaldo,'NA'));
+				//Totales
+				$datosRecibo->push($this->obtenerDetalle(11,$montoAguinaldo,'NA'));
+				$datosRecibo->push($this->obtenerDetalle(12,0,'NA'));
+				$datosRecibo->push($this->obtenerDetalle(13,$montoAguinaldo,'NA'));
+				
+				//Cálculo de Descuentos
+				//Valor de BPC del mes a calcular
+				$valorBPC = $this->obtenerValorActual($fecha, 'BPC');
+
+				//Cálculo de descuento de Fonasa (porcentaje, monto)
+				$valoresFonasa = $this->obtenerDescuentoFonasa($empleado, $montoAguinaldo, $valorBPC);
+				
+				$porcFonasa = $valoresFonasa[0];
+				$descFonasa = $valoresFonasa[1];
+				$datosRecibo->push($this->obtenerDetalle(15,$descFonasa,$porcFonasa));
+				
+				//Cálculo de descuento de BPS
+				$porcBPS = $this->obtenerValorActual($fecha, 'BPS');
+				$descBPS = $montoAguinaldo * ($porcBPS / 100);
+				$datosRecibo->push($this->obtenerDetalle(14,$descBPS,$porcBPS));
+				
+				//Cálculo de descuento de FRL
+				$porcFRL = $this->obtenerValorActual($fecha, 'FRL');
+				$descFRL = $montoAguinaldo * ($porcFRL / 100);
+				$datosRecibo->push($this->obtenerDetalle(18,$descFRL,$porcFRL));
+				
+				//Cálculo de aportes Seguridad Social
+				$aportesSegSoc = $descFonasa + $descBPS + $descFRL;
+				
+				//Suma de descuentos
+				$datosRecibo->push($this->obtenerDetalle(20,$aportesSegSoc,'NA'));
+				
+				//Cálculo Aguinaldo Luíqido
+				$aguinaldoLiquido = $montoAguinaldo - $aportesSegSoc;
+				$datosRecibo->push($this->obtenerDetalle(21,$aguinaldoLiquido,'NA'));
+				
+				//Guarda encabezado del recibo
+				$recibo = new ReciboEmpleado;
+				$recibo->idEmpleado = $empleado->id;
+				$recibo->idTipoRecibo = $request->calculo;
+				$hoy = Carbon::today();
+				
+				$fecha->addDay();
+				$recibo->fechaRecibo = $fecha->year.'-'.$fecha->month.'-'.$fecha->day;
+				$recibo->fechaPago = $hoy->year.'-'.$hoy->month.'-'.$hoy->day;
+				
+				$existe = ReciboEmpleado::where([['idEmpleado','=',$empleado->id],['idTipoRecibo','=',$request->calculo], ['fechaRecibo','=',$recibo->fechaRecibo]])->first();
+				
+				if ($existe == null)
+					$recibo->save();
+				else
+				{
+					$dt = DetalleRecibo::where('idRecibo','=',$existe->id)->delete();
+					$existe->delete();
+					
+					$recibo->save();
+				}
+				//Obtengo último recibo guardado
+				$UltimoReciboEmpleado = ReciboEmpleado::where([['idEmpleado','=',$empleado->id],['idTipoRecibo','=',$request->calculo], ['fechaRecibo','=',$recibo->fechaRecibo]])->first();
+					
+				//Guarda detalles del recibo
+				foreach($datosRecibo as $dtr)
+				{
+					if ($dtr[0]!=0)
+					{
+						$detalleRecibo = new DetalleRecibo;
+						/*$table->integer('idConceptoRecibo')->unsigned();
+						$table->decimal('cantDias', 4, 1);
+						$table->decimal('cantHoras', 4, 1);
+						$table->decimal('monto', 8, 2);
+						$table->decimal('porcentaje', 8, 2);
+						*/
+						$detalleRecibo->idConceptoRecibo=$dtr[0];
+							
+						$detalleRecibo->monto=$dtr[1];	
+						
+						if($dtr[0]==14 || $dtr[0]==15 || $dtr[0]==18)
+						{//BPS/Fonasa/FRL
+							$detalleRecibo->porcentaje=$dtr[2];						
+						}
+						
+						$detalleRecibo->idRecibo = $UltimoReciboEmpleado->id;
+						
+						$detalleRecibo->save();	
+					}
+				}
+				
+				$empleadosRecibo->push($UltimoReciboEmpleado);
+			}
+		}
+		$tipoRecibo = TipoRecibo::find($request->calculo);
+		
+		return view('contable.haberes.listaEmpleadosRecibos', ['empleadosRecibo' => $empleadosRecibo,'fechaMes'=>$fecha->month,'fechaAnio'=>$fecha->year,'calculo'=>$tipoRecibo]);
 	}
 	
 	
@@ -729,7 +725,7 @@ class HaberesController extends Controller
 		$cantHoraExtraDescansoTrabajado = 0;
 		
 		$horasEmpl = collect([]);
-		//dd($horasMesContrato);	
+			
 		for($i=0;$i<$fecha->daysInMonth;$i++)
 		{
 			$horasExtrasDia = 0;
@@ -853,7 +849,7 @@ class HaberesController extends Controller
 		$horasEmpl->push($cantHorasExtras);
 		$horasEmpl->push($cantHorasDescansoTrabajado);
 		$horasEmpl->push($cantHoraExtraDescansoTrabajado);
-		//dd($horasEmpl);
+		
 		return $horasEmpl;
 	}
 	

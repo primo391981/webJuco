@@ -20,7 +20,7 @@
 		
 		<div class="panel panel-warning text-warning">
 			<div class="panel-heading">
-				<h4><i class="fas fa-users"></i> LISTADO DE EMPLEADOS - RECIBOS {{$calculo}} /  {{$fechaMes}} - {{$fechaAnio}}</h4>				
+				<h4><i class="fas fa-users"></i> LISTADO DE EMPLEADOS - RECIBOS {{ $calculo->nombre}} /  {{$calculo->id == 1 ? $fechaMes."-" : ""}}  {{$fechaAnio}}</h4>				
 			</div>
 			<div class="panel-body">
 				
@@ -45,7 +45,7 @@
 											  <div class="modal-content">
 												<div class="modal-header">
 												  <button type="button" class="close" data-dismiss="modal">&times;</button>
-												  <h4 class="modal-title">DETALLE RECIBO {{$calculo}}</h4>
+												  <h4 class="modal-title">DETALLE RECIBO {{$calculo->nombre}}</h4>
 												</div>
 												<div class="modal-body">
 													<div class="row">
@@ -100,7 +100,7 @@
 													
 													<div class="row">
 														<div class="col-xs-12 text-center">
-															<p><strong>RECIBO DE HABERES: {{$calculo}} / Fecha: {{$fechaMes}} - {{$fechaAnio}}</strong></p>
+															<p><strong>RECIBO DE HABERES: {{$calculo->nombre}} / Fecha: {{ $calculo->id == 1 ? $fechaMes."-" : ""}} {{$fechaAnio}}</strong></p>
 														</div>
 													</div>
 													<div class="row">
