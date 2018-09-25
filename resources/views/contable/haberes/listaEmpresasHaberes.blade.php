@@ -21,7 +21,7 @@
 		
 		<div class="panel panel-warning text-warning">
 			<div class="panel-heading">
-				<h4><i class="fas fa-dollar-sign"></i> LIQUIDACION DE HABERES</h4>				
+				<h4><i class="fas fa-hand-holding-usd"></i> LIQUIDACION DE HABERES</h4>				
 			</div>
 			<div class="panel-body">
 				<form method="POST" action="{{route('haberes.listaEmpleados')}}" class="form-horizontal" enctype="multipart/form-data" id="formCarga">		
@@ -54,7 +54,7 @@
 						<div class="form-group row">
 							<label for="rut" class="control-label col-sm-3">CALCULO *</label>
 							<div class="col-sm-9">
-								<select id="calculo" class="form-control" name="calculo" required autofocus>
+								<select id="calculo" class="form-control" name="calculo" onchange="obtenerCalculo()" required autofocus>
 									<option value="">-- Seleccione cálculo --</option>
 								@foreach($tiposHaberes as $tipo)
 									<option value="{{$tipo->id}}">{{$tipo->nombre}}</option>
@@ -85,6 +85,22 @@
 </div><!--cierre row-->
 
 <script>
+function obtenerCalculo() {
+    var x = document.getElementById("calculo").value;
+	var f = new Date();
+	if(x==2){
+		document.getElementById("mes").value = f.getFullYear()+"-06";
+	}
+	else if(x==3){
+		document.getElementById("mes").value = f.getFullYear()+"-12";
+	}
+	else{
+		document.getElementById("mes").value = f.getFullYear()+"-0"+f.getMonth();
+	}
+}
+
+
+
 $(function() 
 {
 	var empresa = @json($empresas);
