@@ -37,7 +37,7 @@
 				<a href="#"><i class="fas fa-plus"></i> Agregar nuevo <i class="fas fa-caret-down"></i></a>
 				<ul class="nav nav-third-level">
 					<li><a name="gerencial" href="{{ route('reporte.create')}}"><i class="far fa-building"></i> Gerencial</a></li>
-					<li><a name="expediente" href=""><i class="fas fa-book"></i> de Expediente</a></li>
+					<li><a name="expediente" href="#"><i class="fas fa-book"></i> de Expediente</a></li>
 				</ul>
 			</li>
         </ul>

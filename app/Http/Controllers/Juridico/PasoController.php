@@ -108,6 +108,7 @@ class PasoController extends Controller
      */
     public function store(Request $request)
     {
+		//dd($request);
 		//obtención del usuario registrado
         $user = Auth::user();
 		
@@ -167,6 +168,7 @@ class PasoController extends Controller
 		//se actualiza el estado del expediente	
 		if($paso->id_tipo == 12){
 			$expediente->estado_id = 5;
+			$expediente->resultado = $request->resultado;
 		} else {
 			$expediente->estado_id = 2;
 		}

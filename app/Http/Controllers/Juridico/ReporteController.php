@@ -153,6 +153,18 @@ class ReporteController extends Controller
 		
 		$dataset->save();
 		// fin de dataset total de expedientes
+		
+		// dataset total de expedientes ganados
+		$data = $expedientes->where('resultado',1)->count();
+		
+		$dataset = new Dataset();
+		$dataset->id_reporte = $reporte->id;
+		$dataset->dataset = $data;
+		
+		$dataset->save();
+		// fin de dataset total de expedientes ganados
+		
+		
 		return redirect()->route('reporte.show',['reporte' => $reporte]);
     
 	}

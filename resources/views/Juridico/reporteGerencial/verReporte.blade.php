@@ -34,8 +34,11 @@
 					<h4>Detalle del reporte</h4>
 					<hr>
 					<p><strong>Período: </strong>{{$reporte->fecha_desde}} - {{$reporte->fecha_hasta}}
-					<p><strong>Total de expedientes: </strong>{!! $reporte->datasets[2]->dataset !!}
 					<p><strong>Fecha de creación: </strong>{{$reporte->created_at}}
+					<div class="col-xs-6"><strong>Total de expedientes en el período</strong></div>
+					<div class="col-xs-6"><strong>Total de expedientes ganados en el período</strong></div>
+					<div class="col-xs-6"><p class="text-muted impacto">{!! $reporte->datasets[2]->dataset !!}</p></div>
+					<div class="col-xs-6"><p class="text-success impacto">{!! $reporte->datasets[3]->dataset !!}</p></div>
 				</div>
 				<div class="col-md-6">
 					<h4>Expedientes por tipo de proceso</h4>

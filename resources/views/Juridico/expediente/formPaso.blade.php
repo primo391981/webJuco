@@ -23,6 +23,16 @@
 
 								</div>
 							</div>
+						@else
+							<div class="form-group row">
+								<label for="resultado" class="control-label col-sm-3">RESULTADO</label>
+								<div class="col-sm-9">
+									<select id="resultado" class="form-control{{ $errors->has('documentos') ? ' is-invalid' : '' }}" name="resultado" autofocus>
+										<option value="0">Perdido</option>
+										<option value="1">Ganado</option>
+									</select>
+								</div>
+							</div>
 						@endif
 						<div class="form-group row">
 							<label for="comentarios" class="control-label col-sm-3">COMENTARIOS</label>
