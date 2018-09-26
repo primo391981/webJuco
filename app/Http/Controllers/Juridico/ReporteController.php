@@ -164,6 +164,60 @@ class ReporteController extends Controller
 		$dataset->save();
 		// fin de dataset total de expedientes ganados
 		
+		// dataset por estado de expedientes
+		
+		$data = [
+			'labels' =>  [],
+			'datasets' =>  [[
+				'data' =>  [],
+				'options': [
+					'scales': {
+						'xAxes': [[
+							'stacked': true
+						]],
+						'yAxes': [[
+							'stacked': true
+						]]
+					}
+				]
+				'backgroundColor' =>  [
+					'rgba(255, 99, 132, 0.5)',
+					'rgba(54, 162, 235, 0.5)',
+					'rgba(255, 206, 86, 0.5)',
+					'rgba(75, 192, 192, 0.5)',
+					'rgba(153, 102, 255, 0.5)',
+				],
+				'borderColor' =>  [
+					'rgba(255,99,132,1)',
+					'rgba(54, 162, 235, 1)',
+					'rgba(255, 206, 86, 1)',
+					'rgba(75, 192, 192, 1)',
+					'rgba(153, 102, 255, 1)',
+				],
+				'borderWidth' =>  1
+			]]
+		];
+		
+		$estadosExpedientes = Estado::All();
+		
+		foreach($estadosExpedientes as $estado){
+			array_push($data['labels'],$estado->nombre);
+		};
+		
+		//get cantidad de expedientes por estado
+		array_push($data['datasets'][0]['data'],$expedientes->where('estado_id',1)->count());
+		array_push($data['datasets'][0]['data'],$expedientes->where('estado_id',2)->count());
+		array_push($data['datasets'][0]['data'],$expedientes->where('estado_id',3)->count());
+		array_push($data['datasets'][0]['data'],$expedientes->where('estado_id',4)->count());
+		array_push($data['datasets'][0]['data'],$expedientes->where('estado_id',5)->count());
+		
+		$dataset = new Dataset();
+		$dataset->id_reporte = $reporte->id;
+		$dataset->dataset = json_encode($data);
+		
+		$dataset->save();
+		// fin dataset estado de expedientes
+		
 		
 		return redirect()->route('reporte.show',['reporte' => $reporte]);
     

@@ -35,18 +35,22 @@
 					<hr>
 					<p><strong>Período: </strong>{{$reporte->fecha_desde}} - {{$reporte->fecha_hasta}}
 					<p><strong>Fecha de creación: </strong>{{$reporte->created_at}}
-					<div class="col-xs-6"><strong>Total de expedientes en el período</strong></div>
-					<div class="col-xs-6"><strong>Total de expedientes ganados en el período</strong></div>
-					<div class="col-xs-6"><p class="text-muted impacto">{!! $reporte->datasets[2]->dataset !!}</p></div>
-					<div class="col-xs-6"><p class="text-success impacto">{!! $reporte->datasets[3]->dataset !!}</p></div>
 				</div>
 				<div class="col-md-6">
-					<h4>Expedientes por tipo de proceso</h4>
+					<h4>Expedientes: Totales</h4>
+					<hr>
+					<div class="col-xs-6"><strong>Total de expedientes registrados en el período</strong></div>
+					<div class="col-xs-6"><strong>Total de expedientes ganados en el período</strong></div>
+					<div class="col-xs-6 text-center"><p class="text-muted" style="font-size:50px;">{!! $reporte->datasets[2]->dataset !!}</p></div>
+					<div class="col-xs-6 text-center"><p class="text-success"  style="font-size:50px;">{!! $reporte->datasets[3]->dataset !!}</p></div>
+				</div>
+				<div class="col-md-6">
+					<h4>Expedientes: Tipos de proceso</h4>
 					<hr>
 					<canvas id="chartTipoProceso"></canvas>
 				</div>
 				<div class="col-md-6">
-					<h4>Expedientes por estado</h4>
+					<h4>Expedientes: Estado</h4>
 					<hr>
 					<canvas id="chartEstado"></canvas>
 				</div>
