@@ -127,5 +127,9 @@ class ConceptoRecibosTableSeeder extends Seeder
             'nombre' => 'Aguinaldo',
 			'descripcion' => 'Aguinaldo',
         ]);
+		DB::table('contable_conceptos_recibo')->insert([
+            'nombre' => 'Salario Vacacional',
+			'descripcion' => 'Salario Vacacional',
+        ]);
     }
 }

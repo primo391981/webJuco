@@ -293,9 +293,10 @@ class HaberesController extends Controller
 				$datosRecibo->push($this->obtenerDetalle(18,$descFRL,$porcFRL));
 				
 				//Obtener Salario Vacacional del mes y sumarlo al Salario para cálculo de IRPF
-	/////////////////
+				$montoSalVacacional = $this->obtenerMontoSalVacaional($fecha,$empleado);				
 				
-				//Sumar 6% si Salario Nominal Gravado supera 10 BPC
+				$montoSalario[40]=$montoSalario[40]+$montoSalVacacional;
+				//Sumar 6% si Salario Nominal Gravado + SalarioVacacional supera 10 BPC
 				if ($montoSalario[40] >= (10 * $valorBPC))
 					$montoSalario[40] = $montoSalario[40] * 1.06;
 				
@@ -568,8 +569,6 @@ class HaberesController extends Controller
 	//Guarda los datos del cálculo de aguinaldos con los detalles correspondientes al recibo del mismo.
     public function calculoSalVacacional(Request $request)
     {
-		dd($request);
-		
 		$fecha = new Carbon($request->fecha);
 		$empleadosRecibo=collect([]);
 		
@@ -592,7 +591,7 @@ class HaberesController extends Controller
 				//Valor de BPC del mes a calcular
 				$valorBPC = $this->obtenerValorActual($fecha, 'BPC');
 				//Cálculo de descuento de Fonasa (porcentaje, monto)
-				$valoresFonasa = $this->obtenerDescuentoFonasa($empleado, $montoAguinaldo, $valorBPC);
+				$valoresFonasa = $this->obtenerDescuentoFonasa($empleado, $salarioNominal, $valorBPC);
 				
 				$porcFonasa = $valoresFonasa[0];
 				$descFonasa = $valoresFonasa[1];
@@ -600,12 +599,12 @@ class HaberesController extends Controller
 				
 				//Cálculo de descuento de BPS
 				$porcBPS = $this->obtenerValorActual($fecha, 'BPS');
-				$descBPS = $montoAguinaldo * ($porcBPS / 100);
+				$descBPS = $salarioNominal * ($porcBPS / 100);
 				$datosRecibo->push($this->obtenerDetalle(14,0,$porcBPS));
 				
 				//Cálculo de descuento de FRL
 				$porcFRL = $this->obtenerValorActual($fecha, 'FRL');
-				$descFRL = $montoAguinaldo * ($porcFRL / 100);
+				$descFRL = $salarioNominal * ($porcFRL / 100);
 				$datosRecibo->push($this->obtenerDetalle(18,0,$porcFRL));
 				
 				//Aportes Seguridad Social
@@ -628,7 +627,8 @@ class HaberesController extends Controller
 				$recibo->idTipoRecibo = $request->calculo;
 				$hoy = Carbon::today();
 					
-				$recibo->fechaRecibo = $fecha->year.'-'.$fecha->month.'-'.$fecha->day;
+					
+				$recibo->fechaRecibo = $fecha->year.'-'.$fecha->month.'-'.$request->input('diac'.$i);
 				$recibo->fechaPago = $hoy->year.'-'.$hoy->month.'-'.$hoy->day;
 				
 				$existe = ReciboEmpleado::where([['idEmpleado','=',$empleado->id],['idTipoRecibo','=',$request->calculo], ['fechaRecibo','=',$recibo->fechaRecibo]])->first();
@@ -651,12 +651,6 @@ class HaberesController extends Controller
 					if ($dtr[0]!=0)
 					{
 						$detalleRecibo = new DetalleRecibo;
-						/*$table->integer('idConceptoRecibo')->unsigned();
-						$table->decimal('cantDias', 4, 1);
-						$table->decimal('cantHoras', 4, 1);
-						$table->decimal('monto', 8, 2);
-						$table->decimal('porcentaje', 8, 2);
-						*/
 						$detalleRecibo->idConceptoRecibo=$dtr[0];
 							
 						$detalleRecibo->monto=$dtr[1];	
@@ -826,7 +820,9 @@ class HaberesController extends Controller
 								{
 									$calendario->push($i."/".$fechaActual->month);
 									$calendario->push($hd->cantHoras);
-									$calendario->push($hd->idRegistro);
+									
+									//si es un dia feriado el id de registro automaticmante 3(descanso)
+									$calendario->push($hd->idRegistro);									
 								}
 							}
 						}							
@@ -1402,6 +1398,19 @@ class HaberesController extends Controller
 			$valor += $p->monto;
 		}
 		return $valor;
+	}
+	
+	private function obtenerMontoSalVacaional($fecha,$empleado){
+		
+		$fechaDesde=$fecha->year."-".$fecha->month."-01";
+		$fechaHasta=$fecha->year."-".$fecha->month."-".$fecha->daysInMonth;
+		$recibosSalVac=ReciboEmpleado::where("idEmpleado",'=',$empleado->id)->where("idTipoRecibo",'=',4)->whereBetween('fechaRecibo', [$fechaDesde, $fechaHasta])->get();
+		$monto=0;
+		foreach($recibosSalVac as $recibo){
+			$detalleNominal = $recibo->detallesRecibos->where('idConceptoRecibo','=',21)->first();
+			$monto+= $detalleNominal->monto;
+		}
+		return $monto;
 	}
 	
 	/**
