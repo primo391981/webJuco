@@ -73,7 +73,7 @@
 										</div>
 										<div class="col-xs-2">
 											<button type="button" class="btn btn-danger btn-xs pull-right" data-toggle="modal" data-target="#desvincular{{$empr->id}}" style="margin-bottom:5px;"><i class="fas fa-trash-alt"></i></button>
-											<!-- Modal desvincular -->
+											<!-- Modal desvincular -->	
 												<div id="desvincular{{$empr->id}}" class="modal fade" role="dialog">
 												  <div class="modal-dialog">
 													<!-- Modal content-->
@@ -97,12 +97,11 @@
 																</div>			
 														</div>
 														<div class="form-group row">
-																<label for="comentario" class="control-label col-sm-3">COMENTARIO *</label>
+																<label for="fecha" class="control-label col-sm-3">FECHA *</label>
 																<div class="col-sm-9">
-																	<input type="text" id="comentario" class="form-control" name="comentario"/>
+																	<input type="date" id="fecha" class="form-control" name="fecha" min="{{$empr->pivot->fechaDesde}}" max="{{$empr->pivot->fechaHasta}}"/>
 																</div>			
 														</div>
-														
 													  </div>
 													  <div class="modal-footer">
 														<button type="submit"class="btn btn-danger" formaction="{{route('empleado.desvincularEmpresa')}}" formmethod="post"><i class="fas fa-trash-alt"></i> Aceptar</button>
