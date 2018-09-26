@@ -115,10 +115,6 @@ class PasoController extends Controller
 		//obtención del expediente correspondiente
 		$expediente = Expediente::find($request->expediente_id);
 		
-		//se actualiza el estado del expediente
-		$expediente->estado_id = 2;
-		$expediente->save();
-		
 		//obtención de la transicion correspondiente
 		$transicion = Transicion::find($request->transicion_id);
 		
@@ -145,6 +141,16 @@ class PasoController extends Controller
 			
 		}
 		
+		//se actualiza el estado del expediente	
+		if($paso->id_tipo == 12){
+			$expediente->estado_id = 5;
+			$expediente->resultado = $request->resultado;
+			$paso->fecha_fin = Carbon::now();
+		} else {
+			$expediente->estado_id = 2;
+		}
+		$expediente->save();
+		
 		$paso->save();
 		
 		//se obtiene el paso previo 
@@ -164,15 +170,6 @@ class PasoController extends Controller
 		//se crea una notificación y se envía por mail
 		$msg = Carbon::now()." - El expediente ".$expediente->iue." ha sido modificado por el usuario ".Auth::user()->name.".";
 		notificacion($paso, $msg, $expediente);
-			
-		//se actualiza el estado del expediente	
-		if($paso->id_tipo == 12){
-			$expediente->estado_id = 5;
-			$expediente->resultado = $request->resultado;
-		} else {
-			$expediente->estado_id = 2;
-		}
-		$expediente->save();
 			
 		return redirect()->route('expediente.show',$expediente)->with("success","El expediente fue modificado correctamente.");
 
