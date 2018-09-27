@@ -95,10 +95,6 @@ class ClienteController extends Controller
     public function store(Request $request)
     {
 		$tipoPersona = $request->tipo_persona;
-		
-		
-		//dd($request);
-		
 
 		if($tipoPersona == "fisica"){	
 			
@@ -149,8 +145,6 @@ class ClienteController extends Controller
 			['persona_id','=',$persona->id],
 			['persona_type','=',$persona_type],
 		])->withTrashed()->get();
-		
-		//dd($cliente);
 		
 		if(count($cliente) === 0){
 			$cliente = new Cliente();

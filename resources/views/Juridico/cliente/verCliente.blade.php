@@ -18,7 +18,14 @@
 			
 			<div class="panel-heading">
 				<a class="btn btn-success pull-right" href="{{route('cliente.index')}}" role="button"><i class="fas fa-list-ul"></i></a>
-				<h4><i class="fas fa-book"></i> DETALLE DE CLIENTE</h4>				
+				<h4>
+					@if($cliente->persona_type == 'App\Empresa')
+						<i class="far fa-building"></i>
+					@else
+						<i class="fas fa-user"></i>
+					@endif
+					DETALLE DE CLIENTE
+				</h4>				
 			</div>
 			
 			<div class="panel-body">

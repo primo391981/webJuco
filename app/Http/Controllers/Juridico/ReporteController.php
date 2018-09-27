@@ -164,22 +164,22 @@ class ReporteController extends Controller
 		$dataset->save();
 		// fin de dataset total de expedientes ganados
 		
-		// dataset por estado de expedientes
+		// dataset por duracion de pasos por tipo de expedientes
 		
 		$data = [
 			'labels' =>  [],
 			'datasets' =>  [[
 				'data' =>  [],
-				'options': [
-					'scales': {
-						'xAxes': [[
-							'stacked': true
+				'options' => [
+					'scales'=> [
+						'xAxes' => [[
+							'stacked' => true
 						]],
-						'yAxes': [[
-							'stacked': true
+						'yAxes' => [[
+							'stacked' => true
 						]]
-					}
-				]
+					]
+				],
 				'backgroundColor' =>  [
 					'rgba(255, 99, 132, 0.5)',
 					'rgba(54, 162, 235, 0.5)',
@@ -216,7 +216,7 @@ class ReporteController extends Controller
 		$dataset->dataset = json_encode($data);
 		
 		$dataset->save();
-		// fin dataset estado de expedientes
+		// fin por duracion de pasos por tipo de expedientes
 		
 		
 		return redirect()->route('reporte.show',['reporte' => $reporte]);
