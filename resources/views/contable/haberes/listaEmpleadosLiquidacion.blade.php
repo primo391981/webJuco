@@ -63,7 +63,7 @@
 								<td>{{$emp[0]->nombre}}</td>
 								<td>{{$emp[0]->apellido}}</td>
 								<td>
-									<input id="lic{{$i}}" name="lic{{$i}}" type="number" class="form-control input-sm" value=0 min=0>
+									<input id="lic{{$i}}" name="lic{{$i}}" type="number" class="form-control input-sm" value="0" min="0">
 								</td>
 								<td>
 									<input id="licpri{{$i}}" name="licpri{{$i}}" type="number" min="0" value="0" class="form-control input-sm">

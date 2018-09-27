@@ -288,7 +288,9 @@ class HaberesController extends Controller
 				$datosRecibo->push($this->obtenerDetalle(18,$descFRL,$porcFRL));
 				
 				//Obtener Salario Vacacional del mes y sumarlo al Salario para cálculo de IRPF
-				$montoSalVacacional = $this->obtenerMontoSalVacaional($fecha,$empleado);				
+				$montoSalVacacional = $this->obtenerMontoSalVacaional($fecha,$empleado);
+				$datosRecibo->push($this->obtenerDetalle(24,$montoSalVacacional,'NA'));
+				
 				//Subtotal No Gravado
 				$montoSalario[43] += $montoSalVacacional;
 				//Subtotal Nominal
@@ -296,7 +298,7 @@ class HaberesController extends Controller
 				
 				//Monto del salario SubTotal Nominal
 				$montoSubTotalNominal = $montoSalario[46];
-				
+	
 				//Carga Detalles del recibo
 				$cant=count($montoSalario);					
 				for($j=0;$j<$cant;$j++){
@@ -345,7 +347,7 @@ class HaberesController extends Controller
 				$datosRecibo->push($this->obtenerDetalle(20,$sumaDescuentos,'NA'));
 				
 				//Cálculo Sueldo Luíqido
-				$sueldoLiquido = $montoSubTotalNominal - $sumaDescuentos - $montoViatico;//Agregar Fictos
+				$sueldoLiquido = $montoSalario[46] - $sumaDescuentos - $montoViatico;//Agregar Fictos
 				$datosRecibo->push($this->obtenerDetalle(21,$sueldoLiquido,'NA'));
 				
 				//Guarda encabezado del recibo
@@ -695,7 +697,6 @@ class HaberesController extends Controller
 		$fecha = new Carbon($request->fecha);
 		$empleadosRecibo=collect([]);
 		
-		//dd($request);
 		for ( $i = 1; $i <= $request->cantHabilitados; $i++)
 		{//Recorre los empleados de la empresa.
 			$datosRecibo = collect([]);
@@ -705,7 +706,7 @@ class HaberesController extends Controller
 				$idEmpleado = $request->input($i.'hab');
 					
 				$empleado = Empleado::find($idEmpleado);
-				
+
 				//Calcular Sueldo del mes
 				$cargo = Cargo::find($empleado->idCargo);
 				$fechaBaja = new Carbon($empleado->fechaBaja);
@@ -749,12 +750,12 @@ class HaberesController extends Controller
 				
 				if($fechaBaja->month < 6 || $fechaBaja->month == 12)
 				{
-					$i = 12;
+					$x = 12;
 					$anio = $fecha->year - 1;
 					
-					while($i!=6)
+					while($x!=6)
 					{
-						$recibo = ReciboEmpleado::where([['idEmpleado','=',$empleado->id],['idTipoRecibo','=',1],['fechaRecibo', '=', $anio.'-'.$i.'-01']])->first();
+						$recibo = ReciboEmpleado::where([['idEmpleado','=',$empleado->id],['idTipoRecibo','=',1],['fechaRecibo', '=', $anio.'-'.$x.'-01']])->first();
 						
 						if ($recibo != null)
 						{
@@ -762,22 +763,22 @@ class HaberesController extends Controller
 							$montoTotalSueldos += $detalleNominal->monto;
 						}
 						
-						if ($i == 12)
+						if ($x == 12)
 						{
-							$i = 1;
+							$x = 1;
 							$anio ++;
 						}
 						else
-							$i ++;									
+							$x ++;									
 					}
 				}
 				else
 				{
-					$i = 6;
+					$x = 6;
 						
-					while($i!=12)
+					while($x!=12)
 					{
-						$recibo = ReciboEmpleado::where([['idEmpleado','=',$empleado->id],['idTipoRecibo','=',1],['fechaRecibo', '=', $fecha->year.'-'.$i.'-01']])->first();
+						$recibo = ReciboEmpleado::where([['idEmpleado','=',$empleado->id],['idTipoRecibo','=',1],['fechaRecibo', '=', $fecha->year.'-'.$x.'-01']])->first();
 						
 						if ($recibo != null)
 						{
@@ -785,7 +786,7 @@ class HaberesController extends Controller
 							$montoTotalSueldos += $detalleNominal->monto;
 						}
 							
-						$i ++;									
+						$x ++;									
 					}
 				}
 				
@@ -831,6 +832,11 @@ class HaberesController extends Controller
 					$montoLicNoGozadaSegundo = $empleado->monto * $request->input('licseg'.$i);
 				}
 				
+				$montoLicNoGozada = $montoLicNoGozadaPrimer + $montoLicNoGozadaSegundo;
+				
+				if ($montoLicNoGozada > 0)
+					$datosRecibo->push($this->obtenerDetalle(26,$montoLicNoGozada,$request->input('licpri'.$i)+$request->input('licseg'.$i)));
+				
 				//Calcular Salario Vacacional
 				//Obtiene cantidad de días de licencia a usufructuar.
 				$diasLicencia = $request->input('lic'.$i);
@@ -867,19 +873,6 @@ class HaberesController extends Controller
 				//Monto	Subtotal Nominal
 				$montoSalarioNominal = $montoSalario[46];
 				
-				//Carga Detalles
-				$cant=count($montoSalario);					
-				for($j=0;$j<$cant;$j++){
-					$detalle=collect([]);						
-					$cantParam=$montoSalario[$j];
-					
-					for($x=1;$x<=$cantParam;$x++){
-						$detalle->push($montoSalario[$j+$x]);
-					}
-					$j=$j+$cantParam;
-					$datosRecibo->push($detalle);
-				}
-			
 				//Sumar 6% si Salario Nominal Gravado + SalarioVacacional supera 10 BPC
 				if ($montoSalarioNominal >= (10 * $valorBPC))
 					$montoSalarioNominal = $montoSalarioNominal * 1.06;
@@ -907,19 +900,128 @@ class HaberesController extends Controller
 				
 				if ($empleado->idMotivo == 2)
 				{
+					$fechaDesde = new Carbon($empleado->fechaDesde);
 					
-					
-					
-					
-					
-					$datosRecibo->push($this->obtenerDetalle(25,$montoIPD,'NA'));
+					if ($fechaDesde->diffInDays($fechaBaja) > 90)
+					{
+						$salarioIPD = $empleado->monto + $empleado->monto/12 + (($empleado->monto/30) * 1.66);
+						
+						if ($fechaDesde->diffInYears($fechaBaja) > 1 && $fechaDesde->diffInYears($fechaBaja) < 6)
+							$montoIPD = $salarioIPD * $fechaDesde->diffInYears($fechaBaja);							
+						elseif ($fechaDesde->diffInYears($fechaBaja) >= 6)
+							$montoIPD = $salarioIPD * 6;	
+						else
+							$montoIPD = $salarioIPD;
+						
+						$datosRecibo->push($this->obtenerDetalle(25,$montoIPD,'NA'));
+					}
 				}					
 			
+				//Monto de IPD se suma al Monto Salario No Gravado y al Subtotal Nominal
+				$montoSalario[43] += $montoIPD;
+				$montoSalario[46] += $montoIPD;
+			
+				//Carga Detalles
+				$cant=count($montoSalario);					
+				for($j=0;$j<$cant;$j++){
+					$detalle=collect([]);						
+					$cantParam=$montoSalario[$j];
+					
+					for($x=1;$x<=$cantParam;$x++){
+						$detalle->push($montoSalario[$j+$x]);
+					}
+					$j=$j+$cantParam;
+					$datosRecibo->push($detalle);
+				}
+			
+				//Adelantos de empleado
+				$montoAdelanto=$this->obtenerPagos($fecha,$empleado,2);
+				$datosRecibo->push($this->obtenerDetalle(19,$montoAdelanto,'NA'));
 				
+				//Viaticos empleado
+				$montoViatico=$this->obtenerPagos($fecha,$empleado,1);
+				$datosRecibo->push($this->obtenerDetalle(10,$montoViatico,'NA'));
+				
+				//Suma de descuentos
+				$sumaDescuentos = $aportesSegSoc + $descIRPF + $montoAdelanto;
+				$datosRecibo->push($this->obtenerDetalle(20,$sumaDescuentos,'NA'));
+				
+				//Cálculo Sueldo Luíqido
+				$sueldoLiquido = $montoSalario[46] - $sumaDescuentos - $montoViatico;//Agregar Fictos
+				$datosRecibo->push($this->obtenerDetalle(21,$sueldoLiquido,'NA'));
+				
+				//Guarda encabezado del recibo
+				$recibo = new ReciboEmpleado;
+				$recibo->idEmpleado = $empleado->id;
+				$recibo->idTipoRecibo = $request->calculo;
+				$hoy = Carbon::today();
+					
+				$recibo->fechaRecibo = $fechaBaja->year.'-'.$fechaBaja->month.'-'.$fechaBaja->day;
+				$recibo->fechaPago = $hoy->year.'-'.$hoy->month.'-'.$hoy->day;
+				
+				$existe = ReciboEmpleado::where([['idEmpleado','=',$empleado->id],['idTipoRecibo','=',$request->calculo], ['fechaRecibo','=',$recibo->fechaRecibo]])->first();
+				
+				if ($existe == null)
+					$recibo->save();
+				else
+				{
+					$dt = DetalleRecibo::where('idRecibo','=',$existe->id)->delete();
+					$existe->delete();
+					
+					$recibo->save();
+				}
+				//Obtengo último recibo guardado
+				$UltimoReciboEmpleado = ReciboEmpleado::where([['idEmpleado','=',$empleado->id],['idTipoRecibo','=',$request->calculo], ['fechaRecibo','=',$recibo->fechaRecibo]])->first();
+					
+				//Guarda detalles del recibo
+				foreach($datosRecibo as $dtr)
+				{
+					if ($dtr[0]!=0)
+					{
+						$detalleRecibo = new DetalleRecibo;
+						/*$table->integer('idConceptoRecibo')->unsigned();
+						$table->decimal('cantDias', 4, 1);
+						$table->decimal('cantHoras', 4, 1);
+						$table->decimal('monto', 8, 2);
+						$table->decimal('porcentaje', 8, 2);
+						*/
+						$detalleRecibo->idConceptoRecibo=$dtr[0];
+						if($dtr[0]==9 || $dtr[0]==26 ||($dtr[0]== 1 && $cargo->id_remuneracion == 2))
+						{//Días de Licencia Gozada
+							$detalleRecibo->cantDias = $dtr[2];
+						}
+						else
+							$detalleRecibo->cantDias = 0;
+						
+						if(($dtr[0]>=2 && $dtr[0]<=7) || $dtr[0]==22)
+						{
+							$detalleRecibo->cantHoras=$dtr[2];
+						}
+						else
+						{
+							$detalleRecibo->cantHoras=0;							
+						}						
+						
+						$detalleRecibo->monto=$dtr[1];	
+						
+						if($dtr[0]==14 || $dtr[0]==15 || $dtr[0]==18)
+						{//BPS/Fonasa/FRL
+							$detalleRecibo->porcentaje=$dtr[2];						
+						}
+						$detalleRecibo->idRecibo=$UltimoReciboEmpleado->id;
+						
+						$detalleRecibo->save();		
+					}
+				}
+				
+				$empleadosRecibo->push($UltimoReciboEmpleado);		
 			}
-		}
+		}	
+		$tipoRecibo = TipoRecibo::find($request->calculo);
 		
+		return view('contable.haberes.listaEmpleadosRecibos', ['empleadosRecibo' => $empleadosRecibo,'fechaMes'=>$fecha->month,'fechaAnio'=>$fecha->year,'calculo'=>$tipoRecibo]);		
 	}
+	
 	
 	//Devuelve array con horas que TRABAJO el empleado en el mes indicado.
  	private function obtenerHorasTrabajadasMes ($fecha, $idEmpleado, $cantDias)
@@ -1297,8 +1399,13 @@ class HaberesController extends Controller
 		
 		if ($cargo->id_remuneracion == 1)
 		{//El empleado es mensual.
-			//Horas del mes
-			$salNominalGravado = $empleado->monto;
+			if ($empleado->habilitado == 0)
+			{
+				$fechaBaja = new Carbon($empleado->fechaBaja);
+				$salNominalGravado = ($empleado->monto/30) * $fechaBaja->day;
+			}
+			else
+				$salNominalGravado = $empleado->monto;
 			//Sueldo nominal
 			$salarios->push(2);
 			$salarios->push(1);
