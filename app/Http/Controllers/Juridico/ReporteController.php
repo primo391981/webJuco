@@ -7,6 +7,9 @@ use App\Juridico\Expediente;
 use App\Juridico\TipoExpediente;
 use App\Juridico\Dataset;
 use App\Juridico\Estado;
+
+use \Carbon\Carbon;
+
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -162,62 +165,111 @@ class ReporteController extends Controller
 		$dataset->dataset = $data;
 		
 		$dataset->save();
+		$pasoMaximo = null;
+		
 		// fin de dataset total de expedientes ganados
 		
-		// dataset por duracion de pasos por tipo de expedientes
+		// dataset max duración de pasos de expedientes
+		$maximo = 0; //en dias, para test, en minutos
 		
-		$data = [
-			'labels' =>  [],
-			'datasets' =>  [[
-				'data' =>  [],
-				'options' => [
-					'scales'=> [
-						'xAxes' => [[
-							'stacked' => true
-						]],
-						'yAxes' => [[
-							'stacked' => true
-						]]
-					]
-				],
-				'backgroundColor' =>  [
-					'rgba(255, 99, 132, 0.5)',
-					'rgba(54, 162, 235, 0.5)',
-					'rgba(255, 206, 86, 0.5)',
-					'rgba(75, 192, 192, 0.5)',
-					'rgba(153, 102, 255, 0.5)',
-				],
-				'borderColor' =>  [
-					'rgba(255,99,132,1)',
-					'rgba(54, 162, 235, 1)',
-					'rgba(255, 206, 86, 1)',
-					'rgba(75, 192, 192, 1)',
-					'rgba(153, 102, 255, 1)',
-				],
-				'borderWidth' =>  1
-			]]
-		];
+		foreach($expedientes as $expediente){
+			foreach($expediente->pasos as $paso){
+				$dt1=new Carbon($paso->created_at);
+				
+				//Si el paso está finalizado
+				if($paso->fecha_fin != null){
+					$duracion = $dt1->diffInMinutes($paso->fecha_fin);
+					// $duracion = $dt1->diffInDays($paso->fecha_fin); Para producción va en días
+					//dd($duracion);
+				//Sino, tomo la duración actual
+				} else {
+					$duracion = $dt1->diffInMinutes(Carbon::now());
+				}
+				
+				//guardo el mayor registro y el paso para mostrar
+				
+				if($duracion >= $maximo){
+					$maximo = $duracion;
+					$pasoMaximo = $paso;
+				}
+			}
+		}
 		
-		$estadosExpedientes = Estado::All();
-		
-		foreach($estadosExpedientes as $estado){
-			array_push($data['labels'],$estado->nombre);
-		};
-		
-		//get cantidad de expedientes por estado
-		array_push($data['datasets'][0]['data'],$expedientes->where('estado_id',1)->count());
-		array_push($data['datasets'][0]['data'],$expedientes->where('estado_id',2)->count());
-		array_push($data['datasets'][0]['data'],$expedientes->where('estado_id',3)->count());
-		array_push($data['datasets'][0]['data'],$expedientes->where('estado_id',4)->count());
-		array_push($data['datasets'][0]['data'],$expedientes->where('estado_id',5)->count());
-		
+		$data = ['maximo'=>$maximo , 'pasoMaximo' => $pasoMaximo];
+
 		$dataset = new Dataset();
 		$dataset->id_reporte = $reporte->id;
 		$dataset->dataset = json_encode($data);
 		
 		$dataset->save();
-		// fin por duracion de pasos por tipo de expedientes
+		// fin  dataset  max duración de pasos de expedientes
 		
+		// dataset min duración de pasos de expedientes
+		$minimo = 99999999; //en dias, para test, en minutos
+	
+		foreach($expedientes as $expediente){
+			foreach($expediente->pasos as $paso){
+				$dt1=new Carbon($paso->created_at);
+				
+				//Si el paso está finalizado
+				if($paso->fecha_fin != null){
+					$duracion = $dt1->diffInMinutes($paso->fecha_fin);
+					// $duracion = $dt1->diffInDays($paso->fecha_fin); Para producción va en días
+					//dd($duracion);
+				//Sino, tomo la duración actual
+				} else {
+					$duracion = $dt1->diffInMinutes(Carbon::now());
+				}
+				
+				//guardo el mayor registro y el paso para mostrar
+				
+				if($duracion <= $minimo){
+					$minimo = $duracion;
+					$pasoMinimo = $paso;
+				}
+			}
+		}
+		
+		$data = ['minimo'=>$minimo , 'pasoMinimo' => $pasoMinimo];
+
+		$dataset = new Dataset();
+		$dataset->id_reporte = $reporte->id;
+		$dataset->dataset = json_encode($data);
+		
+		$dataset->save();
+		// fin  dataset  min duración de pasos de expedientes
+		
+		// dataset promedio duración de pasos de expedientes
+		$contador = 0;
+		$acumulador = 0;
+		
+		foreach($expedientes as $expediente){
+			$contador = $contador + $expediente->pasos->count();
+			
+			foreach($expediente->pasos as $paso){
+				$dt1=new Carbon($paso->created_at);
+				if($paso->fecha_fin != null){
+					$duracion = $dt1->diffInMinutes($paso->fecha_fin);
+					// $duracion = $dt1->diffInDays($paso->fecha_fin); Para producción va en días
+					//dd($duracion);
+				//Sino, tomo la duración actual
+				} else {
+					$duracion = $dt1->diffInMinutes(Carbon::now());
+				}
+				
+				$acumulador = $acumulador + $duracion;
+			}
+			
+		}
+		
+		$data = $duracion / $contador;
+
+		$dataset = new Dataset();
+		$dataset->id_reporte = $reporte->id;
+		$dataset->dataset = json_encode($data);
+		
+		$dataset->save();
+		// fin  dataset  min duración de pasos de expedientes
 		
 		return redirect()->route('reporte.show',['reporte' => $reporte]);
     
