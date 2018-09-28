@@ -79,6 +79,8 @@ class RegistroHoraController extends Controller
 														$calendario->push($dia->nombre);
 														$calendario->push($i."/".$fechaActual->month);
 														$calendario->push($hd->cantHoras);
+														
+														
 														switch($hd->idRegistro){
 															case 1:		
 																$calendario->push(" ");
