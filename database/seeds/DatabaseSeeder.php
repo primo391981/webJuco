@@ -68,7 +68,8 @@ class DatabaseSeeder extends Seeder
 			PagosPartidasExtrasTableSeeder::class,
 			TipoRecibosTableSeeder::class,
 			ConceptoRecibosTableSeeder::class,
-			BajaMotivosTableSeeder::class
+			BajaMotivosTableSeeder::class,
+			FeriadosTableSeeder::class
 			
 		]);	
     }

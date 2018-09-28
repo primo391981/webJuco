@@ -23,7 +23,7 @@ class EmpleadoController extends Controller
 	public function formCrear($idPer){
 		$persona=Persona::find($idPer);
 		$empresas=Empresa::All();
-		$emprAsociadas=$persona->empresas;
+		$emprAsociadas=$persona->empresas()->where('habilitado', 1)->get();
 		//me tira las empresas diferentes entre todas las empresas y empresas asociadas
 		$emprSinAsociar=$empresas->diff($emprAsociadas);
 		$cargos=Cargo::All();	

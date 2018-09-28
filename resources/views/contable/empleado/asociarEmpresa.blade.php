@@ -31,7 +31,7 @@
 						</thead>
 						<tbody>
 						<form>
-						@foreach($emprSinAsociar as $empresa)						
+						@foreach($emprSinAsociar as $empresa)	
 							<tr>
 								<td><label><input type="radio" name="rb" value="{{$empresa->id}}" onclick="darValor(this)"></label></td>
 								<td>{{$empresa->rut}}</td>

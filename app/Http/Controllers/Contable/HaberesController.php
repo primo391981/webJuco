@@ -19,6 +19,7 @@ use App\Contable\ParametroGeneral;
 use App\Contable\ReciboEmpleado;
 use App\Contable\ConceptoRecibo;
 use App\Contable\DetalleRecibo;
+use App\Contable\Feriado;
 use Exception;
 use \Carbon\Carbon;
 
@@ -582,7 +583,7 @@ class HaberesController extends Controller
 	}
 	
 	
-	//Guarda los datos del cálculo de aguinaldos con los detalles correspondientes al recibo del mismo.
+	//Guarda los datos del cálculo de Salario Vacacional con los detalles correspondientes al recibo del mismo.
     public function calculoSalVacacional(Request $request)
     {
 		$fecha = new Carbon($request->fecha);
@@ -691,7 +692,7 @@ class HaberesController extends Controller
 	}
 	
 	
-	//Guarda los datos del cálculo de aguinaldos con los detalles correspondientes al recibo del mismo.
+	//Guarda los datos del cálculo de liquidacion de haberes con los detalles correspondientes al recibo del mismo.
     public function calculoLiquidacion(Request $request)
     {
 		$fecha = new Carbon($request->fecha);
@@ -1168,9 +1169,12 @@ class HaberesController extends Controller
 								{
 									$calendario->push($i."/".$fechaActual->month);
 									$calendario->push($hd->cantHoras);
-									
-									//si es un dia feriado el id de registro automaticmante 3(descanso)
-									$calendario->push($hd->idRegistro);									
+									if($this->diaFeriado($fechaActual)){
+										$calendario->push(3);
+									}
+									else{
+										$calendario->push($hd->idRegistro);
+									}									
 								}
 							}
 						}							
@@ -1764,6 +1768,17 @@ class HaberesController extends Controller
 			$monto+= $detalleNominal->monto;
 		}
 		return $monto;
+	}
+	
+	private function diaFeriado($fecha){
+		$feriados=Feriado::All();
+		$esFeriado=false;
+		foreach($feriados as $fer){
+			if($fer->dia == $fecha->day && $fer->mes==$fecha->month){
+				$esFeriado=true;
+			}
+		}
+		return $esFeriado;
 	}
 	
 	/**

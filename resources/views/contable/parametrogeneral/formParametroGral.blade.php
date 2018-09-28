@@ -1,7 +1,7 @@
 @csrf
 
 		<div class="form-group row">
-			<label for="nombre" class="control-label col-sm-3">Nombre</label>
+			<label for="nombre" class="control-label col-sm-3">NOMBRE</label>
 			<div class="col-sm-9">
 				<input id="nombre" type="text" class="form-control{{ $errors->has('nombre') ? ' is-invalid' : '' }}" name="nombre" value="{{ isset($param) ? $param->nombre : old('nombre') }}" required autofocus {{ $readonly }}>
 				@if ($errors->has('nombre'))
@@ -13,7 +13,7 @@
 		</div>
 		
 		<div class="form-group row">
-			<label for="descripcion" class="control-label col-sm-3">Descripcion</label>
+			<label for="descripcion" class="control-label col-sm-3">DESCRIPCION </label>
 
 			<div class="col-sm-9">
 				<input id="descripcion" type="text" class="form-control{{ $errors->has('descripcion') ? ' is-invalid' : '' }}" name="descripcion" value="{{ isset($param) ? $param->descripcion : old('descripcion') }}" required autofocus>
@@ -27,7 +27,7 @@
 		</div>
 		
 		<div class="form-group row">
-			<label for="fecha_inicio" class="control-label col-sm-3">Fecha de inicio</label>
+			<label for="fecha_inicio" class="control-label col-sm-3">FECHA DE INICIO</label>
 
 			<div class="col-sm-9">
 				<input id="fecha_inicio" type="date" class="form-control{{ $errors->has('fecha_inicio') ? ' is-invalid' : '' }}" name="fecha_inicio" value="{{ isset($param) ? $param->fecha_inicio : old('fecha_inicio') }}" required autofocus {{ $readonly }}>
@@ -41,7 +41,7 @@
 		</div>
 		
 		<div class="form-group row">
-			<label for="fecha_fin" class="control-label col-sm-3">Fecha de fin</label>
+			<label for="fecha_fin" class="control-label col-sm-3">FECHA DE FIN</label>
 
 			<div class="col-sm-9">
 				<input id="fecha_fin" type="date" class="form-control{{ $errors->has('fecha_fin') ? ' is-invalid' : '' }}" name="fecha_fin" value="{{ isset($param) ? $param->fecha_fin : old('fecha_fin') }}" autofocus>
