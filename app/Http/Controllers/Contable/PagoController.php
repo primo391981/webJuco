@@ -359,66 +359,71 @@ class PagoController extends Controller
 	
 	
 	private function listaEmpleadosHaberes($idEmpleado,$fecha)
-	{
+	{		
 		$empleado = Empleado::find($idEmpleado);
-			$empresa = Empresa::where('id','=',$empleado->idEmpresa)->first();			
-			$personas = $empresa->personas;
-			$habilitadas=collect([]);
-			$cantHabilitados = 0;
+		$empresa = Empresa::where('id','=',$empleado->idEmpresa)->first();			
+		$personas = $empresa->personas;
+		$habilitadas=collect([]);
+		$cantHabilitados = 0;
+		
+		foreach($personas as $persona)
+		{
+			$fDesde = new Carbon($persona->pivot->fechaDesde);
+			$fHasta = new Carbon($persona->pivot->fechaHasta);
+			$fecha->day(01);
 			
-			foreach($personas as $persona){
-				$fDesde=new Carbon($persona->pivot->fechaDesde);
-				$fHasta=new Carbon($persona->pivot->fechaHasta);
-				if($fecha->between($fDesde,$fHasta)){
-					$habilita=collect([]);
-					$habilita->push($persona);					
-					$regHora=RegistroHora::where([['idEmpleado','=',$persona->pivot->id],['fecha','=',$fecha]])->first();
-					if($regHora!=null){
-						$habilita->push('1');
-					}
-					else{
-						$habilita->push('0');
-					}
-					$pagos=Pago::where([['idEmpleado','=',$persona->pivot->id],['fecha','=',$fecha]])->get();
-					
-					$totalViaticos=0;
-					$totalAdelantos=0;
-					$totalExtras=0;
-					
-					foreach($pagos as $p)
+			if($fecha->between($fDesde,$fHasta))
+			{
+				$habilita=collect([]);
+				$habilita->push($persona);					
+				$regHora=RegistroHora::where([['idEmpleado','=',$persona->pivot->id],['fecha','=',$fecha]])->first();
+				
+				if($regHora!=null){
+					$habilita->push('1');
+				}
+				else{
+					$habilita->push('0');
+				}
+				$pagos=Pago::where([['idEmpleado','=',$persona->pivot->id],['fecha','=',$fecha]])->get();
+			
+				$totalViaticos=0;
+				$totalAdelantos=0;
+				$totalExtras=0;
+				
+				foreach($pagos as $p)
+				{
+					if($p->idTipoPago==1)
 					{
-						if($p->idTipoPago==1)
+						$totalViaticos+=$p->monto;
+					}
+					else
+					{
+						if ($p->idTipoPago==2)
 						{
-							$totalViaticos+=$p->monto;
+							$totalAdelantos+=$p->monto;
 						}
 						else
 						{
-							if ($p->idTipoPago==2)
-							{
-								$totalAdelantos+=$p->monto;
-							}
-							else
-							{
-								$totalExtras+=$p->monto;
-							}
+							$totalExtras+=$p->monto;
 						}
-						
 					}
 					
-					$habilita->push($totalViaticos);
-					$habilita->push($totalAdelantos);
-					$habilita->push($totalExtras);
-					
-					$habilitadas->push($habilita);
-					$cantHabilitados ++;
-				}				
-			}
-			
-			$datos=collect([]);
-			$datos->push($habilitadas);
-			$datos->push($cantHabilitados);
-			
-			return $datos;
+				}
+				
+				$habilita->push($totalViaticos);
+				$habilita->push($totalAdelantos);
+				$habilita->push($totalExtras);
+				
+				$habilitadas->push($habilita);
+				$cantHabilitados ++;
+			}				
+		}
+		
+		$datos=collect([]);
+		$datos->push($habilitadas);
+		$datos->push($cantHabilitados);
+		
+		return $datos;
 	}
 	
 }
