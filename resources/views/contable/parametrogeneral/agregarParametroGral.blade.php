@@ -28,7 +28,7 @@
 					@include('contable.parametrogeneral.formParametroGral', ['readonly' => ''])
 				</div>
 				<div class="panel-footer">
-				<button type="submit" class="btn btn-warning btn-block"><i class="fas fa-check"></i> Confirmar</button>
+				<button type="submit" class="btn btn-warning btn-block" id="btnSubmit"><i class="fas fa-check"></i> Confirmar</button>
 			</form>
 			</div>
 		</div><!--cierre panel-->

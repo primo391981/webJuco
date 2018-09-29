@@ -55,13 +55,14 @@ class ParametroGeneralController extends Controller
 		
 		$parametro = ParametroGeneral::where('nombre',$request->nombre)->latest()->first();
 		$bandera = 1;
-		
+		//dd($parametro);
 		if(!is_null($parametro)){
 			if($request->fecha_inicio > $parametro->fecha_inicio){
 				if(is_null($parametro->fecha_fin) || $parametro->fecha_fin >= $request->fecha_inicio){
 					$fecha_fin = Carbon::parse($request->fecha_inicio);
 					$fecha_fin = $fecha_fin->subDays(1);
 					$parametro->fecha_fin = $fecha_fin->toDateString();
+					//dd($parametro);
 					$parametro->save();
 				} 				 
 			} else {
