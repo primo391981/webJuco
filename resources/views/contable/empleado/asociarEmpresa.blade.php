@@ -24,6 +24,8 @@
 								<th>RUT</th>
 								<th>RAZON SOCIAL</th>
 								<th>NOMBRE FANTASIA</th>
+								<th>GRUPO</th>
+								<th>SUBGRUPO</th>
 								<th>CONTACTO</th>
 								<th>TELÉFONO</th>
 								<th>DIRECCIÓN</th>
@@ -37,6 +39,8 @@
 								<td>{{$empresa->rut}}</td>
 								<td>{{$empresa->razonSocial}}</td>
 								<td>{{$empresa->nombreFantasia}}</td>
+								<td>{{$empresa->grupo}}</td>
+								<td>{{$empresa->subGrupo}}</td>								
 								<td>{{$empresa->nomContacto}}</td>
 								<td>{{$empresa->telefono}}</td>	
 								<td>{{$empresa->domicilio}}</td>

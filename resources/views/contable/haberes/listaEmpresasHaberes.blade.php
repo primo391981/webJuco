@@ -33,7 +33,7 @@
 								<select id="nombreFantasia" class="form-control" name="nombreFantasia" onChange="" required autofocus>
 									<option value="">-- Seleccione empresa --</option>
 								@foreach($empresas as $emp)
-									<option value="{{$emp->nombreFantasia}}">{{$emp->nombreFantasia}}</option>
+									<option value="{{$emp->nombreFantasia}}">{{$emp->nombreFantasia}} - {{$emp->grupo}} - {{$emp->subGrupo}}</option>
 								@endforeach
 								</select>							
 							</div>	
