@@ -22,7 +22,7 @@
 				<div class="btn-group pull-right">	
 					<a href="{{ route('contenedor.index') }}" class="btn btn-info pull-right" role="button"><i class="fas fa-list-ul"></i></a>				  
 				</div>
-				<h4>EDITAR CONTENEDOR</h4>
+				<h4><i class="fas fa-th-large"></i> EDITAR CONTENEDOR</h4>
 			</div>	
 			
 			<div class="panel-body text-muted">
@@ -48,50 +48,59 @@
 							<hr class="hidden-xs hidden-sm">
 						</div>
 					</div>
+					<table class="table table-condensed">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>TITULO</th>
+								<th colspan="4">ACCIONES</th>
+							</tr>
+						</thead>
+						<tbody>
 					@foreach($contenedor->contenidos->sortBy('orden') as $contenido)
-						<div class="row">
-							<div class="col-xs-4">
-								<p class="text-center">{{ $contenido->id }} {{ $contenido->titulo }}</p>
-							</div>
-							<div class="col-xs-2">
+						<tr>
+							<td>{{ $contenido->id }}</td>
+							<td>{{ $contenido->titulo }}</td>
+							<td>
 								<form class="form-inline" action="{{ route('contenido.deassign') }}" method="POST">
 									{{ csrf_field() }}
 									<input type="hidden" name="contenedor_id" value="{{ $contenedor->id }}">
 									<input type="hidden" name="contenido_id" value="{{ $contenido->id }}">
-									<button class="btn btn-link" type="submit" data-toggle="tooltip" title="Eliminar"><i class="far fa-trash-alt" aria-hidden="true"></i></button>
+									<button class="btn btn-danger" type="submit" data-toggle="tooltip" title="Eliminar"><i class="far fa-trash-alt" aria-hidden="true"></i></button>
 								</form>
-							</div>				
-							<div class="col-xs-2">
-								<a class="btn btn-link" role="button" href="{{ route('contenido.edit', ['contenido' => $contenido]) }}" data-toggle="tooltip" title="Editar">
+							</td>				
+							<td>
+								<a class="btn btn-warning" role="button" href="{{ route('contenido.edit', ['contenido' => $contenido]) }}" data-toggle="tooltip" title="Editar">
 								<i class="far fa-edit" aria-hidden="true"></i></a>
-							</div>
-							<div class="col-xs-2">
+							</td>
+							<td>
 								@if($contenido->pivot->orden != 1)
 									<form  method="POST" class="form-inline" action="{{ route('contenido.up') }}">
 										{{ csrf_field() }}
 										<input type="hidden" name="contenedor_id" value="{{ $contenedor->id }}">
 										<input type="hidden" name="contenido_id" value="{{ $contenido->id }}">
-										<button class="btn btn-link" type="submit" data-toggle="tooltip" title="Subir nivel"><i class="fas fa-level-up-alt" aria-hidden="true"></i></button>
+										<button class="btn btn-default" type="submit" data-toggle="tooltip" title="Subir nivel"><i class="fas fa-level-up-alt" aria-hidden="true"></i></button>
 									</form>
 								@else
-									<button class="btn btn-link" style="color:red;" disabled><i class="fas fa-level-up-alt"></i></button>
+									<button class="btn btn-default" style="color:red;" disabled><i class="fas fa-level-up-alt"></i></button>
 								@endif												
-							</div>
-							<div class="col-xs-2">
+							</td>
+							<td>
 								@if($contenido->pivot->orden < count($contenedor->contenidos))
 									<form method="POST" class="form-inline" action="{{ route('contenido.down') }}" >
 										{{ csrf_field() }}
 										<input type="hidden" name="contenedor_id" value="{{ $contenedor->id }}">
 										<input type="hidden" name="contenido_id" value="{{ $contenido->id }}">
-										<button class="btn btn-link" type="submit" data-toggle="tooltip" title="Bajar nivel"><i class="fas fa-level-down-alt" aria-hidden="true"></i></button>
+										<button class="btn btn-default" type="submit" data-toggle="tooltip" title="Bajar nivel"><i class="fas fa-level-down-alt" aria-hidden="true"></i></button>
 									</form>
 								@else
-									<button class="btn btn-link" style="color:red;" disabled><i class="fas fa-level-down-alt"></i></button>												
+									<button class="btn btn-default" style="color:red;" disabled><i class="fas fa-level-down-alt"></i></button>												
 								@endif
-							</div>
-						</div>
-						<hr>
+							</td>
+						</tr>
 					@endforeach
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>

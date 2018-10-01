@@ -23,14 +23,14 @@
 				<div class="btn-group pull-right">	
 					<a href="{{ route('contenedor.create') }}" class="btn btn-info pull-right" role="button"><i class="fas fa-plus"></i></a>				  
 				</div>
-				<h4>LISTADO CONTENEDORES ACTIVOS</h4>
+				<h4><i class="fas fa-th-large"></i> LISTADO CONTENEDORES</h4>
 			</div>
 			<div class="panel-body text-muted">					
 				<div class="table-responsive">
-					<table class="table table-bordered" id="tableContenedor"> 
+					<table class="table" id="tableContenedor"> 
 						<thead>
 						<tr>
-							<th>ID</th>
+							<th>#</th>
 							<th>Título</th>
 							<th>Tipo</th>
 							<th>Item de menú</th>
@@ -58,7 +58,7 @@
 										<fieldset disabled>
 									@endif
 									<button type="submit"class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
-									@if($contenedor->contenidos->count() > 1)
+									@if($contenedor->contenidos->count() > 0)
 										</fieldset>
 									@endif												
 								</form>

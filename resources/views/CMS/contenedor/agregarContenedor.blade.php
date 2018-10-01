@@ -34,7 +34,7 @@
 				<div class="btn-group pull-right">	
 					<a href="{{ route('contenedor.index') }}" class="btn btn-info pull-right" role="button"><i class="fas fa-list-ul"></i></a>				  
 				</div>
-				<h4>CREAR CONTENEDOR</h4>
+				<h4><i class="fas fa-th-large"></i> CREAR CONTENEDOR</h4>
 			</div>			
 			
 			<div class="panel-body text-muted">
