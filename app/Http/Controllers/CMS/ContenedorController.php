@@ -228,7 +228,7 @@ class ContenedorController extends Controller
 		//eliminar la asignacion.
 		$contenedor->contenidos()->detach($id_contenido);
 		
-		return redirect()->route('contenedor.edit', ['contenedor' => $contenedor])->with('success','El contenedor fue modificado correctamente');
+		return redirect()->back()->with('success','El contenedior y contenido fueron modificados correctamente');
     }
 	
 	public function deassignContenedor(Request $request)

@@ -41,7 +41,6 @@
 				<div class="col-xs-12 col-md-5">
 					<div class="row">
 						<div class="col-xs-12">
-							<button class="btn btn-primary pull-right" data-toggle="modal" data-target="#myModal"> <i class="fas fa-plus"></i></button>
 							<h4>CONTENEDORES ASOCIADOS</h4>
 							<hr class="hidden-xs hidden-sm">
 						</div>
