@@ -89,7 +89,10 @@
             <!-- /.navbar-header -->
 
             <ul class="nav navbar-top-links navbar-right">
-					<!-- SE PUEDE UTILIZAR ESTE MENU DE ARRIBA CON ICONOS -->
+					@yield('ayuda')
+					<li class="nav-item"> 
+						<button class="btn btn-link" data-toggle="modal" data-target="#modalAcerca" title="Acerca"><i class="fas fa-info-circle"></i> </button>
+					</li>
 					
 			</ul>
             <!-- /.navbar-top-links -->
@@ -121,6 +124,39 @@
 		</div>
     </div>
     <!-- /#wrapper -->    
+	
+	<!-- Modal Acerca-->
+<div class="modal fade" id="modalAcerca" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Acerca de Sistema JUCO (Jurídico - Contable)</h4>
+      </div>
+      <div class="modal-body">
+        Versión: 1.02<br>
+		Equipo de proyecto: Martín Ghiglia, Fabián Sellanes, Diego Unibazo<br>
+		Universidad de la Empresa<br>
+		2018<br>
+      </div>
+    </div>
+  </div>
+</div>
+	<!-- Modal Ayuda-->
+<div class="modal fade" id="modalAyuda" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Ayuda de Sistema JUCO (Jurídico - Contable)</h4>
+      </div>
+      <div class="modal-body">
+        @yield('contentAyuda')
+      </div>
+    </div>
+  </div>
+</div>
+	
 	
 	<script>
       $('#summernote').summernote({
