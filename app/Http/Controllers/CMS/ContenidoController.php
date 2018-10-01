@@ -70,50 +70,27 @@ class ContenidoController extends Controller
 			'titulo' => 'required',
 			'subtitulo' => 'required',
 			'texto' => 'required',
-			//'filepath' => 'nullable',
-			//'imagen' => 'nullable',
-			//'alt_imagen' => 'nullable',
 		]);
-		
-		//dd($request);
+
 		$contenido = new Contenido();
-		//dd($request);
-		$contenido->titulo = $request['titulo'];
-		$contenido->subtitulo = $request['subtitulo'];
-		$contenido->texto = $request['texto'];
-		$contenido->archivo = $request['archivo'] !== null ? $request['archivo'] : "";
-		$contenido->nombre_archivo = $request['nombre_archivo'] !== null ? $request['nombre_archivo'] : "";
-		$contenido->imagen = $request['imagen'] !== null ? $request['imagen'] : "";
-		$contenido->alt_imagen = $request['alt_imagen'] !== null ? $request['alt_imagen'] : "";
+
+		$contenido->titulo = $request->titulo;
+		$contenido->subtitulo = $request->subtitulo;
+		$contenido->texto = $request->texto;
+		$contenido->archivo = $request->archivo !== null ? $request->archivo : "";
+		$contenido->nombre_archivo = $request->nombre_archivo !== null ? $request->nombre_archivo : "";
+		$contenido->imagen = $request->imagen !== null ? $request->imagen : "";
+		$contenido->alt_imagen = $request->alt_imagen !== null ? $request->alt_imagen : "";
 		
-		
-		//dd($contenido);
-		//dd($contenido);
 		$contenido->save();
-		
-		
-		/*Contenido::create([
-			'titulo' => $data['titulo']
-		]);
-		*/
 		
 		$contenidos = Contenido::orderBy("titulo")->get();
 		$subtitulo = 'Lista de Contenidos';
+
 		// devolver mensaje de creado correctamente
-		
-		return view('cms.contenido.listaContenidos', ['subtitulo' => $subtitulo, 'contenidos' => $contenidos]);
+		return redirect()->route('contenido.index')->with('success','El contenido fue modificado correctamente');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Contenido  $contenido
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Contenido $contenido)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -143,45 +120,34 @@ class ContenidoController extends Controller
 			'texto' => 'required',
 		]);
 		
-		$contenido->titulo = $request['titulo'];
-		$contenido->subtitulo = $request['subtitulo'];
-		$contenido->texto = $request['texto'];
+		$contenido->titulo = $request->titulo;
+		$contenido->subtitulo = $request->subtitulo;
+		$contenido->texto = $request->texto;
+		
 		
 		//manejo del archivo adjunto
 		if($request->hasFile('archivo')){
 			$archivo = $request->file('archivo');
 			$path = $archivo->store('public/contenidos/archivos');
 			$contenido->archivo = Storage::url($path);
-			$contenido->nombre_archivo = $request['nombre_archivo'] !== null ? $request['nombre_archivo'] : "nombre de archivo";
-			
 		} 
+		
+		$contenido->nombre_archivo = $request->nombre_archivo !== null ? $request->nombre_archivo : "nombre de archivo";
 		
 		//manejo de imagen adjunta
 		if($request->hasFile('imagen')){
 			$imagen = $request->file('imagen');
 			$path = $imagen->store('public/contenidos/imagenes');
 			$contenido->imagen = Storage::url($path);
-			$contenido->alt_imagen = $request['alt_imagen'] !== null ? $request['alt_imagen'] : "Texto de imagen";
-			//dd($contenido);
 		} 
 		
+		$contenido->alt_imagen = $request->alt_imagen !== null ? $request->alt_imagen : "Texto de imagen";
 		
-		
-		
-		//dd($contenido);
 		$contenido->save();
 		
-		
-		/*Contenido::create([
-			'titulo' => $data['titulo']
-		]);
-		*/
-		
-		$contenidos = Contenido::orderBy("titulo")->get();
-		$subtitulo = 'Lista de Contenidos';
 		// devolver mensaje de creado correctamente
 		
-		return view('cms.contenido.listaContenidos', ['subtitulo' => $subtitulo, 'contenidos' => $contenidos]);
+		return redirect()->route('contenido.index')->with('success','El contenido fue modificado correctamente');
     }
 
     /**

@@ -104,93 +104,57 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Seleccionar contenido</h4>
-      </div>
-      <div class="modal-body">
-			<form id="form-search" action="{{ route('contenido.search') }}">
-				@csrf
-				<div class="input-group">
-				  <input type="text" class="form-control" placeholder="Search for..." name="search">
-				  <span class="input-group-btn">
-					<button class="btn btn-default" id="btn_buscar" value="buscar">busqueda</button>
-				  </span>
-				</div><!-- /input-group -->
-			</form>
+        <h4 class="modal-title" id="myModalLabel">Asociar contenido</h4>
       </div>
 	  <div class="modal-body">
-			<table class="table table-striped" id="contenidos">
-			</table>
-			
-			<form id='form-delete' action="{{ route('contenido.assign', ':CONTENIDO_ID') }}">
-				{{ csrf_field() }}
-				<input type="hidden" name="contenedor_id" value="{{ $contenedor->id}}">
-			</form>
+			<div class="table-responsive">
+				<table class="table" id="tableContenidos">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>NOMBRE</th>
+							<th>TEXTO</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach($contenidos as $contenido)						
+						<tr>
+							<td>{{$contenido->id}}</td>
+							<td>{{$contenido->titulo}}</td>
+							<td>{{str_limit($contenido->texto,20)}}</td>
+							<td>
+								<form method="POST" action="{{ route('contenido.assign',$contenido->id) }}">
+									@csrf	
+									<input type="hidden" name="contenido_id" value="{{$contenido->id}}">
+									<input type="hidden" name="contenedor_id" value="{{$contenedor->id}}">
+									<button type="submit"class="btn btn-default"><i class="fas fa-check"></i></button>
+								</form>
+							</td>
+						</tr>
+						@endforeach
+					</tbody>
+				</table>
+			</div>
 		
 	  </div>
-      <div class="modal-footer">
-		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
+     </div>
   </div>
 </div>
 <!-- fin Modal -->
 
 <script>
-$(document).ready(function(){
-	
-	$('#contenidos').on('click','.btn-delete',function () {
-        
-		//e.preventDefault();
-		
-		var row = $(this).parents('tr');
-        var id = row.data('id');
-        var form = $('#form-delete');
-        var url = form.attr('action').replace(':CONTENIDO_ID', id);
-        var data = form.serialize();
-		
-        $.post(url, data, function (result) {
-            alert(result.message);
-			location.reload();
-        }).fail(function () {
-            alert('El contenido no fue asignado');
-        });
-		
-    });
-	
-	$('#btn_buscar').click(function(e){
-		
-		e.preventDefault();
-		
-		$('#contenidos').empty();
-		$('#contenidos').append("<tr><th>#</th><th>Nombre</th></tr>");
-		var form = $('#form-search');
-		var url = form.attr('action');
-		var data = form.serialize();
-		
-		$.get(url, data, function(result){
-			
-			$.each(result, function( index, value ) {
-				$.each(value, function( i, v ) {
-					$("#contenidos").append("<tr data-id='"+v.id+"'><td>"+v.id+"</td><td>"+v.titulo+"</td><td><a href='#!' class='btn-delete' id='"+v.id+"' >asignar</a></td></tr>");
-				});
-				
-			});
-			
-			
-
-		});
-		
-	});
+$(document).ready(function() {
+    $('#tableContenidos').DataTable( {        
+		"language": {
+		"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"},
+		dom: '<"top"f>t<"bottom"Bpi><"clear">',
+        buttons: []
+    } );
 	
 	
-});
-
-
-
+} );
 </script>
 
-<div class=" row">
-	<h1>OTRO CONTENIDO</h1>
-</div>
 @endsection
 
