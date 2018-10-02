@@ -57,11 +57,11 @@ class TipoContenedorsTableSeeder extends Seeder
 			'imagen'=>"img",
 			'estructura_contenido'=>"
 										<div class='row'>
-											<div class='col-xs-12 col-sm-12 col-md-6'>
+											<div class='col-xs-12 col-sm-12 col-md-9'>
 												<h1>%titulo</h1>
 												<p>%texto</p>
 											</div>	
-											<div class='col-xs-12 col-sm-12 col-md-6'>
+											<div class='col-xs-12 col-sm-12 col-md-3'>
 												<img src='%imagen' class='img-fluid mx-auto d-block' alt='%alt_imagen'/>
 											</div>
 										</div>
@@ -96,6 +96,42 @@ class TipoContenedorsTableSeeder extends Seeder
         ]);
 		
 		
+		DB::table('cms_tipo_contenedors')->insert([
+            'nombre' => "SEIS - Texto lateral sin imagen",			
+			'inicio_estructura' => "<div id='%id' class='container%fluid paddingtop %fondo %img_fondo'><div class='container'>",
+			'fin_estructura' => "</div></div>",
+			'descripcion'=>"Sin imagen lateral",
+			'imagen'=>"img",
+			'estructura_contenido'=>"
+										<div class='row'>
+											<div class='col-xs-12'>
+												<h1>%titulo</h1>
+												<p>%texto</p>
+											</div>	
+										</div>
+									",
+			'estilo'=>""
+        ]);
+		
+		DB::table('cms_tipo_contenedors')->insert([
+            'nombre' => "SIETE - Texto lateral sin imagen con archivos para descarga",			
+			'inicio_estructura' => "<div id='%id' class='container%fluid paddingtop %fondo %img_fondo'><div class='col-xs-12 col-sm-12 text-center'><h1>%titulo_contenedor</h1><br></div><div class='row'>",
+			'fin_estructura' => "</div></div>",
+			'descripcion'=>"Sin imagen lateral",
+			'imagen'=>"img",
+			'estructura_contenido'=>"
+										<div class='row'>
+											<div class='col-xs-12 col-sm-12 col-md-9'>
+												<h4>%titulo</h4>
+												<p>%texto</p>
+											</div>	
+											<div class='col-xs-12 col-sm-12 col-md-3'>	
+												<a href='%archivo' target='_blank'>%nombre_archivo</a>
+											</div>
+										</div>
+									",
+			'estilo'=>""
+        ]);
 		
 		
 

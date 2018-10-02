@@ -11,6 +11,6 @@ class Menuitem extends Model
 	
 	public function contenedores()
 	{
-		return $this->hasMany('App\CMS\Contenedor', 'id_itemmenu');
+		return $this->hasMany('App\CMS\Contenedor', 'id_itemmenu')->orderBy('orden_menu');
 	}
 }

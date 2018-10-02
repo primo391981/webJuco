@@ -21,7 +21,7 @@
   <body>
   
 	<nav class="navbar navbar-expand-md navbar-light bg-faded fixed-top">
-	  <a class="navbar-brand" href="#">Navbar</a>
+	  <a class="navbar-brand" href="#">FC&GF</a>
 	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
 	  </button>
@@ -29,21 +29,24 @@
 	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
 		<ul class="navbar-nav mr-auto">
 			@foreach($menuitems as $menuitem) 
-				<li class="nav-item">
-					<a class="nav-link" href="#{{ $menuitem->contenedores->sortBy('orden_menu')->first()->id }}">{{ $menuitem->titulo }}</a>
-				</li>
+				@if($menuitem->contenedores->count() < 2)
+					<li class="nav-item">
+						<a class="nav-link" href="#{{ $menuitem->contenedores->sortBy('orden_menu')->first()->id }}">{{ $menuitem->titulo }}</a>
+					</li>
+				@else
+					 <li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#dos" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						{{ $menuitem->titulo }}
+						</a>
+						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						@foreach($menuitem->contenedores as $contenedor)	
+								<a class="dropdown-item" href="#{{ $contenedor->id }}">{{ $contenedor->titulo }}</a>
+						@endforeach
+						</div>
+					</li>
+				@endif
 			@endforeach
 		  
-		  <li class="nav-item dropdown">
-			<a class="nav-link dropdown-toggle" href="#dos" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			  Dropdown
-			</a>
-			<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-			  <a class="dropdown-item" href="#">Action</a>
-			  
-			</div>
-		  </li>	 
-		 
 		    @guest
 				<li><a class="nav-link" href="#"  data-toggle="modal" data-target="#logueousuario">Login</a></li>
 			   @else

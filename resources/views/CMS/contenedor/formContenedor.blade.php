@@ -1,4 +1,3 @@
-@csrf
 <div class="form-group">
     		<label for="titulo" class="control-label col-sm-3">Titulo:</label>
 			<div class="col-sm-9">
@@ -25,6 +24,7 @@
 		<label for="id_itemmenu" class="control-label col-sm-3">Item de Menú:</label>
 		<div class="col-sm-9">
 			<select name="id_itemmenu" class="form-control" id="id_itemmenu">
+				<option value="0">ninguno</option>
 				@foreach($menuitems as $key => $menuitem)
 					<option value="{{ $menuitem->id }}" {{ old('id_itemmenu', isset($contenedor) ? $contenedor->id_itemmenu : '' ) == $key + 1 ? 'selected' : '' }}>{{ $menuitem->titulo }}</option>  
 				@endforeach
@@ -67,7 +67,7 @@
 <div class="form-group row">
 		<br>
 		<div class="col-xs-12 text-center">
-			<button type="submit" class="btn btn-info btn-lg"><i class="fas fa-check"></i>&nbsp&nbsp{{ $textoBoton }}</button>
+			<button type="submit" class="btn btn-info btn-block"><i class="fas fa-check"></i>&nbsp&nbsp{{ $textoBoton }}</button>
 		</div>
 </div>
 	

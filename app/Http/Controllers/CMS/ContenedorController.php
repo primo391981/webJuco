@@ -27,9 +27,7 @@ class ContenedorController extends Controller
 		//se retorna la vista "index" 
 		//return view('admin.admin');
 		$contenedores = Contenedor::orderBy("orden_menu")->get();
-		
-		
-		
+				
 		$subtitulo = 'Lista de Contenedores';
 		//se retorna la vista "index" 
 		return view('cms.contenedor.listaContenedores', ['subtitulo' => $subtitulo, 'contenedores' => $contenedores]);
@@ -60,31 +58,29 @@ class ContenedorController extends Controller
      */
     public function store(Request $request)
     {
-        //
-		$contenedor = new Contenedor;
+		$contenedor = new Contenedor();
 		
-		$contenedor->titulo = $request->input('titulo');
-		$contenedor->tipo = $request->input('tipo');
-		
-		
-		$contenedor->id_itemmenu = $request->input('id_itemmenu');
-		
-		//obtener el orden dentro de menuitem correspondiente
-		$menuitem = Menuitem::findOrFail($contenedor->id_itemmenu);
-		$orden = $menuitem->contenedores->count();
-		$contenedor->orden_menu = $orden + 1;
-		
+		$contenedor->titulo = $request->titulo;
+		$contenedor->tipo = $request->tipo;
+				
+		if($request->id_itemmenu != 0){
+			$contenedor->id_itemmenu = $request->id_itemmenu;
+			
+			//obtener el orden dentro de menuitem correspondiente
+			$menuitem = Menuitem::findOrFail($contenedor->id_itemmenu);
+			$orden = $menuitem->contenedores->count();
+			$contenedor->orden_menu = $orden + 1;	
+		}
 		
 		$contenedor->color = $request->input('color');
-		
-		
-		if($request->input('img_fondo')!==null){
+				
+		if($request->img_fondo !== null){
 			$contenedor->img_fondo = "1";
 		} else {
 			$contenedor->img_fondo = "0";
 		}
 			
-		if($request->input('ancho_pantalla')!==null){
+		if($request->ancho_pantalla !== null){
 			$contenedor->ancho_pantalla = "2";
 		} else {
 			$contenedor->ancho_pantalla = "1";
@@ -92,23 +88,10 @@ class ContenedorController extends Controller
 		
 		$contenedor->save();
 		
-		//dd($contenedor);
-		return redirect()->route('contenedor.edit',['contenedor' => $contenedor]);
-		//return redirect()->route('contenedor.index');
+		return redirect()->route('contenedor.index')->with('success', 'El contenedor se creó correctamente');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Contenedors  $contenedors
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Contenedor $contenedor)
-    {
-        //
-				
-    }
-
+ 
     /**
      * Show the form for editing the specified resource.
      *
@@ -117,15 +100,15 @@ class ContenedorController extends Controller
      */
     public function edit(Contenedor $contenedor)
     {
-        //
-		 //
 		$subtitulo = 'Editar Contenedor';
 		
 		$tipos_contenedor = TipoContenedor::All();
 		
 		$menuitems = Menuitem::All();
 		
-		return view('cms.contenedor.editarContenedor', ['subtitulo' => $subtitulo, 'tipos_contenedor' => $tipos_contenedor, 'contenedor' => $contenedor, 'menuitems' => $menuitems]);
+		$contenidos = Contenido::All();
+		
+		return view('cms.contenedor.editarContenedor', ['subtitulo' => $subtitulo, 'tipos_contenedor' => $tipos_contenedor, 'contenedor' => $contenedor, 'menuitems' => $menuitems, 'contenidos' => $contenidos]);
     }
 
     /**
@@ -137,28 +120,44 @@ class ContenedorController extends Controller
      */
     public function update(Request $request, Contenedor $contenedor)
     {
-        //TODO: validar
-			
+
 		$contenedor->titulo = $request->titulo;
 		$contenedor->tipo = $request->tipo;
-			
+		
 		if($contenedor->id_itemmenu != $request->id_itemmenu){
-			$contenedor->id_itemmenu = $request->id_itemmenu;
-			//obtener el orden dentro de menuitem correspondiente
-			$menuitem = Menuitem::findOrFail($contenedor->id_itemmenu);
-			$orden = $menuitem->contenedores->count();
-			$contenedor->orden_menu = $orden + 1;
+			$menuItem = Menuitem::find($contenedor->id_itemmenu);
+			
+			if($menuItem != null){
+				$contenedoresMenu = $menuItem->contenedores;
+			
+				for($i=$contenedor->orden_menu ; $i<$contenedoresMenu->count() ; $i++){
+					$contenedoresMenu[$i]->orden_menu--;
+					$contenedoresMenu[$i]->save();
+				}
+			}
+				
+			if($request->id_itemmenu == 0){
+				$contenedor->id_itemmenu = null;
+			} else {
+				$contenedor->id_itemmenu = $request->id_itemmenu;
+			
+				//obtener el orden dentro de menuitem correspondiente
+				$menuItem = Menuitem::find($contenedor->id_itemmenu);
+				$orden = $menuItem->contenedores->count();
+				$contenedor->orden_menu = $orden + 1;
+			}
+			
 		}
 		
-		$contenedor->color = $request->input('color');
+		$contenedor->color = $request->color;
 		
-		if($request->input('img_fondo')!==null){
+		if($request->img_fondo !== null){
 			$contenedor->img_fondo = "1";
 		} else {
 			$contenedor->img_fondo = "0";
 		}
 			
-		if($request->input('ancho_pantalla')!==null){
+		if($request->ancho_pantalla !== null){
 			$contenedor->ancho_pantalla = "2";
 		} else {
 			$contenedor->ancho_pantalla = "1";
@@ -166,10 +165,7 @@ class ContenedorController extends Controller
 		
 		$contenedor->save();
 		
-		//dd($contenedor);
-		return redirect()->route('contenedor.edit',['contenedor' => $contenedor]);
-		//return redirect()->route('contenedor.index');
-		
+		return redirect()->route('contenedor.index')->with('success','El contenedor fue modificado correctamente');
 	}
 
     /**
@@ -180,47 +176,59 @@ class ContenedorController extends Controller
      */
     public function destroy(Contenedor $contenedor)
     {
-        //
-    }
+		if($contenedor->id_itemmenu !== null){
+			$menuItem = $contenedor->menuitem;
+			
+			$contenedoresMenu = $menuItem->contenedores;
+			
+			for($i=$contenedor->orden_menu ; $i<$contenedoresMenu->count() ; $i++){
+				$contenedoresMenu[$i]->orden_menu--;
+				$contenedoresMenu[$i]->save();
+			}
+		}
+		
+		$contenedor->delete();
+		
+		return redirect()->route('contenedor.index')->with('success','El contenedor fue eliminado correctamente');
+		
+	}
 	
-	public function assignContenido(Request $request, $contenido_id)
+	public function assignContenido(Request $request)
     {
-        //dd($contenido_id);
-		$id_contenedor = $request->contenedor_id;
-		$contenedor = Contenedor::findOrFail($id_contenedor);
+		$contenedor_id = $request->contenedor_id;
+		$contenido_id = $request->contenido_id;
+		$contenedor = Contenedor::findOrFail($contenedor_id);
 		$contenido = Contenido::findOrFail($contenido_id);
 		$orden = $contenedor->contenidos()->count() + 1; 
 		
-		if($contenedor->contenidos()->save($contenido, ['orden' => $orden])){
-			$mensaje = "contenido asignado correctamente";
-		} else {
-			$mensaje = "el contenido no ha sido asignado";
-		};
+		$contenedor->contenidos()->save($contenido, ['orden' => $orden]);
 		
-		if ($request->ajax()) {
-            return response()->json([
-                'message' => $mensaje
-            ]);
-        }
+		return redirect()->route('contenedor.edit', ['contenedor' => $contenedor])->with('success','El contenedor fue modificado correctamente');
     }
 	
 	public function deassignContenido(Request $request)
     {
-        //dd($contenido_id);
-		$id_contenedor = $request->contenedor_id;
+        $id_contenedor = $request->contenedor_id;
 		$id_contenido = $request->contenido_id;
 		
 		$contenedor = Contenedor::findOrFail($id_contenedor);
 		
 		$orden = $contenedor->contenidos->where('id',$id_contenido)->first()->pivot->orden;
 		
-		$listado = $contenedor->contenidos()->wherePivot('orden', '>=' , $orden)->get();
+		$listado = $contenedor->contenidos()->wherePivot('orden', '>' , $orden)->get();
 		
-		//TODO: reordenar los contenidos luego de eliminar la asignación.
+		// reordenar los contenidos luego de eliminar la asignación.
 		// reocorrer la lista de asignados con orden mayor o igual a $orden y renumerar.
-		//foreach()
+		foreach($listado as $contenido){
+			$nuevoOrden = $contenido->pivot->orden;
+			$nuevoOrden--;
+			$contenedor->contenidos()->updateExistingPivot($contenido->id, ['orden' => $nuevoOrden]);
+		}
 		
-		//TODO: eliminar la asignacion.
+		//eliminar la asignacion.
+		$contenedor->contenidos()->detach($id_contenido);
+		
+		return redirect()->back()->with('success','El contenedior y contenido fueron modificados correctamente');
     }
 	
 	public function deassignContenedor(Request $request)
@@ -254,11 +262,11 @@ class ContenedorController extends Controller
 	//subir el nivel de un contenedor en el menu 
 	public function upContenedor(Request $request)
 	{
-		$menuitem_id = $request->input('menuitem_id');
+		$menuitem_id = $request->menuitem_id;
 		
 		$menuitem = Menuitem::find($menuitem_id);
 		
-		$contenedor_id = $request->input('contenedor_id');
+		$contenedor_id = $request->contenedor_id;
 		
 		$contenedor_up = Contenedor::find($contenedor_id);
 		
@@ -281,11 +289,11 @@ class ContenedorController extends Controller
 	//bajar el nivel de un contenedor en el menu 
 	public function downContenedor(Request $request)
 	{
-		$menuitem_id = $request->input('menuitem_id');
+		$menuitem_id = $request->menuitem_id;
 		
 		$menuitem = Menuitem::find($menuitem_id);
 		
-		$contenedor_id = $request->input('contenedor_id');
+		$contenedor_id = $request->contenedor_id;
 		
 		$contenedor_down = Contenedor::find($contenedor_id);
 		
