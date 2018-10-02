@@ -16,7 +16,11 @@ class TipoRecibosTableSeeder extends Seeder
 			'descripcion' => 'Recibo de Sueldos',			
         ]);	
         DB::table('contable_tipos_recibo')->insert([
-            'nombre' => 'AGUINALDO',
+            'nombre' => 'AGUINALDO PRIMERA CUOTA',
+			'descripcion' => 'Recibo de Aguinaldo',
+        ]);		
+		DB::table('contable_tipos_recibo')->insert([
+            'nombre' => 'AGUINALDO SEGUNDA CUOTA',
 			'descripcion' => 'Recibo de Aguinaldo',
         ]);		
 		DB::table('contable_tipos_recibo')->insert([

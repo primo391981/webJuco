@@ -344,7 +344,38 @@ class PagoController extends Controller
 		}
 	}
 	
-	
+	public function altaFicto(Request $request){
+		$datos=0;
+		try{
+			$fechaPago= new Carbon($request->fecha);
+			//Se tiene que setear datos antes del save por si ocurre un error y vuelva con los datos que ya tenia.
+			$datos=$this->listaEmpleadosHaberes($request->idEmpleado,$fechaPago);
+			
+			$pago = new Pago;
+			$pago->idEmpleado = $request->idEmpleado;
+			$pago->idTipoPago = 4;
+			
+			$pago->fecha = $fechaPago->year.'-'.$fechaPago->month.'-01';
+			$pago->monto = $request->monto;
+			$pago->descripcion = $request->desc;
+			
+			if (isset ($request->gravadoFi)){
+				$pago->gravado=1;
+				$pago->porcentaje = $request->porcentajeFi;		
+			}
+			else{
+				$pago->gravado=0;
+			}
+			
+			$pago->save();						
+			//todo ok vuelve con los viaticos actualizados
+			$datos=$this->listaEmpleadosHaberes($request->idEmpleado,$fechaPago);
+			return view('contable.haberes.listaEmpleadosHaberes', ['habilitadas' => $datos[0], 'calculo' => $request->calculo, 'fecha' => $fechaPago, 'cantHabilitados' => $datos[1]])->with('okMsg', 'El ficto se cargo correctamente.');
+		}
+		 catch(Exception $e){
+			return view('contable.haberes.listaEmpleadosHaberes', ['habilitadas' => $datos[0], 'calculo' => $request->calculo, 'fecha' => $fechaPago, 'cantHabilitados' => $datos[1]])->with('errorMsg', 'Error al cargar el ficto.');
+		}
+	}
 	
 	
 	public function listaPagos($idEmpleado,$tipoPago,$fecha,$calculo){
@@ -359,66 +390,76 @@ class PagoController extends Controller
 	
 	
 	private function listaEmpleadosHaberes($idEmpleado,$fecha)
-	{
+	{		
 		$empleado = Empleado::find($idEmpleado);
-			$empresa = Empresa::where('id','=',$empleado->idEmpresa)->first();			
-			$personas = $empresa->personas;
-			$habilitadas=collect([]);
-			$cantHabilitados = 0;
+		$empresa = Empresa::where('id','=',$empleado->idEmpresa)->first();			
+		$personas = $empresa->personas;
+		$habilitadas=collect([]);
+		$cantHabilitados = 0;
+		
+		foreach($personas as $persona)
+		{
+			$fDesde = new Carbon($persona->pivot->fechaDesde);
+			$fHasta = new Carbon($persona->pivot->fechaHasta);
+			$fecha->day(01);
 			
-			foreach($personas as $persona){
-				$fDesde=new Carbon($persona->pivot->fechaDesde);
-				$fHasta=new Carbon($persona->pivot->fechaHasta);
-				if($fecha->between($fDesde,$fHasta)){
-					$habilita=collect([]);
-					$habilita->push($persona);					
-					$regHora=RegistroHora::where([['idEmpleado','=',$persona->pivot->id],['fecha','=',$fecha]])->first();
-					if($regHora!=null){
-						$habilita->push('1');
-					}
-					else{
-						$habilita->push('0');
-					}
-					$pagos=Pago::where([['idEmpleado','=',$persona->pivot->id],['fecha','=',$fecha]])->get();
-					
-					$totalViaticos=0;
-					$totalAdelantos=0;
-					$totalExtras=0;
-					
-					foreach($pagos as $p)
+			if($fecha->between($fDesde,$fHasta))
+			{
+				$habilita=collect([]);
+				$habilita->push($persona);					
+				$regHora=RegistroHora::where([['idEmpleado','=',$persona->pivot->id],['fecha','=',$fecha]])->first();
+				
+				if($regHora!=null){
+					$habilita->push('1');
+				}
+				else{
+					$habilita->push('0');
+				}
+				$pagos=Pago::where([['idEmpleado','=',$persona->pivot->id],['fecha','=',$fecha]])->get();
+			
+				$totalViaticos=0;
+				$totalAdelantos=0;
+				$totalExtras=0;
+				$totalFictos=0;
+				foreach($pagos as $p)
+				{
+					if($p->idTipoPago==1)
 					{
-						if($p->idTipoPago==1)
+						$totalViaticos+=$p->monto*$p->cantDias;
+					}
+					else
+					{
+						if ($p->idTipoPago==2)
 						{
-							$totalViaticos+=$p->monto;
+							$totalAdelantos+=$p->monto;
 						}
 						else
 						{
-							if ($p->idTipoPago==2)
-							{
-								$totalAdelantos+=$p->monto;
-							}
-							else
-							{
+							if($p->idTipoPago==3){
 								$totalExtras+=$p->monto;
 							}
+							else{
+								$totalFictos+=$p->monto;
+							}
+							
 						}
-						
-					}
-					
-					$habilita->push($totalViaticos);
-					$habilita->push($totalAdelantos);
-					$habilita->push($totalExtras);
-					
-					$habilitadas->push($habilita);
-					$cantHabilitados ++;
-				}				
-			}
-			
-			$datos=collect([]);
-			$datos->push($habilitadas);
-			$datos->push($cantHabilitados);
-			
-			return $datos;
+					}									
+				}
+				
+				$habilita->push($totalViaticos);
+				$habilita->push($totalAdelantos);
+				$habilita->push($totalExtras);
+				$habilita->push($totalFictos);
+				$habilitadas->push($habilita);
+				$cantHabilitados ++;
+			}				
+		}
+		
+		$datos=collect([]);
+		$datos->push($habilitadas);
+		$datos->push($cantHabilitados);
+		
+		return $datos;
 	}
 	
 }

@@ -24,7 +24,6 @@ class CreateReciboEmpleadosTable extends Migration
 			$table->foreign('idTipoRecibo')->references('id')->on('contable_tipos_recibo');
 			
             $table->timestamps();
-			$table->softDeletes();
         });
     }
 

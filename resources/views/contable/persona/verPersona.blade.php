@@ -58,8 +58,9 @@
 					  <h4>EMPRESAS ASOCIADAS AL EMPLEADO</h4>				
 					</div>
 					<div class="panel-body">
-					@if(count($persona->empresas)>0)
-					@foreach($persona->empresas as $empr)	
+					@if(count($empresas)>0)
+					@foreach($empresas as $empr)
+			
 					<div class="row">
 					<form>
 						@csrf
@@ -73,7 +74,7 @@
 										</div>
 										<div class="col-xs-2">
 											<button type="button" class="btn btn-danger btn-xs pull-right" data-toggle="modal" data-target="#desvincular{{$empr->id}}" style="margin-bottom:5px;"><i class="fas fa-trash-alt"></i></button>
-											<!-- Modal desvincular -->
+											<!-- Modal desvincular -->	
 												<div id="desvincular{{$empr->id}}" class="modal fade" role="dialog">
 												  <div class="modal-dialog">
 													<!-- Modal content-->
@@ -89,7 +90,7 @@
 														<div class="form-group row">
 																<label for="motivo" class="control-label col-sm-3">MOTIVO *</label>
 																<div class="col-sm-9">
-																	<select name="motivo" class="form-control" id="motivo">
+																	<select name="motivo" class="form-control" id="motivo" required>
 																		@foreach($bajaMotivos as $bm)
 																			<option value="{{ $bm->id }}">{{ $bm->nombre }}</option>  
 																		@endforeach
@@ -97,12 +98,11 @@
 																</div>			
 														</div>
 														<div class="form-group row">
-																<label for="comentario" class="control-label col-sm-3">COMENTARIO *</label>
+																<label for="fecha" class="control-label col-sm-3">FECHA *</label>
 																<div class="col-sm-9">
-																	<input type="text" id="comentario" class="form-control" name="comentario"/>
+																	<input type="date" id="fecha" class="form-control" name="fecha" min="{{$empr->pivot->fechaDesde}}" max="{{$empr->pivot->fechaHasta}}" required/>
 																</div>			
 														</div>
-														
 													  </div>
 													  <div class="modal-footer">
 														<button type="submit"class="btn btn-danger" formaction="{{route('empleado.desvincularEmpresa')}}" formmethod="post"><i class="fas fa-trash-alt"></i> Aceptar</button>
@@ -170,13 +170,13 @@
 										</div>
 										<div class="col-xs-2">
 										@if($empr->pivot->horarioCargado==false)
-											<button type="submit"class="btn btn-success btn-xs" formaction="{{ route('empleado.formCargarHorario',$empr->pivot->id) }}"  method="GET" style="margin-bottom:5px;" ><i class="fas fa-plus"></i></button>
+											<a class="btn btn-success btn-xs  pull-right" href="{{ route('empleado.formCargarHorario',$empr->pivot->id) }}" style="margin-bottom:5px;" ><i class="fas fa-plus"></i></a>
 										</div><!--cierran lo mismo el xs-2 para boton-->
 										
 										@else
 											@foreach($empr->pivot->horarios as $hr)
 												@if ($loop->last)
-													<button type="submit"class="btn btn-warning btn-xs" formaction="{{route('empleado.editHorarioPrincipal',[$empr->pivot->id,$hr->id])}}" formmethod="get" style="margin-bottom:5px;"><i class="far fa-edit"></i></button>
+													<a class="btn btn-warning btn-xs pull-right" href="{{route('empleado.editHorarioPrincipal',[$empr->pivot->id,$hr->id])}}" style="margin-bottom:5px;"><i class="far fa-edit"></i></a>
 													</div><!--cierran lo mismo el xs-2 para boton-->
 													
 														<div class="row">
@@ -218,10 +218,11 @@
 					</form>
 					
 					</div>
-					@if(count($persona->empresas)>1)
+					@if(count($empresas)>1)
 						<hr>
 					@endif
-					@endforeach
+					
+					@endforeach					
 					@else
 						<p>El empleado todavía no esta asociada a ninguna empresa.</p>
 					@endif
@@ -231,7 +232,7 @@
 			</div><!--cierre div empresas-->
 </div>
 
-@if(count($persona->empresas)>0)
+@if(count($empresas)>0)
 <div class="row">	
   <div class="col-xs-12"><!--ABRE DIV INGRESO HORARIO ESPECIAL--> 
     <div class="panel panel-warning"> 
@@ -239,7 +240,8 @@
         <h4>INGRESO DE HORARIO ESPECIAL</h4>           
       </div> 
       <div class="panel-body text-warning">  
-			@foreach($persona->empresas as $emp)
+			@foreach($empresas as $emp)
+			
 				<form>
 				@csrf
 				<input type="hidden" id="idEmpleado" name="idEmpleado" value="{{$emp->pivot->id}}">
@@ -277,7 +279,7 @@
 							</div>	
 					@endif
 				</div>
-				@if(count($persona->empresas)>1)
+				@if(count($empresas)>1)
 				<hr>
 				@endif
 				</form>
@@ -334,6 +336,7 @@
 						</div>
 					</div>
 				</div>
+			
 			@endforeach
       </div>       
     </div>

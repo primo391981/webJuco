@@ -23,7 +23,7 @@ class SalarioMinimoTableSeeder extends Seeder
 		
 			'idCargo'=>1,
 			'monto'=>'10000',
-			'fechaDesde'=>Carbon::parse('2018-01-01'),	
+			'fechaDesde'=>Carbon::parse('2017-01-01'),	
 			'fechaHasta'=>Carbon::parse('2018-07-31')
 		]);	
 		

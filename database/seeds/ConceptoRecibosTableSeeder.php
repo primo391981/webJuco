@@ -122,5 +122,25 @@ class ConceptoRecibosTableSeeder extends Seeder
             'nombre' => 'Faltas',
 			'descripcion' => 'Faltas',
         ]);
+		
+		DB::table('contable_conceptos_recibo')->insert([
+            'nombre' => 'Aguinaldo',
+			'descripcion' => 'Aguinaldo',
+        ]);
+		
+		DB::table('contable_conceptos_recibo')->insert([
+            'nombre' => 'Salario Vacacional',
+			'descripcion' => 'Salario Vacacional',
+        ]);
+		
+		DB::table('contable_conceptos_recibo')->insert([
+            'nombre' => 'Salario IPD',
+			'descripcion' => 'Salario IPD',
+        ]);
+		
+		DB::table('contable_conceptos_recibo')->insert([
+            'nombre' => 'Licencia NO Gozada',
+			'descripcion' => 'Licencia NO Gozada',
+        ]);
     }
 }

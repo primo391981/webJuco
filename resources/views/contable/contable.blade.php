@@ -70,10 +70,8 @@
         </ul>
 </li>
 <li>
-    <a href="#"><i class="fas fa-hand-holding-usd"></i> Liquidación de Haberes<i class="fas fa-caret-down"></i></a>
-		<ul class="nav nav-second-level">
-			<li><a href="{{ route('haberes.index') }}"><i class="fas fa-dollar-sign"></i> Haberes</a></li>				
-        </ul>
+    <a href="{{ route('haberes.index') }}"><i class="fas fa-hand-holding-usd"></i> Liquidación de Haberes</a>
+		
 </li>
 <li>
     <a href="#"><i class="fas fa-cogs"></i> Parametros Generales<i class="fas fa-caret-down"></i></a>

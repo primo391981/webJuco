@@ -21,7 +21,7 @@
 		
 		<div class="panel panel-warning text-warning">
 			<div class="panel-heading">
-				<h4><i class="fas fa-dollar-sign"></i> LIQUIDACION DE HABERES</h4>				
+				<h4><i class="fas fa-hand-holding-usd"></i> LIQUIDACION DE HABERES</h4>				
 			</div>
 			<div class="panel-body">
 				<form method="POST" action="{{route('haberes.listaEmpleados')}}" class="form-horizontal" enctype="multipart/form-data" id="formCarga">		
@@ -33,7 +33,7 @@
 								<select id="nombreFantasia" class="form-control" name="nombreFantasia" onChange="" required autofocus>
 									<option value="">-- Seleccione empresa --</option>
 								@foreach($empresas as $emp)
-									<option value="{{$emp->nombreFantasia}}">{{$emp->nombreFantasia}}</option>
+									<option value="{{$emp->nombreFantasia}}">{{$emp->nombreFantasia}} - {{$emp->grupo}} - {{$emp->subGrupo}}</option>
 								@endforeach
 								</select>							
 							</div>	
@@ -54,10 +54,10 @@
 						<div class="form-group row">
 							<label for="rut" class="control-label col-sm-3">CALCULO *</label>
 							<div class="col-sm-9">
-								<select id="calculo" class="form-control" name="calculo" required autofocus>
+								<select id="calculo" class="form-control" name="calculo" onchange="obtenerCalculo()" required autofocus>
 									<option value="">-- Seleccione cálculo --</option>
 								@foreach($tiposHaberes as $tipo)
-									<option value="{{$tipo->nombre}}">{{$tipo->nombre}}</option>
+									<option value="{{$tipo->id}}">{{$tipo->nombre}}</option>
 								@endforeach
 								</select>							
 							</div>	
@@ -73,10 +73,7 @@
 									</span>
 								@endif
 							</div>	
-						</div>
-			
-			
-			
+						</div>					
 			</div>
 			<div class="panel-footer">
 				<button type="submit" id="cargar" name="cargar" class="btn btn-warning btn-block" onClick=""><i class="fas fa-check"></i> Cargar Empleados</button>
@@ -88,6 +85,25 @@
 </div><!--cierre row-->
 
 <script>
+function obtenerCalculo() {
+    var x = document.getElementById("calculo").value;
+	var f = new Date();
+	if(x==2){
+		document.getElementById("mes").value = f.getFullYear()+"-06";
+		document.getElementById("mes").readOnly = true;
+	}
+	else if(x==3){
+		document.getElementById("mes").value = f.getFullYear()+"-12";
+		document.getElementById("mes").readOnly = true;
+	}
+	else{
+		document.getElementById("mes").value = f.getFullYear()+"-0"+f.getMonth();
+		document.getElementById("mes").readOnly = false;
+	}
+}
+
+
+
 $(function() 
 {
 	var empresa = @json($empresas);

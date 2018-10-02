@@ -10,6 +10,7 @@ use App\Contable\HorarioEmpleado;
 use App\Contable\HorarioPorDia;
 use App\Contable\Dia;
 use App\Contable\TipoHora;
+use App\Contable\Feriado;
 
 use App\Persona;
 use Illuminate\Support\Facades\DB;
@@ -24,10 +25,10 @@ class RegistroHoraController extends Controller
 			$empleados=collect([]);
 			foreach($habilitados as $emp){
 				if($emp->cargo->remuneracion->id==1){
-					if($emp->tipoHora==1){
+					if($emp->tipoHorario==1){
 						if($emp->horarioCargado==true){
 							$empleados->push($emp);
-						}
+						}						
 					}
 					else{
 						$empleados->push($emp);
@@ -78,8 +79,15 @@ class RegistroHoraController extends Controller
 													if($dia->id==$hd->idDia){
 														$calendario->push($dia->nombre);
 														$calendario->push($i."/".$fechaActual->month);
-														$calendario->push($hd->cantHoras);
-														switch($hd->idRegistro){
+														
+														if($this->diaFeriado($fechaActual)){
+															
+															$calendario->push("00:00:00");
+															$calendario->push("danger");
+														}
+														else{
+															$calendario->push($hd->cantHoras);
+															switch($hd->idRegistro){
 															case 1:		
 																$calendario->push(" ");
 																break;
@@ -89,6 +97,7 @@ class RegistroHoraController extends Controller
 															case 3:
 																$calendario->push("danger");
 																break;
+															}
 														}
 													}
 												}
@@ -122,7 +131,13 @@ class RegistroHoraController extends Controller
 				else{
 					$fDesde= new Carbon($empleado->fechaDesde);
 					$fHasta= new Carbon($empleado->fechaHasta);
-					return back()->withInput()->withError("Debe elegir una fecha que este dentro del contrato del empleado. Contrato vigente desde ".$fDesde->toDateString()." hasta ".$fHasta->toDateString());
+					if($fHasta->year == '2118'){
+						$msj=$fDesde->toDateString();
+					}
+					else{
+						$msj=$fDesde->toDateString()." hasta ".$fHasta->toDateString();
+					}
+					return back()->withInput()->withError("Debe elegir una fecha que este dentro del contrato del empleado. Contrato vigente desde ".$msj);
 				}				
 			
 		}
@@ -212,7 +227,12 @@ class RegistroHoraController extends Controller
 														//NO VOY A TENER UNA SOLA HR REGISTRO EN ESA FECHA, necesito hacer un foreach ya que en es afecha puedo tener noc , per, extra,espera 
 														$horasReg=RegistroHora::where('idEmpleado','=',$empleado->id)->where('fecha','=',$request->mes."-".$i)->get();
 														$calendario->push($horasReg);
-														switch($hd->idRegistro){
+														
+														if($this->diaFeriado($fechaActual)){
+															$calendario->push("danger");
+														}
+														else{
+															switch($hd->idRegistro){
 															case 1:		
 																$calendario->push(" ");
 																break;
@@ -222,7 +242,9 @@ class RegistroHoraController extends Controller
 															case 3:
 																$calendario->push("danger");
 																break;
+															}
 														}
+														
 													}
 												}
 											}							
@@ -376,7 +398,11 @@ class RegistroHoraController extends Controller
 														//NO VOY A TENER UNA SOLA HR REGISTRO EN ESA FECHA, necesito hacer un foreach ya que en es afecha puedo tener noc , per, extra,espera 
 														$horasReg=RegistroHora::where('idEmpleado','=',$empleado->id)->where('fecha','=',$request->mes."-".$i)->get();
 														$calendario->push($horasReg);
-														switch($hd->idRegistro){
+														if($this->diaFeriado($fechaActual)){
+															$calendario->push("danger");
+														}
+														else{
+															switch($hd->idRegistro){
 															case 1:		
 																$calendario->push(" ");
 																break;
@@ -386,6 +412,7 @@ class RegistroHoraController extends Controller
 															case 3:
 																$calendario->push("danger");
 																break;
+															}
 														}
 													}
 												}
@@ -470,5 +497,14 @@ class RegistroHoraController extends Controller
 		return $habilitado;
 	}
 	
-	
+	private function diaFeriado($fecha){
+		$feriados=Feriado::All();
+		$esFeriado=false;
+		foreach($feriados as $fer){
+			if($fer->dia == $fecha->day && $fer->mes==$fecha->month){
+				$esFeriado=true;
+			}
+		}
+		return $esFeriado;
+	}
 }

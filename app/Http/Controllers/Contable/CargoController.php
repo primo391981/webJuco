@@ -8,6 +8,7 @@ use App\Http\Requests\CargoRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Contable\SalarioMinimoCargo;
+use App\Contable\Empleado;
 use Carbon\Carbon;
 use Exception;
 
@@ -114,19 +115,47 @@ class CargoController extends Controller
 		$cargo->nombre = $request->nombre;
 		$cargo->descripcion = $request->descripcion;
 		$cargo->id_remuneracion = $request->id_remuneracion;
-		try {
+		//try {
 			
-			$salario=SalarioMinimoCargo::where('idCargo','=',$cargo->id)->orderBy('id', 'desc')->first();
-			$salario->monto=$request->monto;
+			$salario=SalarioMinimoCargo::where('idCargo','=',$cargo->id)->orderBy('id', 'desc')->take(2)->get();
+			$primero=true;
+			$salarioUno=null;
+			$salarioDos=null;
+			foreach($salario as $s){
+				if($primero){
+					$salarioUno=$s;
+					$primero=false;
+				}
+				else{
+					$salarioDos=$s;
+				}
+			}
+			
+			//el segundo salario
+			if($salarioDos!=null){
+					if($salarioDos->fechaDesde >= $request->fechaInicio){
+						return back()->withInput()->withError("Fecha de inicio invalida, ya existe un salario minimo con una fecha mayor a la ingresada.");	
+					}
+					else{
+						
+						$fechaBaja=new Carbon($request->fechaInicio);
+						$fechaBaja->subDay();
+						$salarioDos->fechaHasta=$fechaBaja->year.'-'.$fechaBaja->month.'-'.$fechaBaja->day;
+						$salarioDos->save();	
+				}
+			}
+			
+			$salarioUno->monto=$request->monto;
 			$fecha=new Carbon($request->fechaInicio);
-			$salario->fechaDesde=$fecha->year.'-'.$fecha->month.'-'.$fecha->day;
-			$salario->save();
+			$salarioUno->fechaDesde=$fecha->year.'-'.$fecha->month.'-'.$fecha->day;
+			$salarioUno->save();
 			
 			$cargo->save();
-			return redirect()->route('cargo.index')->with('success', "El cargo ".$cargo->nombre." se editó correctamente");				;
-		} catch(Exception $e){
-			return back()->withInput()->withError("El cargo no se pudo registrar, intente nuevamente o contacte al administrador.");				;
-		};
+			return redirect()->route('cargo.index')->with('success', "El cargo ".$cargo->nombre." se editó correctamente");	
+			
+		/*} catch(Exception $e){
+			return back()->withInput()->withError("El cargo no se pudo registrar, intente nuevamente o contacte al administrador.");				
+		}*/
 
     }
 	
@@ -150,35 +179,43 @@ class CargoController extends Controller
      */
     public function destroy(Cargo $cargo)
     {
-		dd($cargo);
-		//si alguien tiene el cargo asociado no se puede eliminar.
-        /*$cargo->delete();
-		return redirect()->route('cargo.index')->with('success', "El cargo fue eliminado correctamente");*/
+		$empleado=Empleado::where('idCargo','=',$cargo->id)->first();
+		if($empleado==null){
+			$cargo->delete();
+			return redirect()->route('cargo.index')->with('success', "El cargo fue eliminado correctamente");
+		}
+		else{
+			return back()->withInput()->withError("El cargo esta asociado a un empleado, no se puede eliminar.");
+		}		
     }
 	
 	public function altaSalarioMinimo(Request $request){
 		try{
-			
-			$fecha=new Carbon($request->fechaInicio);
-			
 			//obtengo el salario vigente y le doy de baja con la fecha nueva
 			$salario=SalarioMinimoCargo::where('idCargo','=',$request->selectCargo)->orderBy('id', 'desc')->first();
-			$salario->fechaHasta=$fecha->year.'-'.$fecha->month.'-'.$fecha->day;
-			$salario->save();
-			
-			//creo el salario nuevo vigente
-			$salarioNuevo= new SalarioMinimoCargo;
-			$salarioNuevo->idCargo=$request->selectCargo;
-			$salarioNuevo->monto=$request->monto;
-			$salarioNuevo->fechaDesde=$fecha->year.'-'.$fecha->month.'-'.$fecha->day;
-			$salarioNuevo->save();
-			$cargo=Cargo::find($request->selectCargo);
-			return redirect()->route('cargo.index')->with('success', "Al cargo ".$cargo->nombre." se le ingreso el nuevo SALARIO MINIMO correctamente.");	
+			$fechaNueva=$request->fechaInicio;
+			if($salario->fechaDesde >= $fechaNueva){
+				return back()->withInput()->withError("La fecha de inicio debe ser mayor del vigente salario minimo nacional.");	
+			}else{
+				$fechaBaja=new Carbon($request->fechaInicio);
+				$fechaBaja->subDay();
+				$salario->fechaHasta=$fechaBaja->year.'-'.$fechaBaja->month.'-'.$fechaBaja->day;
+				$salario->save();
+				
+				//creo el salario nuevo vigente
+				$salarioNuevo= new SalarioMinimoCargo;
+				$salarioNuevo->idCargo=$request->selectCargo;
+				$salarioNuevo->monto=$request->monto;
+				$fecha=new Carbon($request->fechaInicio);
+				$salarioNuevo->fechaDesde=$fecha->year.'-'.$fecha->month.'-'.$fecha->day;
+				$salarioNuevo->save();
+				$cargo=Cargo::find($request->selectCargo);
+				return redirect()->route('cargo.index')->with('success', "Al cargo ".$cargo->nombre." se le ingreso el nuevo SALARIO MINIMO correctamente.");
+			}
 			
 		}
 		catch(Exception $e){
 			return back()->withInput()->withError("El salario minimo no se pudo registrar, intente nuevamente o contacte al administrador.");				;
 		}
-		
 	}
 }

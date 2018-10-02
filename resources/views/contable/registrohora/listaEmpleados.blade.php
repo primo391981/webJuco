@@ -34,7 +34,6 @@
 						<th>EMPLEADO</th>
 						<th>EMPRESA</th>
 						<th>CATEGORIA</th>
-						<th>REMUNERACION</th>
 						<th>HORARIO</th>
 						<th>MES - AÑO</th>
 						<th></th>
@@ -48,9 +47,8 @@
 					<tr>								
 						<td>{{$emp->persona->tipoDoc->nombre}} - {{$emp->persona->documento}}</td>
 						<td>{{$emp->persona->nombre}} {{$emp->persona->apellido}}</td>
-						<td>{{$emp->empresa->nombreFantasia}}</td>
-						<td>{{$emp->cargo->nombre}}</td>
-						<td>{{$emp->cargo->remuneracion->nombre}}</td>
+						<td>{{$emp->empresa->nombreFantasia}} - {{$emp->empresa->grupo}} - {{$emp->empresa->subGrupo}}</td>
+						<td>{{$emp->cargo->nombre}} - {{$emp->cargo->remuneracion->nombre}}</td>
 						@if($emp->cargo->remuneracion->id==1 && $emp->tipoHorario==1)
 							<td>HABITUAL</td>
 						@elseif($emp->cargo->remuneracion->id==1 && $emp->tipoHorario==2)

@@ -1,8 +1,19 @@
 @extends('contable.contable') <!--layotu: carpeta contable/blade contable-->
-
-@section('seccion', " - AGREGAR")
-
 @section('content')
+@if (Session::has('error')) 
+<br>   
+  <div class="alert alert-danger alert-dismissible"> 
+	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    {{Session::get('error')}} 
+  </div> 
+@endif 
+@if (Session::has('success'))
+<br>	
+	<div class="alert alert-success alert-dismissible">
+		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		{{Session::get('success')}}
+	</div>
+@endif 
 
 <br>
 <div class="row">

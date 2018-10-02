@@ -33,7 +33,7 @@ class ParametrosGeneralesTableSeeder extends Seeder
         ]);	
 		DB::table('contable_parametros_generales')->insert([
             'nombre' => 'IRPF1',
-			'descripcion' => 'Primer franga de IRPF',
+			'descripcion' => 'Primer franja de IRPF',
 			'fecha_inicio' => Carbon::parse('2018-01-01'),
 			'valor' => 0,
 			'minimo'=>0,
@@ -41,7 +41,7 @@ class ParametrosGeneralesTableSeeder extends Seeder
         ]);
 		DB::table('contable_parametros_generales')->insert([
             'nombre' => 'IRPF2',
-			'descripcion' => 'Segunda franga de IRPF',
+			'descripcion' => 'Segunda franja de IRPF',
 			'fecha_inicio' => Carbon::parse('2018-01-01'),
 			'valor' =>10,
 			'minimo'=>7,
@@ -49,7 +49,7 @@ class ParametrosGeneralesTableSeeder extends Seeder
         ]);	
 DB::table('contable_parametros_generales')->insert([
             'nombre' => 'IRPF3',
-			'descripcion' => 'Tercera franga de IRPF',
+			'descripcion' => 'Tercera franja de IRPF',
 			'fecha_inicio' => Carbon::parse('2018-01-01'),
 			'valor' =>15,
 			'minimo'=>10,
@@ -57,7 +57,7 @@ DB::table('contable_parametros_generales')->insert([
         ]);	
 DB::table('contable_parametros_generales')->insert([
             'nombre' => 'IRPF4',
-			'descripcion' => 'Cuarta franga de IRPF',
+			'descripcion' => 'Cuarta franja de IRPF',
 			'fecha_inicio' => Carbon::parse('2018-01-01'),
 			'valor' =>24,
 			'minimo'=>15,
@@ -65,7 +65,7 @@ DB::table('contable_parametros_generales')->insert([
         ]);	
 DB::table('contable_parametros_generales')->insert([
             'nombre' => 'IRPF5',
-			'descripcion' => 'Quinta franga de IRPF',
+			'descripcion' => 'Quinta franja de IRPF',
 			'fecha_inicio' => Carbon::parse('2018-01-01'),
 			'valor' =>25,
 			'minimo'=>30,
@@ -73,7 +73,7 @@ DB::table('contable_parametros_generales')->insert([
         ]);		
 		DB::table('contable_parametros_generales')->insert([
             'nombre' => 'IRPF6',
-			'descripcion' => 'Sexta franga de IRPF',
+			'descripcion' => 'Sexta franja de IRPF',
 			'fecha_inicio' => Carbon::parse('2018-01-01'),
 			'valor' =>27,
 			'minimo'=>50,
@@ -81,7 +81,7 @@ DB::table('contable_parametros_generales')->insert([
         ]);
 		DB::table('contable_parametros_generales')->insert([
             'nombre' => 'IRPF7',
-			'descripcion' => 'Septima franga de IRPF',
+			'descripcion' => 'Septima franja de IRPF',
 			'fecha_inicio' => Carbon::parse('2018-01-01'),
 			'valor' =>31,
 			'minimo'=>75,
@@ -89,7 +89,7 @@ DB::table('contable_parametros_generales')->insert([
         ]);
 		DB::table('contable_parametros_generales')->insert([
             'nombre' => 'IRPF8',
-			'descripcion' => 'Octava franga de IRPF',
+			'descripcion' => 'Octava franja de IRPF',
 			'fecha_inicio' => Carbon::parse('2018-01-01'),
 			'valor' =>36,
 			'minimo'=>115,			
@@ -104,7 +104,7 @@ DB::table('contable_parametros_generales')->insert([
         ]);
 		DB::table('contable_parametros_generales')->insert([
             'nombre' => 'TFD2',
-			'descripcion' => 'Segunda frnaja TASA FIJA DE DEDUCCIONES- MENSUAL',
+			'descripcion' => 'Segunda franja TASA FIJA DE DEDUCCIONES- MENSUAL',
 			'fecha_inicio' => Carbon::parse('2018-01-01'),
 			'valor' =>8,
 			'minimo'=>15,

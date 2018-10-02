@@ -23,7 +23,7 @@ class EmpleadoController extends Controller
 	public function formCrear($idPer){
 		$persona=Persona::find($idPer);
 		$empresas=Empresa::All();
-		$emprAsociadas=$persona->empresas;
+		$emprAsociadas=$persona->empresas()->where('habilitado', 1)->get();
 		//me tira las empresas diferentes entre todas las empresas y empresas asociadas
 		$emprSinAsociar=$empresas->diff($emprAsociadas);
 		$cargos=Cargo::All();	
@@ -293,13 +293,11 @@ class EmpleadoController extends Controller
 	}
 	
 	public function desvincularEmpresa(Request $request){
-		try{
-			dd($request);
-			//$fechaHoy= Carbon::today('America/Montevideo');
+		try{		
 			$empleado=Empleado::find($request->idEmpleado);
-			
-			$empleado->delete;
-			
+			$persona = Persona::find($empleado->idPersona);
+			$persona->empresas()->updateExistingPivot($empleado->id,['habilitado'=>0, 'fechaBaja'=>$request->fecha, 'idMotivo'=>$request->motivo]);
+					
 			return redirect()->action('PersonaController@show', ['id' => $empleado->idPersona])->withInput()->with('success','La desvinculación de la empresa '.$empleado->empresa->nombreFantasia.' se realizó correctamente.');
 		}
 		catch(Exception $e){
@@ -337,8 +335,7 @@ class EmpleadoController extends Controller
 	}
 	
 	public function guardarEditContrato(Request $request){
-		try{
-			dd($request);
+		try{		
 			$fechaFin='2118-01-01';
 			if($request->fechaFin!=null){
 				if($request->fechaInicio>$request->fechaFin){
@@ -347,32 +344,42 @@ class EmpleadoController extends Controller
 				$fechaFin=$request->fechaFin;
 			}
 				
-				 	$empresa=Empresa::find($request->idempresa);
-					$persona=Persona::find($idPer);
-					
-					$noc=false;
-					$per=false;
-					$esp=false;
-					if($request->per=='on'){
-						$per=true;
-					}
-					if($request->noc=='on'){
-						$noc=true;
-					}
-					if($request->esp=='on'){
-						$esp=true;
-					}
-					
-					//si empresa seleccionado grupo ==12 sn/200 else sn/30/8
-					$valorHr=0;
-					if($empresa->grupo==12){
-						$valorHr=$request->monto/200;
-					}
-					else{
-						$valorHr=$request->monto/30/8;
-					}
-					
+			$noc=false;
+			$per=false;
+			$esp=false;
+			if($request->per=='on'){
+				$per=true;
+			}
+			if($request->noc=='on'){
+				$noc=true;
+			}
+			if($request->esp=='on'){
+				$esp=true;
+			}
 			
+			//si empresa seleccionado grupo ==12 sn/200 else sn/30/8
+			
+			$cargo=Cargo::find($request->cargo);
+			$empleado=Empleado::find($request->idEmpleado);
+			$valorHr=0;
+			
+			if($cargo->id_remuneracion==1){
+				if($empleado->empresa->grupo==12){
+					$valorHr=$request->monto/200;
+				}
+				else{
+					$valorHr=($request->monto/30)/8;
+				}
+			}
+			else{
+				$valorHr=$request->monto/8;
+			}
+			
+			$persona = Persona::find($empleado->idPersona);
+			$persona->empresas()->updateExistingPivot($empleado->id,['idCargo'=>$cargo->id,'fechaDesde'=>$request->fechaInicio,'fechaHasta'=>$fechaFin,'monto'=>$request->monto,'valorHora'=>$valorHr,'nocturnidad'=>$noc,'pernocte'=>$per,'espera'=>$esp,'tipoHorario'=>$request->tipo]);
+			
+			return redirect()->route('persona.show',['id' => $empleado->persona->id]);
+		
 		}
 		catch(Exception $e){
 			return back()->withInput()->withError("Error en el sistema");

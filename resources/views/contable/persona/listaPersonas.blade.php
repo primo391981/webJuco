@@ -51,7 +51,9 @@
 								@if (count($per->empresas)>0)
 									<td>
 									@foreach($per->empresas as $emp)
-										{{$emp->nombreFantasia}}
+										@if($emp->pivot->habilitado==true)
+											{{$emp->nombreFantasia}}
+										@endif
 									@endforeach
 									</td>
 								@else

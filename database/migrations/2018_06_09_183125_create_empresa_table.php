@@ -28,6 +28,8 @@ class CreateEmpresaTable extends Migration
 			$table->string('telefono')->nullable();
 			$table->string('nomContacto')->nullable();
 			
+			 $table->unique(['rut', 'grupo','subGrupo']);
+			
 			$table->softDeletes();			
             $table->timestamps();
         });

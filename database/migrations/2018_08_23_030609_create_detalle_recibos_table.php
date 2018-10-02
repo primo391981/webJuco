@@ -27,7 +27,6 @@ class CreateDetalleRecibosTable extends Migration
 			$table->foreign('idConceptoRecibo')->references('id')->on('contable_conceptos_recibo');
 			
             $table->timestamps();
-			$table->softDeletes();
         });
     }
 

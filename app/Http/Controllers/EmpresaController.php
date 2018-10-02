@@ -7,6 +7,7 @@ use App\Empresa;
 use App\TipoDoc;
 use App\Http\Requests\EmpresaRequest;
 use Illuminate\Support\Facades\DB;
+use Exception;
 
 class EmpresaController extends Controller
 {
@@ -31,6 +32,7 @@ class EmpresaController extends Controller
 	
     public function store(EmpresaRequest $request)
     {
+		try{
         $empresa = new Empresa;
 		$empresa->rut=$request->input('rut');
 		$empresa->razonSocial=$request->input('razonSocial');
@@ -47,6 +49,14 @@ class EmpresaController extends Controller
 		$empresa->save();		
 		
 		return redirect()->route('empresa.index');
+		}
+		catch(Exception $e){
+			if($e->getCode()==23000){
+				return back()->withInput()->withError("Ya existe un empresa con esos datos. RUT - GRUPO - SUBGRUPO");
+			}else{
+				return back()->withInput()->withError("La empresa no se pudo registrar, intente nuevamente o contacte al administrador.");
+			}
+		}
     }
     public function show($id)
     {	

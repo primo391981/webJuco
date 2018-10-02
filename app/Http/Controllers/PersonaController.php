@@ -75,11 +75,12 @@ class PersonaController extends Controller
     {		
 		try{
 			$persona=Persona::find($id);
+			$empresas=$persona->empresas()->where('habilitado','=',1)->get();
 			$dias=Dia::All();
 			$registros=Registro::All();
 			$motivos=BajaMotivo::All();
-			
-			return view('contable.persona.verPersona',['persona'=>$persona,'dias'=>$dias,'registros'=>$registros,'bajaMotivos'=>$motivos]);
+		
+			return view('contable.persona.verPersona',['persona'=>$persona,'empresas'=>$empresas,'dias'=>$dias,'registros'=>$registros,'bajaMotivos'=>$motivos]);
 		}
 		catch(Exception $e){
 			return back()->withInput()->withError("Problemas en el sistema, intente nuevamente o contacte al administrador.");
