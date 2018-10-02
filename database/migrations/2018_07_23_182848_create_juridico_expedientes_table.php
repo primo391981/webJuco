@@ -22,6 +22,7 @@ class CreateJuridicoExpedientesTable extends Migration
 			$table->integer('user_id');
 			$table->integer('tipo_id');
 			$table->integer('estado_id');
+			$table->integer('resultado')->nullable(); //0: perdido, 1:ganado
 
             $table->timestamps();
         });

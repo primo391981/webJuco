@@ -32,8 +32,14 @@
 <li>
     <a href="#"><i class="fas fa-clipboard-list"></i> Reportes <i class="fas fa-caret-down"></i></a>
 		<ul class="nav nav-second-level">
-			 <li><a href="#"><i class="fas fa-list-ul"></i> Listado</a></li>
-			 <li><a href="#"><i class="fas fa-plus"></i> Agregar nuevo</a></li>
+			<li><a href="{{ route('reporte.index') }}"><i class="fas fa-list-ul"></i> Listado</a></li>
+			<li>
+				<a href="#"><i class="fas fa-plus"></i> Agregar nuevo <i class="fas fa-caret-down"></i></a>
+				<ul class="nav nav-third-level">
+					<li><a name="gerencial" href="{{ route('reporte.create')}}"><i class="far fa-building"></i> Gerencial</a></li>
+					<li><a name="expediente" href="#"><i class="fas fa-book"></i> de Expediente</a></li>
+				</ul>
+			</li>
         </ul>
 </li>
 @endif		

@@ -25,8 +25,6 @@
 				<form method="POST" action="{{ route('cliente.store') }}"class="form-horizontal" enctype="multipart/form-data" id="formPersona"> 
 					<input type="hidden" name="tipo_persona" value="fisica">
 				  @include('persona.formPersona') 
-
-				
 			</div>
 
 			<div class="panel-footer">

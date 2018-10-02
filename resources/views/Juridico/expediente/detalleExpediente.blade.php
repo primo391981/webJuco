@@ -26,6 +26,15 @@
 </p>
 <p><strong>USUARIO: </strong>{{$expediente->usuario->name}} ({{$expediente->usuario->nombre}} {{$expediente->usuario->apellido}})</p>
 <p><strong>ESTADO: </strong>{{$expediente->estado->nombre}} </p>
+@if($expediente->estado_id == 5)
+	<p><strong>RESULTADO: </strong>
+	@if($expediente->resultado == 0)
+		<i class="fas fa-times text-danger"></i> Perdido
+	@else
+		<i class="fas fa-check text-success"></i> Ganado
+	@endif
+	</p>
+@endif
 <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal"><i class="fas fa-sitemap"></i> Transiciones</button>
 <!--<button type="button" class="btn btn-primary btn-xs" ><i class="fas fa-sync-alt"></i> Actualizaciones</button> -->
 								

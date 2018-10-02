@@ -78,7 +78,6 @@ class ClienteController extends Controller
 		
 		$estados = EstadoCivil::All();
 				
-		
 		return view('juridico.cliente.agregarFisica', ['tiposdoc' => $tiposdoc, 'estados' => $estados]);
     }
 	
@@ -145,9 +144,9 @@ class ClienteController extends Controller
 		$cliente=Cliente::where([
 			['persona_id','=',$persona->id],
 			['persona_type','=',$persona_type],
-		])->get();
+		])->withTrashed()->get();
 		
-		if(count($cliente)==0){
+		if(count($cliente) === 0){
 			$cliente = new Cliente();
 			$cliente->persona_id = $persona->id;
 			$cliente->persona_type = $persona_type;
