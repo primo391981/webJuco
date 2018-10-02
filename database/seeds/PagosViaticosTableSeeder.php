@@ -16,6 +16,7 @@ class PagosViaticosTableSeeder extends Seeder
 			'idEmpleado'=>1,
 			'idTipoPago'=>1,
 			'fecha'=>Carbon::parse('2018-08-01'),
+			'cantDias'=>2,
 			'monto'=>750,
 			'descripcion'=>'Viático por pasajes.',
 			'gravado'=> 1,
