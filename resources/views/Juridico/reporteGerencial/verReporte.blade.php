@@ -100,21 +100,63 @@
                             </div>
                         </div>
 					</div>
-					<div class="col-xs-4 text-center"><p class="text-muted" style="font-size:35px;">{!! $reporte->datasets[2]->dataset !!}</p></div>
-					<div class="col-xs-4 text-center"><p class="text-success"  style="font-size:35px;">{!! $reporte->datasets[3]->dataset !!}</p></div>
-					<div class="col-xs-4 text-center"><p class="text-{{ $reporte->datasets[3]->dataset / $reporte->datasets[2]->dataset >= 0.65 ? 'success' : 'danger'}}"  style="font-size:35px;">{{ $reporte->datasets[3]->dataset / $reporte->datasets[2]->dataset * 100 }} %</p></div>
-					<div class="col-xs-4"><strong>Max. Duración de un paso</strong></div>
-					<div class="col-xs-4"><strong>Min. Duración de un paso</strong></div>
-					<div class="col-xs-4"><strong>Promedio de duración de pasos</strong></div>
-					<div class="col-xs-4 text-center">
-						<p class="text-muted" style="font-size:35px;">{!! $reporte->datasets[4]->maxpaso->maximo !!} días</p>
-						<p class="text-muted"><a href="{{route('paso.show', $reporte->datasets[4]->maxpaso->pasoMaximo->id)}}" target="_blank">ver paso</a></p>
+					<div class="col-xs-4">
+						<div class="circle-tile">
+                            <a href="#">
+                                <div class="circle-tile-heading orange">
+                                    <i class="fas fa-level-up-alt fa-fw fa-2x"></i>
+                                </div>
+                            </a>
+                            <div class="circle-tile-content orange">
+                                <div class="circle-tile-description text-faded">
+                                    Duración Max. Paso
+                                </div>
+                                <div class="circle-tile-number text-faded">
+                                    {!! $reporte->datasets[4]->maxpaso->maximo !!} días
+                                    <span id="sparklineA"></span>
+                                </div>
+                                <a href="{{route('paso.show', $reporte->datasets[4]->maxpaso->pasoMaximo->id)}}" class="circle-tile-footer">ver paso <i class="fa fa-chevron-circle-right"></i></a>
+                            </div>
+                        </div>
 					</div>
-					<div class="col-xs-4 text-center">
-						<p class="text-muted" style="font-size:35px;">{!! $reporte->datasets[5]->minpaso->minimo !!} días</p>
-						<p class="text-muted"><a href="{{route('paso.show', $reporte->datasets[5]->minpaso->pasoMinimo->id)}}" target="_blank">ver paso</a></p>
+					<div class="col-xs-4">
+						<div class="circle-tile">
+                            <a href="#">
+                                <div class="circle-tile-heading green">
+                                    <i class="fas fa-level-down-alt fa-fw fa-2x"></i>
+                                </div>
+                            </a>
+                            <div class="circle-tile-content green">
+                                <div class="circle-tile-description text-faded">
+                                    Duración Min. Paso
+                                </div>
+                                <div class="circle-tile-number text-faded">
+                                    {!! $reporte->datasets[5]->minpaso->minimo !!} días
+                                    <span id="sparklineA"></span>
+                                </div>
+                                <a href="{{route('paso.show', $reporte->datasets[5]->minpaso->pasoMinimo->id)}}" class="circle-tile-footer">ver paso <i class="fa fa-chevron-circle-right"></i></a>
+                            </div>
+                        </div>
 					</div>
-					<div class="col-xs-4 text-center"><p class="text-muted" style="font-size:35px;">{!! $reporte->datasets[6]->dataset !!} días</p></div>
+					<div class="col-xs-4">
+						<div class="circle-tile">
+                            <a href="#">
+                                <div class="circle-tile-heading purple">
+                                    <i class="fas fa-arrows-alt-h fa-fw fa-2x"></i>
+                                </div>
+                            </a>
+                            <div class="circle-tile-content purple">
+                                <div class="circle-tile-description text-faded">
+                                    Duración Promedio Pasos
+                                </div>
+                                <div class="circle-tile-number text-faded">
+                                    {!! $reporte->datasets[6]->dataset !!} días
+                                    <span id="sparklineA"></span>
+                                </div>
+                                <a href="{{route('paso.show', $reporte->datasets[5]->minpaso->pasoMinimo->id)}}" class="circle-tile-footer">ver paso <i class="fa fa-chevron-circle-right"></i></a>
+                            </div>
+                        </div>
+					</div>
 				</div>
 				<div class="col-md-6">
 					<h4>Expedientes: Tipos de proceso</h4>
