@@ -40,13 +40,16 @@
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 						@foreach($menuitem->contenedores as $contenedor)	
-								<a class="dropdown-item" href="#{{ $contenedor->id }}">{{ $contenedor->titulo }}</a>
+							<a class="dropdown-item" href="#{{ $contenedor->id }}">{{ $contenedor->titulo }}</a>
 						@endforeach
 						</div>
 					</li>
 				@endif
 			@endforeach
 		  
+			<li class="nav-item">
+				<a class="nav-link" href="#contacto">Contacto</a>
+			</li>
 		    @guest
 				<li><a class="nav-link" href="#"  data-toggle="modal" data-target="#logueousuario">Login</a></li>
 			   @else
