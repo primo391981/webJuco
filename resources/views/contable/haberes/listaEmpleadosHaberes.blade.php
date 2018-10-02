@@ -52,7 +52,7 @@
 								<th>TOTAL ADELANTOS</th>
 								<th>TOTAL EXTRAS</th>
 								<th>TOTAL FICTOS</th>
-								<th>LICENCIA GOZADA</th>
+								<th>LIC. GOZADA</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -214,7 +214,52 @@
 								</td>
 								
 								<td>
-									FICTOS
+									<div class="input-group">
+										<input id="fi{{$i}}" name="fi{{$i}}" type="number" class="form-control input-sm" value="{{$emp[5]}}" readonly>
+											<div class="input-group-btn">
+												<button type="button" class="abrirModal btn btn-success btn-sm" data-id="{{$emp[0]->pivot->id}}" data-toggle="modal" data-target="#modalFictoAdd" ><i class="fas fa-plus"></i></button>
+												<button type="button" class=" btn btn-info btn-sm" data-toggle="modal" data-target="#modalFictoList{{$emp[0]->pivot->id}}"><i class="fas fa-info-circle"></i></button>
+											</div>
+										</div>
+									
+											<!-- Modal LISTA FICTOS -->
+											<div id="modalFictoList{{$emp[0]->pivot->id}}" class="modal fade" role="dialog">
+											  <div class="modal-dialog">
+											 <div class="modal-content text-warning">
+												  <div class="modal-header"  style="background:#fcf8e3;">
+													<button type="button" class="close" data-dismiss="modal">&times;</button>
+													<h4 class="modal-title"><i class="fas fa-dollar-sign"></i> LISTADO DE FICTOS</h4>
+												  </div>
+												  <div class="modal-body">
+														@php $j=4; @endphp
+														@php $fictosEmpleado=$pagos->listaPagos($emp[0]->pivot->id,$j,$fecha,$calculo); @endphp
+														<div class="table-responsive">
+															<table class="table" style="width:100%" >
+																<thead>
+																	<tr>
+																		<th>MONTO</th>
+																		<th>DESCRIPCION</th>
+																		<th>GRAVADO</th>
+																		<th>PORCENTAJE</th>
+																		
+																	</tr>
+																</thead>
+																<tbody>
+																	@foreach($fictosEmpleado as $ficto)
+																	<tr>								
+																		<td>{{$ficto->monto}}</td>
+																		<td>{{$ficto->descripcion}}</td>
+																		<td>{{$ficto->gravado==1 ? "SI" : "NO"}}</td>									
+																		<td>{{$ficto->porcentaje}}</td>									
+																	</tr>
+																	@endforeach
+																</tbody>						
+															</table>
+														</div>
+												  </div>
+												</div>
+											</div>
+											</div><!-- cierre LISTA PARTIDAS EXTRAS -->
 								</td>
 								<td>
 									<input id="lic{{$i}}" name="lic{{$i}}" type="number" class="form-control input-sm" value=0 min=0>
@@ -407,6 +452,63 @@
   </div>
 </div><!-- cierre add partidas extras -->
 
+<!-- Modal add partidas extras -->
+<div id="modalFictoAdd" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+ <div class="modal-content text-warning">
+      <div class="modal-header"  style="background:#fcf8e3;">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><i class="fas fa-dollar-sign"></i> INGRESO DE NUEVO FICTO</h4>
+      </div>
+      <div class="modal-body">
+		<form class="form-horizontal" action="{{route('pago.altaFicto')}}" method="post">
+		@csrf        
+		<input type="hidden" id="idEmpleado" name="idEmpleado" value="">
+		<input type="hidden" id="fecha" name="fecha" value="{{$fecha}}">
+		<input type="hidden" id="calculo" name="calculo" value="{{$calculo}}">
+		
+		<div class="form-group">
+				<label class="control-label col-sm-3">DESCRIPCION </label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" id="desc" name="desc" required>
+				</div>
+		</div>
+		<div class="form-group">
+				<label class="control-label col-sm-3">MONTO </label>
+				<div class="col-sm-9">
+					<input class="form-control" type="number" id="monto" name="monto" min="0" required>
+				</div>
+		</div>
+		<div class="form-group">
+				<label class="control-label col-sm-3">GRAVADO </label>
+				<div class="col-sm-9">
+					<input type="checkbox" id="gravadoFi" name="gravadoFi"  onclick="habilitarPorcentajFi()">
+				</div>
+		</div>
+		<div class="form-group">
+				<label class="control-label col-sm-3">PORCENTAJE </label>
+				<div class="col-sm-9">
+					<input class="form-control" type="number" id="porcentajeFi" name="porcentajeFi" min="1" required disabled>
+				</div>
+		</div>
+		
+	  </div>
+      <div class="modal-footer">
+        <div class="row">
+			<div class="col-xs-6">
+					<button type="submit" class="btn btn-warning btn-block"><i class="fas fa-check"></i> Confirmar</button>
+			</div>
+			<div class="col-xs-6">
+				<button type="button" class="btn btn-danger btn-block" data-dismiss="modal"><i class="fas fa-times"></i> Cancelar</button>
+			</form>
+			</div>
+			</div>
+	  </div>
+    </div>
+
+  </div>
+</div><!-- cierre add partidas extras -->
+
 <script>
 $(document).ready(function() {
     $('#tableEmpleados').DataTable( {        
@@ -447,6 +549,14 @@ function habilitarPorcentajeEx() {
         document.getElementById("porcentajeEx").disabled = false;
     } else {
        document.getElementById("porcentajeEx").disabled = true;
+    }
+}
+function habilitarPorcentajeFi() {
+    var checkBox = document.getElementById("gravadoFi");
+    if (checkBox.checked == true){
+        document.getElementById("porcentajeFi").disabled = false;
+    } else {
+       document.getElementById("porcentajeFi").disabled = true;
     }
 }
 

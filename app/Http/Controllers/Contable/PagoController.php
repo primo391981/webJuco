@@ -344,7 +344,38 @@ class PagoController extends Controller
 		}
 	}
 	
-	
+	public function altaFicto(Request $request){
+		$datos=0;
+		try{
+			$fechaPago= new Carbon($request->fecha);
+			//Se tiene que setear datos antes del save por si ocurre un error y vuelva con los datos que ya tenia.
+			$datos=$this->listaEmpleadosHaberes($request->idEmpleado,$fechaPago);
+			
+			$pago = new Pago;
+			$pago->idEmpleado = $request->idEmpleado;
+			$pago->idTipoPago = 4;
+			
+			$pago->fecha = $fechaPago->year.'-'.$fechaPago->month.'-01';
+			$pago->monto = $request->monto;
+			$pago->descripcion = $request->desc;
+			
+			if (isset ($request->gravadoFi)){
+				$pago->gravado=1;
+				$pago->porcentaje = $request->porcentajeFi;		
+			}
+			else{
+				$pago->gravado=0;
+			}
+			
+			$pago->save();						
+			//todo ok vuelve con los viaticos actualizados
+			$datos=$this->listaEmpleadosHaberes($request->idEmpleado,$fechaPago);
+			return view('contable.haberes.listaEmpleadosHaberes', ['habilitadas' => $datos[0], 'calculo' => $request->calculo, 'fecha' => $fechaPago, 'cantHabilitados' => $datos[1]])->with('okMsg', 'El ficto se cargo correctamente.');
+		}
+		 catch(Exception $e){
+			return view('contable.haberes.listaEmpleadosHaberes', ['habilitadas' => $datos[0], 'calculo' => $request->calculo, 'fecha' => $fechaPago, 'cantHabilitados' => $datos[1]])->with('errorMsg', 'Error al cargar el ficto.');
+		}
+	}
 	
 	
 	public function listaPagos($idEmpleado,$tipoPago,$fecha,$calculo){
@@ -389,12 +420,12 @@ class PagoController extends Controller
 				$totalViaticos=0;
 				$totalAdelantos=0;
 				$totalExtras=0;
-				
+				$totalFictos=0;
 				foreach($pagos as $p)
 				{
 					if($p->idTipoPago==1)
 					{
-						$totalViaticos+=$p->monto;
+						$totalViaticos+=$p->monto*$p->cantDias;
 					}
 					else
 					{
@@ -404,16 +435,21 @@ class PagoController extends Controller
 						}
 						else
 						{
-							$totalExtras+=$p->monto;
+							if($p->idTipoPago==3){
+								$totalExtras+=$p->monto;
+							}
+							else{
+								$totalFictos+=$p->monto;
+							}
+							
 						}
-					}
-					
+					}									
 				}
 				
 				$habilita->push($totalViaticos);
 				$habilita->push($totalAdelantos);
 				$habilita->push($totalExtras);
-				
+				$habilita->push($totalFictos);
 				$habilitadas->push($habilita);
 				$cantHabilitados ++;
 			}				

@@ -125,6 +125,7 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::post('pago/extra/alta', 'Contable\PagoController@altaPartidaExtra')->name('pago.altaPartidaExtra')->middleware('role:contableAdmin');
 	Route::post('pago/adelanto/alta', 'Contable\PagoController@altaAdelanto')->name('pago.altaAdelanto')->middleware('role:contableAdmin');
 	Route::post('pago/viatico/alta', 'Contable\PagoController@altaViatico')->name('pago.altaViatico')->middleware('role:contableAdmin');
+	Route::post('pago/ficto/alta', 'Contable\PagoController@altaFicto')->name('pago.altaFicto')->middleware('role:contableAdmin');
 	Route::get('viaticos', 'Contable\PagoController@viaticos')->name('pago.viaticos')->middleware('role:contableAdmin');
 	Route::get('viaticos/inactivos', 'Contable\PagoController@viaticosInactivos')->name('pago.viaticos.inactivos')->middleware('role:contableAdmin');
 	Route::get('adelantos', 'Contable\PagoController@adelantos')->name('pago.adelantos')->middleware('role:contableAdmin');

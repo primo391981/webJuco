@@ -89,17 +89,17 @@ class HaberesController extends Controller
 								{
 									$habilita->push('0');
 								}
-								$pagos=Pago::where([['idEmpleado','=',$persona->pivot->id],['fecha','=',$fecha]])->get();
+								$pagos=Pago::where([['idEmpleado','=',$persona->pivot->id],['fecha','=',$fechaAux]])->get();
 								
 								$totalViaticos=0;
 								$totalAdelantos=0;
 								$totalExtras=0;
-								
+								$totalFictos=0;
 								foreach($pagos as $p)
 								{
 									if($p->idTipoPago==1)
-									{
-										$totalViaticos+=$p->monto;
+									{										
+										$totalViaticos+=$p->monto*$p->cantDias;
 									}
 									else
 									{
@@ -109,7 +109,13 @@ class HaberesController extends Controller
 										}
 										else
 										{
-											$totalExtras+=$p->monto;
+											if($p->idTipoPago==3){
+												$totalExtras+=$p->monto;
+											}
+											else{
+												$totalFictos+=$p->monto;
+											}
+											
 										}
 									}									
 								}
@@ -117,6 +123,8 @@ class HaberesController extends Controller
 								$habilita->push($totalViaticos);
 								$habilita->push($totalAdelantos);
 								$habilita->push($totalExtras);
+								$habilita->push($totalFictos);
+								
 							break;
 						case 2:
 								$i = 12;
@@ -1168,11 +1176,12 @@ class HaberesController extends Controller
 								if($dia->id==$hd->idDia)
 								{
 									$calendario->push($i."/".$fechaActual->month);
-									$calendario->push($hd->cantHoras);
 									if($this->diaFeriado($fechaActual)){
+										$calendario->push("00:00:00");
 										$calendario->push(3);
 									}
 									else{
+										$calendario->push($hd->cantHoras);
 										$calendario->push($hd->idRegistro);
 									}									
 								}

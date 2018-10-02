@@ -25,10 +25,10 @@ class RegistroHoraController extends Controller
 			$empleados=collect([]);
 			foreach($habilitados as $emp){
 				if($emp->cargo->remuneracion->id==1){
-					if($emp->tipoHora==1){
+					if($emp->tipoHorario==1){
 						if($emp->horarioCargado==true){
 							$empleados->push($emp);
-						}
+						}						
 					}
 					else{
 						$empleados->push($emp);
@@ -131,7 +131,13 @@ class RegistroHoraController extends Controller
 				else{
 					$fDesde= new Carbon($empleado->fechaDesde);
 					$fHasta= new Carbon($empleado->fechaHasta);
-					return back()->withInput()->withError("Debe elegir una fecha que este dentro del contrato del empleado. Contrato vigente desde ".$fDesde->toDateString()." hasta ".$fHasta->toDateString());
+					if($fHasta->year == '2118'){
+						$msj=$fDesde->toDateString();
+					}
+					else{
+						$msj=$fDesde->toDateString()." hasta ".$fHasta->toDateString();
+					}
+					return back()->withInput()->withError("Debe elegir una fecha que este dentro del contrato del empleado. Contrato vigente desde ".$msj);
 				}				
 			
 		}
