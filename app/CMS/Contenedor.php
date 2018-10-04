@@ -3,11 +3,15 @@
 namespace App\CMS;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Contenedor extends Model
 {
     //
 	protected $table = 'cms_contenedors';
+	
+	use SoftDeletes;
+	protected $dates = ['deleted_at'];
 	
 	protected $inicio_estructura = "";
 	
