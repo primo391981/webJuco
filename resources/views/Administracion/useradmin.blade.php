@@ -4,9 +4,9 @@
 <a class="navbar-brand" href="#"><strong>ADMIN USUARIOS</strong></a>
 @endsection
 @section('menu-lateral')
-<li><a href="{{ route('user.list') }}"><i class="fas fa-list-ul"></i> Listado</a></li>
+<li><a href="{{ route('user.index') }}"><i class="fas fa-list-ul"></i> Activos</a></li>
 <li><a href="{{ route('user.create') }}"><i class="fas fa-user-plus"></i> Agregar nuevo</a></li>
-
+<li><a href="{{ route('user.index.inactivos') }}"><i class="fas fa-list-ul"></i> Inactivos</a></li>
 @endsection
 
 @section('content')

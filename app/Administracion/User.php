@@ -57,4 +57,8 @@ class User extends Authenticatable
 	public function permisosEscritura(){
 		return $this->belongsToMany('App\Juridico\Expediente','juridico_permiso_expediente','id_user','id_expediente')->wherePivot('id_tipo',1)->withPivot('id_tipo');
 	}
+	
+	public function expedientes(){
+		return $this->hasMany('App\Juridico\Expediente','user_id');
+	}
 }

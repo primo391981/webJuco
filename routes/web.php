@@ -46,7 +46,7 @@ Route::group(['middleware' => ['auth']], function () {
 	//index administracion
 	Route::get('useradmin', 'Administracion\UseradminController@index')->name('useradmin')->middleware('role:superAdmin');
 	
-	Route::get('user/list/{estado?}', 'Administracion\UserController@lista')->name('user.list')->middleware('role:superAdmin');
+	Route::get('user/inactivos', 'Administracion\UserController@inactivos')->name('user.index.inactivos')->middleware('role:superAdmin');
 	Route::post('user/restore', 'Administracion\UserController@restore')->name('user.restore')->middleware('role:superAdmin');
 	Route::resource('user', 'Administracion\UserController')->middleware('role:superAdmin');
 	//FIN USUARIOS
