@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Administracion;
 
 use App\Administracion\User;
+use App\Administracion\Role;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
@@ -70,7 +71,8 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+		$roles = Role::All();
+        return view('administracion.user.modificaUsuario', ['usuario' => $user, 'roles' => $roles]);
     }
 
     /**
@@ -82,25 +84,22 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $request->validate([
+       //dd($request);
+	   $request->validate([
 			'nombre' => 'required',
 			'apellido' => 'required',
 			'email' => 'required|email|max:255',
 			
 		]);
 		
-		$usuario = User::find($idUsuario);
-		$usuario->nombre = $request['nombre'];
-		$usuario->apellido = $request['apellido'];
-		$usuario->email = $request['email'];
+		$user->nombre = $request->nombre;
+		$user->apellido = $request->apellido;
+		$user->email = $request->email;
 		
-		
-		$usuario->save();
-		
-		$subtitulo = 'Modificar Ususario';
+		$user->save();
 		
 		//se retorna la vista "listaUsuarios" 
-		return redirect()->route("usuarios")->with('success', "El usuario ".$usuario->name." ha sido modificado correctamente.");	
+		return redirect()->route('user.index')->with('success', "El usuario ".$usuario->name." ha sido modificado correctamente.");	
     }
 
     /**

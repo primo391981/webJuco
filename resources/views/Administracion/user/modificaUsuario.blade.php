@@ -1,120 +1,93 @@
-@extends('layouts.layout_intranet')
+@extends('Administracion.useradmin')
 
 @section('navbar')
 <a class="navbar-brand" href="#"><strong>ADMIN USUARIOS</strong></a>
 @endsection
-@section('menu-lateral')
-<li><a href="{{ route('user.list') }}"><i class="fas fa-list-ul"></i> Listado</a></li>
-@endsection
-
                 
+@section('librerias')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/switchery/0.8.2/switchery.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/switchery/0.8.2/switchery.js"></script>
+@endsection				
+
 @section('content')
-	<form method="POST" action="{{ route('edit_usuario', ['id' => $usuario->id]) }}">
-		@csrf
-		<!-- ID y nombre de usaurio no se modifican -->
-		<div class="form-group row">
-			<label for="id" class="col-md-4 col-form-label text-md-right">ID:</label>
-
-			<div class="col-md-6">
-				<label for="id_usuario" class="col-md-4 col-form-label text-md-center">{{$usuario->id}}</label>
-			</div>
-		</div>
+@if (Session::has('success'))
+	<div class="alert alert-success">
+		{{Session::get('success')}}
+	</div>
+@endif 
+@if (Session::has('error'))
+	<div class="alert alert-danger">
+		{{Session::get('error')}}
+	</div>
+@endif 
+<br>
+<div class="row">
+	<div class="col-xs-12">
 		
-		<div class="form-group row">
-			<label for="id" class="col-md-4 col-form-label text-md-right">Usuario:</label>
-
-			<div class="col-md-6">
-				<label for="id_usuario" class="col-md-4 col-form-label text-md-center">{{$usuario->name}}</label>
+		<div class="panel panel-default text-muted">
+			<div class="panel-heading">
+				<a class="btn btn-default pull-right" href="{{ route('user.index') }}" role="button" data-toggle="tooltip" title="Listado de usuarios"><i class="fas fa-list-ul"></i></a>
+				<h4><i class="fas fa-edit"></i> EDITAR USUARIO </h4>				
+			</div>
+			<div class="panel-body">
+				<form method="POST" action="{{ route('user.update', ['id' => $usuario->id]) }}" class="form-horizontal">
+					@method('PUT')
+					@include('administracion.user.formUsuario')	
+			</div>
+			<div class="panel-footer">
+					<button type="submit" class="btn btn-primary btn-block"><i class="fas fa-check"></i> Confirmar</button>
+				</form>
 			</div>
 		</div>
+	</div>
 		
-		<div class="form-group row">
-			<label for="nombre" class="col-md-4 col-form-label text-md-right">Nombre:</label>
+</div>
 
-			<div class="col-md-6">
-				<input id="nombre" type="text" class="form-control{{ $errors->has('nombre') ? ' is-invalid' : '' }}" name="nombre" value="{{old('name', $usuario->nombre)}}" required autofocus>
+<script>
+var elem1 = document.querySelector('.js-switch-superadmin');
+var checkSuper = new Switchery(elem1);
 
-				@if ($errors->has('nombre'))
-					<span class="invalid-feedback">
-						<strong>{{ $errors->first('nombre') }}</strong>
-					</span>
-				@endif
-			</div>
-		</div>
-	
-		<div class="form-group row">
-			<label for="apellido" class="col-md-4 col-form-label text-md-right">Apellido:</label>
+var elem2 = document.querySelector('.js-switch-cmsadmin');
+var checkCMS = new Switchery(elem2);
 
-			<div class="col-md-6">
-				<input id="apellido" type="text" class="form-control{{ $errors->has('apellido') ? ' is-invalid' : '' }}" name="apellido" value="{{$usuario->apellido}}" required autofocus>
+var elem3 = document.querySelector('.js-switch-juridicoadmin');
+var checkContable = new Switchery(elem3);
 
-				@if ($errors->has('apellido'))
-					<span class="invalid-feedback">
-						<strong>{{ $errors->first('apellido') }}</strong>
-					</span>
-				@endif
-			</div>
-		</div>
-		
-		<div class="form-group row">
-			<label for="email" class="col-md-4 col-form-label text-md-right">Correo Electrónico:</label>
+var elem4 = document.querySelector('.js-switch-contableadmin');
+var checkJuridico = new Switchery(elem4);
 
-			<div class="col-md-6">
-				<input id="email" type="text" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{$usuario->email}}" required autofocus>
+var elem5 = document.querySelector('.js-switch-invitado');
+var checkInvitado = new Switchery(elem5);
 
-				@if ($errors->has('email'))
-					<span class="invalid-feedback">
-						<strong>{{ $errors->first('email') }}</strong>
-					</span>
-				@endif
-			</div>
-		</div>
-		
-		<div class="form-group row">
-			<label for="roles" class="col-md-4 col-form-label text-md-right">Rol de usuario</label>
-			@if ($usuario->id == Auth::id() )
-				<div class="col-md-6">
-					<label for="rol_usuario" class="col-md-4 col-form-label text-md-center">superadmin</label>
-				</div>
-			@else
-			<div class="col-md-2">
-				<div class="list-group" id="listaRoles">
-				<select multiple name="roles[]"> 
-				@foreach ($roles as $role)
-					@if ( $role->id != 1 )
-						<option value="{{ $role->id }}">{{ $role->nombre }}</option>
-					@endif
-					
-					{{--<a href="#" class="list-group-item">admincontable <input type="checkbox" class="pull-right"></a>--}}
-				@endforeach
-				</select>
-				</div>
-			</div>
-								
-			<div class="col-md-2">
-				<div class="list-group" id="rolesAsignados">
-				<select multiple name="roles_user[]">
-				@foreach ($usuario->roles as $rol_user)					
-					<option  class="pull-right" value="{{ $rol_user->id }}">{{ $rol_user->nombre }}</option>
-					
-					{{--<a href="#" class="list-group-item">admincms <input type="checkbox" class="pull-right"></a>--}}
-				@endforeach	
-				</select>
-				</div>
-			</div>
-			@endif
-		</div>
-		
-		<div class="form-group row mb-0">
-            <div class="col-md-4 offset-md-2">
-				<button type="submit" class="btn btn-primary btn-md btn-block">
-					Modificar
-				</button>
-			</div>
-			<div class="col-md-4 offset-md-2">
-				<a class="btn btn-primary btn-md btn-block" href="{{ route('usuarios') }}">Cancelar</a>
-			</div>
-		</div>
-		
-	</form>		
+elem1.onchange = function() {
+  if(elem1.checked){
+	  checkCMS.disable();
+	  checkContable.disable();
+	  checkJuridico.disable();
+	  checkInvitado.disable();
+  } else {
+	 checkCMS.enable();
+	  checkContable.enable();
+	  checkJuridico.enable();
+	  checkInvitado.enable(); 
+  }
+
+};
+
+elem5.onchange = function() {
+  if(elem5.checked){
+	  checkCMS.disable();
+	  checkContable.disable();
+	  checkJuridico.disable();
+	  checkSuper.disable();
+  } else {
+	 checkCMS.enable();
+	  checkContable.enable();
+	  checkJuridico.enable();
+	  checkSuper.enable(); 
+  }
+
+};
+</script>
+
 @endsection
