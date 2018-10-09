@@ -28,6 +28,14 @@
 			 @if(Auth::user()->hasRole('juridicoAdmin'))<li><a href="{{ route('expediente.create') }}"><i class="fas fa-plus"></i> Agregar nuevo</a></li>@endif
         </ul>
 </li>
+
+<li>
+    <a href="#"><i class="fas fa-wrench"></i> OCR Texto <i class="fas fa-caret-down"></i></a>
+		<ul class="nav nav-second-level">
+			 <li><a href="{{ route('ocr.read') }}"><i class="fab fa-readme"></i> Inicio</a></li>
+		</ul>
+</li>
+
 @if(Auth::user()->hasRole('juridicoAdmin'))
 <li>
     <a href="#"><i class="fas fa-clipboard-list"></i> Reportes <i class="fas fa-caret-down"></i></a>
