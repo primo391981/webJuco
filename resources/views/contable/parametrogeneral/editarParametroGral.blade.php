@@ -35,8 +35,7 @@
 		
 	</div><!--cierre col xs12-->
 </div><!--cierre row-->
-				
 
-				
+			
 @endsection
 

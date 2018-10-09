@@ -38,7 +38,7 @@
 							<div class="form-group">
 								<label class="control-label col-md-2" for="hr{{$dia->id}}">{{$dia->nombre}} *</label>
 								<div class="col-md-5">
-									<input type="time" class="form-control" id="hr{{$dia->id}}" name="hr{{$dia->id}}" value="{{$hr->cantHoras}}" min="00:00:00" max="08:00:00" required/>
+									<input type="time" class="form-control" id="hr{{$dia->id}}" name="hr{{$dia->id}}" value="{{$hr->cantHoras}}" min="00:00" max="08:00" required/>
 								</div>
 								<div class="col-md-5">
 									<select class="form-control" id="reg{{$dia->id}}" name="reg{{$dia->id}}">

@@ -36,7 +36,10 @@ class ParametroGeneralController extends Controller
      */
     public function create()
     {
-		return view('contable.parametrogeneral.agregarParametroGral');
+		$parametros=ParametroGeneral::All();
+		$unicos=$parametros->unique('nombre');
+		$esEditar=false;
+		return view('contable.parametrogeneral.agregarParametroGral',['unicos'=>$unicos,'esEditar'=>$esEditar]);
     }
 	
 	
@@ -77,6 +80,8 @@ class ParametroGeneralController extends Controller
 			$param->fecha_inicio = $request->fecha_inicio;
 			$param->fecha_fin = $request->fecha_fin;
 			$param->valor = $request->valor;
+			$param->minimo = $request->minimo;
+			$param->maximo = $request->maximo;
 			
 			$param->save();
 			
@@ -134,8 +139,10 @@ class ParametroGeneralController extends Controller
     public function edit(ParametroGeneral $parametrogeneral)
     {
         $subtitulo = 'Editar parámetro general';
-		
-		return view('contable.parametrogeneral.editarParametroGral', ['subtitulo' => $subtitulo, 'param' => $parametrogeneral]);
+		$parametros=ParametroGeneral::All();
+		$unicos=$parametros->unique('nombre');
+		$esEditar=true;
+		return view('contable.parametrogeneral.editarParametroGral', ['subtitulo' => $subtitulo, 'param' => $parametrogeneral,'unicos'=>$unicos,'esEditar'=>$esEditar]);
     }
 
     /**
@@ -154,6 +161,8 @@ class ParametroGeneralController extends Controller
 				$parametrogeneral->descripcion = $request->descripcion;
 				$parametrogeneral->fecha_fin = $request->fecha_fin;
 				$parametrogeneral->valor = $request->valor;
+				$parametrogeneral->minimo = $request->minimo;
+				$parametrogeneral->maximo = $request->maximo;
 				$parametrogeneral->save();			 
 				
 				return redirect()->route('parametrogeneral.index')->with('success', "El parámetro fue modificado correctamente");
