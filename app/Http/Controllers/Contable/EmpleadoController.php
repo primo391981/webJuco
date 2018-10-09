@@ -296,7 +296,7 @@ class EmpleadoController extends Controller
 		try{		
 			$empleado=Empleado::find($request->idEmpleado);
 			$persona = Persona::find($empleado->idPersona);
-			$persona->empresas()->updateExistingPivot($empleado->id,['habilitado'=>0, 'fechaBaja'=>$request->fecha, 'idMotivo'=>$request->motivo]);
+			$persona->empresas()->updateExistingPivot($empleado->idEmpresa,['habilitado'=>0, 'fechaBaja'=>$request->fecha, 'idMotivo'=>$request->motivo]);
 					
 			return redirect()->action('PersonaController@show', ['id' => $empleado->idPersona])->withInput()->with('success','La desvinculación de la empresa '.$empleado->empresa->nombreFantasia.' se realizó correctamente.');
 		}
