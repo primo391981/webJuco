@@ -21,7 +21,7 @@
   <body>
   
 	<nav class="navbar navbar-expand-md navbar-light bg-faded fixed-top">
-	  <a class="navbar-brand" href="#">FC&GF</a>
+	  <a class="navbar-brand" href="#"><img src="{{ asset('img/reloj_logo.png') }}"/> FC&GF </a>
 	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
 	  </button>
@@ -50,8 +50,10 @@
 			<li class="nav-item">
 				<a class="nav-link" href="#contacto">Contacto</a>
 			</li>
+		</ul>
+		<ul class="navbar-nav navbar-right">
 		    @guest
-				<li><a class="nav-link" href="#"  data-toggle="modal" data-target="#logueousuario">Login</a></li>
+				<li><a class="nav-link" href="{{ route('login') }}" >Ingreso <i class="fas fa-unlock-alt"></i></a></li>
 			   @else
 				   <li class="nav-item dropdown">
 										<a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -105,127 +107,7 @@
 	</div>	
 	@yield('content')
 	
-	<!-- Modal logueo usuario -->
-<div class="modal fade text-light" id="logueousuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content bg-danger">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-user"></i> Acceso a usuarios</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-	      <form method="POST" action="{{ route('login') }}">
-                        @csrf
-                        <div class="form-group row">
-                            <label for="name" class="control-label col-sm-3 col-form-label">Usuario</label>
-                            <div class="col-sm-9">
-                                <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" required>
-							    @if ($errors->has('name'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('name') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
 
-                        <div class="form-group row">
-                            <label for="password" class="control-label col-sm-3 col-form-label">Contraseña</label>
-
-                            <div class="col-sm-9">
-                                <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                                <div class="col-sm-9 checkbox offset-sm-3">
-                                    <label>
-                                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Guardar contraseña
-                                    </label>
-                                </div>
-                            
-                        </div>
-
-                        <div class="form-group row">
-                            <div class="col-sm-9 offset-sm-3">
-                                <button type="submit" class="btn btn-light"><i class="fas fa-check"></i> Aceptar</button>
-
-                                <a class="btn btn-link text-light"  data-toggle="modal" data-target="#recuperarpass" <!--href="{{ route('password.request') }}-->">
-                                    Olvidaste tu contraseña?
-                                </a>
-                            </div>
-                        </div>
-                    </form>
-                
-    
-			</div>
-		
-      
-    </div>
-  </div>
-</div>
-
-<!-- Modal recuoerar pass -->
-<div class="modal fade " id="recuperarpass" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-user"></i> Logueo usuario</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-			@if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    <form method="POST" action="{{ route('password.email') }}">
-                        @csrf
-
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">E-Mail Address</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required>
-
-                                @if ($errors->has('email'))
-                                    <span class="invalid-feedback">
-                                       <!--<strong>{{ $errors->first('email') }}</strong>-->
-									   <p>hola como andas</p>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Send Password Reset Link
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-	  
-	  
-	  </div>
-    </div>
-  </div>
-</div>
-
-
-
-
-	
 	
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -233,10 +115,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
  
-	<!--para obtener el foco en el modal logueo-->
-	<script>$('#logueousuario').on('shown.bs.modal', function () {$('#name').focus();})</script>
-	<!--<script>$('#recuperarpass').on('hidden.bs.modal', function() {return false;})</script>-->
-	<script>$('#recuperarpass').on('hidden.bs.modal', function() { this.modal('show');});</script>
 	
  </body>
 </html>

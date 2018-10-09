@@ -26,27 +26,14 @@ class ContenidoController extends Controller
 		return view('cms.contenido.listaContenidos', ['subtitulo' => $subtitulo, 'contenidos' => $contenidos]);
     }
 	
-	 public function search(Request $request)
+	public function inactivos()
     {
-        $cadena = $request->search;
-		
-		$contenidos = Contenido::where("titulo", "like", "%".$cadena."%")->get();
-		
-		//return count($contenidos);
-		
-		if ($request->ajax()) {
-            return response()->json([
-                'contenidos' => $contenidos,
-            ]);
-        }
-		
-		dd($respuesta);
-		return $respuesta;
-		//Se retorna la vista "index" 
-		//return view('cms.contenido.listaContenidos', ['subtitulo' => $subtitulo, 'contenidos' => $contenidos]);
+		$contenidos = Contenido::onlyTrashed()->get();
+				
+		return view('cms.contenido.listaContenidosInactivos', ['contenidos' => $contenidos]);
     }
-
-    /**
+	
+	/**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -158,7 +145,9 @@ class ContenidoController extends Controller
      */
     public function destroy(Contenido $contenido)
     {
-        //
+        $contenido->delete();
+		
+		return redirect()->route('contenido.index')->with('success','El contenido fue eliminado correctamente');
     }
 	
 	//subir el nivel de un contenido 
@@ -219,4 +208,17 @@ class ContenidoController extends Controller
 		return redirect()->route('contenedor.edit', ['contenedor' => $contenedor]);
 		
 	}
+	
+	//restaurar contenido eliminado 
+	public function activarContenido(Request $request)
+	{
+		//dd($request);
+		$contenido = Contenido::withTrashed()->where('id',$request->contenido_id)->first();
+		
+		$contenido->restore();
+		
+		return redirect()->route('contenido.index.inactivos')->with('success', 'El contenido fue restaurado correctamente.');
+		
+	}
+	
 }

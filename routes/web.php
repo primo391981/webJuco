@@ -17,7 +17,11 @@
 
 
 //render sitio web
-Route::get('/', 'WebController@index')->name('home');
+Route::get('/', function(){
+	return redirect()->route('home');
+});
+
+Route::get('/home', 'WebController@index')->name('home');
 
 Route::get('notAuthorized', function (){
 	return view('notAuthorized');
@@ -52,22 +56,27 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('cms', 'CMS\CMSController@index')->name('cms')->middleware('role:cmsAdmin');
 	
 	//menuitems en CMS
-	Route::post('upmenuitem', 'CMS\MenuitemController@upMenu')->name('menuitem.up')->middleware('role:cmsAdmin');
-	Route::post('downmenuitem', 'CMS\MenuitemController@downMenu')->name('menuitem.down')->middleware('role:cmsAdmin');
+	Route::post('menuitem/up', 'CMS\MenuitemController@upMenu')->name('menuitem.up')->middleware('role:cmsAdmin');
+	Route::post('menuitem/down', 'CMS\MenuitemController@downMenu')->name('menuitem.down')->middleware('role:cmsAdmin');
+	Route::post('menuitem/activar}', 'CMS\MenuitemController@activarMenuitem')->name('menuitem.activar')->middleware('role:cmsAdmin');
+	Route::get('menuitem/inactivos}', 'CMS\MenuitemController@inactivos')->name('menuitem.index.inactivos')->middleware('role:cmsAdmin');
 	Route::resource('menuitem', 'CMS\MenuitemController')->middleware('role:cmsAdmin');
 			
 	//contenedores en CMS
-	Route::post('deassigncontenedor', 'CMS\ContenedorController@deassignContenedor')->name('contenedor.deassign')->middleware('role:cmsAdmin');
-	Route::post('upcontenedor', 'CMS\ContenedorController@upContenedor')->name('contenedor.up')->middleware('role:cmsAdmin');
-	Route::post('downcontenedor', 'CMS\ContenedorController@downContenedor')->name('contenedor.down')->middleware('role:cmsAdmin');
-	Route::post('deassigncontenido', 'CMS\ContenedorController@deassignContenido')->name('contenido.deassign')->middleware('role:cmsAdmin');
-	Route::post('assigncontenido}', 'CMS\ContenedorController@assignContenido')->name('contenido.assign')->middleware('role:cmsAdmin');
+	Route::post('contenedor/deassign', 'CMS\ContenedorController@deassignContenedor')->name('contenedor.deassign')->middleware('role:cmsAdmin');
+	Route::post('contenedor/up', 'CMS\ContenedorController@upContenedor')->name('contenedor.up')->middleware('role:cmsAdmin');
+	Route::post('contenedor/down', 'CMS\ContenedorController@downContenedor')->name('contenedor.down')->middleware('role:cmsAdmin');
+	Route::post('contenido/deassign', 'CMS\ContenedorController@deassignContenido')->name('contenido.deassign')->middleware('role:cmsAdmin');
+	Route::post('contenido/assign}', 'CMS\ContenedorController@assignContenido')->name('contenido.assign')->middleware('role:cmsAdmin');
+	Route::post('contenedor/activar}', 'CMS\ContenedorController@activarContenedor')->name('contenedor.activar')->middleware('role:cmsAdmin');
+	Route::get('contenedor/inactivos}', 'CMS\ContenedorController@inactivos')->name('contenedor.index.inactivos')->middleware('role:cmsAdmin');
 	Route::resource('contenedor', 'CMS\ContenedorController')->middleware('role:cmsAdmin');
 
 	//contenidos en CMS
-	Route::get('searchcontenido', 'CMS\ContenidoController@search')->name('contenido.search')->middleware('role:cmsAdmin');
-	Route::post('upcontenido', 'CMS\ContenidoController@upContenido')->name('contenido.up')->middleware('role:cmsAdmin');
-	Route::post('downcontenido', 'CMS\ContenidoController@downContenido')->name('contenido.down')->middleware('role:cmsAdmin');
+	Route::post('contenido/up', 'CMS\ContenidoController@upContenido')->name('contenido.up')->middleware('role:cmsAdmin');
+	Route::post('contenido/down', 'CMS\ContenidoController@downContenido')->name('contenido.down')->middleware('role:cmsAdmin');
+	Route::post('contenido/activar}', 'CMS\ContenidoController@activarContenido')->name('contenido.activar')->middleware('role:cmsAdmin');
+	Route::get('contenido/inactivos}', 'CMS\ContenidoController@inactivos')->name('contenido.index.inactivos')->middleware('role:cmsAdmin');
 	Route::resource('contenido', 'CMS\ContenidoController')->middleware('role:cmsAdmin');
 	//FIN CMS
 	

@@ -14,7 +14,7 @@
 					@include('cms.menuitem.formMenuitem', ['textoBoton' => 'Confirmar'])		
 					</form>
 			</div>
-			<div class="panel-footer"><a href="{{ route('contenedor.index') }}" class="btn btn-info btn-block" role="button"><i class="fas fa-list-ul"></i> Listado de Items de Menú</a></div>
+			<div class="panel-footer"><a href="{{ route('menuitem.index') }}" class="btn btn-info btn-block" role="button"><i class="fas fa-list-ul"></i> LISTADO ITEMS MENU</a></div>
 		</div>
 	</div>
 	
@@ -81,10 +81,5 @@
 		</div>
 	</div>
 </div><!--CIERRA ROW-->
-
-
-<div class=" row">
-	<h1>OTRO CONTENIDO</h1>
-</div>
 @endsection
 

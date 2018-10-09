@@ -22,15 +22,18 @@ class ContenedorController extends Controller
      */
     public function index()
     {
-       //Si bien se puede acceder directamente a la vista desde la ruta, se mantiene el acceso via controller por si en el futuro se agrega funcionalidad desde este punto
-		
-		//se retorna la vista "index" 
-		//return view('admin.admin');
 		$contenedores = Contenedor::orderBy("orden_menu")->get();
 				
 		$subtitulo = 'Lista de Contenedores';
 		//se retorna la vista "index" 
 		return view('cms.contenedor.listaContenedores', ['subtitulo' => $subtitulo, 'contenedores' => $contenedores]);
+    }
+	
+	public function inactivos()
+    {
+		$contenedores = Contenedor::onlyTrashed()->get();
+				
+		return view('cms.contenedor.listaContenedoresInactivos', ['contenedores' => $contenedores]);
     }
 
     /**
@@ -309,6 +312,18 @@ class ContenedorController extends Controller
 		$contenedor_up->save();
 		
 		return redirect()->route('menuitem.edit', ['menuitem' => $menuitem]);
+		
+	}
+	
+	//restaurar conenedor eliminado 
+	public function activarContenedor(Request $request)
+	{
+		//dd($request);
+		$contenedor = Contenedor::withTrashed()->where('id',$request->contenedor_id)->first();
+		
+		$contenedor->restore();
+		
+		return redirect()->route('contenedor.index.inactivos')->with('success', 'El contenedor fue restaurado correctamente.');
 		
 	}
 	

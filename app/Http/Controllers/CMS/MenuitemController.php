@@ -15,13 +15,17 @@ class MenuitemController extends Controller
      */
     public function index()
     {
-        //
 		$menuitems = Menuitem::orderBy("orden_menu")->get();
 		
-		$subtitulo = 'Lista de items de menú';
+		return view('cms.menuitem.listaMenuitem', ['menuitems' => $menuitems]);
 		
-		return view('cms.menuitem.listaMenuitem', ['subtitulo' => $subtitulo, 'menuitems' => $menuitems]);
-		
+    }
+	
+	public function inactivos()
+    {
+		$menuitems = Menuitem::onlyTrashed()->get();
+				
+		return view('cms.menuitem.listaMenuitemInactivos', ['menuitems' => $menuitems]);
     }
 
     /**
@@ -31,9 +35,7 @@ class MenuitemController extends Controller
      */
     public function create()
     {
-		$subtitulo = 'Agregar Item de Menú';
-		
-		return view('cms.menuitem.agregarMenuitem', ['subtitulo' => $subtitulo]);
+		return view('cms.menuitem.agregarMenuitem');
     }
 
     /**
@@ -44,7 +46,17 @@ class MenuitemController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $orden = Menuitem::All()->count();
+		
+		$menuitem = new Menuitem();
+		
+		$menuitem->titulo = $request->titulo;
+		$menuitem->descripcion = $request->descripcion;
+		$menuitem->orden_menu = $orden + 1;
+		
+		$menuitem->save();
+		
+		return redirect()->route('menuitem.index')->with('success','El ítem de menú fue creado correctamente.');
     }
 
     /**
@@ -80,7 +92,13 @@ class MenuitemController extends Controller
      */
     public function update(Request $request, Menuitem $menuitem)
     {
-        //
+        
+		$menuitem->titulo = $request->titulo;
+		$menuitem->descripcion = $request->descripcion;
+		
+		$menuitem->save();
+		
+		return redirect()->route('menuitem.index')->with('success','El ítem de menú fue modificado correctamente.');
     }
 
     /**
@@ -90,14 +108,28 @@ class MenuitemController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy(Menuitem $menuitem)
-    {
-        //
+    {		
+		//se obtiene el orden en el menu del item a borrar
+		$ordenBorrado = $menuitem->orden_menu;
+		
+		//se obtiene la lista de items existente
+		$items = Menuitem::where('orden_menu','>',$ordenBorrado)->orderBy('orden_menu')->get();
+		
+		//se actualiza el orden de los restantes items
+		foreach($items as $item){
+			$item->orden_menu--;
+			$item->save();
+		}
+		
+		$menuitem->delete();
+		
+		return redirect()->route('menuitem.index')->with('success','El ítem de menú fue eliminado correctamente.');
     }
 	
 	//subir el nivel de un item 
 	public function upMenu(Request $request)
 	{
-		$menuitem_id = $request->input('menuitem_id');
+		$menuitem_id = $request->menuitem_id;
 		
 		$menuitem_up = Menuitem::find($menuitem_id);
 		
@@ -120,7 +152,7 @@ class MenuitemController extends Controller
 	//bajar el nivel de un item 
 	public function downMenu(Request $request)
 	{
-		$menuitem_id = $request->input('menuitem_id');
+		$menuitem_id = $request->menuitem_id;
 		
 		$menuitem_down = Menuitem::find($menuitem_id);
 		
@@ -138,6 +170,21 @@ class MenuitemController extends Controller
 		$menuitem_up->save();
 		
 		return redirect()->route('menuitem.index');
+		
+	}
+	
+	//restaurar contenido eliminado 
+	public function activarMenuitem(Request $request)
+	{
+		
+		$menuitem = Menuitem::withTrashed()->where('id',$request->menuitem_id)->first();
+		
+		$menuitem->orden_menu = Menuitem::All()->count() + 1; 
+		$menuitem->save();
+		
+		$menuitem->restore();
+		
+		return redirect()->route('menuitem.index.inactivos')->with('success', 'El ítem fue restaurado correctamente.');
 		
 	}
 }

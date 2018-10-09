@@ -23,7 +23,9 @@ class CreateContenedorsTable extends Migration
 			$table->string('img_fondo');
 			$table->string('ancho_pantalla');
 			
-            $table->timestamps();
+            $table->softDeletes();
+			$table->timestamps();
+			
         });
     }
 

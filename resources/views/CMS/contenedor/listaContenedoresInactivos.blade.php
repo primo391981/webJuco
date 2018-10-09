@@ -1,6 +1,6 @@
 @extends('cms.cms')
 
-@section('seccion', " - Contenedores")
+@section('seccion', " - INACTIVOS")
 
 @section('content')
 @if (Session::has('success'))
@@ -21,9 +21,9 @@
 		<div class="panel panel-info">
 			<div class="panel-heading">
 				<div class="btn-group pull-right">	
-					<a href="{{ route('contenedor.create') }}" class="btn btn-info pull-right" role="button"><i class="fas fa-plus"></i></a>				  
+					<a href="{{ route('contenedor.index') }}" class="btn btn-info pull-right" role="button"><i class="fas fa-list"></i></a>				  
 				</div>
-				<h4><i class="fas fa-th-large"></i> LISTADO CONTENEDORES</h4>
+				<h4><i class="fas fa-th-large"></i> LISTADO CONTENEDORES INACTIVOS</h4>
 			</div>
 			<div class="panel-body text-muted">					
 				<div class="table-responsive">
@@ -33,35 +33,22 @@
 							<th>#</th>
 							<th>Título</th>
 							<th>Tipo</th>
-							<th>Item de menú</th>
-							<th>Orden en menú</th>
-							<th></th>
 							<th></th>
 						</tr>
 						</thead>
 						<tbody>
-						@foreach($contenedores->sortBy('id_itemmenu') as $contenedor)						
+						@foreach($contenedores as $contenedor)						
 						<tr>
 							<td>{{$contenedor->id}}</td>
 							<td>{{$contenedor->titulo}}</td>
 							<td>{{$contenedor->tipoContenedor->nombre}}</td>
-							<td>{{ !is_null($contenedor->menuitem) ? $contenedor->menuitem->titulo : "sin asignar"}}</td>
-							<td>{{$contenedor->orden_menu}}</td>
+							
 							<td>
-								<a href="{{ route('contenedor.edit', ['contenedor' => $contenedor])}}" class="btn btn-warning"><i class="far fa-edit"></i></a>
-							</td>
-							<td>
-								<form method="POST" action="{{ route('contenedor.destroy', $contenedor) }}">
-									@method('DELETE')
-									@csrf
-									@if($contenedor->contenidos->count() > 0)
-										<fieldset disabled>
-									@endif
-									<button type="submit"class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
-									@if($contenedor->contenidos->count() > 0)
-										</fieldset>
-									@endif												
-								</form>
+								<form method="POST" action="{{ route('contenedor.activar') }}">
+										@csrf	
+										<input type="hidden" name="contenedor_id" value="{{$contenedor->id}}">
+										<button type="submit"class="btn btn-danger"><i class="fas fa-recycle"></i></button>												
+									</form>
 							</td>
 							
 						</tr>
@@ -73,7 +60,6 @@
 		</div>
 	</div>
 </div>	
-
 <script>
 $(document).ready(function() {
     $('#tableContenedor').DataTable( {        
@@ -91,5 +77,7 @@ $(document).ready(function() {
 	
 } );
 </script>
-@endsection
 
+
+
+@endsection
