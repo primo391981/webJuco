@@ -58,20 +58,24 @@
 											@endforeach
 										</td>
 										<td>
-											<a class="btn btn-warning" href="{{ route('user.edit', $usuario) }}"><i class="far fa-edit"></i></a>	
+											@if(Auth::user() != $usuario)
+												<a class="btn btn-warning" href="{{ route('user.edit', $usuario) }}"><i class="far fa-edit"></i></a>	
+											@endif
 										</td>
 										<td>
-											<form method="POST" action="{{ route('user.destroy', ['user' => $usuario]) }}">
-												@if($usuario->expedientes->count() > 0)
-													<fieldset disabled>
-												@endif
-													{{ method_field('DELETE') }}
-													@csrf	
-													<button type="submit"class="btn btn-danger"><i class="far fa-trash-alt" disabled></i></button>
-												@if($usuario->expedientes->count() > 0)
-													</fieldset>
-												@endif
-											</form>	
+											@if(Auth::user() != $usuario)
+												<form method="POST" action="{{ route('user.destroy', ['user' => $usuario]) }}">
+													@if($usuario->expedientes->count() > 0)
+														<fieldset disabled>
+													@endif
+														{{ method_field('DELETE') }}
+														@csrf	
+														<button type="submit"class="btn btn-danger"><i class="far fa-trash-alt" disabled></i></button>
+													@if($usuario->expedientes->count() > 0)
+														</fieldset>
+													@endif
+												</form>	
+											@endif
 										</td>
 									</tr>
 								@endforeach						

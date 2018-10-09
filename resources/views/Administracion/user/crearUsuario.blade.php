@@ -10,29 +10,27 @@
 @endsection				
 
 @section('content')
-<br>
 @if (Session::has('success'))
 	<div class="alert alert-success">
 		{{Session::get('success')}}
-	</div><br>
+	</div>
 @endif 
 @if (Session::has('error'))
 	<div class="alert alert-danger">
 		{{Session::get('error')}}
-	</div><br>
+	</div>
 @endif 
-
+<br>
 <div class="row">
 	<div class="col-xs-12">
 		
 		<div class="panel panel-default text-muted">
 			<div class="panel-heading">
 				<a class="btn btn-default pull-right" href="{{ route('user.index') }}" role="button" data-toggle="tooltip" title="Listado de usuarios"><i class="fas fa-list-ul"></i></a>
-				<h4><i class="fas fa-edit"></i> EDITAR USUARIO </h4>				
+				<h4><i class="fas fa-user"></i> CREAR USUARIO </h4>				
 			</div>
 			<div class="panel-body">
-				<form method="POST" action="{{ route('user.update', ['id' => $usuario->id]) }}" class="form-horizontal">
-					@method('PUT')
+				<form method="POST" action="{{ route('user.store') }}" class="form-horizontal">
 					@include('administracion.user.formUsuario')	
 			</div>
 			<div class="panel-footer">
