@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Administracion;
 
 use App\Administracion\User;
+use App\Administracion\Role;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
@@ -37,7 +38,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        $roles = Role::All();
+        return view('administracion.user.crearUsuario', ['roles' => $roles]);
     }
 
     /**
@@ -47,8 +49,56 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
+    {	
+        //dd($request);
+		
+		//validar campos del formulario
+	   $request->validate([
+			'nombre' => 'required',
+			'apellido' => 'required',
+			'email' => 'required|email|max:255',
+			
+		]);
+		
+		$usuario = User::where('name',$request->name)->get();
+		if($usuario->count() > 0)
+			return redirect()->back()->with('error', 'El usuario ya se encuentra registrado en el sistema. Ingrese un nuevo usuario.')->withInput();
+		
+		//registrar los valores 
+		$user = new User();
+		$user->name = $request->name;
+		$user->nombre = $request->nombre;
+		$user->apellido = $request->apellido;
+		$user->email = $request->email;
+		
+		
+		//checkeo de verificación de password
+		if($request->password != $request->passwordRepeat){
+			return redirect()->back()->with('error', 'La verificación de contraseña no es correcta. Ingrese nuevamente.')->withInput();
+		}
+		
+		//si password tiene valor, registrarlo
+		if($request->password != null){
+			$user->password = bcrypt($request->password);
+		}
+				
+		//guardar cambios		
+		$user->save();
+		
+		//borrar los permisos
+		$user->roles()->detach();
+		
+		//registrar los permisos
+		if($request->checkInvitado == 'on'){
+			$user->roles()->attach(5);
+		} else {
+			if($request->checkCMS == 'on')	$user->roles()->attach(2);
+			if($request->checkJuridico == 'on')	$user->roles()->attach(3);
+			if($request->checkContable == 'on')	$user->roles()->attach(4);
+		}
+	
+		//se retorna la vista "listaUsuarios" 
+		return redirect()->route('user.index')->with('success', "El usuario ".$user->name." ha sido modificado correctamente.");	
     }
 
     /**
@@ -70,7 +120,8 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+		$roles = Role::All();
+        return view('administracion.user.modificaUsuario', ['usuario' => $user, 'roles' => $roles]);
     }
 
     /**
@@ -82,25 +133,47 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $request->validate([
+		//validar campos del formulario
+	   $request->validate([
 			'nombre' => 'required',
 			'apellido' => 'required',
 			'email' => 'required|email|max:255',
 			
 		]);
 		
-		$usuario = User::find($idUsuario);
-		$usuario->nombre = $request['nombre'];
-		$usuario->apellido = $request['apellido'];
-		$usuario->email = $request['email'];
+		//registrar los valores 
+		$user->nombre = $request->nombre;
+		$user->apellido = $request->apellido;
+		$user->email = $request->email;
 		
 		
-		$usuario->save();
+		//checkeo de verificación de password
+		if($request->password != $request->passwordRepeat){
+			return redirect()->back()->with('success', "La verificación de contraseña no es correcta. Ingrese nuevamente.");
+		}
 		
-		$subtitulo = 'Modificar Ususario';
+		//si password tiene valor, registrarlo
+		if($request->password != null){
+			$user->password = bcrypt($request->password);
+		}
+				
+		//guardar cambios		
+		$user->save();
 		
+		//borrar los permisos
+		$user->roles()->detach();
+		
+		//registrar los permisos
+		if($request->checkInvitado == 'on'){
+			$user->roles()->attach(5);
+		} else {
+			if($request->checkCMS == 'on')	$user->roles()->attach(2);
+			if($request->checkJuridico == 'on')	$user->roles()->attach(3);
+			if($request->checkContable == 'on')	$user->roles()->attach(4);
+		}
+	
 		//se retorna la vista "listaUsuarios" 
-		return redirect()->route("usuarios")->with('success', "El usuario ".$usuario->name." ha sido modificado correctamente.");	
+		return redirect()->route('user.index')->with('success', "El usuario ".$user->name." ha sido modificado correctamente.");	
     }
 
     /**
