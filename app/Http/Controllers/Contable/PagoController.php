@@ -159,14 +159,7 @@ class PagoController extends Controller
 		$persona = Persona::where("id", $empleado->idPersona)->with('tipoDoc')->first();
 		$pago->fecha = new Carbon($pago->fecha);
 		
-		if ($pago->idTipoPago == 1)
-			$subtitulo = 'Editar Viático';
-		elseif ($pago ->idTipoPago == 2)
-			$subtitulo = 'Editar Adelanto';
-		else
-			$subtitulo = 'Editar Partida Extra';
-		
-		return view('contable.pago.editarPagos', ['subtitulo' => $subtitulo, 'empresa' => $empresa, 'persona' => $persona, 'pago' => $pago]);	
+		return view('contable.pago.editarPagos', ['empresa' => $empresa, 'persona' => $persona, 'pago' => $pago]);	
     }
 
     /**
@@ -205,8 +198,10 @@ class PagoController extends Controller
 				return redirect()->route('pago.viaticos')->with('success', "El viático se editó correctamente");
 			elseif ($pago->idTipoPago == 2)
 				return redirect()->route('pago.adelantos')->with('success', "El adelanto se editó correctamente");
-			else
+			elseif ($pago->idTipoPago == 3)
 				return redirect()->route('pago.extras')->with('success', "La partida extra se editó correctamente");
+			else
+				return redirect()->route('pago.fictos')->with('success', "El ficto extra se editó correctamente");
 				
 		} catch(Exception $e){
 			return back()->withInput()->withError("El pago no se pudo registrar, intente nuevamente o contacte al administrador.");				;

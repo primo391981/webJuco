@@ -23,8 +23,10 @@
 						<i class="fas fa-book"></i> EDITAR VIATICO
 					@elseif ($pago->idTipoPago == 2)
 						<i class="fas fa-credit-card"></i> EDITAR ADELANTO
-					@else
+					@elseif ($pago->idTipoPago == 3)
 						<i class="fas fa-dollar-sign"></i> EDITAR PARTIDA EXTRA
+					@else
+						<i class="fas fa-dollar-sign"></i> EDITAR FICTO
 					@endif
 				</h4>				
 			</div>
