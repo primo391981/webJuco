@@ -1334,6 +1334,39 @@ class HaberesController extends Controller
 		return $horasEmpl;
 	}
 	
+	//Obtiene Salario Mínimo Nacional vigente del cargo indicado en la fecha dada
+	private function obtenerSalarioMinVigente($cargo, $fecha)
+	{
+		$salarioMinimos = SalarioMinimoCargo::where("idCargo", "=", $cargo->id)->orderBy('id', 'desc')->get();
+		//Obtiene SMN correspondiente a la fecha de cálculo para el cargo del empleado
+		foreach ($salarioMinimos as $smn)
+		{
+			$fechaInicio = new Carbon($smn->fechaDesde);
+			
+			if ($smn->fechaHasta == null)
+			{
+				if ($fechaInicio <= $fecha)
+				{
+					$salMin = $smn->monto;
+					$break;
+				}
+			}
+			else
+			{
+				$fechaFin = new Carbon($smn->fechaHasta);
+				
+				if ($fechaInicio <= $fecha && $fechaFin >= $fecha)
+				{
+					$salMin = $smn->monto;
+					$break;
+				}					
+			}
+		}
+		
+		return ($salMin);
+	}
+	
+	
 	//Obtiene el monto de la antiguedad del empleado
 	private function obtenerAntiguedad($fecha, $empleado, $cargo)
 	{/*Empresas Grupo:11.
@@ -1342,39 +1375,23 @@ class HaberesController extends Controller
 		-120 meses = 2,5  x SMN x años (10 años)
 		-180 meses en adelante: 
 			tope = 2,5 x SMN x 15	
+			
+		Empresas Grupo:12.04
+		- 3 años = 3% x SMN
+		- 4 año hasta 10 años = 3% + 1% por años
+		- mas de 10 años = 10% x SMN
+		
+		Empresas Grupo:12.01
+		- 3 años = 1% * SMN
+		- 5 años = 2% * SMN
+		- 8 años = 4% * SMN		
 	*/	
 		$valorAntiguedad = 0;
-		
-		if ($empleado->empresa->grupo == 11)
-		{
-			$salarioMinimos = SalarioMinimoCargo::where("idCargo", "=", $cargo->id)->orderBy('id', 'desc')->get();
 	
-			//Obtiene SMN correspondiente a la fecha de cálculo para el cargo del empleado
-			foreach ($salarioMinimos as $smn)
-			{
-				$fechaInicio = new Carbon($smn->fechaDesde);
-				
-				if ($smn->fechaHasta == null)
-				{
-					if ($fechaInicio <= $fecha)
-					{
-						$salMin = $smn->monto;
-						$break;
-					}
-				}
-				else
-				{
-					$fechaFin = new Carbon($smn->fechaHasta);
-					
-					if ($fechaInicio <= $fecha && $fechaFin >= $fecha)
-					{
-						$salMin = $smn->monto;
-						$break;
-					}					
-				}
-			}
-				
-			$fecha->addMonth();
+		if ($empleado->empresa->grupo == 11)
+		{	
+			$salMin = $this->obtenerSalarioMinVigente($cargo, $fecha);
+			
 			$fechaInicio = new Carbon($empleado->fechaDesde);
 			 
 			$meses = $fechaInicio->diffInMonths($fecha);
@@ -1395,11 +1412,48 @@ class HaberesController extends Controller
 							$valorAntiguedad = $salMin * 0.025 * 15;
 					}
 				}
-			}
-			
-			$fecha->subMonth();
+			}					
 		}
-		
+		elseif ($empleado->empresa->grupo == 12)
+		{
+			if ($empleado->empresa->subGrupo == 4)
+			{//Calcula la antiguedad para el grupo 12.04
+				$salMin = $this->obtenerSalarioMinVigente($cargo, $fecha);
+				
+				$fechaInicio = new Carbon($empleado->fechaDesde);
+			 
+				$meses = $fechaInicio->diffInMonths($fecha);
+				
+				if ($meses >= 36 && $meses < 120)
+					$valorAntiguedad = $salMin * ((intval($meses / 12))/100);
+				elseif ($meses >= 120)
+					$valorAntiguedad = $salMin * 0.10;			
+			}
+			elseif ($empleado->empresa->subGrupo == 1)
+			{//Calcula la antiguedad para el grupo 12.01
+				$salMin = $this->obtenerSalarioMinVigente($cargo, $fecha);
+				
+				$cantAnios = 0;
+				
+				$fechaInicio = new Carbon($empleado->fechaDesde);
+
+				$fechaAux = new Carbon($fechaInicio->year.'-12-31');
+
+				$meses = $fechaInicio->diffInMonths($fechaAux);
+
+				if ($meses >= 6)
+					$cantAnios = 1;
+				
+				$cantAnios += ($fecha->year-1)-$fechaInicio->year;
+				
+				if ($cantAnios >= 8)
+					$valorAntiguedad = $salMin * 0.04;
+				elseif ($cantAnios >= 5)
+					$valorAntiguedad = $salMin * 0.02;
+				elseif ($cantAnios >= 3)
+					$valorAntiguedad = $salMin * 0.01;
+			}			
+		}
 		return $valorAntiguedad;
 	}
 	

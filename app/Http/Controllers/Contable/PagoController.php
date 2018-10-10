@@ -69,12 +69,12 @@ class PagoController extends Controller
 		return view('contable.pago.listaFictos', ['fictos' => $fictos]);
     }
 	
-	/*public function extrasInactivos()
+	public function fictosInactivos()
     {
-        $extras  = Pago::onlyTrashed()->where("idTipoPago", 3)->with('empleado')->get();
+        $fictos  = Pago::onlyTrashed()->where("idTipoPago", 4)->with('empleado')->get();
 		
-		return view('contable.pago.listaExtrasInactivos', ['extras' => $extras]);
-	}*/	
+		return view('contable.pago.listaFictosInactivos', ['fictos' => $fictos]);
+	}
 	
 	public function create(Request $request)
     {
@@ -159,14 +159,7 @@ class PagoController extends Controller
 		$persona = Persona::where("id", $empleado->idPersona)->with('tipoDoc')->first();
 		$pago->fecha = new Carbon($pago->fecha);
 		
-		if ($pago->idTipoPago == 1)
-			$subtitulo = 'Editar Viático';
-		elseif ($pago ->idTipoPago == 2)
-			$subtitulo = 'Editar Adelanto';
-		else
-			$subtitulo = 'Editar Partida Extra';
-		
-		return view('contable.pago.editarPagos', ['subtitulo' => $subtitulo, 'empresa' => $empresa, 'persona' => $persona, 'pago' => $pago]);	
+		return view('contable.pago.editarPagos', ['empresa' => $empresa, 'persona' => $persona, 'pago' => $pago]);	
     }
 
     /**
@@ -205,8 +198,10 @@ class PagoController extends Controller
 				return redirect()->route('pago.viaticos')->with('success', "El viático se editó correctamente");
 			elseif ($pago->idTipoPago == 2)
 				return redirect()->route('pago.adelantos')->with('success', "El adelanto se editó correctamente");
-			else
+			elseif ($pago->idTipoPago == 3)
 				return redirect()->route('pago.extras')->with('success', "La partida extra se editó correctamente");
+			else
+				return redirect()->route('pago.fictos')->with('success', "El ficto extra se editó correctamente");
 				
 		} catch(Exception $e){
 			return back()->withInput()->withError("El pago no se pudo registrar, intente nuevamente o contacte al administrador.");				;
@@ -225,8 +220,10 @@ class PagoController extends Controller
 			return redirect()->route('pago.viaticos.inactivos')->with('success', "El viático fue restaurado correctamente");
 		elseif ($pago->idTipoPago == 2)
 			return redirect()->route('pago.adelantos.inactivos')->with('success', "El adelanto fue restaurado correctamente");
+		elseif ($pago->idTipoPago == 3)
+			return redirect()->route('pago.extras.inactivos')->with('success', "El pago extra fue restaurado correctamente");
 		else
-			return redirect()->route('pago.extras.inactivos')->with('success', "La partida extra fue restaurada correctamente");
+			return redirect()->route('pago.fictos.inactivos')->with('success', "El ficto fue restaurada correctamente");
     }
 	
     /**
@@ -243,8 +240,10 @@ class PagoController extends Controller
 			return redirect()->route('pago.viaticos')->with('success', "El viático fue eliminado correctamente");
 		elseif ($pago->idTipoPago == 2)
 			return redirect()->route('pago.adelantos')->with('success', "El adelanto fue eliminado correctamente");
+		elseif ($pago->idTipoPago == 3)
+			return redirect()->route('pago.extras')->with('success', "La partida extra fue eliminada correctamente");
 		else
-			return redirect()->route('pago.extras')->with('success', "La partida extra eliminada correctamente");
+			return redirect()->route('pago.fictos')->with('success', "El ficto fue eliminado correctamente");
     }
 	
 	public function altaViatico(Request $request){

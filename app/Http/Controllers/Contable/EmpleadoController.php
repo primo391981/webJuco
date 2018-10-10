@@ -296,7 +296,7 @@ class EmpleadoController extends Controller
 		try{		
 			$empleado=Empleado::find($request->idEmpleado);
 			$persona = Persona::find($empleado->idPersona);
-			$persona->empresas()->updateExistingPivot($empleado->id,['habilitado'=>0, 'fechaBaja'=>$request->fecha, 'idMotivo'=>$request->motivo]);
+			$persona->empresas()->updateExistingPivot($empleado->idEmpresa,['habilitado'=>0, 'fechaBaja'=>$request->fecha, 'idMotivo'=>$request->motivo]);
 					
 			return redirect()->action('PersonaController@show', ['id' => $empleado->idPersona])->withInput()->with('success','La desvinculación de la empresa '.$empleado->empresa->nombreFantasia.' se realizó correctamente.');
 		}
@@ -347,6 +347,7 @@ class EmpleadoController extends Controller
 			$noc=false;
 			$per=false;
 			$esp=false;
+			
 			if($request->per=='on'){
 				$per=true;
 			}
@@ -357,8 +358,7 @@ class EmpleadoController extends Controller
 				$esp=true;
 			}
 			
-			//si empresa seleccionado grupo ==12 sn/200 else sn/30/8
-			
+			//Si empresa seleccionada grupo == 12 : sn/200 else sn/30/8			
 			$cargo=Cargo::find($request->cargo);
 			$empleado=Empleado::find($request->idEmpleado);
 			$valorHr=0;
@@ -376,7 +376,7 @@ class EmpleadoController extends Controller
 			}
 			
 			$persona = Persona::find($empleado->idPersona);
-			$persona->empresas()->updateExistingPivot($empleado->id,['idCargo'=>$cargo->id,'fechaDesde'=>$request->fechaInicio,'fechaHasta'=>$fechaFin,'monto'=>$request->monto,'valorHora'=>$valorHr,'nocturnidad'=>$noc,'pernocte'=>$per,'espera'=>$esp,'tipoHorario'=>$request->tipo]);
+			$persona->empresas()->updateExistingPivot($empleado->idEmpresa,['idCargo'=>$cargo->id,'fechaDesde'=>$request->fechaInicio,'fechaHasta'=>$fechaFin,'monto'=>$request->monto,'valorHora'=>$valorHr,'nocturnidad'=>$noc,'pernocte'=>$per,'espera'=>$esp,'tipoHorario'=>$request->tipo]);
 			
 			return redirect()->route('persona.show',['id' => $empleado->persona->id]);
 		
