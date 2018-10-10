@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Juridico;
 use App\Juridico\Cliente;
 use App\Persona;
 use App\Empresa;
-use App\Tipodoc;
+use App\TipoDoc;
 use App\EstadoCivil;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -74,7 +74,7 @@ class ClienteController extends Controller
      */
     public function createFisica()
     {
-        $tiposdoc = Tipodoc::All();
+        $tiposdoc = TipoDoc::All();
 		
 		$estados = EstadoCivil::All();
 				
@@ -182,7 +182,7 @@ class ClienteController extends Controller
         if($cliente->persona_type == 'App\Persona'){
 			$persona = Persona::find($cliente->persona_id);
 			$estados = EstadoCivil::All();
-			$tiposdoc = Tipodoc::All();
+			$tiposdoc = TipoDoc::All();
 			return view('juridico.cliente.editarClientes', ['persona' => $persona, 'tipo' => 'fisica', 'tiposdoc' => $tiposdoc, 'estados' => $estados]);
 		} else {
 			$persona = Empresa::find($cliente->persona_id);
