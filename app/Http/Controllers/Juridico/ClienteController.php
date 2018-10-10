@@ -9,6 +9,7 @@ use App\TipoDoc;
 use App\EstadoCivil;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use \Carbon\Carbon;
 
 class ClienteController extends Controller
 {
@@ -95,6 +96,8 @@ class ClienteController extends Controller
     public function store(Request $request)
     {
 		$tipoPersona = $request->tipo_persona;
+		
+		//dd($request);
 
 		if($tipoPersona == "fisica"){	
 			
@@ -109,11 +112,18 @@ class ClienteController extends Controller
 				$persona->documento = $request->documento;
 				$persona->nombre = $request->nombre;
 				$persona->apellido = $request->apellido;
+				$persona->nacionalidad = $request->nacionalidad;
+				$persona->departamento = $request->departamento;
 				$persona->domicilio = $request->domicilio;
 				$persona->email = $request->email;
 				$persona->telefono = $request->telefono;
 				$persona->estadoCivil = $request->estadoCivil;
-				$persona->cantHijos = $request->cantHijos;
+				$fecha=new Carbon($request->input('fechaNacimiento'));
+				$persona->fechaNacimiento=$fecha->year.'-'.$fecha->month.'-'.$fecha->day;
+				$persona->cantHijos = null;		
+				$persona->conDiscapacidad = null;	
+				$persona->pagoNombre = null;
+				$persona->pagoNumero = null;
 				$persona->save();
 			}
 			$persona_type = 'App\Persona';
@@ -152,9 +162,9 @@ class ClienteController extends Controller
 			$cliente->persona_type = $persona_type;
 			$cliente->save();
 			
-			return redirect()->route('cliente.index')->with('success', "El cliente se agregó correctamente");
+			return redirect()->route('cliente.index')->with('success', "El cliente se agregó correctamente.");
 		} else {
-			return back()->withInput()->withError('El cliente ya se encuentra regsitrado');
+			return back()->withInput()->withError('El cliente ya se encuentra registrado en la base de datos.');
 		}
 		
 	   
@@ -207,11 +217,14 @@ class ClienteController extends Controller
 			$persona->documento = $request->documento;
 			$persona->nombre = $request->nombre;
 			$persona->apellido = $request->apellido;
+			$persona->nacionalidad = $request->nacionalidad;
+			$persona->departamento = $request->departamento;
 			$persona->domicilio = $request->domicilio;
 			$persona->email = $request->email;
 			$persona->telefono = $request->telefono;
 			$persona->estadoCivil = $request->estadoCivil;
-			$persona->cantHijos = $request->cantHijos;
+			$fecha=new Carbon($request->input('fechaNacimiento'));
+			$persona->fechaNacimiento=$fecha->year.'-'.$fecha->month.'-'.$fecha->day;
 		} else {
 			$persona->razonSocial = $request->razonSocial;
 			$persona->rut = $request->rut;
