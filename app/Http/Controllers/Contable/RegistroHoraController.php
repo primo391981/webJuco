@@ -100,49 +100,7 @@ class RegistroHoraController extends Controller
 			return back()->withInput()->withError("Error en el sistema.");
 		}
 	}
-			
-	/*guarda ingreso de marcas de reloj de un empleado en un mes y anio dado*/
-	public function guardarMarcas(Request $request){
-		DB::beginTransaction();
-		try{			
-			
-			$tiposHoras=TipoHora::All();			
-			$fecha=new Carbon($request->fecha);
-			$empleado=Empleado::find($request->idEmpleado);
-			
-			for($i=1;$i<=$fecha->daysInMonth;$i++){
-				foreach($tiposHoras as $th){
-					
-					$CantHorasReq=$request->input($th->id.$i.'/'.$fecha->month);
-					
-					if($CantHorasReq !=null){//por si es null el valor nocturnidad pernocte espera
-						if($th->id==1 || ($CantHorasReq!="00:00:00" && $CantHorasReq !="00:00")){
-							
-							$registroHora=new RegistroHora;
-							$registroHora->idEmpleado=$empleado->id;
-							$registroHora->fecha=$fecha->year.'-'.$fecha->month.'-'.$i;
-							
-							$registroHora->cantHoras=$CantHorasReq;
-							$registroHora->idTipoHora=$th->id;
-							
-							if($empleado->cargo->remuneracion->id==2 || $empleado->tipoHorario==2 ){
-								$registroHora->tipoDia=$request->input('radio'.$i.'/'.$fecha->month);	
-							}
-							$registroHora->save();
-						}
-					}
-				}
-			}
-			
-			DB::commit();
-			return redirect()->route('reloj.listaEmpleados')->with('success', "Las marcas reloj de ".$empleado->persona->nombre." ".$empleado->persona->apellido." para la fecha ".$fecha->month." / ".$fecha->year." fueron ingresadas correctamente.");			
-		}
-		catch(Exception $e){
-			DB::rollBack();
-			return back()->withInput()->withError("Error en el sistema.");
-		}
-	}
-	
+				
 	/*muestra formulario de edicion de maracas de reloj de un empleado en un mes y anio dado*/
 	public function editarMes(Request $request){
 		try{
@@ -187,77 +145,7 @@ class RegistroHoraController extends Controller
 		}
 		
 	}
-
-	/*Guarda las marcas de reloj editadas para un empleado en un mes y anio dado*/
-	public function guardarMarcasEdit(Request $request){
-		DB::beginTransaction();
-		try{
-			$tiposHoras=TipoHora::All();			
-			$fecha=new Carbon($request->fecha);
-			$empleado=Empleado::find($request->idEmpleado);
-			
-			for($i=1;$i<=$fecha->daysInMonth;$i++){
-				foreach($tiposHoras as $th){
-					$CantHorasReq=$request->input($th->id.$i.'/'.$fecha->month);
-					
-					if($CantHorasReq !=null){//por si es null el valor nocturnidad pernocte espera
-						$fechaActual=$fecha->year.'-'.$fecha->month.'-'.$i;						
-						$horaReg=$empleado->registrosHoras()->where('fecha','=',$fechaActual)->where('idTipoHora','=',$th->id)->first();
-						
-						if($horaReg!=null){
-							//si existe actualizo
-							if($request->input($th->id.$i.'/'.$fecha->month)!="00:00:00" && $request->input($th->id.$i.'/'.$fecha->month)!="00:00"){
-								
-								RegistroHora::where('idEmpleado','=',$request->idEmpleado)->where('fecha','=',$fechaNueva)->where('idTipoHora','=',$th->id)->update(['cantHoras'=>$request->input($th->id.$i.'/'.$fecha->month)]);	
-								if($empleado->tipoHorario==2 || $empleado->cargo->remuneracion->id==2 ){
-									RegistroHora::where('idEmpleado','=',$request->idEmpleado)->where('fecha','=',$fechaNueva)->where('idTipoHora','=',$th->id)->update(['tipoDia'=>$request->input('radio'.$i.'/'.$fecha->month)]);	
-								}
-							}
-							else{
-								if($horasReg->idTipoHora==1 && ($request->input($th->id.$i.'/'.$fecha->month)=="00:00:00" || $request->input($th->id.$i.'/'.$fecha->month)=="00:00")){
-									RegistroHora::where('idEmpleado','=',$request->idEmpleado)->where('fecha','=',$fechaNueva)->where('idTipoHora','=',$th->id)->update(['cantHoras'=>$request->input($th->id.$i.'/'.$fecha->month)]);
-									if($empleado->tipoHorario==2 || $empleado->cargo->remuneracion->id==2 ){
-										RegistroHora::where('idEmpleado','=',$request->idEmpleado)->where('fecha','=',$fechaNueva)->where('idTipoHora','=',$th->id)->update(['tipoDia'=>$request->input('radio'.$i.'/'.$fecha->month)]);	
-									}
-								}
-								else{
-									if($request->input($th->id.$i.'/'.$fecha->month)=="00:00:00" || $request->input($th->id.$i.'/'.$fecha->month)=="00:00"){
-									//existe pero le puso valor 00 entonces lo tengo que eliminar 
-									$horasReg->delete();
-									}									
-								}
-							}						
-						}
-						else{
-							//sino lo tengo que crear
-							$fechaNueva=$fecha->year.'-'.$fecha->month.'-'.$i;
-							if($request->input($th->id.$i.'/'.$fecha->month)!="00:00:00" && $request->input($th->id.$i.'/'.$fecha->month)!="00:00"){
-								DB::table('contable_registros_horas')->insert(['idEmpleado'=>$request->idEmpleado,'idTipoHora'=>$th->id,'cantHoras'=>$request->input($th->id.$i.'/'.$fecha->month),'fecha'=>$fechaNueva]);
-								if($empleado->tipoHorario==2 || $empleado->cargo->remuneracion->id==2 ){
-									RegistroHora::where('idEmpleado','=',$request->idEmpleado)->where('fecha','=',$fechaNueva)->where('idTipoHora','=',$th->id)->update(['tipoDia'=>$request->input('radio'.$i.'/'.$fecha->month)]);	
-								}
-							}
-							elseif($th->id==1 && ($request->input($th->id.$i.'/'.$fecha->month)=="00:00:00"||$request->input($th->id.$i.'/'.$fecha->month)=="00:00")){
-								DB::table('contable_registros_horas')->insert(['idEmpleado'=>$request->idEmpleado,'idTipoHora'=>$th->id,'cantHoras'=>$request->input($th->id.$i.'/'.$fecha->month),'fecha'=>$fechaNueva]);	
-								if($empleado->tipoHorario==2 || $empleado->cargo->remuneracion->id==2 ){
-									RegistroHora::where('idEmpleado','=',$request->idEmpleado)->where('fecha','=',$fechaNueva)->where('idTipoHora','=',$th->id)->update(['tipoDia'=>$request->input('radio'.$i.'/'.$fecha->month)]);	
-								}
-							}
-						}
-						
-					}
-				}
-			}
-			DB::commit();
-			return redirect()->route('reloj.listaEmpleados')->with('success', "Las marcas reloj de ".$empleado->persona->nombre." ".$empleado->persona->apellido." para la fecha ".$fecha->month." / ".$fecha->year." fueron EDITADAS correctamente.");			
-		}
-		catch(Exception $e){
-			DB::rollBack();
-			return back()->withInput()->withError("Error en el sistema.");
-		}
 		
-	}
-	
 	/*listado de marcas de reloj de un empleado en un mes y anio*/
 	public function verMarcas(Request $request){
 		try{
@@ -303,6 +191,32 @@ class RegistroHoraController extends Controller
 		}
 	}
 	
+	/*guarda ingreso y edicion de marcas de reloj de un empleado en un mes y anio dado*/
+	public function guardarMarcas(Request $request){
+		DB::beginTransaction();
+		try{			
+			
+			$tiposHoras=TipoHora::All();			
+			$fecha=new Carbon($request->fecha);
+			$empleado=Empleado::find($request->idEmpleado);
+			
+			for($i=1;$i<=$fecha->daysInMonth;$i++){
+				foreach($tiposHoras as $th){
+						$fechaActual=$fecha->year.'-'.$fecha->month.'-'.$i;	
+						$this->accionRegistroHr($empleado,$th,$request->input($th->id.$i.'/'.$fecha->month),$fechaActual,$request->input('radio'.$i.'/'.$fecha->month));
+				}
+			}
+			
+			DB::commit();
+			return redirect()->route('reloj.listaEmpleados')->with('success', "Las marcas reloj de ".$empleado->persona->nombre." ".$empleado->persona->apellido." para la fecha ".$fecha->month." / ".$fecha->year." fueron ingresadas correctamente.");			
+		}
+		catch(Exception $e){
+			DB::rollBack();
+			return back()->withInput()->withError("Error en el sistema.");
+		}
+	}
+	
+	//compureba si el empleado tiene cargo mensual habitual
 	private function esMensualHab($empleado){
 		$es=false;
 		if($empleado->cargo->remuneracion->id==1 && $empleado->tipoHorario==1){
@@ -310,7 +224,8 @@ class RegistroHoraController extends Controller
 		}
 		return $es;
 	}
-	
+		
+	//comprubea si tiene marcas ya ingresadas para una fecha dada
 	private function tieneMarcas($empleado,$fecha){
 		$tieneMarcas=false;
 		$i=1;				 
@@ -335,6 +250,7 @@ class RegistroHoraController extends Controller
 		return $habilitado;
 	}
 	
+	//comprueba si es dia feriado obligatorio(solo lo utiliza empleado con cargo mensual habitual)
 	private function diaFeriado($fecha){
 		$feriados=Feriado::All();
 		$esFeriado=false;
@@ -346,6 +262,7 @@ class RegistroHoraController extends Controller
 		return $esFeriado;
 	}
 	
+	//coor segun el tipo de dia registrado
 	private function obtenerColor($dato){
 		$color=" ";
 		switch($dato){
@@ -359,5 +276,43 @@ class RegistroHoraController extends Controller
 				break;
 		}
 		return $color;
+	}
+	
+	//actuliza,guarda o eliminar segun los cambios horario
+	private function accionRegistroHr($empleado,$th,$CantHorasReq,$fechaActual,$tipoDia){		
+		$horaReg=$empleado->registrosHoras()->where('fecha','=',$fechaActual)->where('idTipoHora','=',$th->id)->first();
+		if($th->id==1 || (($CantHorasReq!="00:00:00" && $CantHorasReq!="00:00")&& !is_null($CantHorasReq))){
+			//1 me indica que es update o crear (tengo que buscar si existe el dato en la BD)
+				if($horaReg!=null){
+					//ACTUALIZAR EL DATO
+					$horaReg->cantHoras=$CantHorasReq;
+					if($this->esMensualHab($empleado)==false){
+						//si es jornalero o tiene horario felxible
+						$horaReg->tipoDia=$tipoDia;
+					}
+					$horaReg->save();
+				}
+				else{
+					//CREAR EL DATO
+					$regHora=new RegistroHora;
+					$regHora->idEmpleado=$empleado->id;
+					$regHora->idTipoHora=$th->id;
+					$regHora->cantHoras=$CantHorasReq;
+					$regHora->fecha=$fechaActual;
+					if($this->esMensualHab($empleado)==false){
+						//si es jornalero o tiene horario felxible
+						$regHora->tipoDia=$tipoDia;
+					}
+					$regHora->save();
+				}
+		}
+		else{
+			//else. th!=1 && tiene valor 00
+			//2 me indica que viene con valor 00, si existe en la BD tengo que borrarlo
+			if($horaReg!=null){
+				//ELIMINAR EL DATO
+				$horaReg->delete();
+			}
+		}
 	}
 }

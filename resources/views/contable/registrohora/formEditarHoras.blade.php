@@ -58,7 +58,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<form action="{{route('reloj.guardarMarcasEdit')}}" method="post">
+					<form action="{{route('reloj.guardarMarcas')}}" method="post">
 					@csrf
 					<input id="idEmpleado" name="idEmpleado" type="hidden" value="{{$empleado->id}}"/>
 					<input id="fecha" name="fecha" type="hidden" value="{{$fecha}}"/>
