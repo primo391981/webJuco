@@ -22,6 +22,7 @@
 
 					<form method="POST" action="{{ route('persona.store') }}" class="form-horizontal">		
 						 @include('persona.formPersona') 
+						 @include('persona.formPersonaInfo')
 					
 			</div>
 			<div class="panel-footer">

@@ -17,6 +17,7 @@
 					<form method="POST" action="{{ route('persona.update',$persona->id) }}" class="form-horizontal">		
 						 {{ method_field('PUT') }}
 						  @include('persona.formPersona') 
+						  @include('persona.formPersonaInfo')
 					</div>
 			<div class="panel-footer">
 				<button type="submit" class="btn btn-warning btn-block"><i class="fas fa-check"></i> Confirmar</button>

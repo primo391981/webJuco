@@ -14,7 +14,6 @@
 						<p><strong>EMAIL :</strong> {{$cliente->persona->email}}</p> 
 						<p><strong>DOMICILIO :</strong> {{$cliente->persona->domicilio}}</p> 
 						<p><strong>ESTADO CIVIL :</strong> {{$cliente->persona->eCivil->nombre}}</p> 
-						<p><strong>CANTIDAD DE HIJOS :</strong> {{$cliente->persona->cantHijos}}</p>
 					@else
 						<p><strong>TIPO :</strong> Persona Jurídica</p> 
 						<p><strong>RUT :</strong> {{$cliente->persona->rut}}</p>
