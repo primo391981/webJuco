@@ -62,14 +62,16 @@
 						
 				</div>
 				<div class="row">
-				
+				<div class="col-xs-12">
+					<hr>
+				</div>
 					<div class="col-sm-9">
 						@if(Auth::user()->hasRole('juridicoAdmin') || Auth::user()->permisosEscritura->contains($expediente))
 							@if($paso->fecha_fin == null && $paso->tipo->id != 1)
 								<a class="btn btn-success btn-xs" href="{{route('paso.edit',$paso)}}">Editar paso <i class="fas fa-edit"></i></a>
 							@endif
 						@endif
-						<a type="button" class="btn btn-warning btn-xs" href="{{route('expediente.show',$paso->expediente)}}">volver <i class="fas fa-undo-alt"></i></a>
+						<a type="button" class="btn btn-warning btn-xs" href="{{route('expediente.show',$paso->expediente)}}">ir a expediente<i class="fas fa-undo-alt"></i></a>
 					</div>
 				
 				</div>

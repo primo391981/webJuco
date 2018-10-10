@@ -38,6 +38,23 @@
 					<hr>
 					<p><strong>Período: </strong>{{$reporte->fecha_desde}} - {{$reporte->fecha_hasta}}
 					<p><strong>Fecha de creación: </strong>{{$reporte->created_at}}
+					<div class="circle-tile">
+                            <a href="#">
+                                <div class="circle-tile-heading green">
+                                    <i class="fas fa-users fa-fw fa-2x"></i>
+                                </div>
+                            </a>
+                            <div class="circle-tile-content green">
+                                <div class="circle-tile-description text-faded">
+                                    # clientes
+                                </div>
+                                <div class="circle-tile-number text-faded">
+                                    {!! $reporte->datasets[5]->minpaso->minimo !!} días
+                                    <span id="sparklineA"></span>
+                                </div>
+                                <a href="{{route('paso.show', $reporte->datasets[5]->minpaso->pasoMinimo->id)}}" class="circle-tile-footer" target="_blank">ver paso <i class="fa fa-chevron-circle-right"></i></a>
+                            </div>
+                        </div>
 				</div>
 				<div class="col-md-6">
 					<h4>Expedientes: Estadísticas</h4>
@@ -58,7 +75,7 @@
                                     {!! $reporte->datasets[2]->dataset !!}
                                     <span id="sparklineA"></span>
                                 </div>
-                                <a href="#" class="circle-tile-footer">More Info <i class="fa fa-chevron-circle-right"></i></a>
+                                <div class="circle-tile-footer">&nbsp;</div>
                             </div>
                         </div>
 					</div>
@@ -77,7 +94,7 @@
                                     {!! $reporte->datasets[3]->dataset !!}
                                     <span id="sparklineA"></span>
                                 </div>
-                                <a href="#" class="circle-tile-footer">More Info <i class="fa fa-chevron-circle-right"></i></a>
+                                <div class="circle-tile-footer">&nbsp;</div>
                             </div>
                         </div>
 					</div>
@@ -85,7 +102,7 @@
 						<div class="circle-tile">
                             <a href="#">
                                 <div class="circle-tile-heading {{ $reporte->datasets[3]->dataset / $reporte->datasets[2]->dataset >= 0.65 ? 'green' : 'red'}}">
-                                    <i class="fas fa-percentage	 fa-fw fa-2x"></i>
+                                    <i class="fas fa-calculator	 fa-fw fa-2x"></i>
                                 </div>
                             </a>
                             <div class="circle-tile-content {{ $reporte->datasets[3]->dataset / $reporte->datasets[2]->dataset >= 0.65 ? 'green' : 'red'}}">
@@ -93,10 +110,10 @@
                                     % de expedientes ganados
                                 </div>
                                 <div class="circle-tile-number text-faded">
-                                    {{ $reporte->datasets[3]->dataset / $reporte->datasets[2]->dataset * 100 }} %
+                                    {{ number_format($reporte->datasets[3]->dataset / $reporte->datasets[2]->dataset * 100,2,',','') }} %
                                     <span id="sparklineA"></span>
                                 </div>
-                                <a href="#" class="circle-tile-footer">More Info <i class="fa fa-chevron-circle-right"></i></a>
+                                <div class="circle-tile-footer">&nbsp;</div>
                             </div>
                         </div>
 					</div>
@@ -115,7 +132,7 @@
                                     {!! $reporte->datasets[4]->maxpaso->maximo !!} días
                                     <span id="sparklineA"></span>
                                 </div>
-                                <a href="{{route('paso.show', $reporte->datasets[4]->maxpaso->pasoMaximo->id)}}" class="circle-tile-footer">ver paso <i class="fa fa-chevron-circle-right"></i></a>
+                                <a href="{{route('paso.show', $reporte->datasets[4]->maxpaso->pasoMaximo->id)}}" class="circle-tile-footer" target="_blank">ver paso <i class="fa fa-chevron-circle-right"></i></a>
                             </div>
                         </div>
 					</div>
@@ -134,7 +151,7 @@
                                     {!! $reporte->datasets[5]->minpaso->minimo !!} días
                                     <span id="sparklineA"></span>
                                 </div>
-                                <a href="{{route('paso.show', $reporte->datasets[5]->minpaso->pasoMinimo->id)}}" class="circle-tile-footer">ver paso <i class="fa fa-chevron-circle-right"></i></a>
+                                <a href="{{route('paso.show', $reporte->datasets[5]->minpaso->pasoMinimo->id)}}" class="circle-tile-footer" target="_blank">ver paso <i class="fa fa-chevron-circle-right"></i></a>
                             </div>
                         </div>
 					</div>
@@ -147,13 +164,13 @@
                             </a>
                             <div class="circle-tile-content purple">
                                 <div class="circle-tile-description text-faded">
-                                    Duración Promedio Pasos
+                                    Duración Prom. Pasos
                                 </div>
                                 <div class="circle-tile-number text-faded">
-                                    {!! $reporte->datasets[6]->dataset !!} días
+                                    {!! number_format($reporte->datasets[6]->dataset,2,',','') !!} días
                                     <span id="sparklineA"></span>
                                 </div>
-                                <a href="{{route('paso.show', $reporte->datasets[5]->minpaso->pasoMinimo->id)}}" class="circle-tile-footer">ver paso <i class="fa fa-chevron-circle-right"></i></a>
+                                <div class="circle-tile-footer">&nbsp;</div>
                             </div>
                         </div>
 					</div>
@@ -168,6 +185,9 @@
 					<hr>
 					<canvas id="chartEstado"></canvas>
 				</div>
+				<div id="canvas-holder" style="width:40%">
+					<canvas id="chart-area"></canvas>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -177,14 +197,31 @@
 	var chart1 = document.getElementById("chartTipoProceso").getContext('2d');
 	var myChart = new Chart(chart1, {
 		type: 'pie',
-		data: {!! $reporte->datasets[0]->dataset !!}
+		data: {!! $reporte->datasets[0]->dataset !!},
+		borderColor: 'rgba(255,255,255,1)'
+		
 	});
 	
 	var chart2 = document.getElementById("chartEstado").getContext('2d');
 	var myChart = new Chart(chart2, {
 		type: 'bar',
-		data: {!! $reporte->datasets[1]->dataset !!}
+		data: {!! $reporte->datasets[1]->dataset !!},
+		options: {
+			legend: {
+				display: false,
+			},
+			tooltips: {
+				callbacks: {
+					label: function(tooltipItem) {
+						return tooltipItem.yLabel;
+					}
+				}
+			}
+		}
 	});
+	
+
 </script>
+
 
 @endsection

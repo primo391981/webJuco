@@ -70,14 +70,8 @@ class ReporteController extends Controller
 					'rgba(75, 192, 192, 0.5)',
 					'rgba(153, 102, 255, 0.5)',
 				],
-				'borderColor' =>  [
-					'rgba(255,99,132,1)',
-					'rgba(54, 162, 235, 1)',
-					'rgba(255, 206, 86, 1)',
-					'rgba(75, 192, 192, 1)',
-					'rgba(153, 102, 255, 1)',
-				],
-				'borderWidth' =>  1
+				'borderColor' =>  'rgba(255,255,255,1)',
+				'borderWidth' =>  '2'
 			]]
 		];
 	
@@ -123,7 +117,8 @@ class ReporteController extends Controller
 					'rgba(75, 192, 192, 1)',
 					'rgba(153, 102, 255, 1)',
 				],
-				'borderWidth' =>  1
+				'borderWidth' =>  2
+				
 			]]
 		];
 		
@@ -286,29 +281,7 @@ class ReporteController extends Controller
         return view('juridico.reporteGerencial.verReporte',['reporte' => $reporte]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Juridico\Reporte  $reporte
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Reporte $reporte)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Juridico\Reporte  $reporte
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Reporte $reporte)
-    {
-        //
-    }
-
+    
     /**
      * Remove the specified resource from storage.
      *
