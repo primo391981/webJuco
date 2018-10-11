@@ -17,49 +17,49 @@ class HorariosPorDiaTableSeeder extends Seeder
 			'idHorarioEmpleado'=>1,
 			'idRegistro'=>1,
 			'idDia'=>1,
-			'cantHoras'=>Carbon::parse('08:00')	
+			'cantHoras'=>'08:00'	
 		]);	
 		
 		 DB::table('contable_horarios_por_dia')->insert([
 			'idHorarioEmpleado'=>1,
 			'idRegistro'=>1,
 			'idDia'=>2,
-			'cantHoras'=>Carbon::parse('08:00')	
+			'cantHoras'=>'08:00'	
 		]);	
 		
 		 DB::table('contable_horarios_por_dia')->insert([
 			'idHorarioEmpleado'=>1,
 			'idRegistro'=>1,
 			'idDia'=>3,
-			'cantHoras'=>Carbon::parse('08:00')	
+			'cantHoras'=>'08:00'	
 		]);	
 		
 		 DB::table('contable_horarios_por_dia')->insert([
 			'idHorarioEmpleado'=>1,
 			'idRegistro'=>1,
 			'idDia'=>4,
-			'cantHoras'=>Carbon::parse('08:00')	
+			'cantHoras'=>'08:00'	
 		]);	
 		
 		 DB::table('contable_horarios_por_dia')->insert([
 			'idHorarioEmpleado'=>1,
 			'idRegistro'=>1,
 			'idDia'=>5,
-			'cantHoras'=>Carbon::parse('08:00')	
+			'cantHoras'=>'08:00'	
 		]);	
 		
 		 DB::table('contable_horarios_por_dia')->insert([
 			'idHorarioEmpleado'=>1,
 			'idRegistro'=>2,
 			'idDia'=>6,
-			'cantHoras'=>Carbon::parse('04:00')	
+			'cantHoras'=>'04:00'	
 		]);	
 		
 		 DB::table('contable_horarios_por_dia')->insert([
 			'idHorarioEmpleado'=>1,
 			'idRegistro'=>3,
 			'idDia'=>7,
-			'cantHoras'=>Carbon::parse('00:00')	
+			'cantHoras'=>'00:00'	
 		]);	
 		
 		//Empleado 2
@@ -67,49 +67,49 @@ class HorariosPorDiaTableSeeder extends Seeder
 			'idHorarioEmpleado'=>2,
 			'idRegistro'=>1,
 			'idDia'=>1,
-			'cantHoras'=>Carbon::parse('08:00')	
+			'cantHoras'=>'08:00'	
 		]);	
 		
 		 DB::table('contable_horarios_por_dia')->insert([
 			'idHorarioEmpleado'=>2,
 			'idRegistro'=>1,
 			'idDia'=>2,
-			'cantHoras'=>Carbon::parse('08:00')	
+			'cantHoras'=>'08:00'	
 		]);	
 		
 		 DB::table('contable_horarios_por_dia')->insert([
 			'idHorarioEmpleado'=>2,
 			'idRegistro'=>1,
 			'idDia'=>3,
-			'cantHoras'=>Carbon::parse('08:00')	
+			'cantHoras'=>'08:00'	
 		]);	
 		
 		 DB::table('contable_horarios_por_dia')->insert([
 			'idHorarioEmpleado'=>2,
 			'idRegistro'=>1,
 			'idDia'=>4,
-			'cantHoras'=>Carbon::parse('08:00')	
+			'cantHoras'=>'08:00'	
 		]);	
 		
 		 DB::table('contable_horarios_por_dia')->insert([
 			'idHorarioEmpleado'=>2,
 			'idRegistro'=>1,
 			'idDia'=>5,
-			'cantHoras'=>Carbon::parse('08:00')	
+			'cantHoras'=>'08:00'	
 		]);	
 		
 		 DB::table('contable_horarios_por_dia')->insert([
 			'idHorarioEmpleado'=>2,
 			'idRegistro'=>2,
 			'idDia'=>6,
-			'cantHoras'=>Carbon::parse('04:00')	
+			'cantHoras'=>'04:00'	
 		]);	
 		
 		 DB::table('contable_horarios_por_dia')->insert([
 			'idHorarioEmpleado'=>2,
 			'idRegistro'=>3,
 			'idDia'=>7,
-			'cantHoras'=>Carbon::parse('00:00')	
+			'cantHoras'=>'00:00'	
 		]);	
 		
 		//Empleado 3
@@ -117,49 +117,49 @@ class HorariosPorDiaTableSeeder extends Seeder
 			'idHorarioEmpleado'=>3,
 			'idRegistro'=>1,
 			'idDia'=>1,
-			'cantHoras'=>Carbon::parse('08:00')	
+			'cantHoras'=>'08:00'	
 		]);	
 		
 		 DB::table('contable_horarios_por_dia')->insert([
 			'idHorarioEmpleado'=>3,
 			'idRegistro'=>2,
 			'idDia'=>2,
-			'cantHoras'=>Carbon::parse('04:00')	
+			'cantHoras'=>'04:00'	
 		]);	
 		
 		 DB::table('contable_horarios_por_dia')->insert([
 			'idHorarioEmpleado'=>3,
 			'idRegistro'=>3,
 			'idDia'=>3,
-			'cantHoras'=>Carbon::parse('00:00')	
+			'cantHoras'=>'00:00'	
 		]);	
 		
 		 DB::table('contable_horarios_por_dia')->insert([
 			'idHorarioEmpleado'=>3,
 			'idRegistro'=>1,
 			'idDia'=>4,
-			'cantHoras'=>Carbon::parse('08:00')	
+			'cantHoras'=>'08:00'	
 		]);	
 		
 		 DB::table('contable_horarios_por_dia')->insert([
 			'idHorarioEmpleado'=>3,
 			'idRegistro'=>1,
 			'idDia'=>5,
-			'cantHoras'=>Carbon::parse('08:00')	
+			'cantHoras'=>'08:00'	
 		]);	
 		
 		 DB::table('contable_horarios_por_dia')->insert([
 			'idHorarioEmpleado'=>3,
 			'idRegistro'=>1,
 			'idDia'=>6,
-			'cantHoras'=>Carbon::parse('08:00')	
+			'cantHoras'=>'08:00'	
 		]);	
 		
 		 DB::table('contable_horarios_por_dia')->insert([
 			'idHorarioEmpleado'=>3,
 			'idRegistro'=>1,
 			'idDia'=>7,
-			'cantHoras'=>Carbon::parse('08:00')	
+			'cantHoras'=>'08:00'	
 		]);	
 		
     }

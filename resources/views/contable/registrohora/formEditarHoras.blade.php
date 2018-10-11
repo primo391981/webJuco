@@ -58,7 +58,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<form action="{{route('reloj.guardarMarcasEdit')}}" method="post">
+					<form action="{{route('reloj.guardarMarcas')}}" method="post">
 					@csrf
 					<input id="idEmpleado" name="idEmpleado" type="hidden" value="{{$empleado->id}}"/>
 					<input id="fecha" name="fecha" type="hidden" value="{{$fecha}}"/>
@@ -100,12 +100,12 @@
 						@php $tieneMedia=false; @endphp
 						@foreach($t[2] as $reg)										
 							@if($reg->idTipoHora==6)
-								<td class="success text-center"><input type="checkbox" id="6{{$t[1]}}" name="6{{$t[1]}}" value="00:30:00" checked></td>
+								<td class="success text-center"><input type="checkbox" id="6{{$t[1]}}" name="6{{$t[1]}}" value="00:30" checked></td>
 								@php $tieneMedia=true; @endphp
 							@endif
 						@endforeach
 						@if($tieneMedia==false)
-							<td class="success text-center"><input type="checkbox" id="6{{$t[1]}}" name="6{{$t[1]}}" value="00:30:00"></td>
+							<td class="success text-center"><input type="checkbox" id="6{{$t[1]}}" name="6{{$t[1]}}" value="00:30"></td>
 						@endif
 						
 						<td>{{$t[0]}} - {{$t[1]}}</td>
@@ -114,7 +114,7 @@
 									@php $dibujo=false; @endphp
 									@foreach($t[2] as $reg)										
 											@if($th->id==$reg->idTipoHora && $th->id!=6)
-												<td><input type="time" class="form-control input-sm" id="{{$th->id}}{{$t[1]}}" name="{{$th->id}}{{$t[1]}}" value="{{$reg->cantHoras}}"min="00:00:00" max="08:00:00"/></td>
+												<td><input type="time" class="form-control input-sm" id="{{$th->id}}{{$t[1]}}" name="{{$th->id}}{{$t[1]}}" value="{{$reg->cantHoras}}"min="00:00" max="08:00"/></td>
 												@php $dibujo=true; @endphp
 												@break;
 											@endif
@@ -122,21 +122,21 @@
 									@if($dibujo==false)
 										@switch($th->id)
 											@case(2)
-												<td><input type="time" class="form-control input-sm" id="2{{$t[1]}}" name="2{{$t[1]}}" value="00:00:00"/></td>
+												<td><input type="time" class="form-control input-sm" id="2{{$t[1]}}" name="2{{$t[1]}}" value="00:00"/></td>
 												@break
 											@case(3)
 												@if($empleado->espera==true)
-												<td><input type="time" class="form-control input-sm" id="3{{$t[1]}}" name="3{{$t[1]}}" value="00:00:00"/></td>
+												<td><input type="time" class="form-control input-sm" id="3{{$t[1]}}" name="3{{$t[1]}}" value="00:00"/></td>
 												@endif
 												@break
 											@case(4)
 												@if($empleado->nocturnidad==true)
-												<td><input type="time" class="form-control input-sm" id="4{{$t[1]}}" name="4{{$t[1]}}" value="00:00:00" /></td>
+												<td><input type="time" class="form-control input-sm" id="4{{$t[1]}}" name="4{{$t[1]}}" value="00:00" /></td>
 												@endif
 												@break
 											@case(5)
 												@if($empleado->pernocte==true)
-												<td><input type="time" class="form-control input-sm" id="5{{$t[1]}}" name="5{{$t[1]}}" value="00:00:00" /></td>
+												<td><input type="time" class="form-control input-sm" id="5{{$t[1]}}" name="5{{$t[1]}}" value="00:00" /></td>
 												@endif
 												@break	
 										@endswitch		
@@ -163,7 +163,7 @@
 function myFunction(valor,dia) {    
 	
 	if(valor=='c'){
-		document.getElementById('1'+dia).value="08:00:00";
+		document.getElementById('1'+dia).value="08:00";
 		var x =document.getElementById("fila"+dia);
 		x.classList.add("default");
 		x.classList.remove("danger");
@@ -171,7 +171,7 @@ function myFunction(valor,dia) {
 		
 	}
 	else if(valor=='m'){
-		document.getElementById("1"+dia).value="04:00:00";
+		document.getElementById("1"+dia).value="04:00";
 		var x =document.getElementById("fila"+dia);
 		x.classList.add("info");
 		x.classList.remove("danger");
@@ -179,7 +179,7 @@ function myFunction(valor,dia) {
 	}
 	else{
 		
-		document.getElementById("1"+dia).value="00:00:00";
+		document.getElementById("1"+dia).value="00:00";
 		var x =document.getElementById("fila"+dia);
 		x.classList.add("danger");
 		x.classList.remove("default");

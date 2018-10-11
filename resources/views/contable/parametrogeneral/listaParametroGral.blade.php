@@ -4,6 +4,7 @@
 
 @section('content')
 @if (Session::has('success'))
+	<br>
 		<div class="alert alert-success">
 			{{Session::get('success')}}
 		</div>
@@ -52,11 +53,17 @@
 									</form>
 								</td>	
 								<td>
+									@if($param->created_at !=null )
 									<form method="POST" action="{{ route('parametrogeneral.destroy',$param) }}">
 										{{ method_field('DELETE') }}
 										@csrf	
 										<button type="submit"class="btn btn-danger"><i class="far fa-trash-alt"></i></button>												
 									</form>
+									@else
+										<form>
+										<button type="submit"class="btn btn-danger disabled"><i class="far fa-trash-alt"></i></button>												
+									</form>
+									@endif
 								</td>
 							</tr>
 						@endforeach

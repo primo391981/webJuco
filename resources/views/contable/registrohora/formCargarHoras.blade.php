@@ -94,25 +94,25 @@
 							</td>
 						@endif
 						
-						<td class="success text-center"><input type="checkbox" id="6{{$t[1]}}" name="6{{$t[1]}}" value="00:30:00"></td>
+						<td class="success text-center"><input type="checkbox" id="6{{$t[1]}}" name="6{{$t[1]}}" value="00:30"></td>
 						<td>{{$t[0]}} - {{$t[1]}}</td>
 						
 						@if($empleado->cargo->remuneracion->id==1 && $empleado->tipoHorario==1)
-							<td><input type="time" class="form-control input-sm" id="1{{$t[1]}}" name="1{{$t[1]}}" value="{{$t[2]}}"min="00:00:00" max="08:00:00"/></td>
+							<td><input type="time" class="form-control input-sm" id="1{{$t[1]}}" name="1{{$t[1]}}" value="{{$t[2]}}"min="00:00" max="08:00"/></td>
 						@else
-							<td><input type="time" class="form-control input-sm" id="1{{$t[1]}}" name="1{{$t[1]}}" value="08:00:00" min="00:00:00" max="08:00:00"/></td>
+							<td><input type="time" class="form-control input-sm" id="1{{$t[1]}}" name="1{{$t[1]}}" value="08:00" min="00:00" max="08:00"/></td>
 						@endif
 						
-						<td><input type="time" class="form-control input-sm" id="2{{$t[1]}}" name="2{{$t[1]}}" value="00:00:00"/></td>
+						<td><input type="time" class="form-control input-sm" id="2{{$t[1]}}" name="2{{$t[1]}}" value="00:00"/></td>
 						
 						@if($empleado->espera==true)
-						<td><input type="time" class="form-control input-sm" id="3{{$t[1]}}" name="3{{$t[1]}}" value="00:00:00"/></td>
+						<td><input type="time" class="form-control input-sm" id="3{{$t[1]}}" name="3{{$t[1]}}" value="00:00"/></td>
 						@endif
 						@if($empleado->nocturnidad==true)
-						<td><input type="time" class="form-control input-sm" id="4{{$t[1]}}" name="4{{$t[1]}}" value="00:00:00" /></td>
+						<td><input type="time" class="form-control input-sm" id="4{{$t[1]}}" name="4{{$t[1]}}" value="00:00" /></td>
 						@endif
 						@if($empleado->pernocte==true)
-						<td><input type="time" class="form-control input-sm" id="5{{$t[1]}}" name="5{{$t[1]}}" value="00:00:00" /></td>						
+						<td><input type="time" class="form-control input-sm" id="5{{$t[1]}}" name="5{{$t[1]}}" value="00:00" /></td>						
 						@endif
 					</tr>
 					@endforeach					
@@ -134,7 +134,7 @@
 function myFunction(valor,dia) {    
 	
 	if(valor=='c'){
-		document.getElementById('1'+dia).value="08:00:00";
+		document.getElementById('1'+dia).value="08:00";
 		var x =document.getElementById("fila"+dia);
 		x.classList.add("default");
 		x.classList.remove("danger");
@@ -142,14 +142,14 @@ function myFunction(valor,dia) {
 		
 	}
 	else if(valor=='m'){
-		document.getElementById("1"+dia).value="04:00:00";
+		document.getElementById("1"+dia).value="04:00";
 		var x =document.getElementById("fila"+dia);
 		x.classList.add("info");
 		x.classList.remove("danger");
 		x.classList.remove("default");
 	}
 	else{
-		document.getElementById("1"+dia).value="00:00:00";
+		document.getElementById("1"+dia).value="00:00";
 		var x =document.getElementById("fila"+dia);
 		x.classList.add("danger");
 		x.classList.remove("default");
