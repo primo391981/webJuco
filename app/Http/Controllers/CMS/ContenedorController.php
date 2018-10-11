@@ -258,7 +258,7 @@ class ContenedorController extends Controller
 			$cont->save();
 		}
 		
-		return redirect()->route('menuitem.edit', ['menuitem' => $menuitem]);
+		return redirect()->route('menuitem.edit', ['menuitem' => $menuitem])->with('success','El vínculo con el contenedor ha sido eliminado correctamente.');
 		
     }
 	
