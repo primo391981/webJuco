@@ -5,7 +5,6 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
 	<!-- Tiles CSS -->
     <link href="{{ asset('css/tile.css')}}" rel="stylesheet">
-	
 @endsection
 
 
