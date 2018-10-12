@@ -11,14 +11,16 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
 
-	
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<link href="https://fonts.googleapis.com/css?family=Exo+2" rel="stylesheet">
 	<script src="https://use.fontawesome.com/c5430d5935.js"></script>
 	
 	<style>
-	
+		.spinner{
+			display:none;
+		}
 	</style>
 </head>
 <body>
@@ -85,6 +87,11 @@
 </div>
 		
 <!-- Scripts -->
-<script src="{{ asset('js/app.js') }}"></script>
+<script>
+	$('.form-avoid-double-submit').on('submit', function(){        
+		$('.btn-avoid-double-submit').attr('disabled', true);
+		$('.spinner').show();
+	});
+</script>
 </body>
 </html>

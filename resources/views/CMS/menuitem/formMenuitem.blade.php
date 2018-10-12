@@ -25,7 +25,7 @@
 <div class="form-group row">
 		<br>
 		<div class="col-xs-12 text-center">
-			<button type="submit" class="btn btn-info btn-lg"><i class="fas fa-check"></i>&nbsp&nbsp{{ $textoBoton }}</button>
+			<button type="submit" class="btn btn-info btn-block"><i class="fas fa-check"></i> {{ $textoBoton }}</button>
 		</div>
 </div>
 	

@@ -175,6 +175,11 @@
 			['height', ['height']]
 		  ]
       });
+	  
+	$('.form-avoid-double-submit').on('submit', function(){        
+		$('.btn-avoid-double-submit').attr('disabled', true);
+	});
+
     </script>
 	
 </body>

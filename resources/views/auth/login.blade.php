@@ -9,7 +9,7 @@
                 <div class="card-header">Ingreso</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
+                    <form method="POST" action="{{ route('login') }}" class="form-avoid-double-submit">
                         @csrf
 
                         <div class="form-group row">
@@ -52,8 +52,8 @@
 
                         <div class="form-group row mb-0">
                             <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Ingresar
+                                <button type="submit" class="btn btn-primary btn-avoid-double-submit">
+                                    <i class="spinner fa fa-spinner fa-spin"></i> Ingresar
                                 </button>
 
                                 <a class="btn btn-link" href="{{ route('password.request') }}">
