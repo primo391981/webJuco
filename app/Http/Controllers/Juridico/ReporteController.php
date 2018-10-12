@@ -7,6 +7,7 @@ use App\Juridico\Expediente;
 use App\Juridico\TipoExpediente;
 use App\Juridico\Dataset;
 use App\Juridico\Estado;
+use Auth;
 
 use \Carbon\Carbon;
 
@@ -48,6 +49,7 @@ class ReporteController extends Controller
         $reporte = new Reporte();
 		$reporte->fecha_desde = $request->fecha_inicio;
 		$reporte->fecha_hasta = $request->fecha_fin;
+		$reporte->user_id = Auth::User()->id;
 		
 		$reporte->save();
 		

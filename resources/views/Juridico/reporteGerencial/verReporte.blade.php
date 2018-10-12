@@ -37,6 +37,13 @@
 					<hr>
 					<p><strong>Período: </strong>{{$reporte->fecha_desde}} - {{$reporte->fecha_hasta}}
 					<p><strong>Fecha de creación: </strong>{{$reporte->created_at}}
+					<p><strong>Creado por: </strong>{{$reporte->usuario->name}} ({{$reporte->usuario->nombre}} {{$reporte->usuario->apellido}})
+					<br>
+					<br>
+					<br>
+					<br>
+					<h4>Cantidad de Clientes</h4>
+					<hr>
 					<div class="circle-tile">
                             <a href="#">
                                 <div class="circle-tile-heading green">

@@ -17,6 +17,7 @@ class CreateJuridicoReportesTable extends Migration
             $table->increments('id');
 			$table->date('fecha_desde');
 			$table->date('fecha_hasta');
+			$table->integer('user_id');
 			
             $table->timestamps();
         });

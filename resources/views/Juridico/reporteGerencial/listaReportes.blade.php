@@ -19,7 +19,7 @@
 		<div class="panel panel-success text-success">
 			<div class="panel-heading">
 				<div class="btn-group pull-right">
-					<a name="juridico" href="{{ route('reporte.create')}}"><i class="fas fa-plus"></i></a>
+					<a name="juridico" href="{{ route('reporte.create')}}" class="btn btn-success"><i class="fas fa-plus"></i></a>
 				</div>
 				<h4>LISTADO REPORTES GERENCIALES</h4>
 			</div>
