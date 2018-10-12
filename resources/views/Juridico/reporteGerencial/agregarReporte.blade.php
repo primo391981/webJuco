@@ -21,7 +21,7 @@
 	<div class="col-xs-12">
 		<div class="panel panel-success">
 			<div class="panel-heading">
-				<a class="btn btn-warning pull-right" href="{{route('reporte.index')}}" role="button"><i class="fas fa-undo-alt"></i></a>
+				<a class="btn btn-warning pull-right" href="{{route('reporte.index')}}" role="button"><i class="fas fa-list-ul"></i></a>
 				<h4><i class="far fa-building"></i> CREAR REPORTE GERENCIAL</h4>		
 			</div>
 			<div class="panel-body">

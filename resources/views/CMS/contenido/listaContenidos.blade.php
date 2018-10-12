@@ -56,13 +56,13 @@
 									<a class="btn btn-warning" href="{{ route('contenido.edit', ['contenido' => $contenido]) }}" title="Editar"><i class="far fa-edit"></i></a> 
 								</td>
 								<td>
-									<form method="POST" action="{{ route('contenido.destroy', $contenido) }}">
+									<form method="POST" action="{{ route('contenido.destroy', $contenido) }}" class="form-avoid-double-submit">
 										@method('DELETE')
 										@csrf
 										@if($contenido->contenedor->count() > 0)
 											<fieldset disabled>
 										@endif
-										<button type="submit"class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+										<button type="submit"class="btn btn-danger btn-avoid-double-submit"><i class="far fa-trash-alt"></i></button>
 										@if($contenido->contenedor->count() > 0)
 											</fieldset>
 										@endif												
@@ -90,8 +90,6 @@ $(document).ready(function() {
 		   { extend: 'copy', text: 'COPIAR TABLA' }
         ]
     } );
-	
-	
 } );
 </script>
 @endsection

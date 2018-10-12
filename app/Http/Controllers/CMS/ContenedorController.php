@@ -239,6 +239,10 @@ class ContenedorController extends Controller
         //dd($contenido_id);
 		$id_contenedor = $request->contenedor_id;
 		$contenedor = Contenedor::findOrFail($id_contenedor);
+		
+		//se obtiene el orden liberado
+		$orden_liberado = $contenedor->orden_menu;
+		
 		$contenedor->id_itemmenu = null;
 		$contenedor->orden_menu = null;
 		
@@ -249,7 +253,7 @@ class ContenedorController extends Controller
 		$menuitem_id = $request->menuitem_id;
 		$menuitem = Menuitem::find($menuitem_id);
 		
-		$orden_liberado = $contenedor->orden_menu;
+		
 		
 		$listado = $menuitem->contenedores->where('orden_menu', '>=', $orden_liberado)->sortBy('orden_menu');
 		
@@ -258,7 +262,7 @@ class ContenedorController extends Controller
 			$cont->save();
 		}
 		
-		return redirect()->route('menuitem.edit', ['menuitem' => $menuitem]);
+		return redirect()->route('menuitem.edit', ['menuitem' => $menuitem])->with('success','El vínculo con el contenedor ha sido eliminado correctamente.');
 		
     }
 	
