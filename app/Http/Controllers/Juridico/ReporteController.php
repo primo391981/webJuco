@@ -178,6 +178,7 @@ class ReporteController extends Controller
 				
 				//Si el paso está finalizado
 				if($paso->fecha_fin != null){
+					dd($paso->fecha_fin);
 					$duracion = $dt1->diffInMinutes($paso->fecha_fin);
 					// $duracion = $dt1->diffInDays($paso->fecha_fin); Para producción va en días
 					//dd($duracion);
