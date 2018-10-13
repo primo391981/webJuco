@@ -15,7 +15,7 @@ class CMSController extends Controller
 		$subtitulo = 'CMS';
 		//dd($contenedores);
 		//se retorna la vista "index" 
-		return view('CMS.cms', ['subtitulo' => $subtitulo]);
+		return view('cms.cms', ['subtitulo' => $subtitulo]);
     }
 	
 }
