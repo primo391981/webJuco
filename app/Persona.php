@@ -17,7 +17,7 @@ class Persona extends Model
 	
 	public function tipoDoc()
 	{
-		return $this->belongsTo('App\tipoDoc', 'tipoDocumento');
+		return $this->belongsTo('App\TipoDoc', 'tipoDocumento');
 	}
 	
 	public function eCivil()
