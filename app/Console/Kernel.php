@@ -25,10 +25,12 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+		//Producción: una vez al día
+		//$schedule->command('mail:expedientes')->daily();
 		
-		$schedule->command('mail:expedientes')->daily();
+		//tests: cada cinco minutos
+		$schedule->command('mail:expedientes')->everyFiveMinutes();
+		
 		$schedule->command('recordatorios:clean')->daily();
     }
 
