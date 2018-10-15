@@ -12,7 +12,7 @@ class ContenedorsTableSeeder extends Seeder
     public function run()
     {
         //
-		 DB::table('cms_contenedors')->insert([
+		/* DB::table('cms_contenedors')->insert([
             'titulo' => "Sección 1",
 			'tipo' =>1,
 			'orden_menu' =>1,
@@ -30,7 +30,7 @@ class ContenedorsTableSeeder extends Seeder
 			'color' =>'1',
 			'img_fondo' =>'0',
 			'ancho_pantalla' =>'1'
-        ]);
+        ]);*/
 		
     }
 }

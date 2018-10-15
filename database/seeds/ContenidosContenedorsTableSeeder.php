@@ -12,7 +12,7 @@ class ContenidosContenedorsTableSeeder extends Seeder
     public function run()
     {
         //
-		DB::table('cms_contenido_contenedor')->insert([
+		/*DB::table('cms_contenido_contenedor')->insert([
             'contenido_id' => 1,
 			'contenedor_id' => 1,
 			'orden' => 2
@@ -46,6 +46,6 @@ class ContenidosContenedorsTableSeeder extends Seeder
             'contenido_id' => 4,
 			'contenedor_id' => 2,
 			'orden' => 4
-		]);
+		]);*/
     }
 }

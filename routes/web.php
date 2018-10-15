@@ -154,6 +154,12 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::post('haberes/liquidacion','Contable\HaberesController@calculoLiquidacion')->name('haberes.calculoLiquidacion')->middleware('role:contableAdmin');		
 	Route::resource('haberes', 'Contable\HaberesController')->middleware('role:contableAdmin');
 	
+	//reportes
+	Route::get('/reportes', function () {
+    return view('contable.reporte.listaReportes');
+	})->name('reportes.listaReportes');
+	
+	
 	//JURIDICO
 	//dashboard contable
 	Route::get('juridico', 'Juridico\JuridicoController@index')->name('juridico')->middleware('role:invitado,juridicoAdmin');

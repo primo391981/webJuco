@@ -117,10 +117,11 @@ class EmpresaController extends Controller
 		$empresa->restore();
 		return redirect()->route('empresa.index');
     }
-	public function buscaEmpleado(Request $request){
+	
+	public function montoGastadoAnio(Request $request){
+		
+		//
 		
 	}
-	public function asociarEmpleado(Request $request, $idEmpr){
-		
-	}
+	
 }
