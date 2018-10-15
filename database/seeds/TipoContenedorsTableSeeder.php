@@ -62,7 +62,7 @@ class TipoContenedorsTableSeeder extends Seeder
 												<p>%texto</p>
 											</div>	
 											<div class='col-xs-12 col-sm-12 col-md-4'>
-												<img src='%imagen' class='img-fluid center-block' alt='%alt_imagen'/>
+												<img src='%imagen' class='img-fluid' alt='%alt_imagen'/>
 											</div>
 										</div>
 									",
