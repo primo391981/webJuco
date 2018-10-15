@@ -12,7 +12,7 @@ class MenuitemsTableSeeder extends Seeder
     public function run()
     {
         //
-		DB::table('cms_menuitems')->insert([
+		/*DB::table('cms_menuitems')->insert([
             'titulo' => 'Nuestra firma',
 			'descripcion' => 'Nuestra firma',
 			'orden_menu' => 1
@@ -34,7 +34,7 @@ class MenuitemsTableSeeder extends Seeder
             'titulo' => 'Servicios',
 			'descripcion' => 'Servicios',
 			'orden_menu' => 4
-        ]);
+        ]);*/
 		
            
     }

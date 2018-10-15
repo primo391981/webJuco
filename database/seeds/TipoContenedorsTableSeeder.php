@@ -13,10 +13,10 @@ class TipoContenedorsTableSeeder extends Seeder
     {
         //
 		DB::table('cms_tipo_contenedors')->insert([
-            'nombre' => "UNO - CENTRADO BLANCO",			
+            'nombre' => "Unica columna con titulo,subtitulo y texto centrado.",			
 			'inicio_estructura' => "<div id='%id' class='container%fluid paddingtop %fondo %img_fondo'>",
 			'fin_estructura' => "</div>",
-			'descripcion'=>"CENTRADO BLANCO",
+			'descripcion'=>"",
 			'imagen'=>"img",
 			'estructura_contenido'=>"<div class='row'>			
 										<div class='col-xs-12 col-sm-12 text-center'>				
@@ -34,10 +34,10 @@ class TipoContenedorsTableSeeder extends Seeder
         ]);
 		
 		DB::table('cms_tipo_contenedors')->insert([
-            'nombre' => "DOS - 4 columnas",			
+            'nombre' => "Titulo general centrado con hasta 4 columnas, cada una con imagen, titulo y texto.",			
 			'inicio_estructura' => "<div id='%id' class='container%fluid paddingtop %fondo %img_fondo'><div class='col-xs-12 col-sm-12 text-center'><h1>%titulo_contenedor</h1><br></div><div class='row'>",
 			'fin_estructura' => "</div></div>",
-			'descripcion'=>"4 columnas",
+			'descripcion'=>"",
 			'imagen'=>"img",
 			'estructura_contenido'=>"
 										<div class='col-xs-12 col-sm-6 col-md-3 text-center'>
@@ -50,19 +50,19 @@ class TipoContenedorsTableSeeder extends Seeder
         ]);
 		
 		DB::table('cms_tipo_contenedors')->insert([
-            'nombre' => "TRES - Con imagen lateral",			
-			'inicio_estructura' => "<div id='%id' class='container%fluid paddingtop %fondo %img_fondo'><div class='container'>",
-			'fin_estructura' => "</div></div>",
+            'nombre' => "Unica columna con titulo y texto junto con foto al lateral derecho.",			
+			'inicio_estructura' => "<div id='%id' class='container%fluid paddingtop %fondo %img_fondo'>",
+			'fin_estructura' => "</div>",
 			'descripcion'=>"Imagen lateral",
 			'imagen'=>"img",
 			'estructura_contenido'=>"
 										<div class='row'>
-											<div class='col-xs-12 col-sm-12 col-md-9'>
+											<div class='col-xs-12 col-sm-12 col-md-8'>
 												<h1>%titulo</h1>
 												<p>%texto</p>
 											</div>	
-											<div class='col-xs-12 col-sm-12 col-md-3'>
-												<img src='%imagen' class='img-fluid mx-auto d-block' alt='%alt_imagen'/>
+											<div class='col-xs-12 col-sm-12 col-md-4'>
+												<img src='%imagen' class='img-fluid center-block' alt='%alt_imagen'/>
 											</div>
 										</div>
 									",
@@ -70,10 +70,10 @@ class TipoContenedorsTableSeeder extends Seeder
         ]);
 		
 		DB::table('cms_tipo_contenedors')->insert([
-            'nombre' => "CUATRO - Profesionales",			
+            'nombre' => "Titulo general centrado con hasta 2 columnas, cada una con imagen, titulo y texto. ",			
 			'inicio_estructura' => "<div id='%id' class='container%fluid paddingtop %fondo %img_fondo'><div class='row'><div class='col-xs-12 col-sm-12 text-center'><h1>%titulo_contenedor</h1><br></div></div><div class='row'>",
 			'fin_estructura' => "</div></div>",
-			'descripcion'=>"Lista Profesionales",
+			'descripcion'=>"",
 			'imagen'=>"img",
 			'estructura_contenido'=>"
 										<div class='col-xs-12 col-sm-6 text-center'>
@@ -86,10 +86,10 @@ class TipoContenedorsTableSeeder extends Seeder
         ]);
 		
 		DB::table('cms_tipo_contenedors')->insert([
-            'nombre' => "CINCO - Dos columnas",			
+            'nombre' => "Hasta dos columnas con titulo y texto.",			
 			'inicio_estructura' => "<div id='%id' class='container%fluid paddingtop %fondo %img_fondo''><div class='row'>",
 			'fin_estructura' => "</div></div>",
-			'descripcion'=>"Lista Profesionales",
+			'descripcion'=>"",
 			'imagen'=>"img",
 			'estructura_contenido'=>"<div class='col-xs-12 col-sm-12 col-md-6'><h1>%titulo</h1><p>%texto</p></div>",
 			'estilo'=>""
@@ -97,7 +97,7 @@ class TipoContenedorsTableSeeder extends Seeder
 		
 		
 		DB::table('cms_tipo_contenedors')->insert([
-            'nombre' => "SEIS - Texto lateral sin imagen",			
+            'nombre' => "Unica columna con titulo y texto",			
 			'inicio_estructura' => "<div id='%id' class='container%fluid paddingtop %fondo %img_fondo'><div class='container'>",
 			'fin_estructura' => "</div></div>",
 			'descripcion'=>"Sin imagen lateral",
@@ -114,18 +114,18 @@ class TipoContenedorsTableSeeder extends Seeder
         ]);
 		
 		DB::table('cms_tipo_contenedors')->insert([
-            'nombre' => "SIETE - Texto lateral sin imagen con archivos para descarga",			
+            'nombre' => "Titulo general centrado con 2 columnas: 1 titulo-texto, 2- enlace archivo",			
 			'inicio_estructura' => "<div id='%id' class='container%fluid paddingtop %fondo %img_fondo'><div class='col-xs-12 col-sm-12 text-center'><h1>%titulo_contenedor</h1><br></div><div class='row'>",
 			'fin_estructura' => "</div></div>",
 			'descripcion'=>"Sin imagen lateral",
 			'imagen'=>"img",
 			'estructura_contenido'=>"
 										<div class='row'>
-											<div class='col-xs-12 col-sm-12 col-md-9'>
+											<div class='col-xs-12 col-sm-12 col-md-8'>
 												<h4>%titulo</h4>
 												<p>%texto</p>
 											</div>	
-											<div class='col-xs-12 col-sm-12 col-md-3'>	
+											<div class='col-xs-12 col-sm-12 col-md-4'>	
 												<a href='%archivo' target='_blank'>%nombre_archivo</a>
 											</div>
 										</div>

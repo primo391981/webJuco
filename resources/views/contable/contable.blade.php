@@ -82,11 +82,7 @@
         </ul>
 </li>
 <li>
-    <a href="#"><i class="fas fa-clipboard-list"></i> Reportes<i class="fas fa-caret-down"></i></a>
-		<ul class="nav nav-second-level">
-			 <li><a href="#"><i class="fas fa-list-ul"></i> Listado</a></li>
-			 <li><a href="#"><i class="fas fa-plus"></i> Agregar nuevo</a></li>
-        </ul>
+    <a href="{{route ('reportes.listaReportes')}}"><i class="fas fa-clipboard-list"></i> Reportes </a>
 </li>		
 @endsection
 
