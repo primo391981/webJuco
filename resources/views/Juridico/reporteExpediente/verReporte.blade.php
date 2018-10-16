@@ -29,41 +29,21 @@
 		<div class="panel panel-success">
 			<div class="panel-heading">
 				<a class="btn btn-warning pull-right" href="{{route('reporte.index')}}" role="button"><i class="fas fa-undo-alt"></i></a>
-				<h4><i class="far fa-building"></i> REPORTE GERENCIAL</h4>		
+				<h4><i class="far fa-building"></i> REPORTE DE EXPEDIENTE</h4>		
 			</div>
 			<div class="panel-body">
 				<div class="col-md-6">
 					<h4>Detalle del reporte</h4>
 					<hr>
-					<p><strong>Período: </strong>{{$reporte->fecha_desde}} - {{$reporte->fecha_hasta}}
 					<p><strong>Fecha de creación: </strong>{{$reporte->created_at}}
 					<p><strong>Creado por: </strong>{{$reporte->usuario->name}} ({{$reporte->usuario->nombre}} {{$reporte->usuario->apellido}})
 					<br>
+					<h4>Detalle del expediente</h4>
 					<br>
-					<br>
-					<br>
-					<h4>Cantidad de Clientes</h4>
-					<hr>
-					<div class="circle-tile">
-                            <a href="#">
-                                <div class="circle-tile-heading green">
-                                    <i class="fas fa-users fa-fw fa-2x"></i>
-                                </div>
-                            </a>
-                            <div class="circle-tile-content green">
-                                <div class="circle-tile-description text-faded">
-                                    # clientes
-                                </div>
-                                <div class="circle-tile-number text-faded">
-                                    {!! $reporte->datasets[7]->dataset !!} cliente(s)
-                                    <span id="sparklineA"></span>
-                                </div>
-                                <div class="circle-tile-footer" >&nbsp;</div>
-                            </div>
-                        </div>
+					@include('juridico.expediente.detalleExpediente')
 				</div>
 				<div class="col-md-6">
-					<h4>Expedientes: Estadísticas</h4>
+					<h4>Pasos del expediente: Estadísticas</h4>
 					<hr>
 					
 					<div class="col-xs-4">
@@ -75,7 +55,7 @@
                             </a>
                             <div class="circle-tile-content dark-blue">
                                 <div class="circle-tile-description text-faded">
-                                    expedientes registrados
+                                    # Pasos del proceso
                                 </div>
                                 <div class="circle-tile-number text-faded">
                                     {!! $reporte->datasets[2]->dataset !!}
@@ -94,7 +74,7 @@
                             </a>
                             <div class="circle-tile-content blue">
                                 <div class="circle-tile-description text-faded">
-                                    expedientes ganados
+                                    # Pasos finalizados
                                 </div>
                                 <div class="circle-tile-number text-faded">
                                     {!! $reporte->datasets[3]->dataset !!}
@@ -113,7 +93,7 @@
                             </a>
                             <div class="circle-tile-content {{ $reporte->datasets[3]->dataset / $reporte->datasets[2]->dataset >= 0.65 ? 'green' : 'red'}}">
                                 <div class="circle-tile-description text-faded">
-                                    % de expedientes ganados
+                                    % de pasos finalizados
                                 </div>
                                 <div class="circle-tile-number text-faded">
                                     {{ number_format($reporte->datasets[3]->dataset / $reporte->datasets[2]->dataset * 100,2,',','') }} %
@@ -181,18 +161,10 @@
                         </div>
 					</div>
 				</div>
-				<div class="col-md-6">
-					<h4>Expedientes: Tipos de proceso</h4>
+				<div class="col-xs-12">
+					<h4>Pasos del expediente: Duración</h4>
 					<hr>
-					<canvas id="chartTipoProceso"></canvas>
-				</div>
-				<div class="col-md-6">
-					<h4>Expedientes: Estado</h4>
-					<hr>
-					<canvas id="chartEstado"></canvas>
-				</div>
-				<div id="canvas-holder" style="width:40%">
-					<canvas id="chart-area"></canvas>
+					<canvas id="chartPasos"></canvas>
 				</div>
 			</div>
 		</div>
@@ -200,16 +172,9 @@
 </div>
 	
 <script>
-	var chart1 = document.getElementById("chartTipoProceso").getContext('2d');
+
+	var chart1 = document.getElementById("chartPasos").getContext('2d');
 	var myChart = new Chart(chart1, {
-		type: 'doughnut',
-		data: {!! $reporte->datasets[0]->dataset !!},
-		borderColor: 'rgba(255,255,255,1)'
-		
-	});
-	
-	var chart2 = document.getElementById("chartEstado").getContext('2d');
-	var myChart = new Chart(chart2, {
 		type: 'bar',
 		data: {!! $reporte->datasets[1]->dataset !!},
 		options: {
@@ -222,7 +187,14 @@
 						return tooltipItem.yLabel;
 					}
 				}
-			}
+			},
+			scales: {
+				  yAxes: [{
+					ticks: {
+						beginAtZero: true
+					}
+				  }]
+}
 		}
 	});
 	

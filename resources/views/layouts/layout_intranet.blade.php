@@ -30,17 +30,12 @@
     <link href="{{ asset('css/morris.css')}}" rel="stylesheet">
 	<!-- Timeline-->
     <link href="{{ asset('css/timeline.css')}}" rel="stylesheet">
-	<!-- Box-->
-    <link href="{{ asset('css/box.css')}}" rel="stylesheet">
 	<!-- Selects-->
     <link href="{{ asset('css/bootstrap-select.css')}}" rel="stylesheet">
     <!-- Iconos -->
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
 	<script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl" crossorigin="anonymous"></script>
-	<!-- Morris Charts JavaScript se utiliza para graficos
-    <script src="../vendor/raphael/raphael.min.js"></script>
-    <script src="../vendor/morrisjs/morris.min.js"></script>-->
-	
+		
 	<!--SCRIPTS SUMMERNOTE-->
 	<link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.css" rel="stylesheet">
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js"></script>

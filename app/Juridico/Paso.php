@@ -3,6 +3,7 @@
 namespace App\Juridico;
 
 use Illuminate\Database\Eloquent\Model;
+use \Carbon\Carbon;
 
 class Paso extends Model
 {
@@ -37,4 +38,6 @@ class Paso extends Model
 	public function usuario(){
 		return $this->belongsTo('App\Administracion\User','id_usuario');
 	}
+	
+
 }

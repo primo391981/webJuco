@@ -11,4 +11,8 @@ class Reporte extends Model
 	public function datasets(){
 		return $this->hasMany('App\Juridico\Dataset','id_reporte');
 	}
+	
+	public function usuario(){
+		return $this->belongsTo('App\Administracion\User', 'user_id');
+	}
 }
