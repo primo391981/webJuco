@@ -29,7 +29,7 @@
 				<div class="col-xs-12 col-md-7">
 					<div class="row">
 						<div class="col-xs-12">
-							<h4>CONTENEDOR</h4>
+							<h4>CONTENIDO</h4>
 							<hr class="hidden-xs hidden-sm">
 						</div>
 					</div>

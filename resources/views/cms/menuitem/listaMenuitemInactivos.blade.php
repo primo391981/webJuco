@@ -31,8 +31,8 @@
 							<thead>
 								<tr>
 									<th>#</th>
-									<th>Título</th>
-									<th>Descripción</th>
+									<th>TITULO</th>
+									<th>DESCRIPCION</th>
 									<th></th>
 								</tr>
 							</thead>
@@ -65,13 +65,8 @@ $(document).ready(function() {
     $('#tableItems').DataTable( {        
 		"language": {
 		"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"},
-		dom: '<"top"f>t<"bottom"Bpi><"clear">',
-        buttons: [
-           { extend: 'print', text: 'IMPRIMIR' },
-		   { extend: 'pdf', text: 'PDF' },		   
-		   { extend: 'excel', text: 'EXCEL' },
-		   { extend: 'copy', text: 'COPIAR TABLA' }
-        ]
+		dom: '<"top"f>t<"bottom"p><"clear">',
+       
     } );
 	
 	

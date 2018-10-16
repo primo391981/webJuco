@@ -95,7 +95,6 @@
 					<li class="nav-item"> 
 						<button class="btn btn-link" data-toggle="modal" data-target="#modalAcerca" title="Acerca"><i class="fas fa-info-circle"></i> </button>
 					</li>
-					
 			</ul>
             <!-- /.navbar-top-links -->
 

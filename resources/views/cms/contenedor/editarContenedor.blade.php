@@ -1,7 +1,5 @@
 @extends('cms.cms')
 
-@section('seccion', " - Editar Contenedor")
-
 @section('content')
 <br>
 @if (Session::has('error'))

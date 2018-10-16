@@ -1,6 +1,5 @@
 @extends('contable.contable')
 
-@section('seccion', " - AGREGAR")
 
 @section('content')
 

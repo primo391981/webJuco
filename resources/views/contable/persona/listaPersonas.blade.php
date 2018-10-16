@@ -89,7 +89,7 @@
 <script>
 $(document).ready(function() {
     $('#tableEmpleados').DataTable( {        
-		"pagingType": "numbers",
+		
 		"pageLength": 10,
 		"language": {
 		"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"},

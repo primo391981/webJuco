@@ -25,9 +25,9 @@
 <div class="row">
 	<div class="col-xs-12">
 		
-		<div class="panel panel-default text-muted">
+		<div class="panel panel-info text-muted">
 			<div class="panel-heading">
-				<a class="btn btn-default pull-right" href="{{ route('user.index') }}" role="button" data-toggle="tooltip" title="Listado de usuarios"><i class="fas fa-list-ul"></i></a>
+				<a class="btn btn-info pull-right" href="{{ route('user.index') }}" role="button" data-toggle="tooltip" title="Listado de usuarios"><i class="fas fa-list-ul"></i></a>
 				<h4><i class="fas fa-edit"></i> EDITAR USUARIO </h4>				
 			</div>
 			<div class="panel-body">
@@ -36,7 +36,7 @@
 					@include('administracion.user.formUsuario')	
 			</div>
 			<div class="panel-footer">
-					<button type="submit" class="btn btn-primary btn-block"><i class="fas fa-check"></i> Confirmar</button>
+					<button type="submit" class="btn btn-info btn-block"><i class="fas fa-check"></i> Confirmar</button>
 				</form>
 			</div>
 		</div>

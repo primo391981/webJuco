@@ -1,6 +1,5 @@
 @extends('cms.cms')
 
-@section('seccion', " - Nuevo Contenedor")
 
 @if(1==1)
 	@section('ayuda')

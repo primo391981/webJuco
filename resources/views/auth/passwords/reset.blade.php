@@ -1,19 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card card-default">
-                <div class="card-header">Recuperar Password</div>
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('password.request') }}">
-                        @csrf
+<div class="row text-center">
+	<a href="{{ route('home') }}"><img class="img-fluid"  src="{{ asset('img/logo_balanza.jpg') }}"/></a>
+</div>
 
-                        <input type="hidden" name="token" value="{{ $token }}">
-
-                        <div class="form-group row">
+<form method="POST" action="{{ route('password.request') }}">
+@csrf
+<input type="hidden" name="token" value="{{ $token }}">
+<div class="form-group row">
                             <label for="email" class="col-md-4 col-form-label text-md-right">Email</label>
 
                             <div class="col-md-6">
@@ -62,9 +58,5 @@
                             </div>
                         </div>
                     </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
 @endsection

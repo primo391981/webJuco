@@ -28,11 +28,11 @@
 				<div class="panel-body text-muted">					
 					@if(!is_null($expedientes))
 					<div class="table-responsive">
-						<table id="tableExp" class="table table-bordered">
+						<table id="tableExp" class="table">
 							
 							<thead>
-								<tr class='active'>
-									<th class="scope">ID</th>
+								<tr>
+									<th>ID</th>
 									<th>TIPO</th>
 									<th>IUE</th>
 									<th>CARATULA</th>

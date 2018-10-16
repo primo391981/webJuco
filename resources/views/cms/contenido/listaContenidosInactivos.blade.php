@@ -63,13 +63,8 @@ $(document).ready(function() {
     $('#tableContenido').DataTable( {        
 		"language": {
 		"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"},
-		dom: '<"top"f>t<"bottom"Bpi><"clear">',
-        buttons: [
-           { extend: 'print', text: 'IMPRIMIR' },
-		   { extend: 'pdf', text: 'PDF' },		   
-		   { extend: 'excel', text: 'EXCEL' },
-		   { extend: 'copy', text: 'COPIAR TABLA' }
-        ]
+		dom: '<"top"f>t<"bottom"p><"clear">',
+        
     } );
 	
 	

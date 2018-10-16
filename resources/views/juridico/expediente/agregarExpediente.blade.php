@@ -22,7 +22,7 @@
 			</div>
 			<div class="panel-footer">
 				<div class="row">
-					<div class="col-xs-12 col-md-6 col-md-offset-3" style="margin-bottom:5px;">
+					<div class="col-xs-12">
 						<button type="submit" class="btn btn-success btn-block" name="saveExpediente"><i class="fas fa-check"></i> Guardar</button>				
 					</div>
 				</div>
