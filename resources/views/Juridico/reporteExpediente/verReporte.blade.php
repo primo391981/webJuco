@@ -42,7 +42,125 @@
 					<br>
 					@include('juridico.expediente.detalleExpediente')
 				</div>
-				
+				<div class="col-md-6">
+					<h4>Pasos del expediente: Estadísticas</h4>
+					<hr>
+					
+					<div class="col-xs-4">
+						<div class="circle-tile">
+                            <a href="#">
+                                <div class="circle-tile-heading dark-blue">
+                                    <i class="fa fa-book fa-fw fa-2x"></i>
+                                </div>
+                            </a>
+                            <div class="circle-tile-content dark-blue">
+                                <div class="circle-tile-description text-faded">
+                                    # Pasos del proceso
+                                </div>
+                                <div class="circle-tile-number text-faded">
+                                    {!! $reporte->datasets[2]->dataset !!}
+                                    <span id="sparklineA"></span>
+                                </div>
+                                <div class="circle-tile-footer">&nbsp;</div>
+                            </div>
+                        </div>
+					</div>
+					<div class="col-xs-4">
+						<div class="circle-tile">
+                            <a href="#">
+                                <div class="circle-tile-heading blue">
+                                    <i class="fa fa-check fa-fw fa-2x"></i>
+                                </div>
+                            </a>
+                            <div class="circle-tile-content blue">
+                                <div class="circle-tile-description text-faded">
+                                    # Pasos finalizados
+                                </div>
+                                <div class="circle-tile-number text-faded">
+                                    {!! $reporte->datasets[3]->dataset !!}
+                                    <span id="sparklineA"></span>
+                                </div>
+                                <div class="circle-tile-footer">&nbsp;</div>
+                            </div>
+                        </div>
+					</div>
+					<div class="col-xs-4">
+						<div class="circle-tile">
+                            <a href="#">
+                                <div class="circle-tile-heading {{ $reporte->datasets[3]->dataset / $reporte->datasets[2]->dataset >= 0.65 ? 'green' : 'red'}}">
+                                    <i class="fas fa-calculator	 fa-fw fa-2x"></i>
+                                </div>
+                            </a>
+                            <div class="circle-tile-content {{ $reporte->datasets[3]->dataset / $reporte->datasets[2]->dataset >= 0.65 ? 'green' : 'red'}}">
+                                <div class="circle-tile-description text-faded">
+                                    % de pasos finalizados
+                                </div>
+                                <div class="circle-tile-number text-faded">
+                                    {{ number_format($reporte->datasets[3]->dataset / $reporte->datasets[2]->dataset * 100,2,',','') }} %
+                                    <span id="sparklineA"></span>
+                                </div>
+                                <div class="circle-tile-footer">&nbsp;</div>
+                            </div>
+                        </div>
+					</div>
+					<div class="col-xs-4">
+						<div class="circle-tile">
+                            <a href="#">
+                                <div class="circle-tile-heading orange">
+                                    <i class="fas fa-level-up-alt fa-fw fa-2x"></i>
+                                </div>
+                            </a>
+                            <div class="circle-tile-content orange">
+                                <div class="circle-tile-description text-faded">
+                                    Duración Max. Paso
+                                </div>
+                                <div class="circle-tile-number text-faded">
+                                    {!! $reporte->datasets[4]->maxpaso->maximo !!} días
+                                    <span id="sparklineA"></span>
+                                </div>
+                                <a href="{{route('paso.show', $reporte->datasets[4]->maxpaso->pasoMaximo->id)}}" class="circle-tile-footer" target="_blank">ver paso <i class="fa fa-chevron-circle-right"></i></a>
+                            </div>
+                        </div>
+					</div>
+					<div class="col-xs-4">
+						<div class="circle-tile">
+                            <a href="#">
+                                <div class="circle-tile-heading green">
+                                    <i class="fas fa-level-down-alt fa-fw fa-2x"></i>
+                                </div>
+                            </a>
+                            <div class="circle-tile-content green">
+                                <div class="circle-tile-description text-faded">
+                                    Duración Min. Paso
+                                </div>
+                                <div class="circle-tile-number text-faded">
+                                    {!! $reporte->datasets[5]->minpaso->minimo !!} días
+                                    <span id="sparklineA"></span>
+                                </div>
+                                <a href="{{route('paso.show', $reporte->datasets[5]->minpaso->pasoMinimo->id)}}" class="circle-tile-footer" target="_blank">ver paso <i class="fa fa-chevron-circle-right"></i></a>
+                            </div>
+                        </div>
+					</div>
+					<div class="col-xs-4">
+						<div class="circle-tile">
+                            <a href="#">
+                                <div class="circle-tile-heading purple">
+                                    <i class="fas fa-arrows-alt-h fa-fw fa-2x"></i>
+                                </div>
+                            </a>
+                            <div class="circle-tile-content purple">
+                                <div class="circle-tile-description text-faded">
+                                    Duración Prom. Pasos
+                                </div>
+                                <div class="circle-tile-number text-faded">
+                                    {!! number_format($reporte->datasets[6]->dataset,2,',','') !!} días
+                                    <span id="sparklineA"></span>
+                                </div>
+                                <div class="circle-tile-footer">&nbsp;</div>
+                            </div>
+                        </div>
+					</div>
+				</div>
 				<div class="col-xs-12">
 					<h4>Pasos del expediente: Duración</h4>
 					<hr>

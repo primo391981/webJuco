@@ -309,8 +309,6 @@ class ReporteController extends Controller
 		
 		//dd($expediente);
 		$reporte = new Reporte();
-		$reporte->fecha_desde = $request->fecha_inicio;
-		$reporte->fecha_hasta = $request->fecha_fin;
 		$reporte->user_id = Auth::User()->id;
 		$reporte->tipo = 2;
 			
@@ -324,7 +322,6 @@ class ReporteController extends Controller
 		$dataset->save();
 		
 		// dataset por duración de pasos del expediente
-		
 		$data = [
 			'labels' =>  [],
 			'datasets' =>  [[
@@ -348,7 +345,9 @@ class ReporteController extends Controller
 				$fecha_fin = Carbon::now();
 			}
 			
-			array_push($data['datasets'][0]['data'],$fecha_fin->diffInMinutes($pasoExpediente->created_at));
+			array_push($data['datasets'][0]['data'],$fecha_fin->diffInSeconds($pasoExpediente->created_at));
+			array_push($data['datasets'][0]['backgroundColor'],'rgba(54, 162, 235, 0.5)');
+			array_push($data['datasets'][0]['borderColor'],'rgba(54, 162, 235, 1)');
 		};
 		
 		//dd($data['datasets'][0]['data']);
@@ -365,9 +364,9 @@ class ReporteController extends Controller
 		$dataset->save();
 		// fin dataset estado de expedientes
 		
-		/*
-		// dataset total de expedientes
-		$data = $expedientes->count();
+		
+		// dataset total de pasos posibles de expedientes
+		$data = $expediente->tipo->transiciones->count();
 		
 		$dataset = new Dataset();
 		$dataset->id_reporte = $reporte->id;
@@ -376,41 +375,40 @@ class ReporteController extends Controller
 		$dataset->save();
 		// fin de dataset total de expedientes
 		
-		// dataset total de expedientes ganados
-		$data = $expedientes->where('resultado',1)->count();
+		// dataset total de pasos del expediente completados
+		$data = $expediente->pasos->count();
 		
 		$dataset = new Dataset();
 		$dataset->id_reporte = $reporte->id;
 		$dataset->dataset = $data;
 		
 		$dataset->save();
-		$pasoMaximo = null;
 		
-		// fin de dataset total de expedientes ganados
+		// fin de dataset total de pasos de expedientes ganados
 		
 		// dataset max duración de pasos de expedientes
+		
+		$pasoMaximo = null;
 		$maximo = 0; //en dias, para test, en minutos
 		
-		foreach($expedientes as $expediente){
-			foreach($expediente->pasos as $paso){
-				$dt1=new Carbon($paso->created_at);
-				
-				//Si el paso está finalizado
-				if($paso->fecha_fin != null){
-					$duracion = $dt1->diffInMinutes($paso->fecha_fin);
-					// $duracion = $dt1->diffInDays($paso->fecha_fin); Para producción va en días
-					//dd($duracion);
-				//Sino, tomo la duración actual
-				} else {
-					$duracion = $dt1->diffInMinutes(Carbon::now());
-				}
-				
-				//guardo el mayor registro y el paso para mostrar
-				
-				if($duracion >= $maximo){
-					$maximo = $duracion;
-					$pasoMaximo = $paso;
-				}
+		foreach($expediente->pasos as $paso){
+			$dt1=new Carbon($paso->created_at);
+			
+			//Si el paso está finalizado
+			if($paso->fecha_fin != null){
+				$duracion = $dt1->diffInSeconds($paso->fecha_fin);
+				// $duracion = $dt1->diffInDays($paso->fecha_fin); Para producción va en días
+				//dd($duracion);
+			//Sino, tomo la duración actual
+			} else {
+				$duracion = $dt1->diffInSeconds(Carbon::now());
+			}
+			
+			//guardo el mayor registro y el paso para mostrar
+			
+			if($duracion >= $maximo){
+				$maximo = $duracion;
+				$pasoMaximo = $paso;
 			}
 		}
 		
@@ -423,32 +421,29 @@ class ReporteController extends Controller
 		$dataset->save();
 		// fin  dataset  max duración de pasos de expedientes
 		
-		// dataset min duración de pasos de expedientes
+		// dataset min duración de paso de expediente
 		$minimo = 99999999; //en dias, para test, en minutos
 	
-		foreach($expedientes as $expediente){
-			foreach($expediente->pasos as $paso){
-				$dt1=new Carbon($paso->created_at);
-				
-				//Si el paso está finalizado
-				if($paso->fecha_fin != null){
-					$duracion = $dt1->diffInMinutes($paso->fecha_fin);
-					// $duracion = $dt1->diffInDays($paso->fecha_fin); Para producción va en días
-					//dd($duracion);
-				//Sino, tomo la duración actual
-				} else {
-					$duracion = $dt1->diffInMinutes(Carbon::now());
-				}
-				
-				//guardo el mayor registro y el paso para mostrar
-				
-				if($duracion <= $minimo){
-					$minimo = $duracion;
-					$pasoMinimo = $paso;
-				}
+		foreach($expediente->pasos as $paso){
+			$dt1=new Carbon($paso->created_at);
+			
+			//Si el paso está finalizado
+			if($paso->fecha_fin != null){
+				$duracion = $dt1->diffInSeconds($paso->fecha_fin);
+				// $duracion = $dt1->diffInDays($paso->fecha_fin); Para producción va en días
+				//dd($duracion);
+			//Sino, tomo la duración actual
+			} else {
+				$duracion = $dt1->diffInSeconds(Carbon::now());
+			}
+			
+			//guardo el mayor registro y el paso para mostrar
+			if($duracion <= $minimo){
+				$minimo = $duracion;
+				$pasoMinimo = $paso;
 			}
 		}
-		
+	
 		$data = ['minimo'=>$minimo , 'pasoMinimo' => $pasoMinimo];
 
 		$dataset = new Dataset();
@@ -462,25 +457,24 @@ class ReporteController extends Controller
 		$contador = 0;
 		$acumulador = 0;
 		
-		foreach($expedientes as $expediente){
-			$contador = $contador + $expediente->pasos->count();
-			
-			foreach($expediente->pasos as $paso){
-				$dt1=new Carbon($paso->created_at);
-				if($paso->fecha_fin != null){
-					$duracion = $dt1->diffInMinutes($paso->fecha_fin);
-					// $duracion = $dt1->diffInDays($paso->fecha_fin); Para producción va en días
-					//dd($duracion);
-				//Sino, tomo la duración actual
-				} else {
-					$duracion = $dt1->diffInMinutes(Carbon::now());
-				}
-				
-				$acumulador = $acumulador + $duracion;
+		$contador = $contador + $expediente->pasos->count();
+		
+		foreach($expediente->pasos as $paso){
+			$dt1=new Carbon($paso->created_at);
+			if($paso->fecha_fin != null){
+				//$duracion = $dt1->diffInMinutes($paso->fecha_fin);
+				$duracion = $dt1->diffInSeconds($paso->fecha_fin);
+				// $duracion = $dt1->diffInDays($paso->fecha_fin); Para producción va en días
+				//dd($duracion);
+			//Sino, tomo la duración actual
+			} else {
+				//$duracion = $dt1->diffInMinutes(Carbon::now());
+				$duracion = $dt1->diffInSeconds(Carbon::now());
 			}
 			
+			$acumulador = $acumulador + $duracion;
 		}
-		
+	
 		$data = $duracion / $contador;
 
 		$dataset = new Dataset();
@@ -490,24 +484,6 @@ class ReporteController extends Controller
 		$dataset->save();
 		// fin  dataset  min duración de pasos de expedientes
 		
-		// dataset cantidad de clientes
-		$contador = 0;
-				
-		foreach($expedientes as $expediente){
-			$contador = $contador + $expediente->clientes->count();		
-		}
-		
-		$data = $contador;
-
-		$dataset = new Dataset();
-		$dataset->id_reporte = $reporte->id;
-		$dataset->dataset = json_encode($data);
-		
-		$dataset->save();
-		// fin  dataset  min duración de pasos de expedientes
-		
-		*/
-				
 		return redirect()->route('reporte.show',['reporte' => $reporte]);
     
 	}	
