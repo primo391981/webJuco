@@ -1,7 +1,5 @@
 @extends('cms.cms')
 
-@section('seccion', " - Contenedores")
-
 @section('content')
 @if (Session::has('success'))
 	<br>
@@ -30,11 +28,11 @@
 					<table class="table" id="tableContenedor"> 
 						<thead>
 						<tr>
-							<th>#</th>
-							<th>Título</th>
-							<th>Tipo</th>
-							<th>Item de menú</th>
-							<th>Orden en menú</th>
+							
+							<th>TITULO</th>
+							<th>TIPO</th>
+							<th>ITEM MENU</th>
+							<th>ORDEN MENU</th>
 							<th></th>
 							<th></th>
 						</tr>
@@ -42,7 +40,7 @@
 						<tbody>
 						@foreach($contenedores->sortBy('id_itemmenu') as $contenedor)						
 						<tr>
-							<td>{{$contenedor->id}}</td>
+							
 							<td>{{$contenedor->titulo}}</td>
 							<td>{{$contenedor->tipoContenedor->nombre}}</td>
 							<td>{{ !is_null($contenedor->menuitem) ? $contenedor->menuitem->titulo : "sin asignar"}}</td>
@@ -79,13 +77,8 @@ $(document).ready(function() {
     $('#tableContenedor').DataTable( {        
 		"language": {
 		"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"},
-		dom: '<"top"f>t<"bottom"Bpi><"clear">',
-        buttons: [
-           { extend: 'print', text: 'IMPRIMIR' },
-		   { extend: 'pdf', text: 'PDF' },		   
-		   { extend: 'excel', text: 'EXCEL' },
-		   { extend: 'copy', text: 'COPIAR TABLA' }
-        ]
+		dom: '<"top"f>t<"bottom"p><"clear">',
+   
     } );
 	
 	

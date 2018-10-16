@@ -1,7 +1,5 @@
 @extends('cms.cms')
 
-@section('seccion', " - INACTIVOS")
-
 @section('content')
 @if (Session::has('success'))
 	<br>
@@ -30,16 +28,15 @@
 					<table class="table" id="tableContenedor"> 
 						<thead>
 						<tr>
-							<th>#</th>
-							<th>Título</th>
-							<th>Tipo</th>
+							
+							<th>TITULO</th>
+							<th>TIPO</th>
 							<th></th>
 						</tr>
 						</thead>
 						<tbody>
 						@foreach($contenedores as $contenedor)						
 						<tr>
-							<td>{{$contenedor->id}}</td>
 							<td>{{$contenedor->titulo}}</td>
 							<td>{{$contenedor->tipoContenedor->nombre}}</td>
 							
@@ -65,13 +62,8 @@ $(document).ready(function() {
     $('#tableContenedor').DataTable( {        
 		"language": {
 		"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"},
-		dom: '<"top"f>t<"bottom"Bpi><"clear">',
-        buttons: [
-           { extend: 'print', text: 'IMPRIMIR' },
-		   { extend: 'pdf', text: 'PDF' },		   
-		   { extend: 'excel', text: 'EXCEL' },
-		   { extend: 'copy', text: 'COPIAR TABLA' }
-        ]
+		dom: '<"top"f>t<"bottom"p><"clear">',
+       
     } );
 	
 	

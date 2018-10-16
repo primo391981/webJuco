@@ -1,7 +1,5 @@
 @extends('contable.contable')
 
-@section('seccion', " - EDITAR")
-
 @section('content')
 <br>
 @if (Session::has('success'))

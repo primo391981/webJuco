@@ -1,7 +1,4 @@
 @extends('contable.contable')
-
-@section('seccion', " - INACTIVOS")
-
 @section('content')
 
 

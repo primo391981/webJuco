@@ -1,7 +1,5 @@
 @extends('contable.contable')
 
-@section('seccion', " - ACTIVOS")
-
 @section('content')
 
 @if (Session::has('success'))

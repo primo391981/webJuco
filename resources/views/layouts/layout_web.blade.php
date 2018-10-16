@@ -53,7 +53,7 @@
 		</ul>
 		<ul class="navbar-nav navbar-right">
 		    @guest
-				<li><a class="nav-link" href="{{ route('login') }}" >Ingreso <i class="fas fa-unlock-alt"></i></a></li>
+				<li><a class="nav-link" href="{{ route('login') }}" ><i class="fas fa-unlock-alt"></i> Ingreso</a></li>
 			   @else
 				   <li class="nav-item dropdown">
 										<a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
