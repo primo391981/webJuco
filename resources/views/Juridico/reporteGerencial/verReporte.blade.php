@@ -55,10 +55,10 @@
                                     # clientes
                                 </div>
                                 <div class="circle-tile-number text-faded">
-                                    {!! $reporte->datasets[5]->minpaso->minimo !!} días
+                                    {!! $reporte->datasets[7]->dataset !!} cliente(s)
                                     <span id="sparklineA"></span>
                                 </div>
-                                <a href="{{route('paso.show', $reporte->datasets[5]->minpaso->pasoMinimo->id)}}" class="circle-tile-footer" target="_blank">ver paso <i class="fa fa-chevron-circle-right"></i></a>
+                                <div class="circle-tile-footer" >&nbsp;</div>
                             </div>
                         </div>
 				</div>
@@ -202,7 +202,7 @@
 <script>
 	var chart1 = document.getElementById("chartTipoProceso").getContext('2d');
 	var myChart = new Chart(chart1, {
-		type: 'pie',
+		type: 'doughnut',
 		data: {!! $reporte->datasets[0]->dataset !!},
 		borderColor: 'rgba(255,255,255,1)'
 		

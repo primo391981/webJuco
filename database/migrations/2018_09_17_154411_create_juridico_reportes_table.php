@@ -15,9 +15,10 @@ class CreateJuridicoReportesTable extends Migration
     {
         Schema::create('juridico_reportes', function (Blueprint $table) {
             $table->increments('id');
-			$table->date('fecha_desde');
-			$table->date('fecha_hasta');
+			$table->date('fecha_desde')->nullable();
+			$table->date('fecha_hasta')->nullable();
 			$table->integer('user_id');
+			$table->integer('tipo'); //tipo de reporte: 1-gerencial, 2-expediente
 			
             $table->timestamps();
         });
