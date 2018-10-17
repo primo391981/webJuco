@@ -82,7 +82,7 @@
         </ul>
 </li>
 <li>
-    <a href="{{route ('reportes.listaReportes')}}"><i class="fas fa-clipboard-list"></i> Reportes </a>
+    <a href="{{route ('reportes.listadoReportes')}}"><i class="fas fa-clipboard-list"></i> Reportes </a>
 </li>		
 @endsection
 
