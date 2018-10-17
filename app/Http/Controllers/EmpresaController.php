@@ -129,7 +129,6 @@ class EmpresaController extends Controller
 	}
 	
 	public function reporteUno(Request $request){
-		//$empleados=Empleado::where('idEmpresa','=',$request->empresa)->where('habilitado','=',1)->get();
 		$empresa=Empresa::find($request->empresa);
 		$empleados=$empresa->personas()->where('habilitado',1)->get();
 		
@@ -175,7 +174,10 @@ class EmpresaController extends Controller
 		$haber=TipoRecibo::find($request->tiporec);
 		$titulo=$request->titulo." / Fecha:".$request->fecha." / Tipo de haber: ".$haber->nombre;
 		return view('contable.reporte.grafico', ['jsonArmado' => $jsonArmado,'titulo'=>$titulo,'tipografico'=>$request->tipografico]);
-		
+	}
+	
+	public function reporteDos(Request $request){
+		dd($request);
 	}
 		
 }

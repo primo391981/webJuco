@@ -52,17 +52,41 @@
 						</div>
 						
 						<div class="form-group">
-    <label>Tipo de gráfico</label>
-    <select class="form-control" id="tipografico" name="tipografico" required>							 
-							  <option value="bar">BARRAS</option>
-							  <option value="line">LINEAL</option>
-							  <option value="pie">TORTA</option>
+						<label>Tipo de gráfico</label>
+							<select class="form-control" id="tipografico" name="tipografico" required>							 
+								<option value="bar">BARRAS</option>
+								<option value="line">LINEAL</option>
+								<option value="pie">TORTA</option>
 							</select>
-  </div>
-						
-						
-						
+						</div>
 						<button type="submit" class="btn btn-warning btn-block btn-xs">Ver reporte</button>
+					</form>
+				</div>
+				
+				<div class="col-xs-12 col-md-4">
+					<p>Impresión de recibos de empleados por empresa según el tipo de haber en un mes/año.</p>
+					<hr>
+					<form method="POST" action="{{route('reporte.reporteDos')}}">
+					@csrf
+						<input id="titulo" name="titulo" type="hidden" value="Impresión de recibos de empleados por empresa según el tipo de haber en un mes/año.">
+						<div class="form-group">
+							<select class="form-control" id="empresa" name="empresa" required>
+							  @foreach($empresas as $empr)
+							  <option value="{{$empr->id}}">{{$empr->nombreFantasia}} - {{$empr->grupo}} - {{$empr->subGrupo}}</option>
+							  @endforeach
+							</select>
+						</div>
+						<div class="form-group">
+							<select class="form-control" id="tiporec" name="tiporec" required>
+							  @foreach($tiposRecibo as $tr)
+							  <option value="{{$tr->id}}">{{$tr->nombre}}</option>
+							  @endforeach
+							</select>
+						</div>
+						<div class="form-group">
+							<input class="form-control" type="month" id="fecha" name="fecha" required />
+						</div>
+						<button type="submit" class="btn btn-warning btn-block btn-xs">Ver recibos</button>
 					</form>
 				</div>
 				
