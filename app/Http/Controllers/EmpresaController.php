@@ -11,6 +11,7 @@ use App\Contable\ReciboEmpleado;
 use App\Contable\DetalleRecibo;
 use App\Http\Requests\EmpresaRequest;
 use Illuminate\Support\Facades\DB;
+use PDF;
 use Exception;
 
 class EmpresaController extends Controller
@@ -176,8 +177,23 @@ class EmpresaController extends Controller
 		return view('contable.reporte.grafico', ['jsonArmado' => $jsonArmado,'titulo'=>$titulo,'tipografico'=>$request->tipografico]);
 	}
 	
-	public function reporteDos(Request $request){
-		dd($request);
+	public function imprimirRecibos(Request $request){
+		$empresa=Empresa::find($request->empresa);
+		$tipoRecibo=TipoRecibo::find($request->tiporec);
+		$empleados=$empresa->personas()->where('habilitado',1)->get();
+		
+		$recibos = collect([]);
+		foreach($empleados as $emp){			
+			$recibo=ReciboEmpleado::where('idEmpleado','=',$emp->pivot->id)->where('idTipoRecibo','=',$request->tiporec)->where('fechaRecibo','=',$request->fecha."-01")->first();
+			if($recibo!=null){
+				$recibos->push($recibo);				
+			}
+		}
+		
+		$datos=['recibos'=>$recibos,'tipoRecibo'=>$tipoRecibo,'fecha'=>$request->fecha,'empresaNombre'=>$empresa->razonSocial];
+		$pdf=PDF::loadView('contable.reporte.imprimir',$datos);//imprimir es el nombre de la vista
+		
+		return $pdf->download("RECIBOS ".$tipoRecibo->nombre." ".$empresa->razonSocial." ".$request->fecha.".pdf");
 	}
 		
 }
