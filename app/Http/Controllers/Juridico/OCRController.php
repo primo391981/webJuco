@@ -8,25 +8,25 @@ use thiagoalessio\TesseractOCR\TesseractOCR;
 
 class OCRController extends Controller
 {
-	public function ocrtext(){
+	public function readOCR(){
+		return view('juridico.ocr.formOCR');
+	}
+	
+	public function ocrtext(Request $request){
 		
-		$imagen = '/home/vagrant/code/Juco/public/img/text.png';
+		
+		$archivo = $request->file('archivo')->storeAs('public/ocr','file');
+		//dd($archivo);
+		$imagen = '/home/vagrant/code/webJuco/public/storage/ocr/file';
 		
 		$tesseract = new TesseractOCR($imagen);
+		try{
+			$resultado = $tesseract->lang('spa')->run();
+		} catch (\Exception $e){
+			return redirect()->back()->with('error','No se pudo leer el archivo. Intente con otro archivo. Error reportado: '.$e->getMessage());
+		}
 		
-		//$tesseract->executable('/usr/bin/tesseract');
-        //dd($tesseract);
-		//var_dump($tesseract);
-		//$texto = new TesseractOCR($imagen);
-		//$texto->executable('/usr/bin/tesseract');
-		//dd($texto);
-		//($imagen)->run();
-		//dd($texto);
-	
-		//$valor = $texto->run();
-		
-		//dd($valor);
-		echo("Prueba OCR <br><br>El texto obtenido de la imagen: <br><br>".$tesseract->lang('spa')->run());
+		return redirect()->back()->with(['success' => 'La lectura de imagen se realizó correctamente.', 'resultado' => $resultado]);
 	}
 	
 }

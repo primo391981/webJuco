@@ -31,8 +31,7 @@ Route::get('notAuthorized', function (){
 Route::get('webservice', 'Juridico\WebServiceController@index')->name('test');
 Route::post('webservice', 'Juridico\WebServiceController@test')->name('searchExpediente');
 
-//OCR
-Route::get('ocr', 'Juridico\OCRController@ocrtext')->name('ocr');
+
 
 //rutas para el funcionamiento del sistema de autenticación
 Auth::routes();
@@ -194,6 +193,10 @@ Route::group(['middleware' => ['auth']], function () {
 	
 	//Archivos Paso
 	Route::resource('archivo', 'Juridico\ArchivoController',['except' => ['create','edit','show','index','update']])->middleware('role:juridicoAdmin,invitado');
+	
+	//OCR
+	Route::get('readocr', 'Juridico\OCRController@readOCR')->name('ocr.read');
+	Route::post('readocr', 'Juridico\OCRController@ocrtext')->name('ocr.write');
 	
 	
 });
