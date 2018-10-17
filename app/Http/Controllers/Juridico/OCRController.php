@@ -17,7 +17,8 @@ class OCRController extends Controller
 		
 		$archivo = $request->file('archivo')->storeAs('public/ocr','file');
 		//dd($archivo);
-		$imagen = '/home/vagrant/code/webJuco/public/storage/ocr/file';
+		//$imagen = '/home/vagrant/code/webJuco/public/storage/ocr/file';
+		$imagen = '/var/www/html/webJuco/public/storage/ocr/file';
 		
 		$tesseract = new TesseractOCR($imagen);
 		try{
