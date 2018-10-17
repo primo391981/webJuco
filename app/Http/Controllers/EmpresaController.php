@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Empresa;
 use App\TipoDoc;
+use App\Contable\TipoRecibo;
+use App\Contable\Empleado;
+use App\Contable\ReciboEmpleado;
+use App\Contable\DetalleRecibo;
 use App\Http\Requests\EmpresaRequest;
 use Illuminate\Support\Facades\DB;
 use Exception;
@@ -118,10 +122,60 @@ class EmpresaController extends Controller
 		return redirect()->route('empresa.index');
     }
 	
-	public function montoGastadoAnio(Request $request){
-		
-		//
-		
+	public function listadoReportes(){
+		$empresas=Empresa::All();
+		$tiposRecibo=TipoRecibo::All();
+		return view('contable.reporte.listaReportes', ['empresas' => $empresas,'tiposRecibo'=>$tiposRecibo]);
 	}
 	
+	public function reporteUno(Request $request){
+		//$empleados=Empleado::where('idEmpresa','=',$request->empresa)->where('habilitado','=',1)->get();
+		$empresa=Empresa::find($request->empresa);
+		$empleados=$empresa->personas()->where('habilitado',1)->get();
+		
+		$montos = collect([]);
+		foreach($empleados as $emp){			
+			$recibo=ReciboEmpleado::where('idEmpleado','=',$emp->pivot->id)->where('idTipoRecibo','=',$request->tiporec)->where('fechaRecibo','=',$request->fecha."-01")->first();
+			if($recibo==null){
+				$montos->push("0");
+			}
+			else{
+				$detalle=DetalleRecibo::where('idRecibo','=',$recibo->id)->where('idConceptoRecibo','=',21)->first();
+				$montos->push($detalle->monto);				
+			}
+		}
+		$data= [
+				'labels'=>$empleados->pluck('documento'),
+				'datasets'=> [[
+					'label'=>'',
+					'data'=> $montos,
+					'backgroundColor'=> [
+						'rgba(255, 99, 132, 0.2)',
+						'rgba(54, 162, 235, 0.2)',
+						'rgba(255, 206, 86, 0.2)',
+						'rgba(75, 192, 192, 0.2)',
+						'rgba(153, 102, 255, 0.2)',
+						'rgba(255, 159, 64, 0.2)'
+					],
+					'borderColor'=> [
+						'rgba(255,99,132,1)',
+						'rgba(54, 162, 235, 1)',
+						'rgba(255, 206, 86, 1)',
+						'rgba(75, 192, 192, 1)',
+						'rgba(153, 102, 255, 1)',
+						'rgba(255, 159, 64, 1)'
+					],
+					'borderWidth'=> 1
+				]]
+			];
+		
+		$jsonArmado=json_encode($data);
+		//dd($jsonArmado);
+		
+		$haber=TipoRecibo::find($request->tiporec);
+		$titulo=$request->titulo." / Fecha:".$request->fecha." / Tipo de haber: ".$haber->nombre;
+		return view('contable.reporte.grafico', ['jsonArmado' => $jsonArmado,'titulo'=>$titulo,'tipografico'=>$request->tipografico]);
+		
+	}
+		
 }

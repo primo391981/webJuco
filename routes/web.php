@@ -83,6 +83,11 @@ Route::group(['middleware' => ['auth']], function () {
 	//dashboard contable
 	Route::get('contable', 'Contable\ContableController@index')->name('contable')->middleware('role:contableAdmin');
 	
+	//reportes
+	Route::get('reportes','EmpresaController@listadoReportes')->name('reportes.listadoReportes')->middleware('role:contableAdmin');
+	Route::post('reportes/reporteUno','EmpresaController@reporteUno')->name('reporte.reporteUno')->middleware('role:contableAdmin');
+	
+	
 	//cargos
 	Route::post('cargo/salario', 'Contable\CargoController@altaSalarioMinimo')->name('cargo.altaSalarioMinimo')->middleware('role:contableAdmin');
 	Route::get('cargo/inactivos', 'Contable\CargoController@inactivos')->name('cargo.index.inactivos')->middleware('role:contableAdmin');
@@ -152,12 +157,6 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::post('haberes/salariovacacional','Contable\HaberesController@calculoSalVacacional')->name('haberes.calculoSalVacacional')->middleware('role:contableAdmin');	
 	Route::post('haberes/liquidacion','Contable\HaberesController@calculoLiquidacion')->name('haberes.calculoLiquidacion')->middleware('role:contableAdmin');		
 	Route::resource('haberes', 'Contable\HaberesController')->middleware('role:contableAdmin');
-	
-	//reportes
-	Route::get('/reportes', function () {
-    return view('contable.reporte.listaReportes');
-	})->name('reportes.listaReportes');
-	
 	
 	//JURIDICO
 	//dashboard juridico
