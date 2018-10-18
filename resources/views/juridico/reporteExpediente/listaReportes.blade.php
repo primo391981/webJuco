@@ -28,7 +28,7 @@
 					<table id="tableCli" class="table">
 						<thead>
 						<tr>
-							<th class="scope">ID</th>
+							<th>ID</th>
 							<th>FECHA CREACION</th>
 							<th>FECHA INICIO</th>
 							<th>FECHA FIN</th>

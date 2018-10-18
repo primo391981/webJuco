@@ -66,7 +66,7 @@
 				<div class="col-xs-12 col-md-4">
 					<p>Impresión de recibos de empleados por empresa según el tipo de haber en un mes/año.</p>
 					<hr>
-					<form method="POST" action="{{route('reporte.reporteDos')}}">
+					<form method="POST" action="{{route('reporte.imprimirRecibos')}}">
 					@csrf
 						<input id="titulo" name="titulo" type="hidden" value="Impresión de recibos de empleados por empresa según el tipo de haber en un mes/año.">
 						<div class="form-group">
@@ -86,7 +86,7 @@
 						<div class="form-group">
 							<input class="form-control" type="month" id="fecha" name="fecha" required />
 						</div>
-						<button type="submit" class="btn btn-warning btn-block btn-xs">Ver recibos</button>
+						<button type="submit" class="btn btn-warning btn-block btn-xs">Descargar recibos</button>
 					</form>
 				</div>
 				

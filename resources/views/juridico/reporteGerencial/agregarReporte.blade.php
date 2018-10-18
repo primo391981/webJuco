@@ -26,7 +26,7 @@
 			</div>
 			<div class="panel-body">
 				<div class="col-xs-12">
-						<h4>Crear reporte</h4>
+						
 						<form method="POST" action="{{ route('reporte.store') }}" class="form-horizontal" id="formReporte"> 
 							@include('juridico.reporteGerencial.formReporte', ['textoBoton' => 'Confirmar']) 
 						</form>
