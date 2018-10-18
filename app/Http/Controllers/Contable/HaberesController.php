@@ -217,7 +217,7 @@ class HaberesController extends Controller
 	
 	//Guarda los datos del cálculo de sueldos con los detalles correspondientes al recibo del mismo.
     public function store(Request $request)
-    {
+    {	
 		$sueldoNominalGravado = 0;
 		$sueldoNominalNoGravado = 0;
 		$montoHorasFaltantes = 0;
@@ -309,7 +309,7 @@ class HaberesController extends Controller
 				$montoSubTotalNominal = $montoSalario[46];
 	
 				//Carga Detalles del recibo
-				$cant=count($montoSalario);					
+				$cant = count($montoSalario);					
 				for($j=0;$j<$cant;$j++){
 					$detalle=collect([]);						
 					$cantParam=$montoSalario[$j];
@@ -335,7 +335,8 @@ class HaberesController extends Controller
 				//IRPF final a pagar
 				$descIRPF = $descIRPFPrimario - $deducionesIRPF;
 				
-				if ($descIRPF < 0){
+				if ($descIRPF < 0)
+				{
 					$descIRPFPrimario=0;
 					$deducionesIRPF=0;
 				}
@@ -360,27 +361,9 @@ class HaberesController extends Controller
 				$datosRecibo->push($this->obtenerDetalle(21,$sueldoLiquido,'NA'));
 				
 				//Guarda encabezado del recibo
-				$recibo = new ReciboEmpleado;
-				$recibo->idEmpleado = $empleado->id;
-				$recibo->idTipoRecibo = 1; //Sueldo
-				$hoy = Carbon::today();
-
-				$recibo->fechaRecibo = $fecha->year.'-'.$fecha->month.'-01';
-				$recibo->fechaPago = $hoy->year.'-'.$hoy->month.'-'.$hoy->day;
+				$fechaRecibo = $fecha->year.'-'.$fecha->month.'-01';
 				
-				$existe = ReciboEmpleado::where([['idEmpleado','=',$empleado->id],['idTipoRecibo','=',$request->calculo], ['fechaRecibo','=',$recibo->fechaRecibo]])->first();
-		
-				if ($existe == null)
-					$recibo->save();
-				else
-				{
-					$dt = DetalleRecibo::where('idRecibo','=',$existe->id)->delete();
-					$existe->delete();
-					
-					$recibo->save();
-				}
-				
-				$UltimoReciboEmpleado = ReciboEmpleado::where([['idEmpleado','=',$empleado->id],['idTipoRecibo','=',$request->calculo], ['fechaRecibo','=',$recibo->fechaRecibo]])->first();
+				$UltimoReciboEmpleado = $this->guardarReciboEmpleado($empleado, $fechaRecibo, $request);
 				
 				//Guarda detalles del recibo
 				foreach($datosRecibo as $dtr)
@@ -395,7 +378,8 @@ class HaberesController extends Controller
 						$table->decimal('porcentaje', 8, 2);
 						*/
 						$detalleRecibo->idConceptoRecibo=$dtr[0];
-						if($dtr[0]==9)
+						
+						if($dtr[0] == 9)
 						{//Días de Licencia Gozada
 							$detalleRecibo->cantDias = $dtr[2];
 						}
@@ -404,19 +388,21 @@ class HaberesController extends Controller
 						
 						if(($dtr[0]>=2 && $dtr[0]<=7) || $dtr[0]==22)
 						{
-							$detalleRecibo->cantHoras=$dtr[2];
+							$detalleRecibo->cantHoras = $dtr[2];
 						}
-						else{
-							$detalleRecibo->cantHoras=0;							
+						else
+						{
+							$detalleRecibo->cantHoras = 0;							
 						}						
 						
-						$detalleRecibo->monto=$dtr[1];	
+						$detalleRecibo->monto = $dtr[1];	
 						
 						if($dtr[0]==14 || $dtr[0]==15 || $dtr[0]==18)
 						{//BPS/Fonasa/FRL
-								$detalleRecibo->porcentaje=$dtr[2];						
+							$detalleRecibo->porcentaje = $dtr[2];						
 						}
-						$detalleRecibo->idRecibo=$UltimoReciboEmpleado->id;
+						
+						$detalleRecibo->idRecibo = $UltimoReciboEmpleado->id;
 						
 						$detalleRecibo->save();	
 					}
@@ -532,28 +518,10 @@ class HaberesController extends Controller
 				$datosRecibo->push($this->obtenerDetalle(21,$aguinaldoLiquido,'NA'));
 				
 				//Guarda encabezado del recibo
-				$recibo = new ReciboEmpleado;
-				$recibo->idEmpleado = $empleado->id;
-				$recibo->idTipoRecibo = $request->calculo;
-				$hoy = Carbon::today();
-				
 				$fecha->addDay();
-				$recibo->fechaRecibo = $fecha->year.'-'.$fecha->month.'-'.$fecha->day;
-				$recibo->fechaPago = $hoy->year.'-'.$hoy->month.'-'.$hoy->day;
-				
-				$existe = ReciboEmpleado::where([['idEmpleado','=',$empleado->id],['idTipoRecibo','=',$request->calculo], ['fechaRecibo','=',$recibo->fechaRecibo]])->first();
-				
-				if ($existe == null)
-					$recibo->save();
-				else
-				{
-					$dt = DetalleRecibo::where('idRecibo','=',$existe->id)->delete();
-					$existe->delete();
+				$fechaRecibo = $fecha->year.'-'.$fecha->month.'-'.$fecha->day;
 					
-					$recibo->save();
-				}
-				//Obtengo último recibo guardado
-				$UltimoReciboEmpleado = ReciboEmpleado::where([['idEmpleado','=',$empleado->id],['idTipoRecibo','=',$request->calculo], ['fechaRecibo','=',$recibo->fechaRecibo]])->first();
+				$UltimoReciboEmpleado = $this->guardarReciboEmpleado($empleado, $fechaRecibo, $request);
 					
 				//Guarda detalles del recibo
 				foreach($datosRecibo as $dtr)
@@ -647,29 +615,10 @@ class HaberesController extends Controller
 				$datosRecibo->push($this->obtenerDetalle(21,$salVacacional,'NA'));
 				
 				//Guarda encabezado del recibo
-				$recibo = new ReciboEmpleado;
-				$recibo->idEmpleado = $empleado->id;
-				$recibo->idTipoRecibo = $request->calculo;
-				$hoy = Carbon::today();
+				$fechaRecibo = $fecha->year.'-'.$fecha->month.'-'.$request->input('diac'.$i);
 					
-					
-				$recibo->fechaRecibo = $fecha->year.'-'.$fecha->month.'-'.$request->input('diac'.$i);
-				$recibo->fechaPago = $hoy->year.'-'.$hoy->month.'-'.$hoy->day;
+				$UltimoReciboEmpleado = $this->guardarReciboEmpleado($empleado, $fechaRecibo, $request);
 				
-				$existe = ReciboEmpleado::where([['idEmpleado','=',$empleado->id],['idTipoRecibo','=',$request->calculo], ['fechaRecibo','=',$recibo->fechaRecibo]])->first();
-				
-				if ($existe == null)
-					$recibo->save();
-				else
-				{
-					$dt = DetalleRecibo::where('idRecibo','=',$existe->id)->delete();
-					$existe->delete();
-					
-					$recibo->save();
-				}
-				//Obtengo último recibo guardado
-				$UltimoReciboEmpleado = ReciboEmpleado::where([['idEmpleado','=',$empleado->id],['idTipoRecibo','=',$request->calculo], ['fechaRecibo','=',$recibo->fechaRecibo]])->first();
-					
 				//Guarda detalles del recibo
 				foreach($datosRecibo as $dtr)
 				{
@@ -960,28 +909,10 @@ class HaberesController extends Controller
 				$datosRecibo->push($this->obtenerDetalle(21,$sueldoLiquido,'NA'));
 				
 				//Guarda encabezado del recibo
-				$recibo = new ReciboEmpleado;
-				$recibo->idEmpleado = $empleado->id;
-				$recibo->idTipoRecibo = $request->calculo;
-				$hoy = Carbon::today();
+				$fechaRecibo = $fechaBaja->year.'-'.$fechaBaja->month.'-'.$fechaBaja->day;
 					
-				$recibo->fechaRecibo = $fechaBaja->year.'-'.$fechaBaja->month.'-'.$fechaBaja->day;
-				$recibo->fechaPago = $hoy->year.'-'.$hoy->month.'-'.$hoy->day;
+				$UltimoReciboEmpleado = $this->guardarReciboEmpleado($empleado, $fechaRecibo, $request);
 				
-				$existe = ReciboEmpleado::where([['idEmpleado','=',$empleado->id],['idTipoRecibo','=',$request->calculo], ['fechaRecibo','=',$recibo->fechaRecibo]])->first();
-				
-				if ($existe == null)
-					$recibo->save();
-				else
-				{
-					$dt = DetalleRecibo::where('idRecibo','=',$existe->id)->delete();
-					$existe->delete();
-					
-					$recibo->save();
-				}
-				//Obtengo último recibo guardado
-				$UltimoReciboEmpleado = ReciboEmpleado::where([['idEmpleado','=',$empleado->id],['idTipoRecibo','=',$request->calculo], ['fechaRecibo','=',$recibo->fechaRecibo]])->first();
-					
 				//Guarda detalles del recibo
 				foreach($datosRecibo as $dtr)
 				{
@@ -1424,10 +1355,10 @@ class HaberesController extends Controller
 			 
 				$meses = $fechaInicio->diffInMonths($fecha);
 				
-				if ($meses >= 36 && $meses < 120)
-					$valorAntiguedad = $salMin * ((intval($meses / 12))/100);
-				elseif ($meses >= 120)
-					$valorAntiguedad = $salMin * 0.10;			
+				if ($meses >= 120)
+					$valorAntiguedad = $salMin * 0.10;
+				elseif 	($meses >= 36)
+					$valorAntiguedad = $salMin * ((intval($meses / 12))/100);		
 			}
 			elseif ($empleado->empresa->subGrupo == 1)
 			{//Calcula la antiguedad para el grupo 12.01
@@ -1832,6 +1763,34 @@ class HaberesController extends Controller
 		}
 		return $monto;
 	}
+	
+	private function guardarReciboEmpleado($empleado, $fechaRecibo, $request)
+	{
+		$recibo = new ReciboEmpleado;
+		$recibo->idEmpleado = $empleado->id;
+		$recibo->idTipoRecibo = $request->calculo;
+		$hoy = Carbon::today();
+
+		$recibo->fechaRecibo = $fechaRecibo;
+		$recibo->fechaPago = $hoy->year.'-'.$hoy->month.'-'.$hoy->day;
+		
+		$existe = ReciboEmpleado::where([['idEmpleado','=',$empleado->id],['idTipoRecibo','=',$request->calculo], ['fechaRecibo','=',$recibo->fechaRecibo]])->first();
+
+		if ($existe == null)
+			$recibo->save();
+		else
+		{
+			$dt = DetalleRecibo::where('idRecibo','=',$existe->id)->delete();
+			$existe->delete();
+			
+			$recibo->save();
+		}
+		
+		$reciboEmpleado = ReciboEmpleado::where([['idEmpleado','=',$empleado->id],['idTipoRecibo','=',$request->calculo], ['fechaRecibo','=',$recibo->fechaRecibo]])->first();
+		
+		return $reciboEmpleado;
+	}
+	
 	
 	private function diaFeriado($fecha){
 		$feriados=Feriado::All();
