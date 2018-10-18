@@ -1,4 +1,4 @@
-@extends('Administracion.useradmin')
+@extends('administracion.useradmin')
 
 @section('navbar')
 <a class="navbar-brand" href="#"><strong>ADMIN USUARIOS</strong></a>
