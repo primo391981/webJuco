@@ -1,8 +1,4 @@
 @extends('juridico.juridico')
-
-@section('navbar')
-<a class="navbar-brand" href="#"><strong>RECONOCIMIENTO DE TEXTO - OCR</strong></a>
-@endsection
                 
 @section('content')
 <br>
@@ -22,7 +18,7 @@
 		
 		<div class="panel panel-success text-muted">
 			<div class="panel-heading">
-				<h4><i class="fab fa-readme"></i> OCR </h4>				
+				<h4><i class="fas fa-wrench"></i> Reconocimineto de texto - OCR</h4>				
 			</div>
 			<div class="panel-body">
 				<form method="POST" action="{{ route('ocr.write') }}" class="form-horizontal" enctype="multipart/form-data">
@@ -30,7 +26,7 @@
 					<input type="file" name="archivo" required>
 			</div>
 			<div class="panel-footer">
-					<button type="submit" class="btn btn-primary btn-block"><i class="fas fa-check"></i> Confirmar</button>
+					<button type="submit" class="btn btn-success btn-block"><i class="fas fa-check"></i> Confirmar</button>
 				</form>
 			</div>
 		</div>

@@ -32,10 +32,10 @@
 						<thead>
 							<tr>
 								<th>#</th>
-								<th>Título</th>
-								<th>Texto</th>
-								<th>Archivo</th>
-								<th>Imagen</th>
+								<th>TITULO</th>
+								<th>TEXTO</th>
+								<th>ARCHIVO</th>
+								<th>IMAGEN</th>
 								<th></th>
 								<th></th>
 							</tr>

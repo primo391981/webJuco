@@ -18,7 +18,7 @@
 </div>					
 <div class="row">
 			  <div class="col-xs-12 col-sm-12 col-md-6 col-md-offset-3">
-				<div class="panel panel-info">
+				<div class="panel panel-primary">
 				  <div class="panel-heading text-center"><h1><i class="fas fa-users"></i> Usuarios</h1></div>
 				  <div class="panel-body">
 					<p>La administración de cuentas de usuario es una parte esencial para el funcionamiento y seguridad del sistema.<br>

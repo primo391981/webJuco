@@ -30,10 +30,7 @@
 </li>
 
 <li>
-    <a href="#"><i class="fas fa-wrench"></i> OCR Texto <i class="fas fa-caret-down"></i></a>
-		<ul class="nav nav-second-level">
-			 <li><a href="{{ route('ocr.read') }}"><i class="fab fa-readme"></i> Inicio</a></li>
-		</ul>
+    <a href="{{ route('ocr.read') }}"><i class="fas fa-wrench"></i> Texto OCR</a>
 </li>
 
 @if(Auth::user()->hasRole('juridicoAdmin'))
