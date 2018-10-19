@@ -16,56 +16,56 @@ class UsersTableSeeder extends Seeder
             'name' => 'superadmin',
             'email' => 'superadmin@mail.com',
             'password' => bcrypt('123456'),
-			'nombre' => 'Gilberto',
-			'apellido' => 'Gil',
+			'nombre' => 'Administrador',
+			'apellido' => 'Usuarios',
         ]);
 		
 		DB::table('admin_users')->insert([
             'name' => 'cms',
             'email' => 'cms@mail.com',
             'password' => bcrypt('123456'),
-			'nombre' => 'Luis',
-			'apellido' => 'Fonsi',
+			'nombre' => 'Jorge',
+			'apellido' => 'Perez',
         ]);
 		
 		DB::table('admin_users')->insert([
             'name' => 'juridico',
             'email' => 'juridico@mail.com',
             'password' => bcrypt('123456'),
-			'nombre' => 'Lolo',
-			'apellido' => 'Estoyanof',
+			'nombre' => 'Ana',
+			'apellido' => 'Lopez',
         ]);
 		
 		DB::table('admin_users')->insert([
             'name' => 'contable',
             'email' => 'contable@mail.com',
             'password' => bcrypt('123456'),
-			'nombre' => 'Kami',
-			'apellido' => 'Rachmanj',
+			'nombre' => 'Luis',
+			'apellido' => 'Rosas',
         ]);
 		
 		DB::table('admin_users')->insert([
             'name' => 'admin',
             'email' => 'admin@mail.com',
             'password' => bcrypt('123456'),
-			'nombre' => 'Thalia',
-			'apellido' => 'Sodi',
+			'nombre' => 'Pedro',
+			'apellido' => 'Rocha',
         ]);
 		
 		DB::table('admin_users')->insert([
             'name' => 'readJuridico',
-            'email' => 'tevez@mail.com',
+            'email' => 'csosa@mail.com',
             'password' => bcrypt('123456'),
 			'nombre' => 'Carlos',
-			'apellido' => 'Tevez',
+			'apellido' => 'Sosa',
         ]);
 		
 		DB::table('admin_users')->insert([
             'name' => 'writeJuridico',
-            'email' => 'saturno@mail.com',
+            'email' => 'sgomez@mail.com',
             'password' => bcrypt('123456'),
 			'nombre' => 'Sergio',
-			'apellido' => 'Saturno',
+			'apellido' => 'Gómez',
         ]);
     }
 }
