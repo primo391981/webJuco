@@ -426,7 +426,7 @@ class HaberesController extends Controller
 		
 //VER VISTA contable.haberes.listaEmpleadosRecibos - mostrar viaticos/adelantos/pagosextras/fictos
 		return view('contable.haberes.listaEmpleadosRecibos', ['empleadosRecibo' => $empleadosRecibo,'fechaMes'=>$fecha->month,'fechaAnio'=>$fecha->year,'calculo'=>$tipoRecibo]);
-				
+	
     }
 
 	//Guarda los datos del cálculo de aguinaldos con los detalles correspondientes al recibo del mismo.
@@ -611,7 +611,7 @@ class HaberesController extends Controller
 				//Cálculo de descuento de FRL
 				$porcFRL = $this->obtenerValorActual($fecha, 'FRL');
 				$descFRL = $salarioNominal * ($porcFRL / 100);
-				$datosRecibo->push($this->obtenerDetalle(18,0,$porcFRL));
+				$datosRecibo->push($this->obtenerDetalle(24,0,$porcFRL));
 				
 				//Aportes Seguridad Social
 				$aportesSegSoc = $descFonasa + $descBPS + $descFRL;
@@ -622,10 +622,10 @@ class HaberesController extends Controller
 				else
 					$salVacacional = ($salarioNominal - $aportesSegSoc) * $diasLicencia;
 				
-				$datosRecibo->push($this->obtenerDetalle(24,$salVacacional,'NA'));
-				$datosRecibo->push($this->obtenerDetalle(12,$salVacacional,'NA'));
-				$datosRecibo->push($this->obtenerDetalle(13,$salVacacional,'NA'));
-				$datosRecibo->push($this->obtenerDetalle(21,$salVacacional,'NA'));
+				$datosRecibo->push($this->obtenerDetalle(14,$salVacacional,'NA'));
+				$datosRecibo->push($this->obtenerDetalle(18,$salVacacional,'NA'));
+				$datosRecibo->push($this->obtenerDetalle(19,$salVacacional,'NA'));
+				$datosRecibo->push($this->obtenerDetalle(27,$salVacacional,'NA'));
 				
 				//Guarda encabezado del recibo
 				$fechaRecibo = $fecha->year.'-'.$fecha->month.'-'.$request->input('diac'.$i);
@@ -642,7 +642,7 @@ class HaberesController extends Controller
 							
 						$detalleRecibo->monto=$dtr[1];	
 						
-						if($dtr[0]==14 || $dtr[0]==15 || $dtr[0]==18)
+						if($dtr[0]==20} || $dtr[0]==21 || $dtr[0]==24)
 						{//BPS/Fonasa/FRL
 							$detalleRecibo->porcentaje=$dtr[2];						
 						}
@@ -652,7 +652,8 @@ class HaberesController extends Controller
 						$detalleRecibo->save();	
 					}
 				}
-				
+		/////REVISADO CODIGOS DESCRIPCION
+		
 				$empleadosRecibo->push($UltimoReciboEmpleado);
 			}
 		}
