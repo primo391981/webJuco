@@ -284,21 +284,21 @@ class HaberesController extends Controller
 				
 				$porcFonasa = $valoresFonasa[0];
 				$descFonasa = $valoresFonasa[1];
-				$datosRecibo->push($this->obtenerDetalle(15,$descFonasa,$porcFonasa));
+				$datosRecibo->push($this->obtenerDetalle(21,$descFonasa,$porcFonasa));
 				
 				//Cálculo de descuento de BPS
 				$porcBPS = $this->obtenerValorActual($fecha, 'BPS');
 				$descBPS = $montoSalarioGravado * ($porcBPS / 100);
-				$datosRecibo->push($this->obtenerDetalle(14,$descBPS,$porcBPS));
+				$datosRecibo->push($this->obtenerDetalle(20,$descBPS,$porcBPS));
 				
 				//Cálculo de descuento de FRL
 				$porcFRL = $this->obtenerValorActual($fecha, 'FRL');
 				$descFRL = $montoSalarioGravado * ($porcFRL / 100);
-				$datosRecibo->push($this->obtenerDetalle(18,$descFRL,$porcFRL));
+				$datosRecibo->push($this->obtenerDetalle(24,$descFRL,$porcFRL));
 				
 				//Obtener Salario Vacacional del mes y sumarlo al Salario para cálculo de IRPF
 				$montoSalVacacional = $this->obtenerMontoSalVacaional($fecha,$empleado);
-				$datosRecibo->push($this->obtenerDetalle(24,$montoSalVacacional,'NA'));
+				$datosRecibo->push($this->obtenerDetalle(14,$montoSalVacacional,'NA'));
 				
 				//Subtotal No Gravado
 				$montoSalario[43] += $montoSalVacacional;
@@ -341,24 +341,24 @@ class HaberesController extends Controller
 					$deducionesIRPF=0;
 				}
 				
-				$datosRecibo->push($this->obtenerDetalle(16,$descIRPFPrimario,'NA'));
-				$datosRecibo->push($this->obtenerDetalle(17,$deducionesIRPF,'NA'));
+				$datosRecibo->push($this->obtenerDetalle(22,$descIRPFPrimario,'NA'));
+				$datosRecibo->push($this->obtenerDetalle(23,$deducionesIRPF,'NA'));
 				
 				//Adelantos de empleado
 				$montoAdelanto=$this->obtenerPagos($fecha,$empleado,2);
-				$datosRecibo->push($this->obtenerDetalle(19,$montoAdelanto,'NA'));
+				$datosRecibo->push($this->obtenerDetalle(25,$montoAdelanto,'NA'));
 				
 				//Viaticos empleado
 				$montoViatico=$this->obtenerPagos($fecha,$empleado,1);
-				$datosRecibo->push($this->obtenerDetalle(10,$montoViatico,'NA'));
+				$datosRecibo->push($this->obtenerDetalle(16,$montoViatico,'NA'));
 				
 				//Suma de descuentos
 				$sumaDescuentos=$aportesSegSoc + $descIRPF + $montoAdelanto;
-				$datosRecibo->push($this->obtenerDetalle(20,$sumaDescuentos,'NA'));
+				$datosRecibo->push($this->obtenerDetalle(26,$sumaDescuentos,'NA'));
 				
 				//Cálculo Sueldo Luíqido
 				$sueldoLiquido = $montoSalario[46] - $sumaDescuentos - $montoViatico;//Agregar Fictos
-				$datosRecibo->push($this->obtenerDetalle(21,$sueldoLiquido,'NA'));
+				$datosRecibo->push($this->obtenerDetalle(27,$sueldoLiquido,'NA'));
 				
 				//Guarda encabezado del recibo
 				$fechaRecibo = $fecha->year.'-'.$fecha->month.'-01';
@@ -379,14 +379,14 @@ class HaberesController extends Controller
 						*/
 						$detalleRecibo->idConceptoRecibo=$dtr[0];
 						
-						if($dtr[0] == 9)
+						if($dtr[0] == 11)
 						{//Días de Licencia Gozada
 							$detalleRecibo->cantDias = $dtr[2];
 						}
 						else
 							$detalleRecibo->cantDias = 0;
 						
-						if(($dtr[0]>=2 && $dtr[0]<=7) || $dtr[0]==22)
+						if(($dtr[0]>=3 && $dtr[0]<=9) || $dtr[0]==2)
 						{
 							$detalleRecibo->cantHoras = $dtr[2];
 						}
@@ -397,7 +397,7 @@ class HaberesController extends Controller
 						
 						$detalleRecibo->monto = $dtr[1];	
 						
-						if($dtr[0]==14 || $dtr[0]==15 || $dtr[0]==18)
+						if($dtr[0]==20 || $dtr[0]==21 || $dtr[0]==24)
 						{//BPS/Fonasa/FRL
 							$detalleRecibo->porcentaje = $dtr[2];						
 						}
@@ -407,7 +407,7 @@ class HaberesController extends Controller
 						$detalleRecibo->save();	
 					}
 				}
-				
+			/////REVISADO CODIGOS DESCRIPCION	
 				$empleadosRecibo->push($UltimoReciboEmpleado);
 			}
 		}
@@ -1413,7 +1413,7 @@ class HaberesController extends Controller
 			$salarios->push(3);
 			if ($horasRecibo[0] < 0)
 			{//Resta de valor por faltas
-				$salarios->push(22);
+				$salarios->push(2);
 			}
 			else
 				$salarios->push(0);
@@ -1442,7 +1442,7 @@ class HaberesController extends Controller
 		$salarios->push(3);
 		if ($horasRecibo[8] > 0)
 		{//Suma el valor de Días de Licencia Gozadas en el mes
-			$salarios->push(9);
+			$salarios->push(11);
 		}
 		else			
 			$salarios->push(0);				
@@ -1457,7 +1457,7 @@ class HaberesController extends Controller
 			$salNominalGravado += ($empleado->valorHora) * $horasRecibo[2];
 			
 			$salarios->push(3);
-			$salarios->push(2);
+			$salarios->push(3);
 			$salarios->push(($empleado->valorHora) * $horasRecibo[2]);
 			$salarios->push($horasRecibo[2]);
 		}
@@ -1471,7 +1471,7 @@ class HaberesController extends Controller
 			$salNominalGravado += ($empleado->valorHora * 2) * $horasRecibo[2];
 			
 			$salarios->push(3);
-			$salarios->push(2);
+			$salarios->push(3);
 			$salarios->push(($empleado->valorHora * 2) * $horasRecibo[2]);
 			$salarios->push($horasRecibo[2]);
 		}
@@ -1480,7 +1480,7 @@ class HaberesController extends Controller
 			$salNominalGravado += ($empleado->valorHora * 2) * $horasRecibo[1];
 			
 			$salarios->push(3);
-			$salarios->push(3);
+			$salarios->push(4);
 			$salarios->push(($empleado->valorHora * 2) * $horasRecibo[1]);
 			$salarios->push($horasRecibo[1]);
 			
@@ -1488,7 +1488,7 @@ class HaberesController extends Controller
 			$salNominalGravado += ($empleado->valorHora * 2.5) * $horasRecibo[3];
 			
 			$salarios->push(3);
-			$salarios->push(4);
+			$salarios->push(5);
 			$salarios->push(($empleado->valorHora * 2.5) * $horasRecibo[3]);			
 			$salarios->push($horasRecibo[3]);
 			
@@ -1496,21 +1496,21 @@ class HaberesController extends Controller
 			$salNominalGravado += ($empleado->valorHora * 2 * 0.175) * $horasRecibo[4];
 			
 			$salarios->push(3);
-			$salarios->push(5);
+			$salarios->push(7);
 			$salarios->push(($empleado->valorHora * 2 * 0.175) * $horasRecibo[4]);
 			$salarios->push($horasRecibo[4]);
 			
 			$salNominalGravado += ($empleado->valorHora * 0.20) * $horasRecibo[5];
 			
 			$salarios->push(3);
-			$salarios->push(6);
+			$salarios->push(8);
 			$salarios->push(($empleado->valorHora * 0.20) * $horasRecibo[5]);
 			$salarios->push($horasRecibo[5]);
 			
 			$salNominalGravado += ($empleado->valorHora * 2 * 0.175) * $horasRecibo[6];
 			
 			$salarios->push(3);
-			$salarios->push(7);
+			$salarios->push(9);
 			$salarios->push(($empleado->valorHora * 2 * 0.175) * $horasRecibo[6]);
 			$salarios->push($horasRecibo[6]);
 			
@@ -1518,7 +1518,7 @@ class HaberesController extends Controller
 			$salNominalGravado += $montoAntiguedad;
 			
 			$salarios->push(2);
-			$salarios->push(8);
+			$salarios->push(10);
 			$salarios->push($montoAntiguedad);
 			
 			//Obtiene los pagos Viáticos/Partidas Extras/Fictos			
@@ -1539,15 +1539,15 @@ class HaberesController extends Controller
 			}
 		
 		$salarios->push(2);
-		$salarios->push(11);
+		$salarios->push(17);
 		$salarios->push($salNominalGravado);
 		
 		$salarios->push(2);
-		$salarios->push(12);
+		$salarios->push(18);
 		$salarios->push($salNominalNoGravado);
 		
 		$salarios->push(2);
-		$salarios->push(13);
+		$salarios->push(19);
 		$salarios->push($salNominalNoGravado+$salNominalGravado);
 	
 		return $salarios;
