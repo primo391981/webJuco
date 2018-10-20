@@ -15,7 +15,7 @@ class ReciboEmpleado extends Model
     }
 	
 	public function detallesRecibos(){
-		return $this->hasMany('App\Contable\DetalleRecibo','idRecibo');
+		return $this->hasMany('App\Contable\DetalleRecibo','idRecibo')->orderBy('idConceptoRecibo');
 	}
 	
 	public function empleado(){

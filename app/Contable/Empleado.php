@@ -29,4 +29,8 @@ use SoftDeletes;
 		return $this->belongsTo('App\Contable\Cargo','idCargo');
 	}
 	
+	public function pagos(){
+		return $this->hasMany('App\Contable\Pago','idEmpleado');
+	}
+	
 }

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Empresa;
 use App\Contable\Empleado;
 use App\Contable\Pago;
+use App\Contable\TipoPago;
 use App\Contable\TipoRecibo;
 use App\Contable\TipoHora;
 use App\Contable\RegistroHora;
@@ -274,7 +275,7 @@ class HaberesController extends Controller
 				$montoSalario = $this->obtenerMontosSalarioNominal($fecha, $empleado, $cargo, $horasRecibo, $montoAntiguedad);
 				
 				//Monto del salario Gravado	
-				$montoSalarioGravado = $montoSalario[40];
+				$montoSalarioGravado = $montoSalario[44];
 				//Descuentos
 				//Valor de BPC del mes a calcular
 				$valorBPC = $this->obtenerValorActual($fecha, 'BPC');
@@ -301,12 +302,12 @@ class HaberesController extends Controller
 				$datosRecibo->push($this->obtenerDetalle(14,$montoSalVacacional,'NA'));
 				
 				//Subtotal No Gravado
-				$montoSalario[43] += $montoSalVacacional;
+				$montoSalario[47] += $montoSalVacacional;
 				//Subtotal Nominal
-				$montoSalario[46] += $montoSalVacacional;
+				$montoSalario[50] += $montoSalVacacional;
 				
 				//Monto del salario SubTotal Nominal
-				$montoSubTotalNominal = $montoSalario[46];
+				$montoSubTotalNominal = $montoSalario[50];
 	
 				//Carga Detalles del recibo
 				$cant = count($montoSalario);					
@@ -357,7 +358,7 @@ class HaberesController extends Controller
 				$datosRecibo->push($this->obtenerDetalle(26,$sumaDescuentos,'NA'));
 				
 				//Cálculo Sueldo Luíqido
-				$sueldoLiquido = $montoSalario[46] - $sumaDescuentos - $montoViatico;//Agregar Fictos
+				$sueldoLiquido = $montoSalario[50] - $sumaDescuentos - $montoViatico;//Agregar Fictos
 				$datosRecibo->push($this->obtenerDetalle(27,$sueldoLiquido,'NA'));
 				
 				//Guarda encabezado del recibo
@@ -386,7 +387,7 @@ class HaberesController extends Controller
 						else
 							$detalleRecibo->cantDias = 0;
 						
-						if(($dtr[0]>=3 && $dtr[0]<=9) || $dtr[0]==2)
+						if($dtr[0]>=2 && $dtr[0]<=9)
 						{
 							$detalleRecibo->cantHoras = $dtr[2];
 						}
@@ -408,11 +409,21 @@ class HaberesController extends Controller
 					}
 				}
 			/////REVISADO CODIGOS DESCRIPCION	
-				$empleadosRecibo->push($UltimoReciboEmpleado);
+				$empleadoPago = collect([]);
+				
+				$empleadoPago->push($UltimoReciboEmpleado);
+				
+				$tipoPago = TipoPago::All();
+				foreach($tipoPago as $tp)
+				{
+					$empleadoPago->push($UltimoReciboEmpleado->empleado->pagos()->where([['fecha','=',$fechaRecibo], ['idTipoPago','=',$tp->id]])->get());
+				}
+				
+				$empleadosRecibo->push($empleadoPago);
 			}
 		}
 		$tipoRecibo = TipoRecibo::find($request->calculo);
-		
+		dd($empleadosRecibo);
 		return view('contable.haberes.listaEmpleadosRecibos', ['empleadosRecibo' => $empleadosRecibo,'fechaMes'=>$fecha->month,'fechaAnio'=>$fecha->year,'calculo'=>$tipoRecibo]);
 				
     }
@@ -1421,7 +1432,6 @@ class HaberesController extends Controller
 			$salNominalGravado += ($empleado->valorHora) * $horasRecibo[0];
 			$salarios->push(($empleado->valorHora) * $horasRecibo[0]);
 			$salarios->push($horasRecibo[0]);
-			
 		}
 		else
 		{//empleado jornalero
@@ -1514,6 +1524,13 @@ class HaberesController extends Controller
 			$salarios->push(($empleado->valorHora * 2 * 0.175) * $horasRecibo[6]);
 			$salarios->push($horasRecibo[6]);
 			
+			$salNominalGravado += $empleado->valorHora * $horasRecibo[7];
+			
+			$salarios->push(3);
+			$salarios->push(6);
+			$salarios->push($empleado->valorHora * $horasRecibo[7]);
+			$salarios->push($horasRecibo[7]);
+			
 			//Antigüedad
 			$salNominalGravado += $montoAntiguedad;
 			
@@ -1521,8 +1538,9 @@ class HaberesController extends Controller
 			$salarios->push(10);
 			$salarios->push($montoAntiguedad);
 			
-			//Obtiene los pagos Viáticos/Partidas Extras/Fictos			
-			$pagos=Pago::where([['idEmpleado','=',$empleado->id],['fecha','=',$fecha]])->get();
+			//Obtiene los pagos Viáticos/Partidas Extras/Fictos	
+			
+			$pagos = Pago::where([['idEmpleado','=',$empleado->id],['fecha','=',$fecha->year.'-'.$fecha->month.'-01']])->get();
 			//Recorre Pagos
 			foreach($pagos as $p)
 			{
@@ -1535,7 +1553,7 @@ class HaberesController extends Controller
 					}
 					else
 						$salNominalNoGravado += $p->monto;
-				}				
+				}
 			}
 		
 		$salarios->push(2);

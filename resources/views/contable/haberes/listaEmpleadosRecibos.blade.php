@@ -34,13 +34,13 @@
 							</tr>
 						</thead>
 						<tbody>
-						@foreach($empleadosRecibo as $empRecibo)						
+						@for($i=0; $i < $empleadosRecibo->count(); $i++)		
 							<tr>
-								<td>{{$empRecibo->empleado->persona->tipoDoc->nombre}} - {{$empRecibo->empleado->persona->documento}}</td>
-								<td>{{$empRecibo->empleado->persona->nombre}} {{$empRecibo->empleado->persona->apellido}}</td>
+								<td>{{$empleadosRecibo[$i][0]->empleado->persona->tipoDoc->nombre}} - {{$empleadosRecibo[$i][0]->empleado->persona->documento}}</td>
+								<td>{{$empleadosRecibo[$i][0]->empleado->persona->nombre}} {{$empleadosRecibo[$i][0]->empleado->persona->apellido}}</td>
 								<td>
-									<button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal{{$empRecibo->id}}"><i class="fas fa-info-circle"></i></button>
-									 	 <div class="modal fade" id="modal{{$empRecibo->id}}" role="dialog">
+									<button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal{{$empleadosRecibo[$i][0]->id}}"><i class="fas fa-info-circle"></i></button>
+									 	 <div class="modal fade" id="modal{{$empleadosRecibo[$i][0]->id}}" role="dialog">
 											<div class="modal-dialog modal-lg">
 											  <div class="modal-content">
 												<div class="modal-header">
@@ -50,50 +50,50 @@
 												<div class="modal-body">
 													<div class="row">
 														<div class="col-xs-12">
-															<p>Empresa: {{$empRecibo->empleado->empresa->razonSocial}} / {{$empRecibo->empleado->empresa->nombreFantasia}}</p>
-															<p>Domicilio: {{$empRecibo->empleado->empresa->domicilio}}</p>															
+															<p>Empresa: {{$empleadosRecibo[$i][0]->empleado->empresa->razonSocial}} / {{$empleadosRecibo[$i][0]->empleado->empresa->nombreFantasia}}</p>
+															<p>Domicilio: {{$empleadosRecibo[$i][0]->empleado->empresa->domicilio}}</p>															
 														</div>
 													</div>
 													<div class="row">
 														<div class="col-xs-6">
-															<p>Número BPS: {{$empRecibo->empleado->empresa->numBps}}</p>
+															<p>Número BPS: {{$empleadosRecibo[$i][0]->empleado->empresa->numBps}}</p>
 														</div>
 														<div class="col-xs-6">
-															<p>RUT: {{$empRecibo->empleado->empresa->rut}}</p>
+															<p>RUT: {{$empleadosRecibo[$i][0]->empleado->empresa->rut}}</p>
 														</div>
 													</div>
 													<div class="row">
 														<div class="col-xs-4">
-															<p>Número MTSS: {{$empRecibo->empleado->empresa->numMtss}}</p>
+															<p>Número MTSS: {{$empleadosRecibo[$i][0]->empleado->empresa->numMtss}}</p>
 														</div>
 														<div class="col-xs-4">
-															<p>Grupo: {{$empRecibo->empleado->empresa->grupo}}</p>
+															<p>Grupo: {{$empleadosRecibo[$i][0]->empleado->empresa->grupo}}</p>
 														</div>
 														<div class="col-xs-4">
-															<p>Subgrupo:{{$empRecibo->empleado->empresa->subGrupo}}</p>
+															<p>Subgrupo:{{$empleadosRecibo[$i][0]->empleado->empresa->subGrupo}}</p>
 														</div>
 													</div>
 													<div class="row">
 														<div class="col-xs-12">
-															<p>B.S.E: {{$empRecibo->empleado->empresa->numBse}}</p>															
+															<p>B.S.E: {{$empleadosRecibo[$i][0]->empleado->empresa->numBse}}</p>															
 														</div>
 													</div>	
 													<hr>
 													
 													<div class="row">
 														<div class="col-xs-12">
-															<p>Empleado: {{$empRecibo->empleado->persona->tipoDoc->nombre}} - {{$empRecibo->empleado->persona->documento}} / {{$empRecibo->empleado->persona->nombre}} {{$empRecibo->empleado->persona->apellido}}</p>															
+															<p>Empleado: {{$empleadosRecibo[$i][0]->empleado->persona->tipoDoc->nombre}} - {{$empleadosRecibo[$i][0]->empleado->persona->documento}} / {{$empleadosRecibo[$i][0]->empleado->persona->nombre}} {{$empleadosRecibo[$i][0]->empleado->persona->apellido}}</p>															
 														</div>														
 													</div>
 													<div class="row">
 														<div class="col-xs-4">
-															<p>Fecha Ingreso: {{$empRecibo->empleado->fechaDesde}}</p>
+															<p>Fecha Ingreso: {{$empleadosRecibo[$i][0]->empleado->fechaDesde}}</p>
 														</div>
 														<div class="col-xs-4">
-															<p>Cargo: {{$empRecibo->empleado->cargo->nombre}}</p>
+															<p>Cargo: {{$empleadosRecibo[$i][0]->empleado->cargo->nombre}}</p>
 														</div>
 														<div class="col-xs-4">
-															<p>{{$empRecibo->empleado->cargo->remuneracion->nombre}} / $ {{$empRecibo->empleado->monto}} / Valor Hora: {{$empRecibo->empleado->valorHora}}</p>
+															<p>{{$empleadosRecibo[$i][0]->empleado->cargo->remuneracion->nombre}} / $ {{$empleadosRecibo[$i][0]->empleado->monto}} / Valor Hora: {{$empleadosRecibo[$i][0]->empleado->valorHora}}</p>
 														</div>
 													</div>
 													<hr>
@@ -108,24 +108,26 @@
 														<div class="col-xs-3"> HORAS </div>
 													</div>
 													
-													@foreach($empRecibo->detallesRecibos as $dt)
+													@foreach($empleadosRecibo[$i][0]->detallesRecibos as $dt)
 													<div class="row">
-														@if ($loop->last)
-														<div class="col-xs-4"><p><strong>{{$dt->conceptoRecibo->id}} - {{$dt->conceptoRecibo->nombre}} 
-															@if(isset($dt->porcentaje)) 
-																/ {{$dt->porcentaje}} 
-															@endif</strong></p></div>
-														<div class="col-xs-3"><p>{{$dt->cantDias}}</p></div>
-														<div class="col-xs-3"><p>{{$dt->cantHoras}}</p></div>
-														<div class="col-xs-2"><p><strong>$ {{$dt->monto}}</strong></p></div>
-														@else
-														<div class="col-xs-4"><p>{{$dt->conceptoRecibo->id}} -  {{$dt->conceptoRecibo->nombre}} 
-															@if(isset($dt->porcentaje)) 
-																/ {{$dt->porcentaje}} 
-															@endif</p></div>
-														<div class="col-xs-3"><p>{{$dt->cantDias}}</p></div>
-														<div class="col-xs-3"><p>{{$dt->cantHoras}}</p></div>
-														<div class="col-xs-2"><p>$ {{$dt->monto}}</p></div>
+														@if($dt->monto != 0)
+															@if ($loop->last)
+															<div class="col-xs-4"><p><strong>{{$dt->conceptoRecibo->id}} - {{$dt->conceptoRecibo->nombre}} 
+																@if(isset($dt->porcentaje)) 
+																	/ {{$dt->porcentaje}} 
+																@endif</strong></p></div>
+															<div class="col-xs-3"><p>{{$dt->cantDias}}</p></div>
+															<div class="col-xs-3"><p>{{$dt->cantHoras}}</p></div>
+															<div class="col-xs-2"><p><strong>$ {{$dt->monto}}</strong></p></div>
+															@else
+															<div class="col-xs-4"><p>{{$dt->conceptoRecibo->id}} -  {{$dt->conceptoRecibo->nombre}} 
+																@if(isset($dt->porcentaje)) 
+																	/ {{$dt->porcentaje}} 
+																@endif</p></div>
+															<div class="col-xs-3"><p>{{$dt->conceptoRecibo->id < 17 ? $dt->cantDias : ''}}</p></div>
+															<div class="col-xs-3"><p>{{$dt->conceptoRecibo->id < 17 ? $dt->cantHoras : ''}}</p></div>
+															<div class="col-xs-2"><p>$ {{$dt->monto}}</p></div>
+															@endif
 														@endif
 														
 													</div>
@@ -163,7 +165,7 @@
 										  </div>										  
 								</td>	
 							</tr>
-						@endforeach
+						@endfor
 						</tbody>
 				</table>
 				</div>
