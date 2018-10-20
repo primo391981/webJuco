@@ -423,7 +423,8 @@ class HaberesController extends Controller
 			}
 		}
 		$tipoRecibo = TipoRecibo::find($request->calculo);
-		//VER VISTA contable.haberes.listaEmpleadosRecibos - mostrar viaticos/adelantos/pagosextras/fictos
+		
+//VER VISTA contable.haberes.listaEmpleadosRecibos - mostrar viaticos/adelantos/pagosextras/fictos
 		return view('contable.haberes.listaEmpleadosRecibos', ['empleadosRecibo' => $empleadosRecibo,'fechaMes'=>$fecha->month,'fechaAnio'=>$fecha->year,'calculo'=>$tipoRecibo]);
 				
     }
@@ -491,11 +492,11 @@ class HaberesController extends Controller
 				//Monto del aguinaldo.
 				$montoAguinaldo = $montoTotal / 12;
 				//Aguinaldo
-				$datosRecibo->push($this->obtenerDetalle(23,$montoAguinaldo,'NA'));
-				//Totales
-				$datosRecibo->push($this->obtenerDetalle(11,$montoAguinaldo,'NA'));
-				$datosRecibo->push($this->obtenerDetalle(12,0,'NA'));
 				$datosRecibo->push($this->obtenerDetalle(13,$montoAguinaldo,'NA'));
+				//Totales
+				$datosRecibo->push($this->obtenerDetalle(17,$montoAguinaldo,'NA'));
+				$datosRecibo->push($this->obtenerDetalle(18,0,'NA'));
+				$datosRecibo->push($this->obtenerDetalle(19,$montoAguinaldo,'NA'));
 				
 				//Cálculo de Descuentos
 				//Valor de BPC del mes a calcular
@@ -506,27 +507,27 @@ class HaberesController extends Controller
 				
 				$porcFonasa = $valoresFonasa[0];
 				$descFonasa = $valoresFonasa[1];
-				$datosRecibo->push($this->obtenerDetalle(15,$descFonasa,$porcFonasa));
+				$datosRecibo->push($this->obtenerDetalle(21,$descFonasa,$porcFonasa));
 				
 				//Cálculo de descuento de BPS
 				$porcBPS = $this->obtenerValorActual($fecha, 'BPS');
 				$descBPS = $montoAguinaldo * ($porcBPS / 100);
-				$datosRecibo->push($this->obtenerDetalle(14,$descBPS,$porcBPS));
+				$datosRecibo->push($this->obtenerDetalle(20,$descBPS,$porcBPS));
 				
 				//Cálculo de descuento de FRL
 				$porcFRL = $this->obtenerValorActual($fecha, 'FRL');
 				$descFRL = $montoAguinaldo * ($porcFRL / 100);
-				$datosRecibo->push($this->obtenerDetalle(18,$descFRL,$porcFRL));
+				$datosRecibo->push($this->obtenerDetalle(24,$descFRL,$porcFRL));
 				
 				//Cálculo de aportes Seguridad Social
 				$aportesSegSoc = $descFonasa + $descBPS + $descFRL;
 				
 				//Suma de descuentos
-				$datosRecibo->push($this->obtenerDetalle(20,$aportesSegSoc,'NA'));
+				$datosRecibo->push($this->obtenerDetalle(26,$aportesSegSoc,'NA'));
 				
 				//Cálculo Aguinaldo Luíqido
 				$aguinaldoLiquido = $montoAguinaldo - $aportesSegSoc;
-				$datosRecibo->push($this->obtenerDetalle(21,$aguinaldoLiquido,'NA'));
+				$datosRecibo->push($this->obtenerDetalle(27,$aguinaldoLiquido,'NA'));
 				
 				//Guarda encabezado del recibo
 				$fecha->addDay();
@@ -550,7 +551,7 @@ class HaberesController extends Controller
 							
 						$detalleRecibo->monto=$dtr[1];	
 						
-						if($dtr[0]==14 || $dtr[0]==15 || $dtr[0]==18)
+						if($dtr[0]==20 || $dtr[0]==21 || $dtr[0]==24)
 						{//BPS/Fonasa/FRL
 							$detalleRecibo->porcentaje=$dtr[2];						
 						}
@@ -560,12 +561,13 @@ class HaberesController extends Controller
 						$detalleRecibo->save();	
 					}
 				}
-				
+	/////REVISADO CODIGOS DESCRIPCION	
+	
 				$empleadosRecibo->push($UltimoReciboEmpleado);
 			}
 		}
 		$tipoRecibo = TipoRecibo::find($request->calculo);
-		
+	
 		return view('contable.haberes.listaEmpleadosRecibos', ['empleadosRecibo' => $empleadosRecibo,'fechaMes'=>$fecha->month,'fechaAnio'=>$fecha->year,'calculo'=>$tipoRecibo]);
 	}
 	
@@ -599,12 +601,12 @@ class HaberesController extends Controller
 				
 				$porcFonasa = $valoresFonasa[0];
 				$descFonasa = $valoresFonasa[1];
-				$datosRecibo->push($this->obtenerDetalle(15,0,$porcFonasa));
+				$datosRecibo->push($this->obtenerDetalle(21,0,$porcFonasa));
 				
 				//Cálculo de descuento de BPS
 				$porcBPS = $this->obtenerValorActual($fecha, 'BPS');
 				$descBPS = $salarioNominal * ($porcBPS / 100);
-				$datosRecibo->push($this->obtenerDetalle(14,0,$porcBPS));
+				$datosRecibo->push($this->obtenerDetalle(20,0,$porcBPS));
 				
 				//Cálculo de descuento de FRL
 				$porcFRL = $this->obtenerValorActual($fecha, 'FRL');
