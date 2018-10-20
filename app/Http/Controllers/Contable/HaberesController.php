@@ -423,7 +423,7 @@ class HaberesController extends Controller
 			}
 		}
 		$tipoRecibo = TipoRecibo::find($request->calculo);
-		dd($empleadosRecibo);
+		//VER VISTA contable.haberes.listaEmpleadosRecibos - mostrar viaticos/adelantos/pagosextras/fictos
 		return view('contable.haberes.listaEmpleadosRecibos', ['empleadosRecibo' => $empleadosRecibo,'fechaMes'=>$fecha->month,'fechaAnio'=>$fecha->year,'calculo'=>$tipoRecibo]);
 				
     }
