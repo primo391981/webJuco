@@ -392,7 +392,8 @@ class PagoController extends Controller
 	{		
 		$empleado = Empleado::find($idEmpleado);
 		$empresa = Empresa::where('id','=',$empleado->idEmpresa)->first();			
-		$personas = $empresa->personas;
+		$personas = $empresa->personas()->where('habilitado','=',1)->get();
+		
 		$habilitadas=collect([]);
 		$cantHabilitados = 0;
 		

@@ -1,16 +1,8 @@
 @extends('cms.cms')
-
-
-@if(1==1)
-	@section('ayuda')
-		<li class="nav-item"> 
-			<button class="btn btn-link" data-toggle="modal" data-target="#modalAyuda" title="Ayuda"><i class="fas fa-question-circle"></i> </button>
-		</li>
-	@endsection
 	@section('contentAyuda')
 		<h1>Ayuda para creación de contenedor</h1>
 	@endsection
-@endif	
+	
 
 @section('content')
 @if (Session::has('success'))

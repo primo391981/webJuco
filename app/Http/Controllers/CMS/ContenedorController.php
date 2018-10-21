@@ -4,6 +4,7 @@ namespace App\Http\Controllers\CMS;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
+use Route;
 
 //Se debe indicar qué modelos ("clases") van a utilizarse
 use App\CMS\Contenedor;
@@ -15,15 +16,13 @@ use App\CMS\Contenido;
 
 class ContenedorController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    //Listado de contenedores activos
     public function index()
     {
 		$contenedores = Contenedor::orderBy("orden_menu")->get();
-				
+			
+		$routeName = Route::currentRouteName();
+
 		$subtitulo = 'Lista de Contenedores';
 		//se retorna la vista "index" 
 		return view('cms.contenedor.listaContenedores', ['subtitulo' => $subtitulo, 'contenedores' => $contenedores]);
@@ -36,11 +35,7 @@ class ContenedorController extends Controller
 		return view('cms.contenedor.listaContenedoresInactivos', ['contenedores' => $contenedores]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    //Crea un nuevo contenedor
     public function create()
     {
         //Redirige al formulario de agregar contenedor.

@@ -86,7 +86,10 @@
             <!-- /.navbar-header -->
 
             <ul class="nav navbar-top-links navbar-right">
-					@yield('ayuda')
+					<li class="nav-item"> 
+						<button class="btn btn-link" data-toggle="modal" data-target="#modalAyuda" title="Ayuda"><i class="fas fa-question-circle"></i> </button>
+					</li>
+					
 					<li class="nav-item"> 
 						<button class="btn btn-link" data-toggle="modal" data-target="#modalAcerca" title="Acerca"><i class="fas fa-info-circle"></i> </button>
 					</li>
