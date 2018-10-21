@@ -576,13 +576,14 @@ class HaberesController extends Controller
 					if ($dtr[0]!=0)
 					{
 						$detalleRecibo = new DetalleRecibo;
+						
 						$detalleRecibo->idConceptoRecibo=$dtr[0];
 							
 						$detalleRecibo->monto=$dtr[1];	
 						
 						if($dtr[0]==20} || $dtr[0]==21 || $dtr[0]==24)
 						{//BPS/Fonasa/FRL
-							$detalleRecibo->porcentaje=$dtr[2];						
+							$detalleRecibo->porcentaje=$dtr[2];			
 						}
 						
 						$detalleRecibo->idRecibo = $UltimoReciboEmpleado->id;
