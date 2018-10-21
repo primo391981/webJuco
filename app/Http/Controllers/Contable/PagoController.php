@@ -378,8 +378,8 @@ class PagoController extends Controller
 	
 	
 	public function listaPagos($idEmpleado,$tipoPago,$fecha,$calculo){
-		try{
-			$pagos =Pago::where('idEmpleado','=',$idEmpleado)->where('idTipoPago','=',$tipoPago)->where('fecha','=',$fecha)->get();
+		try{	
+			$pagos =Pago::where('idEmpleado','=',$idEmpleado)->where('idTipoPago','=',$tipoPago)->where('fecha','=',$fecha->year.'-'.$fecha->month.'-01')->get();
 			return $pagos;
 		}
 		catch(Exception $e){
