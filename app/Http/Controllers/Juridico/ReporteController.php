@@ -8,9 +8,8 @@ use App\Juridico\TipoExpediente;
 use App\Juridico\Dataset;
 use App\Juridico\Estado;
 use Auth;
-
+use PDF;
 use \Carbon\Carbon;
-
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -496,11 +495,12 @@ class ReporteController extends Controller
      */
     public function show(Reporte $reporte)
     {
-        if($reporte->tipo == 1)
+        if($reporte->tipo == 1){
 			return view('juridico.reporteGerencial.verReporte',['reporte' => $reporte]);
-		else
+		} else {
 			$expediente = Expediente::find($reporte->datasets[0]->dataset);
 			return view('juridico.reporteExpediente.verReporte',['reporte' => $reporte, 'expediente' => $expediente]);
+		}
     }
 
     
@@ -516,4 +516,17 @@ class ReporteController extends Controller
 		
 		return redirect()->route('reporte.index')->with('success', "El reporte fue eliminado correctamente"); 
     }
+	
+	public function imprimirReporte(Reporte $reporte){
+		if($reporte->tipo == 1){
+			//return view('juridico.reporteGerencial.verReporte',['reporte' => $reporte]);
+			$pdf = PDF::loadView('juridico.reporteGerencial.verReporte', ,['reporte' => $reporte]);
+		} else {
+			$expediente = Expediente::find($reporte->datasets[0]->dataset);
+			//return view('juridico.reporteExpediente.verReporte',['reporte' => $reporte, 'expediente' => $expediente]);
+			$pdf = PDF::loadView('juridico.reporteExpediente.verReporte',['reporte' => $reporte, 'expediente' => $expediente]);
+		}
+		
+		return $pdf->download('reporte.pdf');
+	}
 }

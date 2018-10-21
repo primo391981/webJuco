@@ -4,7 +4,7 @@ use \App\Juridico\Notificacion;
 use Carbon\Carbon;
 use \App\Mail\SendMailable;
 
-	function notificacion($paso, $mensaje, $expediente){
+	function notificacion($paso, $mensaje, $expediente, $modulo){
 		
 		//se crea una notificacion
 		$notificacion = new Notificacion();
@@ -18,10 +18,11 @@ use \App\Mail\SendMailable;
 		$notificacion->save();
 		
 		// envío de mail, notificación de modificación	
-		Mail::to($expediente->usuario->email)->send(new SendMailable($notificacion->mensaje));
+		Mail::to($expediente->usuario->email)->send(new SendMailable($notificacion->mensaje, $modulo));
 		
 		foreach($expediente->permisosExpedientes as $usuario){
-			\Mail::to($usuario->email)->send(new SendMailable($notificacion->mensaje));
+			\Mail::to($usuario->email)->send(new SendMailable($notificacion->mensaje, $modulo));
 		}
 		// fin envío de mail
 	}
+	

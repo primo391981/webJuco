@@ -169,7 +169,7 @@ class PasoController extends Controller
 		
 		//se crea una notificación y se envía por mail
 		$msg = Carbon::now()." - El expediente ".$expediente->iue." ha sido modificado por el usuario ".Auth::user()->name.".";
-		notificacion($paso, $msg, $expediente);
+		notificacion($paso, $msg, $expediente,"Jurídico");
 			
 		return redirect()->route('expediente.show',$expediente)->with("success","El expediente fue modificado correctamente.");
 
@@ -251,7 +251,7 @@ class PasoController extends Controller
 		
 		//se crea una notificación y se envía por mail
 		$msg = Carbon::now()." - El expediente ".$expediente->iue." ha sido modificado por el usuario ".Auth::user()->name.".";
-		notificacion($paso, $msg, $expediente);
+		notificacion($paso, $msg, $expediente,"Jurídico");
 		 					
 		return redirect()->route('paso.show',$paso)->with("success","El expediente fue modificado correctamente.");
     }
