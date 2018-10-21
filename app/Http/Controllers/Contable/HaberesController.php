@@ -137,7 +137,7 @@ class HaberesController extends Controller
 									
 									if ($recibo != null)
 									{
-										$detalleNominal = $recibo->detallesRecibos->where('idConceptoRecibo','=',13)->first();
+										$detalleNominal = $recibo->detallesRecibos->where('idConceptoRecibo','=',19)->first();
 										$habilita->push($detalleNominal->monto);
 									}
 									else
@@ -162,7 +162,7 @@ class HaberesController extends Controller
 									
 									if ($recibo != null)
 									{
-										$detalleNominal = $recibo->detallesRecibos->where('idConceptoRecibo','=',13)->first();
+										$detalleNominal = $recibo->detallesRecibos->where('idConceptoRecibo','=',19)->first();
 										$habilita->push($detalleNominal->monto);
 									}
 									else
@@ -420,7 +420,7 @@ class HaberesController extends Controller
 								
 								if ($recibo != null)
 								{
-									$detalleNominal = $recibo->detallesRecibos->where('idConceptoRecibo','=',13)->first();
+									$detalleNominal = $recibo->detallesRecibos->where('idConceptoRecibo','=',19)->first();
 									$montoTotal += $detalleNominal->monto;
 								}
 								
@@ -442,7 +442,7 @@ class HaberesController extends Controller
 								
 								if ($recibo != null)
 								{
-									$detalleNominal = $recibo->detallesRecibos->where('idConceptoRecibo','=',13)->first();
+									$detalleNominal = $recibo->detallesRecibos->where('idConceptoRecibo','=',19)->first();
 									$montoTotal += $detalleNominal->monto;
 								}
 									
@@ -500,8 +500,13 @@ class HaberesController extends Controller
 				$this->guardarDetallesRecibo($datosRecibo, $UltimoReciboEmpleado->id);
 				
 /////REVISADO CODIGOS DESCRIPCION	
-	
-				$empleadosRecibo->push($UltimoReciboEmpleado);
+				$empleadoPago = collect([]);
+				
+				$empleadoPago->push($UltimoReciboEmpleado);
+				
+				$empleadoPago->push(0);
+					
+				$empleadosRecibo->push($empleadoPago);				
 			}
 		}
 		$tipoRecibo = TipoRecibo::find($request->calculo);
@@ -592,8 +597,13 @@ class HaberesController extends Controller
 					}
 				}
 		/////REVISADO CODIGOS DESCRIPCION
-		
-				$empleadosRecibo->push($UltimoReciboEmpleado);
+				$empleadoPago = collect([]);
+				
+				$empleadoPago->push($UltimoReciboEmpleado);
+				
+				$empleadoPago->push(0);
+					
+				$empleadosRecibo->push($empleadoPago);	
 			}
 		}
 		$tipoRecibo = TipoRecibo::find($request->calculo);
@@ -906,8 +916,13 @@ class HaberesController extends Controller
 						$detalleRecibo->save();		
 					}
 				}
+				$empleadoPago = collect([]);
 				
-				$empleadosRecibo->push($UltimoReciboEmpleado);		
+				$empleadoPago->push($UltimoReciboEmpleado);
+				
+				$empleadoPago->push(0);
+					
+				$empleadosRecibo->push($empleadoPago);	
 			}
 		}	
 		$tipoRecibo = TipoRecibo::find($request->calculo);
