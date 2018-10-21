@@ -581,7 +581,7 @@ class HaberesController extends Controller
 							
 						$detalleRecibo->monto=$dtr[1];	
 						
-						if($dtr[0]==20} || $dtr[0]==21 || $dtr[0]==24)
+						if($dtr[0]==20 || $dtr[0]==21 || $dtr[0]==24)
 						{//BPS/Fonasa/FRL
 							$detalleRecibo->porcentaje=$dtr[2];			
 						}
