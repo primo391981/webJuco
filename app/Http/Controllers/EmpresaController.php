@@ -12,6 +12,7 @@ use App\Contable\DetalleRecibo;
 use App\Http\Requests\EmpresaRequest;
 use Illuminate\Support\Facades\DB;
 use PDF;
+use Carbon\Carbon;
 use Exception;
 
 class EmpresaController extends Controller
@@ -123,77 +124,192 @@ class EmpresaController extends Controller
 		return redirect()->route('empresa.index');
     }
 	
+	/*REPORTES*/
+	//retornaa la vista con los listado de reportes de contable 
 	public function listadoReportes(){
 		$empresas=Empresa::All();
 		$tiposRecibo=TipoRecibo::All();
 		return view('contable.reporte.listaReportes', ['empresas' => $empresas,'tiposRecibo'=>$tiposRecibo]);
 	}
 	
-	public function reporteUno(Request $request){
+	//pasa los datos necesarios para arma grafico de contable 
+	public function reporte(Request $request){
 		$empresa=Empresa::find($request->empresa);
 		$empleados=$empresa->personas()->where('habilitado',1)->get();
 		
-		$montos = collect([]);
-		foreach($empleados as $emp){			
-			$recibo=ReciboEmpleado::where('idEmpleado','=',$emp->pivot->id)->where('idTipoRecibo','=',$request->tiporec)->where('fechaRecibo','=',$request->fecha."-01")->first();
-			if($recibo==null){
-				$montos->push("0");
-			}
-			else{
-				$detalle=DetalleRecibo::where('idRecibo','=',$recibo->id)->where('idConceptoRecibo','=',21)->first();
-				$montos->push($detalle->monto);				
-			}
+		$fecha=$this->formatoFecha($request->fecha,$request->tiporec);
+		$montos=$this->montosRecibo($empleados,$request->tiporec,$fecha);
+		
+		$montoTotal=0;		
+		foreach($montos as $m){
+			$montoTotal=$montoTotal+$m;
 		}
 		$data= [
-				'labels'=>$empleados->pluck('documento'),
-				'datasets'=> [[
-					'label'=>'',
-					'data'=> $montos,
-					'backgroundColor'=> [
-						'rgba(255, 99, 132, 0.2)',
-						'rgba(54, 162, 235, 0.2)',
-						'rgba(255, 206, 86, 0.2)',
-						'rgba(75, 192, 192, 0.2)',
-						'rgba(153, 102, 255, 0.2)',
-						'rgba(255, 159, 64, 0.2)'
-					],
-					'borderColor'=> [
-						'rgba(255,99,132,1)',
-						'rgba(54, 162, 235, 1)',
-						'rgba(255, 206, 86, 1)',
-						'rgba(75, 192, 192, 1)',
-						'rgba(153, 102, 255, 1)',
-						'rgba(255, 159, 64, 1)'
-					],
-					'borderWidth'=> 1
-				]]
-			];
-		
+			'labels'=>$empleados->pluck('documento'),
+			'datasets'=> [[
+				'label'=>'Monto total: '.$montoTotal,
+				'data'=> $montos,
+				'backgroundColor'=>$this->poolColors($empleados->count()),
+				'borderColor'=> [],
+				'borderWidth'=> 1
+			]]
+		];		
 		$jsonArmado=json_encode($data);
-		//dd($jsonArmado);
-		
-		$haber=TipoRecibo::find($request->tiporec);
-		$titulo=$request->titulo." / Fecha:".$request->fecha." / Tipo de haber: ".$haber->nombre;
-		return view('contable.reporte.grafico', ['jsonArmado' => $jsonArmado,'titulo'=>$titulo,'tipografico'=>$request->tipografico]);
+		$titulo=$request->titulo.' / Fecha: '.$fecha;
+		return view('contable.reporte.grafico', ['jsonArmado' => $jsonArmado,'tipografico'=>$request->tipografico,'titulo'=>$titulo]);		
 	}
 	
+	public function aporteSueldos(Request $request){
+		$empresa=Empresa::find($request->empresa);
+		$empleados=$empresa->personas()->where('habilitado',1)->get();
+		
+		$fecha=$this->formatoFecha($request->fecha,1);
+		$montos=$this->montosAportes($empleados,1,$fecha);
+		
+		$totalaportes=0;
+		foreach($montos as $m){
+			$totalaportes=$totalaportes+$m;
+		}		
+		$data= [
+			'labels'=>['BPS','FONASA','IRPF PRIMARIO','IRPF DEDUCCIONES','FRL'],
+			'datasets'=> [[
+				'label'=>'APORTES :'.$totalaportes,
+				'data'=>[$montos[0],$montos[1],$montos[2],$montos[3],$montos[4]],
+				'backgroundColor'=> $this->poolColors($montos->count()),
+				'borderColor'=> [],
+				'borderWidth'=> 1
+			]]
+		];		
+		$jsonArmado=json_encode($data);
+		$titulo=$request->titulo.' / Fecha: '.$fecha;
+		return view('contable.reporte.grafico', ['jsonArmado' => $jsonArmado,'tipografico'=>$request->tipografico,'titulo'=>$titulo]);
+	}
+		
+		
+	//funcion de armado de pdf de recibos paraimprimir
 	public function imprimirRecibos(Request $request){
 		$empresa=Empresa::find($request->empresa);
 		$tipoRecibo=TipoRecibo::find($request->tiporec);
 		$empleados=$empresa->personas()->where('habilitado',1)->get();
 		
+		$fecha=$this->formatoFecha($request->fecha,$request->tiporec);
 		$recibos = collect([]);
-		foreach($empleados as $emp){			
-			$recibo=ReciboEmpleado::where('idEmpleado','=',$emp->pivot->id)->where('idTipoRecibo','=',$request->tiporec)->where('fechaRecibo','=',$request->fecha."-01")->first();
+		foreach($empleados as $emp){		
+			
+			if($tipoRecibo->id ==5||$tipoRecibo->id ==4 ){
+				$finicio=$fecha.'-01';
+				$faux=new Carbon($fecha);
+				$ffin=$faux->year.'-'.$faux->month.'-'.$faux->daysInMonth;
+				$recibo=ReciboEmpleado::where('idEmpleado','=',$emp->pivot->id)->where('idTipoRecibo','=',$tipoRecibo->id)->whereBetween('fechaRecibo', [$finicio,$ffin])->first();
+			}
+			else{
+				$recibo=ReciboEmpleado::where('idEmpleado','=',$emp->pivot->id)->where('idTipoRecibo','=',$tipoRecibo->id)->where('fechaRecibo','=',$fecha)->first();
+			}
+			
 			if($recibo!=null){
 				$recibos->push($recibo);				
 			}
 		}
 		
-		$datos=['recibos'=>$recibos,'tipoRecibo'=>$tipoRecibo,'fecha'=>$request->fecha,'empresaNombre'=>$empresa->razonSocial];
+		$datos=['recibos'=>$recibos,'tipoRecibo'=>$tipoRecibo,'fecha'=>$fecha,'empresaNombre'=>$empresa->razonSocial];
 		$pdf=PDF::loadView('contable.reporte.imprimir',$datos);//imprimir es el nombre de la vista
 		
-		return $pdf->download("RECIBOS ".$tipoRecibo->nombre." ".$empresa->razonSocial." ".$request->fecha.".pdf");
+		return $pdf->download("RECIBOS ".$tipoRecibo->nombre." ".$empresa->razonSocial." ".$fecha.".pdf");
 	}
+	
+	//devuelve una fecha formateada segun el tipo de recibo elegido
+	private function formatoFecha($fecha,$tiporec){
+		switch($tiporec){
+			case 1:
+				$faux=$fecha."-01";
+				break;
+			case 2:
+				$faux=$fecha.'-06-01';
+				break;
+			case 3:
+				$faux=$fecha.'-12-01';
+				break;
+			case 4:
+				$faux=$fecha;
+				break;
+			case 5:
+				$faux=$fecha;
+				break;
+		}
 		
+		return $faux;
+	}
+	//devuele un array por empleado de los montos liquidos a cobrar
+	private function montosRecibo($empleados,$idTipoRecibo,$fecha){
+		$montos = collect([]);
+		foreach($empleados as $emp){
+			if($idTipoRecibo ==5||$idTipoRecibo ==4 ){
+				$finicio=$fecha.'-01';
+				$faux=new Carbon($fecha);
+				$ffin=$faux->year.'-'.$faux->month.'-'.$faux->daysInMonth;
+				$recibo=ReciboEmpleado::where('idEmpleado','=',$emp->pivot->id)->where('idTipoRecibo','=',$idTipoRecibo)->whereBetween('fechaRecibo', [$finicio,$ffin])->first();
+			}
+			else{
+				$recibo=ReciboEmpleado::where('idEmpleado','=',$emp->pivot->id)->where('idTipoRecibo','=',$idTipoRecibo)->where('fechaRecibo','=',$fecha)->first();
+			}
+			
+			if($recibo==null){
+				$montos->push("0");
+			}
+			else{
+				$detalle=DetalleRecibo::where('idRecibo','=',$recibo->id)->where('idConceptoRecibo','=',27)->first();
+				$montos->push($detalle->monto);				
+			}
+		}
+		return $montos;
+		
+	}
+	
+	private function montosAportes($empleados,$idTipoRecibo,$fecha){
+		$montos = collect([]);
+		$totalbps=0;
+		$totalfonasa=0;
+		$totalirpfprimario=0;
+		$totalirpfdeducciones=0;
+		$totalfrl=0;
+		foreach($empleados as $emp){
+			$recibo=ReciboEmpleado::where('idEmpleado','=',$emp->pivot->id)->where('idTipoRecibo','=',$idTipoRecibo)->where('fechaRecibo','=',$fecha)->first();
+			if($recibo!=null){
+				$detalle=DetalleRecibo::where('idRecibo','=',$recibo->id)->where('idConceptoRecibo','=',20)->first();
+				$totalbps=$totalbps+$detalle->monto;
+				$detalle=DetalleRecibo::where('idRecibo','=',$recibo->id)->where('idConceptoRecibo','=',21)->first();
+				$totalfonasa=$totalfonasa+$detalle->monto;
+				$detalle=DetalleRecibo::where('idRecibo','=',$recibo->id)->where('idConceptoRecibo','=',22)->first();
+				$totalirpfprimario=$totalirpfprimario+$detalle->monto;
+				$detalle=DetalleRecibo::where('idRecibo','=',$recibo->id)->where('idConceptoRecibo','=',23)->first();
+				$totalirpfdeducciones=$totalirpfdeducciones+$detalle->monto;
+				$detalle=DetalleRecibo::where('idRecibo','=',$recibo->id)->where('idConceptoRecibo','=',24)->first();
+				$totalfrl=$totalfrl+$detalle->monto;
+			}		
+		}
+		
+		
+		$montos->push($totalbps);
+		$montos->push($totalfonasa);
+		$montos->push($totalirpfprimario);
+		$montos->push($totalirpfdeducciones);
+		$montos->push($totalfrl);
+		
+		return $montos;
+	
+	}
+	
+	private function dynamicColors() {
+		$r = rand (0,255);
+		$g = rand (0,255);
+		$b = rand (0,255);
+		$rgb="rgba(".$r.",".$g.",".$b.", 0.5)";
+		return $rgb;
+	}
+	private function poolColors($a) {
+            $pool = collect([]);
+            for($i=0;$i<$a;$i++){
+               $pool->push($this->dynamicColors());}
+            return $pool;
+       }		
 }
