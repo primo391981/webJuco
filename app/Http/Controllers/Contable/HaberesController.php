@@ -273,9 +273,9 @@ class HaberesController extends Controller
 				
 				//Obtiene monto de Salario Nominal Gravado y no Gravado, sumando todos los conceptos (víaticos y partidas extras)
 				$montoSalario = $this->obtenerMontosSalarioNominal($fecha, $empleado, $cargo, $horasRecibo, $montoAntiguedad);
-				
+
 				//Monto del salario Gravado	
-				$montoSalarioGravado = $montoSalario[44];
+				$montoSalarioGravado = $montoSalario[45];
 				//Descuentos
 				//Valor de BPC del mes a calcular
 				$valorBPC = $this->obtenerValorActual($fecha, 'BPC');
@@ -302,12 +302,12 @@ class HaberesController extends Controller
 				$datosRecibo->push($this->obtenerDetalle(14,$montoSalVacacional,'NA'));
 				
 				//Subtotal No Gravado
-				$montoSalario[47] += $montoSalVacacional;
+				$montoSalario[48] += $montoSalVacacional;
 				//Subtotal Nominal
-				$montoSalario[50] += $montoSalVacacional;
+				$montoSalario[51] += $montoSalVacacional;
 				
 				//Monto del salario SubTotal Nominal
-				$montoSubTotalNominal = $montoSalario[50];
+				$montoSubTotalNominal = $montoSalario[51];
 	
 				//Carga Detalles del recibo
 				$cant = count($montoSalario);					
@@ -358,7 +358,7 @@ class HaberesController extends Controller
 				$datosRecibo->push($this->obtenerDetalle(26,$sumaDescuentos,'NA'));
 				
 				//Cálculo Sueldo Luíqido
-				$sueldoLiquido = $montoSalario[50] - $sumaDescuentos - $montoViatico;//Agregar Fictos
+				$sueldoLiquido = $montoSalario[51] - $sumaDescuentos - $montoViatico;//Agregar Fictos
 				$datosRecibo->push($this->obtenerDetalle(27,$sueldoLiquido,'NA'));
 				
 				//Guarda encabezado del recibo
@@ -367,7 +367,7 @@ class HaberesController extends Controller
 				$UltimoReciboEmpleado = $this->guardarReciboEmpleado($empleado, $fechaRecibo, $request);
 				
 				//Guarda detalles del recibo
-				$this->guardarDetallesRecibo($datosRecibo, $UltimoReciboEmpleado->id);
+				$this->guardarDetallesRecibo($datosRecibo, $UltimoReciboEmpleado->id, $cargo);
 				
 /////REVISADO CODIGOS DESCRIPCION	
 				$empleadoPago = collect([]);
@@ -497,7 +497,7 @@ class HaberesController extends Controller
 				$UltimoReciboEmpleado = $this->guardarReciboEmpleado($empleado, $fechaRecibo, $request);
 					
 				//Guarda detalles del recibo
-				$this->guardarDetallesRecibo($datosRecibo, $UltimoReciboEmpleado->id);
+				$this->guardarDetallesRecibo($datosRecibo, $UltimoReciboEmpleado->id, $cargo);
 				
 /////REVISADO CODIGOS DESCRIPCION	
 				$empleadoPago = collect([]);
@@ -576,26 +576,8 @@ class HaberesController extends Controller
 				$UltimoReciboEmpleado = $this->guardarReciboEmpleado($empleado, $fechaRecibo, $request);
 				
 				//Guarda detalles del recibo
-				foreach($datosRecibo as $dtr)
-				{
-					if ($dtr[0]!=0)
-					{
-						$detalleRecibo = new DetalleRecibo;
-						
-						$detalleRecibo->idConceptoRecibo=$dtr[0];
-							
-						$detalleRecibo->monto=$dtr[1];	
-						
-						if($dtr[0]==20 || $dtr[0]==21 || $dtr[0]==24)
-						{//BPS/Fonasa/FRL
-							$detalleRecibo->porcentaje=$dtr[2];			
-						}
-						
-						$detalleRecibo->idRecibo = $UltimoReciboEmpleado->id;
-						
-						$detalleRecibo->save();	
-					}
-				}
+				$this->guardarDetallesRecibo($datosRecibo, $UltimoReciboEmpleado->id, $cargo);
+				
 		/////REVISADO CODIGOS DESCRIPCION
 				$empleadoPago = collect([]);
 				
@@ -717,8 +699,8 @@ class HaberesController extends Controller
 				$datosRecibo->push($this->obtenerDetalle(13,$montoAguinaldo,'NA'));
 				
 				//Monto del salario Gravado
-				$montoSalario[44] += $montoAguinaldo;
-				$montoSalarioGravado = $montoSalario[44];
+				$montoSalario[45] += $montoAguinaldo;
+				$montoSalarioGravado = $montoSalario[45];
 				
 				//Descuentos
 				//Valor de BPC del mes a calcular
@@ -789,10 +771,10 @@ class HaberesController extends Controller
 				$datosRecibo->push($this->obtenerDetalle(14,$salVacacional,'NA'));
 				
 				//Salario Vacacional se suma al Monto Salario No Gravado para cálculo de IRPF
-				$montoSalario[47] += ($montoLicNoGozadaPrimer + $montoLicNoGozadaSegundo + $salVacacional);
-				$montoSalario[50] += ($montoLicNoGozadaPrimer + $montoLicNoGozadaSegundo + $salVacacional);
+				$montoSalario[48] += ($montoLicNoGozadaPrimer + $montoLicNoGozadaSegundo + $salVacacional);
+				$montoSalario[51] += ($montoLicNoGozadaPrimer + $montoLicNoGozadaSegundo + $salVacacional);
 				//Monto	Subtotal Nominal
-				$montoSalarioNominal = $montoSalario[50];
+				$montoSalarioNominal = $montoSalario[51];
 				
 				//Sumar 6% si Salario Nominal Gravado + SalarioVacacional supera 10 BPC
 				if ($montoSalarioNominal >= (10 * $valorBPC))
@@ -839,8 +821,8 @@ class HaberesController extends Controller
 				}					
 			
 				//Monto de IPD se suma al Monto Salario No Gravado y al Subtotal Nominal
-				$montoSalario[47] += $montoIPD;
-				$montoSalario[50] += $montoIPD;
+				$montoSalario[48] += $montoIPD;
+				$montoSalario[51] += $montoIPD;
 			
 				//Carga Detalles
 				$cant=count($montoSalario);					
@@ -868,7 +850,7 @@ class HaberesController extends Controller
 				$datosRecibo->push($this->obtenerDetalle(26,$sumaDescuentos,'NA'));
 				
 				//Cálculo Sueldo Luíqido
-				$sueldoLiquido = $montoSalario[50] - $sumaDescuentos - $montoViatico;//Agregar Fictos
+				$sueldoLiquido = $montoSalario[51] - $sumaDescuentos - $montoViatico;//Agregar Fictos
 				$datosRecibo->push($this->obtenerDetalle(27,$sueldoLiquido,'NA'));
 				
 				//Guarda encabezado del recibo
@@ -877,45 +859,8 @@ class HaberesController extends Controller
 				$UltimoReciboEmpleado = $this->guardarReciboEmpleado($empleado, $fechaRecibo, $request);
 				
 				//Guarda detalles del recibo
-				foreach($datosRecibo as $dtr)
-				{
-					if ($dtr[0]!=0)
-					{
-						$detalleRecibo = new DetalleRecibo;
-						/*$table->integer('idConceptoRecibo')->unsigned();
-						$table->decimal('cantDias', 4, 1);
-						$table->decimal('cantHoras', 4, 1);
-						$table->decimal('monto', 8, 2);
-						$table->decimal('porcentaje', 8, 2);
-						*/
-						$detalleRecibo->idConceptoRecibo=$dtr[0];
-						if($dtr[0]==11 || $dtr[0]==12 ||($dtr[0]== 1 && $cargo->id_remuneracion == 2))
-						{//Días de Licencia Gozada
-							$detalleRecibo->cantDias = $dtr[2];
-						}
-						else
-							$detalleRecibo->cantDias = 0;
-						
-						if(($dtr[0]>=2 && $dtr[0]<=9))
-						{
-							$detalleRecibo->cantHoras=$dtr[2];
-						}
-						else
-						{
-							$detalleRecibo->cantHoras=0;							
-						}						
-						
-						$detalleRecibo->monto=$dtr[1];	
-						
-						if($dtr[0]==20 || $dtr[0]==21 || $dtr[0]==24)
-						{//BPS/Fonasa/FRL
-							$detalleRecibo->porcentaje=$dtr[2];						
-						}
-						$detalleRecibo->idRecibo=$UltimoReciboEmpleado->id;
-						
-						$detalleRecibo->save();		
-					}
-				}
+				$this->guardarDetallesRecibo($datosRecibo, $UltimoReciboEmpleado->id, $cargo);
+					
 				$empleadoPago = collect([]);
 				
 				$empleadoPago->push($UltimoReciboEmpleado);
@@ -966,14 +911,14 @@ class HaberesController extends Controller
 						break;
 					case 2:
 					//hora extra
-								if ($horasReg != null)
-								{
-									$horasRealizadasDia->push($horasReg->cantHoras);
-								}
-								else	
-								{
-									$horasRealizadasDia->push("00:00:00");								
-								}
+							if ($horasReg != null)
+							{
+								$horasRealizadasDia->push($horasReg->cantHoras);
+							}
+							else	
+							{
+								$horasRealizadasDia->push("00:00:00");								
+							}
 							
 						break;
 					case 3:
@@ -1131,54 +1076,61 @@ class HaberesController extends Controller
 					$cantHorasDescansoTrabajado += $difHora;
 				}
 				$horasExtrasDia = Carbon::createFromTimeString($horasMesTrabajado[$i][2]);
+				
 				$valorSwitch=$horasMesContrato[$i][2];
 			}
-			else{				
-					//suma horas a descontar de diferencias y horas de Descanso Trabajado para días Descanso y Medio Día empleado mensual felxible
-					switch($horasMesTrabajado[$i][1]){
-						case 'c':
-								if($cargo->id_remuneracion == 1){
-									$horaReal = Carbon::createFromTimeString($horasMesTrabajado[$i][2]);
-									$difHora = 8 - $horaReal->hour;								
-									$cantHoras = $cantHoras - $difHora;
-								}
-								else{
-									//suma cantidad de horas comunes del empleado jornalero
-									$hr=Carbon::createFromTimeString($horasMesTrabajado[$i][2]);
-									$cantHoras = $cantHoras+$hr->hour;
-								}
-								$valorSwitch=1;
-							break;
-						case 'm':
+			else
+			{				
+				//suma horas a descontar de diferencias y horas de Descanso Trabajado para días Descanso y Medio Día empleado mensual flexible
+				switch($horasMesTrabajado[$i][1])
+				{
+					case 'c':
+							if($cargo->id_remuneracion == 1)
+							{
 								$horaReal = Carbon::createFromTimeString($horasMesTrabajado[$i][2]);
-								$difHora = 4 - $horaReal->hour;
-								if($difHora>0){
-									$cantHoras = $cantHoras - $difHora;
-								}
-								else{
-									$cantHorasDescansoTrabajado = $cantHorasDescansoTrabajado - $difHora;
-								}
-								$valorSwitch=2;
-							break;
-						case 'd':
-								if($cargo->id_remuneracion == 1){
-									$horaReal = Carbon::createFromTimeString($horasMesTrabajado[$i][2]);
-									$cantHorasDescansoTrabajado = $cantHorasDescansoTrabajado + $horaReal->hour;
-								}
-								else{
-									//suma cantidad de horas comunes del empleado jornalero en dia descanso
-									$cantHorasDescansoTrabajado += Carbon::createFromTimeString($horasMesTrabajado[$i][2])->hour;
-								}
-								$valorSwitch=3;
-							break;
-					}
-				
+								$difHora = 8 - $horaReal->hour;								
+								$cantHoras = $cantHoras - $difHora;
+							}
+							else
+							{
+								//suma cantidad de horas comunes del empleado jornalero
+								$hr = Carbon::createFromTimeString($horasMesTrabajado[$i][2]);
+								$cantHoras = $cantHoras + $hr->hour;
+							}
+							$valorSwitch = 1;
+						break;
+					case 'm':
+							$horaReal = Carbon::createFromTimeString($horasMesTrabajado[$i][2]);
+							$difHora = 4 - $horaReal->hour;
+							if($difHora>0)
+							{
+								$cantHoras = $cantHoras - $difHora;
+							}
+							else
+							{
+								$cantHorasDescansoTrabajado = $cantHorasDescansoTrabajado - $difHora;
+							}
+							$valorSwitch = 2;
+						break;
+					case 'd':
+							if($cargo->id_remuneracion == 1)
+							{
+								$horaReal = Carbon::createFromTimeString($horasMesTrabajado[$i][2]);
+								$cantHorasDescansoTrabajado = $cantHorasDescansoTrabajado + $horaReal->hour;
+							}
+							else
+							{
+								//suma cantidad de horas comunes del empleado jornalero en dia descanso
+								$cantHorasDescansoTrabajado += Carbon::createFromTimeString($horasMesTrabajado[$i][2])->hour;
+							}
+							$valorSwitch = 3;
+						break;
+				}			
 				
 				$horasExtrasDia = Carbon::createFromTimeString($horasMesTrabajado[$i][3]);
 			}
 			
-			//Suma de horas Extras
-			
+			//Suma de horas Extras			
 			switch ($valorSwitch)
 			{
 				case 1:
@@ -1373,9 +1325,10 @@ class HaberesController extends Controller
 			else
 				$salNominalGravado = $empleado->monto;
 			//Sueldo nominal
-			$salarios->push(2);
+			$salarios->push(3);
 			$salarios->push(1);
 			$salarios->push($salNominalGravado);
+			$salarios->push(0);
 			
 			//Descuento por faltas
 			$salarios->push(3);
@@ -1395,9 +1348,11 @@ class HaberesController extends Controller
 			//Horas del mes
 			$salNominalGravado = $empleado->valorHora * $horasRecibo[0];
 			//Sueldo Jornal
-			$salarios->push(2);
+			$salarios->push(3);
 			$salarios->push(1);
 			$salarios->push($salNominalGravado);
+			//Horas del Jornalero
+			$salarios->push($horasRecibo[0]);
 			
 			//Jornalero no tiene descuento por faltas
 			$salarios->push(3);
@@ -1767,36 +1722,35 @@ class HaberesController extends Controller
 	}
 	
 	//Guarda detalles del recibo
-	private function guardarDetallesRecibo($datosRecibo, $idRecibo)
+	private function guardarDetallesRecibo($datosRecibo, $idRecibo, $cargo)
 	{
 		foreach($datosRecibo as $dtr)
 		{
 			if ($dtr[0]!=0)
 			{
 				$detalleRecibo = new DetalleRecibo;
-				/*$table->integer('idConceptoRecibo')->unsigned();
-				$table->decimal('cantDias', 4, 1);
-				$table->decimal('cantHoras', 4, 1);
-				$table->decimal('monto', 8, 2);
-				$table->decimal('porcentaje', 8, 2);
-				*/
+				
 				$detalleRecibo->idConceptoRecibo=$dtr[0];
 				
 				$detalleRecibo->monto = $dtr[1];
 				
-				if($dtr[0] == 11)
-				{//Días de Licencia Gozada
+				if($dtr[0]== 1 && $cargo->id_remuneracion == 2)
+				{//Cantidad de jornales
+					$detalleRecibo->cantDias = (int)($dtr[2]/8);
+					$detalleRecibo->cantHoras = $dtr[2]%8;
+				}		
+				
+				if($dtr[0] == 11 || $dtr[0]==12)
+				{//Días de Licencia Gozada o No Gozada
 					$detalleRecibo->cantDias = $dtr[2];
 				}
 					
 				if($dtr[0]>=2 && $dtr[0]<=9)
-				{
 					$detalleRecibo->cantHoras = $dtr[2];
-				}
 				
 				if($dtr[0]==20 || $dtr[0]==21 || $dtr[0]==24)
 				{//BPS/Fonasa/FRL
-					$detalleRecibo->porcentaje = $dtr[2];				
+					$detalleRecibo->porcentaje = $dtr[2];			
 				}
 				
 				$detalleRecibo->idRecibo = $idRecibo;
