@@ -85,7 +85,8 @@ Route::group(['middleware' => ['auth']], function () {
 	
 	//reportes
 	Route::get('reportes','EmpresaController@listadoReportes')->name('reportes.listadoReportes')->middleware('role:contableAdmin');
-	Route::post('reportes/reporteUno','EmpresaController@reporteUno')->name('reporte.reporteUno')->middleware('role:contableAdmin');
+	Route::post('reportes/recibos','EmpresaController@reporte')->name('reporte.reporte')->middleware('role:contableAdmin');
+	Route::post('reportes/aportes','EmpresaController@aporteSueldos')->name('reporte.aporteSueldos')->middleware('role:contableAdmin');	
 	Route::post('reportes/imprimir','EmpresaController@imprimirRecibos')->name('reporte.imprimirRecibos')->middleware('role:contableAdmin');
 	
 	//cargos

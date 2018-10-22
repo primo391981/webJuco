@@ -41,6 +41,7 @@
 
 <script>
 var ctx = document.getElementById("myChart").getContext('2d');
+Chart.defaults.global.legend.display = false;
 var myChart = new Chart(ctx, {
     type: '{!!$tipografico!!}',
 	data: {!! $jsonArmado!!},
