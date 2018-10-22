@@ -2441,6 +2441,7 @@
         },
         {
             "name": "thiagoalessio/tesseract_ocr",
+<<<<<<< HEAD
             "version": "2.6.4",
             "source": {
                 "type": "git",
@@ -2451,6 +2452,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/thiagoalessio/tesseract-ocr-for-php/zipball/0cd5d55656ba897d7510cfbf4ddfb7753bf0d036",
                 "reference": "0cd5d55656ba897d7510cfbf4ddfb7753bf0d036",
+=======
+            "version": "2.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thiagoalessio/tesseract-ocr-for-php.git",
+                "reference": "116029388413cd74152a71a8ab88a56eb780576a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thiagoalessio/tesseract-ocr-for-php/zipball/116029388413cd74152a71a8ab88a56eb780576a",
+                "reference": "116029388413cd74152a71a8ab88a56eb780576a",
+>>>>>>> mejoras_admin_usuario
                 "shasum": ""
             },
             "require": {
@@ -2482,7 +2495,11 @@
                 "Tesseract",
                 "text recognition"
             ],
+<<<<<<< HEAD
             "time": "2018-09-21T22:23:52+00:00"
+=======
+            "time": "2018-10-18T21:10:16+00:00"
+>>>>>>> mejoras_admin_usuario
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
@@ -3340,6 +3357,7 @@
         },
         {
             "name": "phpunit/php-code-coverage",
+<<<<<<< HEAD
             "version": "6.1.0",
             "source": {
                 "type": "git",
@@ -3350,6 +3368,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/0685fb6a43aed1b2e09804d1aaf17144c82861f8",
                 "reference": "0685fb6a43aed1b2e09804d1aaf17144c82861f8",
+=======
+            "version": "6.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
+                "reference": "b097681a19a48e52706f57e47a09594bac4f7cab"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/b097681a19a48e52706f57e47a09594bac4f7cab",
+                "reference": "b097681a19a48e52706f57e47a09594bac4f7cab",
+>>>>>>> mejoras_admin_usuario
                 "shasum": ""
             },
             "require": {
@@ -3360,7 +3390,7 @@
                 "phpunit/php-text-template": "^1.2.1",
                 "phpunit/php-token-stream": "^3.0",
                 "sebastian/code-unit-reverse-lookup": "^1.0.1",
-                "sebastian/environment": "^3.1",
+                "sebastian/environment": "^3.1 || ^4.0",
                 "sebastian/version": "^2.0.1",
                 "theseer/tokenizer": "^1.1"
             },
@@ -3399,7 +3429,11 @@
                 "testing",
                 "xunit"
             ],
+<<<<<<< HEAD
             "time": "2018-10-16T05:37:37+00:00"
+=======
+            "time": "2018-10-18T09:01:38+00:00"
+>>>>>>> mejoras_admin_usuario
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -3592,6 +3626,7 @@
         },
         {
             "name": "phpunit/phpunit",
+<<<<<<< HEAD
             "version": "7.4.0",
             "source": {
                 "type": "git",
@@ -3602,6 +3637,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/f3837fa1e07758057ae06e8ddec6d06ba183f126",
                 "reference": "f3837fa1e07758057ae06e8ddec6d06ba183f126",
+=======
+            "version": "7.4.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/phpunit.git",
+                "reference": "c5a120ade60992bd671a912188ee9ee9f8083bbd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/c5a120ade60992bd671a912188ee9ee9f8083bbd",
+                "reference": "c5a120ade60992bd671a912188ee9ee9f8083bbd",
+>>>>>>> mejoras_admin_usuario
                 "shasum": ""
             },
             "require": {
@@ -3622,7 +3669,7 @@
                 "phpunit/php-timer": "^2.0",
                 "sebastian/comparator": "^3.0",
                 "sebastian/diff": "^3.0",
-                "sebastian/environment": "^3.1",
+                "sebastian/environment": "^3.1 || ^4.0",
                 "sebastian/exporter": "^3.1",
                 "sebastian/global-state": "^2.0",
                 "sebastian/object-enumerator": "^3.0.3",
@@ -3672,7 +3719,11 @@
                 "testing",
                 "xunit"
             ],
+<<<<<<< HEAD
             "time": "2018-10-05T04:05:24+00:00"
+=======
+            "time": "2018-10-18T09:02:52+00:00"
+>>>>>>> mejoras_admin_usuario
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",

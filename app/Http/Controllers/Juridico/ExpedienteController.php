@@ -152,7 +152,7 @@ class ExpedienteController extends Controller
 		
 		//se crea una notificación y se envía por mail
 		$msg = Carbon::now()." - El expediente ".$expediente->iue." ha sido creado por le usuario ".Auth::user()->name.".";
-		notificacion($paso, $msg, $expediente);
+		notificacion($paso, $msg, $expediente,"Jurídico");
 		
 		//Creación del paso de creación del expediente
 		if ($request->exists('nextExpediente')){

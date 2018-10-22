@@ -7,6 +7,9 @@ use App\Administracion\Role;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
+use \Carbon\Carbon;
+use App\Mail\SendMailable;
+use \Mail;
 
 class UserController extends Controller
 {
@@ -96,6 +99,10 @@ class UserController extends Controller
 			if($request->checkJuridico == 'on')	$user->roles()->attach(3);
 			if($request->checkContable == 'on')	$user->roles()->attach(4);
 		}
+		
+		//se crea una notificación y se envía por mail
+		$msg = Carbon::now()." - Está recibidno esta notificación porque fue registrado como usuario en el sistema <a href='http://juco.test/'>JUCO</a>.<br>Nombre de usuario: ".$user->name."<br>Contraseña: ".$request->password;
+		notificacion($paso, $msg, $expediente,"Administración de usuarios");
 	
 		//se retorna la vista "listaUsuarios" 
 		return redirect()->route('user.index')->with('success', "El usuario ".$user->name." ha sido modificado correctamente.");	
@@ -152,8 +159,11 @@ class UserController extends Controller
 			return redirect()->back()->with('success', "La verificación de contraseña no es correcta. Ingrese nuevamente.");
 		}
 		
+		
 		//si password tiene valor, registrarlo
+		$pass = "";
 		if($request->password != null){
+			$pass = "<br>Contraseña: ".$request->password;
 			$user->password = bcrypt($request->password);
 		}
 				
@@ -172,6 +182,11 @@ class UserController extends Controller
 			if($request->checkContable == 'on')	$user->roles()->attach(4);
 		}
 	
+		//se crea una notificación y se envía por mail
+		$msg = Carbon::now()." - Está recibiendo esta notificación porque su usuario en el sistema <a href='http://juco.test/'>JUCO</a> fue modificado. <br>Nombre de usuario: ".$user->name.$pass;
+		
+		Mail::to($user->email)->send(new SendMailable($msg, "Administración de usuarios"));
+		
 		//se retorna la vista "listaUsuarios" 
 		return redirect()->route('user.index')->with('success', "El usuario ".$user->name." ha sido modificado correctamente.");	
     }

@@ -58,10 +58,10 @@
 		</div>
 		
 		<div class="form-group row">
-			<label for="email" class="control-label col-sm-3">PASSWORD:</label>
+			<label for="email" class="control-label col-sm-3"><abbr title="longitud mínima de 8 caracteres, al menos un número, una letra mayúscula y una minúscula">PASSWORD:</abbr></label>
 
 			<div class="col-sm-9">
-				<input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" {{ !isset($usuario) ? 'required' : '' }}>
+				<input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" {{ !isset($usuario) ? 'required' : '' }}>
 
 				@if ($errors->has('password'))
 					<span class="invalid-feedback">
