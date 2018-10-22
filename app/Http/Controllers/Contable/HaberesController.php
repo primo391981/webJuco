@@ -384,7 +384,7 @@ class HaberesController extends Controller
 			}
 		}
 		$tipoRecibo = TipoRecibo::find($request->calculo);
-		
+	
 //VER VISTA contable.haberes.listaEmpleadosRecibos - mostrar viaticos/adelantos/pagosextras/fictos
 		return view('contable.haberes.listaEmpleadosRecibos', ['empleadosRecibo' => $empleadosRecibo,'fechaMes'=>$fecha->month,'fechaAnio'=>$fecha->year,'calculo'=>$tipoRecibo]);
 	
@@ -497,7 +497,7 @@ class HaberesController extends Controller
 				$UltimoReciboEmpleado = $this->guardarReciboEmpleado($empleado, $fechaRecibo, $request);
 					
 				//Guarda detalles del recibo
-				$this->guardarDetallesRecibo($datosRecibo, $UltimoReciboEmpleado->id, $cargo);
+				$this->guardarDetallesRecibo($datosRecibo, $UltimoReciboEmpleado->id, $empleado->cargo);
 				
 /////REVISADO CODIGOS DESCRIPCION	
 				$empleadoPago = collect([]);
@@ -576,7 +576,7 @@ class HaberesController extends Controller
 				$UltimoReciboEmpleado = $this->guardarReciboEmpleado($empleado, $fechaRecibo, $request);
 				
 				//Guarda detalles del recibo
-				$this->guardarDetallesRecibo($datosRecibo, $UltimoReciboEmpleado->id, $cargo);
+				$this->guardarDetallesRecibo($datosRecibo, $UltimoReciboEmpleado->id, $empleado->cargo);
 				
 		/////REVISADO CODIGOS DESCRIPCION
 				$empleadoPago = collect([]);
@@ -1676,19 +1676,22 @@ class HaberesController extends Controller
 		//Recorre Pagos
 		foreach($pagos as $p)
 		{	
-			$valor += $p->monto;
+			if($idTipoPago ==1)
+				$valor += $p->monto*$p->cantDias;
+			else
+				$valor += $p->monto;
 		}
 		return $valor;
 	}
 	
 	private function obtenerMontoSalVacaional($fecha,$empleado){
-		
+				
 		$fechaDesde=$fecha->year."-".$fecha->month."-01";
 		$fechaHasta=$fecha->year."-".$fecha->month."-".$fecha->daysInMonth;
 		$recibosSalVac=ReciboEmpleado::where("idEmpleado",'=',$empleado->id)->where("idTipoRecibo",'=',4)->whereBetween('fechaRecibo', [$fechaDesde, $fechaHasta])->get();
 		$monto=0;
 		foreach($recibosSalVac as $recibo){
-			$detalleNominal = $recibo->detallesRecibos->where('idConceptoRecibo','=',21)->first();
+			$detalleNominal = $recibo->detallesRecibos->where('idConceptoRecibo','=',27)->first();
 			$monto+= $detalleNominal->monto;
 		}
 		return $monto;

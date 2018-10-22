@@ -12,6 +12,7 @@ use App\Contable\DetalleRecibo;
 use App\Http\Requests\EmpresaRequest;
 use Illuminate\Support\Facades\DB;
 use PDF;
+use App\Contable\TipoPago;
 use Carbon\Carbon;
 use Exception;
 
@@ -171,7 +172,7 @@ class EmpresaController extends Controller
 			$totalaportes=$totalaportes+$m;
 		}		
 		$data= [
-			'labels'=>['BPS','FONASA','IRPF PRIMARIO','IRPF DEDUCCIONES','FRL'],
+			'labels'=>['BPS - $'.$montos[0],'FONASA - $'.$montos[1],'IRPF PRIMARIO - $'.$montos[2],'IRPF DEDUCCIONES - $'.$montos[3],'FRL - $'.$montos[4]],
 			'datasets'=> [[
 				'label'=>'APORTES :'.$totalaportes,
 				'data'=>[$montos[0],$montos[1],$montos[2],$montos[3],$montos[4]],
@@ -181,7 +182,8 @@ class EmpresaController extends Controller
 			]]
 		];		
 		$jsonArmado=json_encode($data);
-		$titulo=$request->titulo.' / Fecha: '.$fecha;
+		$faux=new Carbon($fecha);
+		$titulo=$request->titulo.' / Fecha: '.$faux->year.'-'.$faux->month;
 		return view('contable.reporte.grafico', ['jsonArmado' => $jsonArmado,'tipografico'=>$request->tipografico,'titulo'=>$titulo]);
 	}
 		
@@ -207,7 +209,19 @@ class EmpresaController extends Controller
 			}
 			
 			if($recibo!=null){
-				$recibos->push($recibo);				
+				
+				$empleadoPago = collect([]);				
+				$empleadoPago->push($recibo);				
+				$tipoPago = TipoPago::All();
+				$faux=new Carbon($fecha);
+				
+				if($recibo->idTipoRecibo==1||$recibo->idTipoRecibo==5){
+					foreach($tipoPago as $tp)
+					{
+						$empleadoPago->push($recibo->empleado->pagos()->where([['fecha','=',$faux->year.'-'.$faux->month.'-01'], ['idTipoPago','=',$tp->id]])->get());
+					}
+				}
+				$recibos->push($empleadoPago);
 			}
 		}
 		

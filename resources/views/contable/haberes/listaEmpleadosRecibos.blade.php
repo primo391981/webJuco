@@ -109,28 +109,67 @@
 													</div>
 													
 													@foreach($empleadosRecibo[$i][0]->detallesRecibos as $dt)
-													<div class="row">
+																@if($dt->conceptoRecibo->id==17 && ($calculo->id == 1 || $calculo->id == 5))
+																@if (count($empleadosRecibo[$i][1]) > 0 )
+																	
+																	@foreach($empleadosRecibo[$i][1] as $p)
+																	<div class="row">
+																		<div class="col-xs-10"><p>{{$p->descripcion}}</p></div>																		
+																		<div class="col-xs-2"><p>$ {{$p->monto * $p->cantDias}}</p></div>
+																	</div>	
+																	@endforeach
+																	@endif
+																@endif
+																@if($dt->conceptoRecibo->id==26 && ($calculo->id == 1 || $calculo->id == 5))
+																	@if (count($empleadosRecibo[$i][2]) > 0 )																	
+																		@foreach($empleadosRecibo[$i][2] as $a)
+																			<div class="row">
+																				<div class="col-xs-10"><p>{{$a->descripcion}}</p></div>																		
+																				<div class="col-xs-2"><p>$ {{$a->monto}}</p></div>
+																			</div>	
+																		@endforeach
+																	@endif
+																@endif													
 														@if($dt->monto != 0)
+															<div class="row">
 															@if ($loop->last)
-															<div class="col-xs-4"><p><strong>{{$dt->conceptoRecibo->id}} - {{$dt->conceptoRecibo->nombre}} 
-																@if(isset($dt->porcentaje)) 
-																	/ {{$dt->porcentaje}} 
-																@endif</strong></p></div>
-															<div class="col-xs-3"><p>{{$dt->cantDias}}</p></div>
-															<div class="col-xs-3"><p>{{$dt->cantHoras}}</p></div>
-															<div class="col-xs-2"><p><strong>$ {{$dt->monto}}</strong></p></div>
+																<div class="col-xs-4"><p><strong>{{$dt->conceptoRecibo->id}} - {{$dt->conceptoRecibo->nombre}} 
+																	@if(isset($dt->porcentaje)) 
+																		/ {{$dt->porcentaje}} 
+																	@endif</strong></p></div>
+																<div class="col-xs-3"><p>{{$dt->cantDias}}</p></div>
+																<div class="col-xs-3"><p>{{$dt->cantHoras}}</p></div>
+																<div class="col-xs-2"><p><strong>$ {{$dt->monto}}</strong></p></div>
 															@else
-															<div class="col-xs-4"><p>{{$dt->conceptoRecibo->id}} -  {{$dt->conceptoRecibo->nombre}} 
-																@if(isset($dt->porcentaje)) 
-																	/ {{$dt->porcentaje}} 
-																@endif</p></div>
-															<div class="col-xs-3"><p>{{$dt->conceptoRecibo->id < 17 ? $dt->cantDias : ''}}</p></div>
-															<div class="col-xs-3"><p>{{$dt->conceptoRecibo->id < 17 ? $dt->cantHoras : ''}}</p></div>
-															<div class="col-xs-2"><p>$ {{$dt->monto}}</p></div>
+																<div class="col-xs-4"><p>{{$dt->conceptoRecibo->id}} -  {{$dt->conceptoRecibo->nombre}} 
+																	@if(isset($dt->porcentaje)) 
+																		/ {{$dt->porcentaje}} 
+																	@endif</p></div>
+																	
+																<div class="col-xs-3"><p>{{$dt->conceptoRecibo->id < 17 ? $dt->cantDias : ''}}</p></div>
+																<div class="col-xs-3"><p>{{$dt->conceptoRecibo->id < 17 ? $dt->cantHoras : ''}}</p></div>
+																<div class="col-xs-2"><p>$ {{$dt->monto}}</p></div>
+														
+																</div>
+														
 															@endif
 														@endif
-														
-													</div>
+														@if($dt->conceptoRecibo->id==9)																	
+																	@foreach($empleadosRecibo[$i][3] as $p)
+																	<div class="row">
+																		<div class="col-xs-10"><p>{{$p->descripcion}}</p></div>																		
+																		<div class="col-xs-2"><p>{{$p->monto}}</p></div>
+																	</div>	
+																	@endforeach																	
+																	@foreach($empleadosRecibo[$i][4] as $f)
+																	<div class="row">
+																		<div class="col-xs-10"><p>{{$f->descripcion}}</p></div>																		
+																		<div class="col-xs-2"><p>{{$f->monto}}</p></div>
+																	</div>
+																	@endforeach																	
+														@endif
+													
+													
 													@endforeach
 													<hr>
 													
@@ -140,7 +179,7 @@
 														</div>
 													</div>
 													<div class="row">
-														<div class="col-xs-4">
+														<div class="col-xs-4 text-center">
 															<p><strong>Fecha:</strong> </p>
 														</div>
 														<div class="col-xs-4">
