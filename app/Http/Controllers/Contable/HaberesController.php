@@ -254,8 +254,7 @@ class HaberesController extends Controller
 					//El empleado es mensual y horario flexible  o jornalero
 					$horasMesTrabajado = $this->obtenerHorasTrabajadasMes($fecha, $empleado->id, $fecha->daysInMonth);
 					$horasRecibo = $this->obtenerHorasDescuentoYExtras($fecha, $fecha->daysInMonth, $cargo, $horasMesTrabajado[0]);
-				}
-				
+				}				
 				/*Horas Recibo contiene: 
 				-Horas Descuento o horas Jornal
 				-Horas Extras en Día común
@@ -301,13 +300,8 @@ class HaberesController extends Controller
 				$montoSalVacacional = $this->obtenerMontoSalVacaional($fecha,$empleado);
 				$datosRecibo->push($this->obtenerDetalle(14,$montoSalVacacional,'NA'));
 				
-				//Subtotal No Gravado
-				$montoSalario[48] += $montoSalVacacional;
-				//Subtotal Nominal
-				$montoSalario[51] += $montoSalVacacional;
-				
 				//Monto del salario SubTotal Nominal
-				$montoSubTotalNominal = $montoSalario[51];
+				$montoSubTotalNominal = $montoSalario[51] + $montoSalVacacional;
 	
 				//Carga Detalles del recibo
 				$cant = count($montoSalario);					
@@ -369,7 +363,6 @@ class HaberesController extends Controller
 				//Guarda detalles del recibo
 				$this->guardarDetallesRecibo($datosRecibo, $UltimoReciboEmpleado->id, $cargo);
 				
-/////REVISADO CODIGOS DESCRIPCION	
 				$empleadoPago = collect([]);
 				
 				$empleadoPago->push($UltimoReciboEmpleado);
@@ -385,7 +378,6 @@ class HaberesController extends Controller
 		}
 		$tipoRecibo = TipoRecibo::find($request->calculo);
 	
-//VER VISTA contable.haberes.listaEmpleadosRecibos - mostrar viaticos/adelantos/pagosextras/fictos
 		return view('contable.haberes.listaEmpleadosRecibos', ['empleadosRecibo' => $empleadosRecibo,'fechaMes'=>$fecha->month,'fechaAnio'=>$fecha->year,'calculo'=>$tipoRecibo]);
 	
     }
@@ -499,7 +491,6 @@ class HaberesController extends Controller
 				//Guarda detalles del recibo
 				$this->guardarDetallesRecibo($datosRecibo, $UltimoReciboEmpleado->id, $empleado->cargo);
 				
-/////REVISADO CODIGOS DESCRIPCION	
 				$empleadoPago = collect([]);
 				
 				$empleadoPago->push($UltimoReciboEmpleado);
@@ -578,7 +569,6 @@ class HaberesController extends Controller
 				//Guarda detalles del recibo
 				$this->guardarDetallesRecibo($datosRecibo, $UltimoReciboEmpleado->id, $empleado->cargo);
 				
-		/////REVISADO CODIGOS DESCRIPCION
 				$empleadoPago = collect([]);
 				
 				$empleadoPago->push($UltimoReciboEmpleado);
