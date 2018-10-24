@@ -136,6 +136,7 @@ class ContenedorController extends Controller
 				
 			if($request->id_itemmenu == 0){
 				$contenedor->id_itemmenu = null;
+				$contenedor->orden_menu = null;
 			} else {
 				$contenedor->id_itemmenu = $request->id_itemmenu;
 			
@@ -184,7 +185,10 @@ class ContenedorController extends Controller
 				$contenedoresMenu[$i]->save();
 			}
 		}
+		$contenedor->orden_menu = null;
+		$contenedor->id_itemmenu = null;
 		
+		$contenedor->save();
 		$contenedor->delete();
 		
 		return redirect()->route('contenedor.index')->with('success','El contenedor fue eliminado correctamente');
@@ -321,7 +325,7 @@ class ContenedorController extends Controller
 		$contenedor = Contenedor::withTrashed()->where('id',$request->contenedor_id)->first();
 		
 		$contenedor->restore();
-		
+	
 		return redirect()->route('contenedor.index.inactivos')->with('success', 'El contenedor fue restaurado correctamente.');
 		
 	}
