@@ -23,6 +23,8 @@ Route::get('/', function(){
 
 Route::get('/home', 'WebController@index')->name('home');
 
+Route::post('/contacto', 'WebController@contacto')->name('contacto');
+
 Route::get('notAuthorized', function (){
 	return view('notAuthorized');
 })->name('notAuthorized');

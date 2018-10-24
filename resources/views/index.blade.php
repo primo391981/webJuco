@@ -24,13 +24,14 @@
 	@endforeach
 @endforeach
 <!-- Section: contact -->
-    @if (Session::has('success'))
-		<div class="alert alert-success">
-			{{Session::get('success')}}
-		</div>
-	@endif 
+   
 	<div class="container paddingtop" id="contacto">
 			<div class="container">
+				 @if (Session::has('success'))
+					<div class="alert alert-success">
+						{{Session::get('success')}}
+					</div>
+				@endif 
 				<div class="row">
 					<div class="col-lg-8 col-lg-offset-2">
 						<h1>Contacto</h1>
@@ -38,8 +39,8 @@
 				</div>
 				<div class="row">
 					<div class="col-lg-8">
-						<form method="POST" action=""  id="contactform">
-							{{ csrf_field() }}
+						<form method="POST" action="{{ route('contacto') }}"  id="contactform">
+							@csrf
 							<div class="row">
 								<div class="col-md-6">
 									<div class="form-group">
@@ -74,10 +75,12 @@
 					</div>
 					<div class="col-lg-4">
 						<div class="widget-contact">
-							<h5>Estudio Jurídico</h5>
-							<address>Dirección</address>
-							  <strong>Email</strong><br>
-							  <a href="mailto:presidenciacrpm@mercosur.int">mail@estudio.com</a>
+							<h5>Feola Casella & González Feola</h5>
+							<address>Avenida del Navío esquina del Sol<br>
+							  La Paloma, Rocha CP27001<br>
+							  <abbr title="Teléfono">Tel:</abbr> (598) 4479 6893<br>
+							  <a href="mailto:estudiogonzalezfeola@gmail.com">estudiogonzalezfeola@gmail.com</a>
+							</address>							  
 						</div>	
 					</div>
 				</div>	

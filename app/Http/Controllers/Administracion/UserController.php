@@ -102,7 +102,8 @@ class UserController extends Controller
 		
 		//se crea una notificación y se envía por mail
 		$msg = Carbon::now().' - Está recibidno esta notificación porque fue registrado como usuario en el sistema <a href="'.url(config('app.url')).'">JUCO</a>.<br>Nombre de usuario: '.$user->name.'<br>Contraseña: '.$request->password;
-		notificacion($paso, $msg, $expediente,"Administración de usuarios");
+		
+		Mail::to($user->email)->send(new SendMailable($msg, "Administración de usuarios"));
 	
 		//se retorna la vista "listaUsuarios" 
 		return redirect()->route('user.index')->with('success', "El usuario ".$user->name." ha sido modificado correctamente.");	

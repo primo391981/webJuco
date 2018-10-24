@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\CMS\Contenedor;
 use App\CMS\TipoContenedor;
 use App\CMS\Menuitem;
+use Illuminate\Http\Request;
+use App\Mail\SendMailable;
+use \Mail;
 
 
 class WebController extends Controller
@@ -95,4 +98,18 @@ class WebController extends Controller
 		return view('index', ['menuitems' => $menuitems]);
     }
 	
+	public function contacto(Request $request){
+		//se crea una notificación y se envía por mail
+		$msg = 'Mensaje enviado desde formulario de contacto del sitio web con los siguientes datos:<br><br>
+				<strong>Nombre:</strong> '.$request->name.'<br>
+				<strong>Email:</strong> '.$request->email.'<br>
+				<strong>Asunto:</strong> '.$request->subject.'<br>
+				<strong>Mensaje:</strong> '.$request->message;
+		
+		Mail::to('estudiogonzalezfeola@gmail.com')->send(new SendMailable($msg, "Formulario de Contacto"));
+		
+		$url = url('/home#contacto');
+		return redirect($url)->with("success","El mensaje fue enviado correctamente.");
+		//return redirect()->back()->with("success","El mensaje fue enviado correctamente.");
+	}
 }
