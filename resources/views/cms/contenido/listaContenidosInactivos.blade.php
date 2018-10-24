@@ -41,7 +41,7 @@
 						<tr>
 							<td>{{$contenido->id}}</td>
 							<td>{{$contenido->titulo}}</td>
-							<td>{{$contenido->texto}}</td>
+							<td>{!!$contenido->texto!!}</td>
 							<td>
 								<form method="POST" action="{{ route('contenido.activar') }}">
 									@csrf	
