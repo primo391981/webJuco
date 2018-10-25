@@ -150,7 +150,7 @@
         <h4 class="modal-title" id="myModalLabel">Ayuda de Sistema JUCO (Jurídico - Contable)</h4>
       </div>
       <div class="modal-body">
-        @yield('contentAyuda')
+        {!!ayuda()!!}
       </div>
     </div>
   </div>

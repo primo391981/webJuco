@@ -69,7 +69,9 @@ class DatabaseSeeder extends Seeder
 			TipoRecibosTableSeeder::class,
 			ConceptoRecibosTableSeeder::class,
 			BajaMotivosTableSeeder::class,
-			FeriadosTableSeeder::class
+			FeriadosTableSeeder::class,
+			
+			AyudaTableSeeder::class
 			
 		]);	
     }
