@@ -1,6 +1,7 @@
 <?php
 
 use \App\Juridico\Notificacion;
+use \App\Ayuda;
 use Carbon\Carbon;
 use \App\Mail\SendMailable;
 
@@ -24,5 +25,12 @@ use \App\Mail\SendMailable;
 			\Mail::to($usuario->email)->send(new SendMailable($notificacion->mensaje, $modulo));
 		}
 		// fin envío de mail
+	}
+	
+	function ayuda(){
+		$ayuda = Ayuda::where('ruta',Route::currentRouteName())->first();
+		
+		return $ayuda->texto;
+		//return Route::currentRouteName();
 	}
 	
