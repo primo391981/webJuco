@@ -5,6 +5,16 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
 	<!-- Tiles CSS -->
     <link href="{{ asset('css/tile.css')}}" rel="stylesheet">
+	
+	<style>
+	@media all {
+		.page-break	{ display: none; }
+	}
+
+	@media print {
+		.page-break	{ display: block; page-break-before: always; }
+	}
+	</style>
 @endsection
 
 
@@ -28,7 +38,10 @@
 	<div class="col-xs-12">
 		<div class="panel panel-success">
 			<div class="panel-heading">
-				<a class="btn btn-warning pull-right" href="{{route('reporte.index')}}" role="button"><i class="fas fa-undo-alt"></i></a>
+				<div class="pull-right">
+					<a class="btn btn-success" href="javascript:print()" role="button"><i class="fas fa-print"></i></a>
+					<a class="btn btn-success" href="{{route('reporte.index')}}" role="button"><i class="fas fa-undo-alt"></i></a>
+				</div>
 				<h4><i class="far fa-building"></i> REPORTE GERENCIAL</h4>		
 			</div>
 			<div class="panel-body">
@@ -38,7 +51,6 @@
 					<p><strong>Período: </strong>{{$reporte->fecha_desde}} - {{$reporte->fecha_hasta}}
 					<p><strong>Fecha de creación: </strong>{{$reporte->created_at}}
 					<p><strong>Creado por: </strong>{{$reporte->usuario->name}} ({{$reporte->usuario->nombre}} {{$reporte->usuario->apellido}})
-					<br>
 					<br>
 					<br>
 					<br>
@@ -181,6 +193,7 @@
                         </div>
 					</div>
 				</div>
+				<div class="page-break"></div>
 				<div class="col-md-6">
 					<h4>Expedientes: Tipos de proceso</h4>
 					<hr>

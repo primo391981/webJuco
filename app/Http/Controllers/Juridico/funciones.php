@@ -33,8 +33,7 @@ use \App\Mail\SendMailable;
 		if($ayuda!=null)
 			return $ayuda->texto;
 		else
-			return "Ayuda en construcción";
-				
-		//return Route::currentRouteName();
+		//	return "Ayuda en construcción";
+			return Route::currentRouteName();
 	}
 	
