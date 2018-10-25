@@ -30,7 +30,11 @@ use \App\Mail\SendMailable;
 	function ayuda(){
 		$ayuda = Ayuda::where('ruta',Route::currentRouteName())->first();
 		
-		return $ayuda->texto;
+		if($ayuda!=null)
+			return $ayuda->texto;
+		else
+			return "Ayuda en construcción";
+				
 		//return Route::currentRouteName();
 	}
 	
