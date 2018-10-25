@@ -17,19 +17,12 @@ class AdminController extends Controller
     {
 		//Si bien se puede acceder directamente a la vista desde la ruta, se mantiene el acceso via controller por si en el futuro se agrega funcionalidad desde este punto
 		
-		//se retorna la vista "index" 
-		//return view('admin.admin');
-		
 		$subtitulo = 'Administración';
-		//dd($contenedores);
 		//se retorna la vista "index" 
 		
 		//si hay un solo rol, preguntar cual y direccionar directamente
-		//dd(count(Auth::user()->roles));
 		if(count(Auth::user()->roles)==1)
-			
 		{
-			
 			$rol= Auth::user()->roles[0]->nombre;
 			switch($rol){
 				case 'superadmin':
@@ -46,7 +39,6 @@ class AdminController extends Controller
 								return redirect()->route('contable');
 								break;
 			}
-			
 		}
 		
 		return view('intranet', ['subtitulo' => $subtitulo]);
