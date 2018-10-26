@@ -108,6 +108,12 @@ class PersonaController extends Controller
 		$persona->cantHijos=$request->input('cantHijos');		
 		$persona->estadoCivil=$request->input('estadoCivil');		
 		$persona->conDiscapacidad=$request->input('conDiscapacidad');		
+		$persona->nacionalidad=strtoupper($request->input('nacionalidad'));
+		$fecha=new Carbon($request->input('fechaNacimiento'));
+		$persona->fechaNacimiento=$fecha->year.'-'.$fecha->month.'-'.$fecha->day;
+		$persona->pagoNombre=strtoupper($request->input('pagoNombre'));
+		$persona->pagoNumero=$request->input('pagoNumero');
+		$persona->departamento=strtoupper($request->input('departamento'));
 		
 		$persona->save();
 		return redirect()->route('persona.index');

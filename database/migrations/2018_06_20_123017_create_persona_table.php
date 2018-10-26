@@ -28,7 +28,7 @@ class CreatePersonaTable extends Migration
 			$table->string('nacionalidad');
 			$table->date('fechaNacimiento');
 			$table->string('pagoNombre')->nullable();
-			$table->integer('pagoNumero')->nullable();
+			$table->string('pagoNumero')->nullable();
 			$table->string('departamento');
 				
 			$table->foreign('tipoDocumento')->references('id')->on('tipo_documento');

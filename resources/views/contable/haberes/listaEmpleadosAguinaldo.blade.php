@@ -71,7 +71,7 @@
 							<tr>
 								<td><input type="checkbox" id="{{$i}}hab" name="{{$i}}hab" value="{{$emp[0]->pivot->id}}"  checked></td>
 					
-								<td>{{$emp[0]->documento}}</td>
+								<td>{{$emp[0]->tipoDoc->nombre}}-{{$emp[0]->documento}}</td>
 								<td>{{$emp[0]->nombre}}</td>
 								<td>{{$emp[0]->apellido}}</td>
 								@for ($j=1; $j<7; $j++)

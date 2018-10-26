@@ -64,7 +64,7 @@ class HaberesController extends Controller
 			if ($request->calculo == 5)
 				$personas=$empresa->personas()->where('habilitado','=',0)->get();
 			else
-				$personas=$empresa->personas()->where('habilitado','=',1)->get();
+				$personas=$empresa->personas()->where('habilitado','=',1)->orderBy('tipoDocumento','ASC')->orderBy('documento','ASC')->get();
 			
 			foreach($personas as $persona)
 			{						
@@ -403,12 +403,12 @@ class HaberesController extends Controller
 				switch ($request->calculo)
 				{
 					case 2:
-							$i = 12;
+							$j = 12;
 							$anio = $fecha->year - 1;
 							
-							while($i!=6)
+							while($j!=6)
 							{
-								$recibo = ReciboEmpleado::where([['idEmpleado','=',$empleado->id],['idTipoRecibo','=',1],['fechaRecibo', '=', $anio.'-'.$i.'-01']])->first();
+								$recibo = ReciboEmpleado::where([['idEmpleado','=',$empleado->id],['idTipoRecibo','=',1],['fechaRecibo', '=', $anio.'-'.$j.'-01']])->first();
 								
 								if ($recibo != null)
 								{
@@ -416,21 +416,21 @@ class HaberesController extends Controller
 									$montoTotal += $detalleNominal->monto;
 								}
 								
-								if ($i == 12)
+								if ($j == 12)
 								{
-									$i = 1;
+									$j = 1;
 									$anio ++;
 								}
 								else
-									$i ++;									
+									$j ++;									
 							}
 						break;
 					case 3:
-							$i = 6;
+							$j = 6;
 								
-							while($i!=12)
+							while($j!=12)
 							{
-								$recibo = ReciboEmpleado::where([['idEmpleado','=',$empleado->id],['idTipoRecibo','=',1],['fechaRecibo', '=', $fecha->year.'-'.$i.'-01']])->first();
+								$recibo = ReciboEmpleado::where([['idEmpleado','=',$empleado->id],['idTipoRecibo','=',1],['fechaRecibo', '=', $fecha->year.'-'.$j.'-01']])->first();
 								
 								if ($recibo != null)
 								{
@@ -438,7 +438,7 @@ class HaberesController extends Controller
 									$montoTotal += $detalleNominal->monto;
 								}
 									
-								$i ++;									
+								$j ++;									
 							}
 						break;
 				}
