@@ -83,13 +83,13 @@
 										</td>				
 										<td>
 											<form method="POST" action="{{ route('cliente.destroy',$cliente) }}">
-												@if($cliente->expedientes->count() > 0)
+												@if($cliente->expedientes->count() > 0 || $cliente->archivos->count() > 0)
 													<fieldset disabled>
 												@endif
 													{{ method_field('DELETE') }}
 													@csrf	
 													<button type="submit"class="btn btn-danger"><i class="far fa-trash-alt" disabled></i></button>
-												@if($cliente->expedientes->count() > 0)
+												@if($cliente->expedientes->count() > 0 || $cliente->archivos->count() > 0)
 													</fieldset>
 												@endif
 											</form>

@@ -21,7 +21,7 @@
 				<div class="btn-group pull-right">
 					<a name="juridico" href="{{ route('reporte.create')}}" class="btn btn-success"><i class="fas fa-plus"></i></a>
 				</div>
-				<h4>LISTADO REPORTES GERENCIALES</h4>
+				<h4>LISTADO REPORTES</h4>
 			</div>
 			<div class="panel-body">					
 				<div class="table-responsive">
@@ -30,6 +30,7 @@
 						<tr>
 							<th class="scope">ID</th>
 							<th>FECHA CREACION</th>
+							<th>TIPO</th>
 							<th>FECHA INICIO</th>
 							<th>FECHA FIN</th>
 							<th></th>
@@ -41,6 +42,13 @@
 							<tr>
 								<td>{{$reporte->id}}</td>
 								<td>{{$reporte->created_at}}</td>
+								<td>
+									@if($reporte->tipo == 1)
+										Gerencial
+									@else
+										de Expediente
+									@endif
+								</td>
 								<td>{{$reporte->fecha_desde}}</td>
 								<td>{{$reporte->fecha_hasta}}</td>
 								<td>

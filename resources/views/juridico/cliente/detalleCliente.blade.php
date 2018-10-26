@@ -28,3 +28,4 @@
 						<p><strong>EMAIL :</strong> {{$cliente->persona->email}}</p>
 						<p><strong>DOMICILIO :</strong> {{$cliente->persona->domicilio}}</p>		
 					@endif
+					

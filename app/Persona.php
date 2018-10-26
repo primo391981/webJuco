@@ -12,7 +12,7 @@ class Persona extends Model
 	
 	public function cliente()
     {
-        return $this->morphMany('\App\Contable\Cliente', 'persona');
+        return $this->morphMany('\App\Juridico\Cliente', 'persona');
     }
 	
 	public function tipoDoc()
