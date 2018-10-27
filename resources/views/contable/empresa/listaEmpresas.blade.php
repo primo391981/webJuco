@@ -69,7 +69,8 @@
 													<p><strong>CONTACTO :</strong> {{$empresa->nomContacto}}</p>
 													<p><strong>TELÉFONO :</strong> {{$empresa->telefono}}</p>
 													<p><strong>EMAIL :</strong> {{$empresa->email}}</p>
-													<p><strong>DOMICILIO :</strong> {{$empresa->domicilio}}</p>												
+													<p><strong>DOMICILIO :</strong> {{$empresa->domicilio}}</p>	
+														{{$empresa->cliente}}
 												</div>	
 												 <div class="modal-footer">
 														<button type="button" class="btn btn-warning btn-block" data-dismiss="modal"><i class="fas fa-times"></i> Cerrar</button>

@@ -82,10 +82,27 @@
 							  <a href="mailto:estudiogonzalezfeola@gmail.com">estudiogonzalezfeola@gmail.com</a>
 							</address>							  
 						</div>	
+						<div>
+							<a href="#"><i class="fab fa-twitter"></i> @CasellaFeola</a><br>
+							<a href="#"><i class="fab fa-instagram"></i> feolacassella_gonzalezfeola</a><br>
+							<a href="#"><i class="fab fa-facebook-f"></i> Estudio GonzalezFeola</a><br>
+							<a href="#"><i class="fab fa-youtube"></i> Estudio GonzalezFeola</a><br>
+						</div>
 					</div>
 				</div>	
 			</div>
 	</div>
+	<footer id="footer" role="contentinfo">
+		<div class="container">
+			<div class="">
+				<div class="col-md-12 text-center">
+					<p>&copy; Proyecto JUCO. Todos los derechos reservados <br>Created by Grupo de Proyecto - Universidad de la Empresa</p>
+					
+				</div>
+			</div>
+		</div>
+	</footer>
+
 </div>
 @endsection
 
