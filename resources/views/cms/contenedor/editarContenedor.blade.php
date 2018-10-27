@@ -135,7 +135,7 @@
 									@csrf	
 									<input type="hidden" name="contenido_id" value="{{$contenido->id}}">
 									<input type="hidden" name="contenedor_id" value="{{$contenedor->id}}">
-									<button type="submit"class="btn btn-default"><i class="fas fa-check"></i></button>
+									<button type="submit"class="btn btn-default" {{$contenedor->contenidos->contains($contenido) ? "disabled" : "" }}><i class="fas fa-check"></i></button>
 								</form>
 							</td>
 						</tr>
