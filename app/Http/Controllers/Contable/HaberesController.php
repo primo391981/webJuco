@@ -203,7 +203,7 @@ class HaberesController extends Controller
 			}
 			
 		}
-		catch(Exception $e)
+		catch(\Exception $e)
 		{ 
 			return back()->withInput()->withError("Error en el sistema.");
 		}
@@ -219,6 +219,7 @@ class HaberesController extends Controller
 	//Guarda los datos del cálculo de sueldos con los detalles correspondientes al recibo del mismo.
     public function store(Request $request)
     {	
+	try{
 		$sueldoNominalGravado = 0;
 		$sueldoNominalNoGravado = 0;
 		$montoHorasFaltantes = 0;
@@ -379,12 +380,15 @@ class HaberesController extends Controller
 		$tipoRecibo = TipoRecibo::find($request->calculo);
 	
 		return view('contable.haberes.listaEmpleadosRecibos', ['empleadosRecibo' => $empleadosRecibo,'fechaMes'=>$fecha->month,'fechaAnio'=>$fecha->year,'calculo'=>$tipoRecibo]);
-	
+		}
+	catch(\Exception $e){
+			return back()->withInput()->withError("Error en el sistema.");
+		}
     }
 
 	//Guarda los datos del cálculo de aguinaldos con los detalles correspondientes al recibo del mismo.
     public function calculoAguinaldo(Request $request)
-    {
+    {try{
 		$fecha = new Carbon($request->fecha);
 		$empleadosRecibo=collect([]);
 		
@@ -504,11 +508,15 @@ class HaberesController extends Controller
 	
 		return view('contable.haberes.listaEmpleadosRecibos', ['empleadosRecibo' => $empleadosRecibo,'fechaMes'=>$fecha->month,'fechaAnio'=>$fecha->year,'calculo'=>$tipoRecibo]);
 	}
+	catch(\Exception $e){
+			return back()->withInput()->withError("Error en el sistema.");
+		}
+	}
 	
 	
 	//Guarda los datos del cálculo de Salario Vacacional con los detalles correspondientes al recibo del mismo.
     public function calculoSalVacacional(Request $request)
-    {
+    {try{
 		$fecha = new Carbon($request->fecha);
 		$empleadosRecibo=collect([]);
 		
@@ -582,11 +590,15 @@ class HaberesController extends Controller
 		
 		return view('contable.haberes.listaEmpleadosRecibos', ['empleadosRecibo' => $empleadosRecibo,'fechaMes'=>$fecha->month,'fechaAnio'=>$fecha->year,'calculo'=>$tipoRecibo]);
 	}
+	catch(\Exception $e){
+			return back()->withInput()->withError("Error en el sistema.");
+		}
+	}
 	
 	
 	//Guarda los datos del cálculo de liquidacion de haberes con los detalles correspondientes al recibo del mismo.
     public function calculoLiquidacion(Request $request)
-    {
+    {try{
 		$fecha = new Carbon($request->fecha);
 		$empleadosRecibo=collect([]);
 		
@@ -863,6 +875,10 @@ class HaberesController extends Controller
 		$tipoRecibo = TipoRecibo::find($request->calculo);
 		
 		return view('contable.haberes.listaEmpleadosRecibos', ['empleadosRecibo' => $empleadosRecibo,'fechaMes'=>$fecha->month,'fechaAnio'=>$fecha->year,'calculo'=>$tipoRecibo]);		
+	}
+	catch(\Exception $e){
+			return back()->withInput()->withError("Error en el sistema.");
+		}
 	}
 	
 	

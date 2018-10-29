@@ -40,7 +40,7 @@ class RegistroHoraController extends Controller
 			}						
 			return view('contable.registrohora.listaEmpleados',['empleados'=>$empleados]);
 		}
-		catch(Exception $e){
+		catch(\Exception $e){
 			return back()->withInput()->withError("Error en el sistema.");
 		}		
 	}
@@ -96,7 +96,7 @@ class RegistroHoraController extends Controller
 				}				
 			
 		}
-		catch(Exception $e){
+		catch(\Exception $e){
 			return back()->withInput()->withError("Error en el sistema.");
 		}
 	}
@@ -140,7 +140,7 @@ class RegistroHoraController extends Controller
 				return back()->withInput()->withError("NO existen horas cargadas de ".$empleado->persona->nombre." ".$empleado->persona->apellido." para la fecha ".$fecha->month." / ".$fecha->year.".");
 			}
 		}
-		catch(Exception $e){
+		catch(\Exception $e){
 			return back()->withInput()->withError("Error en el sistema.");
 		}
 		
@@ -210,7 +210,7 @@ class RegistroHoraController extends Controller
 			DB::commit();
 			return redirect()->route('reloj.listaEmpleados')->with('success', "Las marcas reloj de ".$empleado->persona->nombre." ".$empleado->persona->apellido." para la fecha ".$fecha->month." / ".$fecha->year." fueron ingresadas correctamente.");			
 		}
-		catch(Exception $e){
+		catch(\Exception $e){
 			DB::rollBack();
 			return back()->withInput()->withError("Error en el sistema.");
 		}

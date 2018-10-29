@@ -86,8 +86,8 @@ class EmpleadoController extends Controller
 				
 			}
 		}
-		catch(Exception $e){
-			return back()->withInput()->withError($e->getMessage());
+		catch(\Exception $e){
+			return back()->withInput()->withError("Error en el sistema.");
 		}
 		
 	}
@@ -142,7 +142,7 @@ class EmpleadoController extends Controller
 			
 			}
 		}
-		catch(Exception $e){			
+		catch(\Exception $e){			
 			return back()->withInput()->withError("Error en el sistema.");
 		}
 	}
@@ -156,7 +156,7 @@ class EmpleadoController extends Controller
 			$dias=Dia::All();
 			return view('contable.empleado.editarHorario',['registros'=>$registros,'horarioPrincipal'=>$horarioPrincipal,'dias'=>$dias]);
 		}
-		catch(Exception $e){
+		catch(\Exception $e){
 			return back()->withInput()->withError("Error en el sistema");
 		}
 	}
@@ -176,7 +176,7 @@ class EmpleadoController extends Controller
 			return redirect()->action('PersonaController@show', ['id' => $per->id]);
 			
 		}
-		catch(Exception $e){
+		catch(\Exception $e){
 			return back()->withInput()->withError("Error en el sistema");
 		}
 	}
@@ -211,7 +211,7 @@ class EmpleadoController extends Controller
 				}
 			}
 		}
-		catch(Exception $e){
+		catch(\Exception $e){
 			return back()->withInput()->withError("Error en el sistema");
 		}
 	}
@@ -258,7 +258,7 @@ class EmpleadoController extends Controller
     		}
 			return redirect()->action('PersonaController@show', ['id' => $empleado->idPersona])->withInput()->with('success',"El horario especial en ".$empleado->empresa->nombreFantasia." en las fechas ".$request->fechaDesde." y ".$request->fechaHasta." fue ingresado correctamente.");
 		}
-		catch(Exception $e){
+		catch(\Exception $e){
 			return back()->withInput()->withError("Error en el sistema");
 		}		
 	}	
@@ -268,7 +268,7 @@ class EmpleadoController extends Controller
 			$horarios=HorarioEmpleado::where('idEmpleado','=',$idEmpleado)->orderBy('id', 'desc')->get();
 			return $horarios;
 		}
-		catch(Exception $e){
+		catch(\Exception $e){
 			return back()->withInput()->withError("Error en el sistema");
 		}
 	}
@@ -286,7 +286,7 @@ class EmpleadoController extends Controller
 				 return redirect()->action('PersonaController@show', ['id' => $empleado->idPersona])->withInput()->with('success',"El horario especial fue borrado correctamente.");
 			}
 		}
-		catch(Exception $e){
+		catch(\Exception $e){
 			return back()->withInput()->withError("Error en el sistema");
 		}
 		
@@ -300,7 +300,7 @@ class EmpleadoController extends Controller
 					
 			return redirect()->action('PersonaController@show', ['id' => $empleado->idPersona])->withInput()->with('success','La desvinculación de la empresa '.$empleado->empresa->nombreFantasia.' se realizó correctamente.');
 		}
-		catch(Exception $e){
+		catch(\Exception $e){
 			return back()->withInput()->withError("Error en el sistema");
 		}
 	}
@@ -329,7 +329,7 @@ class EmpleadoController extends Controller
 			return view('contable.empleado.editarContrato',['cargos'=>$cargos,'empleado'=>$empleado]);
 			
 		}
-		catch(Exception $e){
+		catch(\Exception $e){
 			return back()->withInput()->withError("Error en el sistema");
 		}
 	}
@@ -381,7 +381,7 @@ class EmpleadoController extends Controller
 			return redirect()->route('persona.show',['id' => $empleado->persona->id]);
 		
 		}
-		catch(Exception $e){
+		catch(\Exception $e){
 			return back()->withInput()->withError("Error en el sistema");
 		}
 	}
