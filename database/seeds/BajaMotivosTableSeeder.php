@@ -21,12 +21,9 @@ class BajaMotivosTableSeeder extends Seeder
             'nombre' => 'RENUNCIA',
         ]);			
 		DB::table('contable_baja_motivos')->insert([
-            'nombre' => 'JUBILACION',
-        ]);	
-		DB::table('contable_baja_motivos')->insert([
-            'nombre' => 'DEPSIDO MALA CONDUCTA',
+            'nombre' => 'DESPIDO MALA CONDUCTA',
         ]);
-DB::table('contable_baja_motivos')->insert([
+		DB::table('contable_baja_motivos')->insert([
             'nombre' => 'OTRO',
         ]);		
     }
