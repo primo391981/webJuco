@@ -1478,8 +1478,16 @@ class HaberesController extends Controller
 				{
 					if($p->gravado == 1)
 					{
-						$salNominalGravado += $p->monto * ($p->porcentaje / 100);
-						$salNominalNoGravado += $p->monto * (1 - $p->porcentaje / 100);
+						if($p->idTipoPago == 1)
+						{
+							$salNominalGravado += ($p->monto * $p->cantDias ) * ($p->porcentaje / 100);
+							$salNominalNoGravado += ($p->monto * $p->cantDias ) * (1 - $p->porcentaje / 100);
+						}
+						else
+						{
+							$salNominalGravado += $p->monto * ($p->porcentaje / 100);
+							$salNominalNoGravado += $p->monto * (1 - $p->porcentaje / 100);
+						}
 					}
 					else
 						$salNominalNoGravado += $p->monto;
