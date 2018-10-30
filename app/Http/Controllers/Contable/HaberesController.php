@@ -305,17 +305,7 @@ class HaberesController extends Controller
 				$montoSubTotalNominal = $montoSalario[51] + $montoSalVacacional;
 	
 				//Carga Detalles del recibo
-				$cant = count($montoSalario);					
-				for($j=0;$j<$cant;$j++){
-					$detalle=collect([]);						
-					$cantParam=$montoSalario[$j];
-					
-					for($x=1;$x<=$cantParam;$x++){
-						$detalle->push($montoSalario[$j+$x]);
-					}
-					$j=$j+$cantParam;
-					$datosRecibo->push($detalle);
-				}
+				$this->cargaDetalles($montoSalario, $datosRecibo);
 				
 				//Sumar 6% si Salario Nominal Gravado + SalarioVacacional supera 10 BPC
 				if ($montoSubTotalNominal >= (10 * $valorBPC))
@@ -653,49 +643,8 @@ class HaberesController extends Controller
 						
 					//Calcular Aguinaldo
 					//Suma del monto total de sueldos percibidos el empleado para el cálculo del aguinaldo
-					$montoTotalSueldos = 0;
+					$montoTotalSueldos = $this->obtenerSueldosNominales($datosRecibo, $fecha, $fechaBaja);
 					
-					if($fechaBaja->month < 6 || $fechaBaja->month == 12)
-					{
-						$x = 12;
-						$anio = $fecha->year - 1;
-						
-						while($x!=6)
-						{
-							$recibo = ReciboEmpleado::where([['idEmpleado','=',$empleado->id],['idTipoRecibo','=',1],['fechaRecibo', '=', $anio.'-'.$x.'-01']])->first();
-							
-							if ($recibo != null)
-							{							
-								$detalleNominal = $recibo->detallesRecibos->where('idConceptoRecibo','=',19)->first();
-								$montoTotalSueldos += $detalleNominal->monto;
-							}
-							
-							if ($x == 12)
-							{
-								$x = 1;
-								$anio ++;
-							}
-							else
-								$x ++;									
-						}
-					}
-					else
-					{
-						$x = 6;
-							
-						while($x!=12)
-						{
-							$recibo = ReciboEmpleado::where([['idEmpleado','=',$empleado->id],['idTipoRecibo','=',1],['fechaRecibo', '=', $fecha->year.'-'.$x.'-01']])->first();
-							
-							if ($recibo != null)
-							{
-								$detalleNominal = $recibo->detallesRecibos->where('idConceptoRecibo','=',19)->first();
-								$montoTotalSueldos += $detalleNominal->monto;							
-							}
-								
-							$x ++;									
-						}
-					}
 					$montoTotalSueldos += $montoSalario[51];
 					
 					//Monto del aguinaldo.
@@ -830,18 +779,8 @@ class HaberesController extends Controller
 					$montoSalario[51] += $montoIPD;
 				
 					//Carga Detalles
-					$cant=count($montoSalario);					
-					for($j=0;$j<$cant;$j++){
-						$detalle=collect([]);						
-						$cantParam=$montoSalario[$j];
-						
-						for($x=1;$x<=$cantParam;$x++){
-							$detalle->push($montoSalario[$j+$x]);
-						}
-						$j=$j+$cantParam;
-						$datosRecibo->push($detalle);
-					}
-				
+					$this->cargaDetalles($montoSalario, $datosRecibo);
+					
 					//Adelantos de empleado
 					$montoAdelanto=$this->obtenerPagos($fecha,$empleado,2);
 					$datosRecibo->push($this->obtenerDetalle(25,$montoAdelanto,'NA'));
@@ -1723,6 +1662,76 @@ class HaberesController extends Controller
 		return $monto;
 	}
 	
+	//Obtenre el monto total de sueldos nominales percibidos el empleado para el cálculo del aguinaldo
+	private function obtenerSueldosNominales($datosRecibo, $fecha, $fechaBaja)
+	{
+		$montoTotalSueldos = 0;
+			
+		if($fechaBaja->month < 6 || $fechaBaja->month == 12)
+		{
+			$x = 12;
+			$anio = $fecha->year - 1;
+			
+			while($x!=6)
+			{
+				$recibo = ReciboEmpleado::where([['idEmpleado','=',$empleado->id],['idTipoRecibo','=',1],['fechaRecibo', '=', $anio.'-'.$x.'-01']])->first();
+				
+				if ($recibo != null)
+				{							
+					$detalleNominal = $recibo->detallesRecibos->where('idConceptoRecibo','=',19)->first();
+					$montoTotalSueldos += $detalleNominal->monto;
+				}
+				
+				if ($x == 12)
+				{
+					$x = 1;
+					$anio ++;
+				}
+				else
+					$x ++;									
+			}
+		}
+		else
+		{
+			$x = 6;
+				
+			while($x!=12)
+			{
+				$recibo = ReciboEmpleado::where([['idEmpleado','=',$empleado->id],['idTipoRecibo','=',1],['fechaRecibo', '=', $fecha->year.'-'.$x.'-01']])->first();
+				
+				if ($recibo != null)
+				{
+					$detalleNominal = $recibo->detallesRecibos->where('idConceptoRecibo','=',19)->first();
+					$montoTotalSueldos += $detalleNominal->monto;							
+				}
+					
+				$x ++;									
+			}
+		}
+		return ($montoTotalSueldos);
+	}
+	
+	//Carga de detalles de recibos 	
+	private function cargaDetalles($montoSalario, $datosRecibo)
+	{
+		$cant = count($montoSalario);	
+		
+		for($j=0;$j<$cant;$j++)
+		{
+			$detalle = collect([]);						
+			$cantParam = $montoSalario[$j];
+			
+			for($x=1;$x<=$cantParam;$x++)
+			{
+				$detalle->push($montoSalario[$j+$x]);
+			}
+			$j=$j+$cantParam;
+		
+			$datosRecibo->push($detalle);
+		}
+	}
+	
+	//Guarda encabezado de recibo
 	private function guardarReciboEmpleado($empleado, $fechaRecibo, $request)
 	{
 		$recibo = new ReciboEmpleado;
