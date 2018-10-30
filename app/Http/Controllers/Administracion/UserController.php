@@ -63,9 +63,20 @@ class UserController extends Controller
 			
 		]);
 		
+		
+		
+		//chequear nombre de usuario único
 		$usuario = User::where('name',$request->name)->get();
+		
 		if($usuario->count() > 0)
 			return redirect()->back()->with('error', 'El usuario ya se encuentra registrado en el sistema. Ingrese un nuevo usuario.')->withInput();
+		
+		//chequear email de usuario único
+		$usuario = User::where('email',$request->email)->get();
+		
+		if($usuario->count() > 0)
+			return redirect()->back()->with('error', 'El correo electrónico ya se encuentra registrado en el sistema. Ingrese un nuevo correo electrónico.')->withInput();
+		
 		
 		//registrar los valores 
 		$user = new User();
@@ -155,11 +166,16 @@ class UserController extends Controller
 		$user->email = $request->email;
 		
 		
+		//chequear email de usuario único
+		$usuario = User::where('email',$request->email)->get();
+		
+		if($usuario->count() > 0)
+			return redirect()->back()->with('error', 'El correo electrónico ya se encuentra registrado en el sistema. Ingrese un nuevo correo electrónico.')->withInput();
+		
 		//checkeo de verificación de password
 		if($request->password != $request->passwordRepeat){
 			return redirect()->back()->with('success', "La verificación de contraseña no es correcta. Ingrese nuevamente.");
 		}
-		
 		
 		//si password tiene valor, registrarlo
 		$pass = "";
