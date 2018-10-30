@@ -35,6 +35,4 @@
 	@endif
 	</p>
 @endif
-<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal"><i class="fas fa-sitemap"></i> Transiciones</button>
-<!--<button type="button" class="btn btn-primary btn-xs" ><i class="fas fa-sync-alt"></i> Actualizaciones</button> -->
-								
+

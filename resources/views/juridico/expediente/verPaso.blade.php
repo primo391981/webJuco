@@ -27,6 +27,7 @@
 			</div>
 			<div class="panel-body">
 				@include('juridico.expediente.detalleExpediente')
+				<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal"><i class="fas fa-sitemap"></i> Transiciones</button>
 				<br>
 				<hr>
 				<div class="col-xs-12">

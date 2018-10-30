@@ -19,6 +19,7 @@
 				<div class="row">
 					<div class="col-xs-12 col-md-7">
 						@include('juridico.expediente.detalleExpediente')
+						<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal"><i class="fas fa-sitemap"></i> Transiciones</button>
 						<hr class="hidden-lg hidden-md">
 					</div>
 					<div class="col-xs-12 col-md-5">

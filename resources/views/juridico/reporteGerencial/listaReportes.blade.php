@@ -19,8 +19,16 @@
 		<div class="panel panel-success text-success">
 			<div class="panel-heading">
 				<div class="btn-group pull-right">
-					<a name="juridico" href="{{ route('reporte.create')}}" class="btn btn-success"><i class="fas fa-plus"></i></a>
+					<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+						<i class="fas fa-plus"></i>
+					</button>
+					<ul class="dropdown-menu" role="menu">
+						<li><a name="juridico" href="{{ route('reporte.create')}}"><i class="far fa-building"></i> Gerencial</a></li>
+						<li><a name="fisico" href="{{ route('reporte.create.expediente')}}"><i class="fas fa-book"></i> de Expediente</a></li>
+					</ul>
 				</div>
+
+				
 				<h4>LISTADO REPORTES</h4>
 			</div>
 			<div class="panel-body">					
