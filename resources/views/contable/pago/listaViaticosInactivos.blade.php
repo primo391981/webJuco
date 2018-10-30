@@ -43,8 +43,8 @@
 									<td>{{$pago->empleado->persona->tipoDoc->nombre}} - {{$pago->empleado->persona->documento}}</td>
 									<td>{{$pago->empleado->persona->nombre}} {{$pago->empleado->persona->apellido}}</td>
 									<td>{{$pago->empleado->empresa->nombreFantasia}}</td>
-									<td>{{$pago->monto}}</td>									
-									<td>{{$pago->fecha}}</td>	
+									<td>{{$pago->monto * $pago->cantDias}}</td>									
+									<td>{{ Carbon\Carbon::parse($pago->fecha)->format('m-Y') }}</td>	
 									<td>{{$pago->gravado==1 ? "SI" : "NO"}}</td>									
 									<td>{{$pago->porcentaje}}</td>
 									<td> 

@@ -449,13 +449,13 @@ class AyudaTableSeeder extends Seeder
 		
 		DB::table('ayuda')->insert([
             'ruta' => 'haberes.index',
-			'texto'=>'<p><strong>Liquidación de haberes</strong></p>
+			'texto'=>'<p><strong>Cálculo de haberes</strong></p>
 <p>Completar el formulario con el tipo de haber a calcular y pulsar el boton <button type="button" class="btn btn-warning"> Cargar Empleados</button></p>',
         ]);
 		
 		DB::table('ayuda')->insert([
             'ruta' => 'haberes.listaEmpleados',
-			'texto'=>'<p><strong>Calcular sueldos</strong></p>
+			'texto'=>'<p><strong>Calcular Haberes</strong></p>
 <p>Comprobar que todos los campos esten correctos y pulsar botón  <button type="button" class="btn btn-warning"> Calcular</button></p>',
         ]);
 		

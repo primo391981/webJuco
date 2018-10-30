@@ -1,9 +1,8 @@
 @extends('contable.contable')
 
-@section('seccion', " - ADELANTOS")
+@section('seccion', " - VIATICOS")
 
 @section('content')
-
 @if (Session::has('success'))
 		<div class="alert alert-success">
 			{{Session::get('success')}}
@@ -21,12 +20,11 @@
 		
 		<div class="panel panel-warning text-warning">
 			<div class="panel-heading">
-				<a class="btn btn-success pull-right" href="{{ route('pago.create', ['idTipo' => 2]) }}" role="button"><i class="fas fa-plus"></i></a>
-				<h4><i class="fas fa-credit-card"></i> LISTADO DE ADELANTOS ACTIVOS </h4>				
+				<h4><i class="fas fa-book"></i> LISTADO DE FICTOS INACTIVOS </h4>				
 			</div>
 			<div class="panel-body">
 				<div class="table-responsive">
-						<table id="tableAdelantos" class="table" style="width:100%" >
+						<table id="tableViaticos" class="table" style="width:100%" >
 							<thead>
 								<tr>
 									<th>DOCUMENTO</th>
@@ -34,38 +32,34 @@
 									<th>EMPRESA</th>
 									<th>MONTO</th>
 									<th>FECHA</th>
-									<th></th>
+									<th>GRAVADO</th>
+									<th>PORCENTAJE</th>
 									<th></th>
 								</tr>
 							</thead>
 							<tbody>
-								@foreach($adelantos->sortBy('empleado.empresa.razonSocial') as $pago)
+								@foreach($viaticos->sortBy('empleado.empresa.razonSocial') as $pago)
 								<tr>								
 									<td>{{$pago->empleado->persona->tipoDoc->nombre}} - {{$pago->empleado->persona->documento}}</td>
 									<td>{{$pago->empleado->persona->nombre}} {{$pago->empleado->persona->apellido}}</td>
 									<td>{{$pago->empleado->empresa->nombreFantasia}}</td>
-									<td>{{$pago->monto}}</td>
-									
+									<td>{{$pago->monto * $pago->cantDias}}</td>									
 									<td>{{ Carbon\Carbon::parse($pago->fecha)->format('m-Y') }}</td>	
-									<td>
-										<form method="GET" action="{{ route('pago.edit', $pago) }}">																
-											<button type="submit"class="btn btn-warning"><i class="far fa-edit"></i></button>												
+									<td>{{$pago->gravado==1 ? "SI" : "NO"}}</td>									
+									<td>{{$pago->porcentaje}}</td>
+									<td> 
+										<form method="POST" action="{{ route('pago.activar') }}">
+											@csrf	
+											<input type="hidden" name="pago_id" value="{{$pago->id}}">
+											<button type="submit"class="btn btn-primary"><i class="fas fa-recycle"></i></button>												
 										</form>
-									</td>				
-									<td>
-										<form method="POST" action="{{ route('pago.destroy',$pago) }}">
-										{{ method_field('DELETE') }}
-										@csrf	
-										<button type="submit"class="btn btn-danger"><i class="far fa-trash-alt"></i></button>												
-									</form>
-									</td>									
+									</td>																	
 								</tr>
 								@endforeach
 							</tbody>						
 						</table>
 					</div>
 			</div>
-			
 		</div><!--cierre panel-->
 		
 	</div><!--cierre col xs12-->
@@ -73,7 +67,7 @@
 
 <script>
 $(document).ready(function() {
-    $('#tableAdelantos').DataTable( {        
+    $('#tableViaticos').DataTable( {        
 		"pagingType": "numbers",
 		"pageLength": 10,
 		"language": {

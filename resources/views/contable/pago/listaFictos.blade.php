@@ -45,7 +45,7 @@
 									<td>{{$pago->empleado->empresa->nombreFantasia}}</td>
 									<td>{{$pago->monto}}</td>
 									
-									<td>{{$pago->fecha}}</td>
+									<td>{{ Carbon\Carbon::parse($pago->fecha)->format('m-Y') }}</td>
 									<td>{{$pago->gravado==1 ? "SI" : "NO"}}</td>									
 									<td>{{$pago->porcentaje}}</td>
 									<td>

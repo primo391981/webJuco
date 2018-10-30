@@ -41,7 +41,7 @@
 									<td>{{$pago->empleado->persona->nombre}} {{$pago->empleado->persona->apellido}}</td>
 									<td>{{$pago->empleado->empresa->nombreFantasia}}</td>
 									<td>{{$pago->monto}}</td>									
-									<td>{{$pago->fecha}}</td>	
+									<td>{{ Carbon\Carbon::parse($pago->fecha)->format('m-Y') }}</td>	
 									<td> 
 										<form method="POST" action="{{ route('pago.activar') }}">
 											@csrf	
