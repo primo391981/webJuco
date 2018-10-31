@@ -62,7 +62,7 @@ class HaberesController extends Controller
 			}
 				
 			if ($request->calculo == 5)
-				$personas=$empresa->personas()->where('habilitado','=',0)->get();
+				$personas=$empresa->personas()->where('habilitado','=',0)->whereBetween('fechaBaja',[$fecha->year.'-'.$fecha->month.'-01',$fecha])->get();
 			else
 				$personas=$empresa->personas()->where('habilitado','=',1)->orderBy('tipoDocumento','ASC')->orderBy('documento','ASC')->get();
 			
@@ -589,8 +589,8 @@ class HaberesController extends Controller
 	//Guarda los datos del cálculo de liquidacion de haberes con los detalles correspondientes al recibo del mismo.
     public function calculoLiquidacion(Request $request)
     {
-		try
-		{
+		/*try
+		{*/
 			$fecha = new Carbon($request->fecha);
 			$empleadosRecibo=collect([]);
 			
@@ -643,7 +643,7 @@ class HaberesController extends Controller
 						
 					//Calcular Aguinaldo
 					//Suma del monto total de sueldos percibidos el empleado para el cálculo del aguinaldo
-					$montoTotalSueldos = $this->obtenerSueldosNominales($datosRecibo, $fecha, $fechaBaja);
+					$montoTotalSueldos = $this->obtenerSueldosNominales($datosRecibo,$empleado, $fecha, $fechaBaja);
 					
 					$montoTotalSueldos += $montoSalario[51];
 					
@@ -824,11 +824,11 @@ class HaberesController extends Controller
 			
 			return view('contable.haberes.listaEmpleadosRecibos', ['empleadosRecibo' => $empleadosRecibo,'fechaMes'=>$fecha->month,'fechaAnio'=>$fecha->year,'calculo'=>$tipoRecibo]);		
 	
-		}
+		/*}
 		catch(\Exception $e)
 		{
 			return back()->withInput()->withError("Error en el sistema.");
-		}
+		}*/
 		
 	}
 	
@@ -1663,7 +1663,7 @@ class HaberesController extends Controller
 	}
 	
 	//Obtenre el monto total de sueldos nominales percibidos el empleado para el cálculo del aguinaldo
-	private function obtenerSueldosNominales($datosRecibo, $fecha, $fechaBaja)
+	private function obtenerSueldosNominales($datosRecibo,$empleado, $fecha, $fechaBaja)
 	{
 		$montoTotalSueldos = 0;
 			

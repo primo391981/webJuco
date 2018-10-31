@@ -77,9 +77,12 @@ $(function()
 					document.getElementById("nombreEmpleado").innerHTML = "<option value=''>-- Seleccione empleado --</option>"; 
 					
 					while (j < empresa[i].personas.length)
-					{		
+					{	
+						if(empresa[i].personas[j].pivot.habilitado ==1){
 						document.getElementById("nombreEmpleado").innerHTML += "<option value='"+empresa[i].personas[j].tipoDocumento+" "+empresa[i].personas[j].tipo_doc.nombre+" "+empresa[i].personas[j].documento+"'>"+empresa[i].personas[j].nombre+" "+empresa[i].personas[j].apellido+"</option>"; 
+						}
 						j++;
+						
 					}
 					
 					$('#nombreEmpleado').prop('disabled', false);

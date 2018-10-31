@@ -162,9 +162,15 @@ class EmpresaController extends Controller
 	public function reporte(Request $request){
 		try{
 			$empresa=Empresa::find($request->empresa);
-			$empleados=$empresa->personas()->where('habilitado',1)->get();
-			
 			$fecha=$this->formatoFecha($request->fecha,$request->tiporec);
+			
+			if($request->tiporec!=5){
+				$empleados=$empresa->personas()->where('habilitado',1)->get();
+			}
+			else{
+				$fmes=new Carbon($fecha);
+				$empleados=$empresa->personas()->where('habilitado',0)->whereBetween('fechaBaja',[$fecha.'-01',$fmes->year.'-'.$fmes->month.'-'.$fmes->daysInMonth])->get();
+			}
 			$montos=$this->montosRecibo($empleados,$request->tiporec,$fecha);
 			
 			$montoTotal=0;		
@@ -229,9 +235,16 @@ class EmpresaController extends Controller
 		try{
 			$empresa=Empresa::find($request->empresa);
 			$tipoRecibo=TipoRecibo::find($request->tiporec);
-			$empleados=$empresa->personas()->where('habilitado',1)->get();
-			
 			$fecha=$this->formatoFecha($request->fecha,$request->tiporec);
+			
+			if($request->tiporec!=5){
+				$empleados=$empresa->personas()->where('habilitado',1)->get();
+			}
+			else{
+				$fmes=new Carbon($fecha);
+				$empleados=$empresa->personas()->where('habilitado',0)->whereBetween('fechaBaja',[$fecha.'-01',$fmes->year.'-'.$fmes->month.'-'.$fmes->daysInMonth])->get();
+			}
+						
 			$recibos = collect([]);
 			foreach($empleados as $emp){		
 				

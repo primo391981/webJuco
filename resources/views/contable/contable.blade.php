@@ -64,7 +64,7 @@
 					<ul class="nav nav-third-level">
 						<li><a href="{{ route('pago.fictos') }}"><i class="fas fa-list-ul"></i> Activos</a></li>	
 						<li><a href="{{ route('pago.create', ['idTipo' => 4]) }}"><i class="fas fa-plus"></i> Agregar nuevo</a></li>
-						<li><a href="#"><i class="fas fa-list-ul"></i> Inactivos</a></li>
+						<li><a href="{{ route('pago.fictos.inactivos') }}"><i class="fas fa-list-ul"></i> Inactivos</a></li>
 					</ul>
 			</li>
         </ul>

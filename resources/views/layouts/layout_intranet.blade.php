@@ -134,11 +134,11 @@
         <h4 class="modal-title" id="myModalLabel">Acerca de Sistema JUCO (Jurídico - Contable)</h4>
       </div>
       <div class="modal-body text-center">
-        Versión: 1.02<br>
+        Versión: 1.00<br>
 		Equipo de proyecto: Martín Ghiglia, Fabián Sellanes, Diego Unibazo<br><br>
 		<img src="{{asset('img/ude-logo.png')}}" alt="Universidad de le Empresa">
 		<hr>
-		<br>año 2018<br>
+		<br>Año 2018<br>
       </div>
     </div>
   </div>
