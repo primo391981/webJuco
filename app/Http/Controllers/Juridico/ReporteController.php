@@ -193,11 +193,11 @@ class ReporteController extends Controller
 				
 					//Si el paso está finalizado
 					if($paso->fecha_fin != null){
-						$duracion = $dt1->diffInMinutes($paso->fecha_fin);
-						// $duracion = $dt1->diffInDays($paso->fecha_fin); Para producción va en días
+						//$duracion = $dt1->diffInMinutes($paso->fecha_fin);
+						$duracion = $dt1->diffInDays($paso->fecha_fin); // Para producción va en días
 					//Sino, tomo la duración actual
 					} else {
-						$duracion = $dt1->diffInMinutes(Carbon::now());
+						$duracion = $dt1->diffInDays(Carbon::now());
 					}
 					
 					//guardo el mayor registro y el paso para mostrar
@@ -236,7 +236,7 @@ class ReporteController extends Controller
 		$dataset->save();
 		// fin  dataset  min duración de pasos de expedientes
 		
-		$data = $duracion / $contador;
+		$data = $acumulador / $contador;
 
 		$dataset = new Dataset();
 		$dataset->id_reporte = $reporte->id;
@@ -291,7 +291,6 @@ class ReporteController extends Controller
 		$pasoMaximo = null;
 		$maximo = 0; //en dias, para test, en minutos
 		$minimo = 99999999; //en dias, para test, en minutos
-		$contador = 0;
 		$acumulador = 0;
 		
 		foreach($expediente->pasos as $paso){
@@ -303,15 +302,15 @@ class ReporteController extends Controller
 				//si el paso está finalizado
 				if($paso->fecha_fin != null){
 					$fecha_fin = new Carbon($paso->fecha_fin);
-					$duracion = $dt1->diffInSeconds($paso->fecha_fin);
-					// $duracion = $dt1->diffInDays($paso->fecha_fin); Para producción va en días
+					//$duracion = $dt1->diffInSeconds($paso->fecha_fin);
+					$duracion = $dt1->diffInDays($paso->fecha_fin); //Para producción va en días
 				} else {
 					$fecha_fin = Carbon::now();
 					//Sino, tomo la duración actual
-					$duracion = $dt1->diffInSeconds(Carbon::now());
+					$duracion = $dt1->diffInDays(Carbon::now());
 				}
 				
-				array_push($data['datasets'][0]['data'],$fecha_fin->diffInSeconds($paso->created_at));
+				array_push($data['datasets'][0]['data'],$fecha_fin->diffInDays($paso->created_at));
 				array_push($data['datasets'][0]['backgroundColor'],'rgba(54, 162, 235, 0.5)');
 				array_push($data['datasets'][0]['borderColor'],'rgba(54, 162, 235, 1)');
 				
@@ -376,9 +375,9 @@ class ReporteController extends Controller
 		$dataset->save();
 		// fin  dataset  min duración de pasos de expedientes
 		// dataset promedio duración de pasos de expedientes
-		$contador = $contador + $expediente->pasos->count();
+		$contador = $expediente->pasos->count();
 
-		$data = $duracion / $contador;
+		$data = $acumulador / $contador;
 
 		$dataset = new Dataset();
 		$dataset->id_reporte = $reporte->id;

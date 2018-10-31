@@ -15,12 +15,9 @@ class OCRController extends Controller
 	public function ocrtext(Request $request){
 		
 		
-		$archivo = $request->file('archivo')->storeAs('public/ocr','file');
+		$archivo = $request->file('archivo');
 		
-		//$imagen = '/home/vagrant/code/webJuco/public/storage/ocr/file';
-		$imagen = '/var/www/html/webJuco/public/storage/ocr/file';
-		
-		$tesseract = new TesseractOCR($imagen);
+		$tesseract = new TesseractOCR($archivo);
 		try{
 			$resultado = $tesseract->lang('spa')->run();
 		} catch (\Exception $e){
