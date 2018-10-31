@@ -64,10 +64,29 @@ class ContenidoController extends Controller
 		$contenido->titulo = $request->titulo;
 		$contenido->subtitulo = $request->subtitulo;
 		$contenido->texto = $request->texto;
-		$contenido->archivo = $request->archivo !== null ? $request->archivo : "";
-		$contenido->nombre_archivo = $request->nombre_archivo !== null ? $request->nombre_archivo : "";
-		$contenido->imagen = $request->imagen !== null ? $request->imagen : "";
-		$contenido->alt_imagen = $request->alt_imagen !== null ? $request->alt_imagen : "";
+		
+		//manejo del archivo adjunto
+		if($request->hasFile('archivo')){
+			$archivo = $request->file('archivo');
+			$path = $archivo->store('public/contenidos/archivos');
+			$contenido->archivo = Storage::url($path);
+		} else {
+			$contenido->archivo = "";
+		}
+		
+		
+		$contenido->nombre_archivo = $request->nombre_archivo !== null ? $request->nombre_archivo : "nombre de archivo";
+		
+		//manejo de imagen adjunta
+		if($request->hasFile('imagen')){
+			$imagen = $request->file('imagen');
+			$path = $imagen->store('public/contenidos/imagenes');
+			$contenido->imagen = Storage::url($path);
+		} else {
+			$contenido->imagen = "";
+		}
+		
+		$contenido->alt_imagen = $request->alt_imagen !== null ? $request->alt_imagen : "Texto de imagen";
 		
 		$contenido->save();
 		

@@ -83,10 +83,10 @@
 							</address>							  
 						</div>	
 						<div>
-							<a href="#"><i class="fab fa-twitter"></i> @CasellaFeola</a><br>
-							<a href="#"><i class="fab fa-instagram"></i> feolacassella_gonzalezfeola</a><br>
-							<a href="#"><i class="fab fa-facebook-f"></i> Estudio GonzalezFeola</a><br>
-							<a href="#"><i class="fab fa-youtube"></i> Estudio GonzalezFeola</a><br>
+							<a href="https://twitter.com/CasellaFeola" target="_blank"><i class="fab fa-twitter"></i> @CasellaFeola</a><br>
+							<a href="https://www.instagram.com/feolacassella_gonzalezfeola/" target="_blank"><i class="fab fa-instagram"></i> feolacassella_gonzalezfeola</a><br>
+							<a href="https://www.facebook.com/pages/Estudio-Jur%C3%ADdico-Feola-Casella-y-Gonzalez-Feola/487059981711223" target="_blank"><i class="fab fa-facebook-f"></i> Estudio Gonzalez Feola</a><br>
+							<a href="https://www.youtube.com/channel/UCr7fALYyp8iW5-Bp5pdM6Lw?view_as=subscriber" target="_blank"><i class="fab fa-youtube"></i> Estudio Gonzalez Feola</a><br>
 						</div>
 					</div>
 				</div>	

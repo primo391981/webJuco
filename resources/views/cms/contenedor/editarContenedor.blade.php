@@ -120,7 +120,6 @@
 						<tr>
 							<th>#</th>
 							<th>NOMBRE</th>
-							<th>TEXTO</th>
 							<th></th>
 						</tr>
 					</thead>
@@ -129,7 +128,6 @@
 						<tr>
 							<td>{{$contenido->id}}</td>
 							<td>{{$contenido->titulo}}</td>
-							<td>{!!str_limit($contenido->texto,20)!!}</td>
 							<td>
 								<form method="POST" action="{{ route('contenido.assign',$contenido->id) }}">
 									@csrf	

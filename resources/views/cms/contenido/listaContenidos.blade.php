@@ -46,10 +46,18 @@
 								<td>{{$contenido->id}}</td>
 								<td>{{$contenido->titulo}}</td>
 								<td>{!!$contenido->texto!!}</td>
-								<td><a href="{{ asset($contenido->archivo) }}">{{ $contenido->nombre_archivo }}</a></td>
 								<td>
 									@if($contenido->archivo!="")
+										<a href="{{ asset($contenido->archivo) }}">{{ $contenido->nombre_archivo }}</a>	
+									@else 
+										N/D
+									@endif
+								</td>
+								<td>
+									@if($contenido->imagen!="")
 										<img src="{{ asset ($contenido->imagen) }}" height="40">
+									@else 
+										N/D
 									@endif
 								</td>
 								<td>
