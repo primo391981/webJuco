@@ -100,6 +100,7 @@
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                        	<!-- CONTENIDO DEL MENU LATERAL DINAMICO -->
+						<li><a href="{{ route('admin') }}"><i class="fas fa-home"></i> Inicio</a>
 						@yield('menu-lateral')
 						
 						<li class="nav-item"> 
@@ -132,11 +133,12 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Acerca de Sistema JUCO (Jurídico - Contable)</h4>
       </div>
-      <div class="modal-body">
+      <div class="modal-body text-center">
         Versión: 1.02<br>
-		Equipo de proyecto: Martín Ghiglia, Fabián Sellanes, Diego Unibazo<br>
-		Universidad de la Empresa<br>
-		2018<br>
+		Equipo de proyecto: Martín Ghiglia, Fabián Sellanes, Diego Unibazo<br><br>
+		<img src="{{asset('img/ude-logo.png')}}" alt="Universidad de le Empresa">
+		<hr>
+		<br>año 2018<br>
       </div>
     </div>
   </div>

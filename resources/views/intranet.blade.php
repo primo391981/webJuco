@@ -1,6 +1,7 @@
 @extends('layouts.layout_intranet')
 
 <!-- SI TIENE MAS DE UN ROL UTILIZA ESTA VIEW -->
+
 @section('menu-lateral')
 @if(Auth::user()->hasRole('cmsAdmin'))
 <li><a href="{{ route('cms') }}"><i class="fas fa-edit"></i> Edición web</a>
@@ -26,7 +27,9 @@
 				  <div class="panel-body text-info">
 				  <h4>Mantenimineto del sitio web.</h4>
 					<hr>
-					
+					<p><i class="fas fa-sitemap"></i> Items de menú</p>
+					<p><i class="fas fa-th-large"></i> Contenedores</p>
+					<p><i class="fas fa-th"></i> Contenidos</p>
 				  </div>
 				  <div class="panel-footer"><a href="{{ route('cms') }}" class="btn btn-info btn-block" role="button"><i class="fas fa-sign-in-alt"></i> Ingresar</a></div>
 				</div>				
@@ -40,7 +43,10 @@
 				  <h4>Gestión de expedientes por empresa o persona/s.</h4>
 					<hr>
 					<p><i class="fas fa-building"></i> Empresas</p>
-					<p><i class="fas fa-users"></i> Persona </p>
+					<p><i class="fas fa-users"></i> Personas </p>
+					<p><i class="fas fa-book"></i> Expedientes</p>
+					<p><i class="fas fa-wrench"></i> OCR</p>
+					<p><i class="fas fa-clipboard-list"></i> Reportes</p>
 				  
 				  </div>
 				  <div class="panel-footer"><a href="{{ route('juridico') }}" class="btn btn-success btn-block" role="button"><i class="fas fa-sign-in-alt"></i> Ingresar</a></div>
