@@ -96,14 +96,14 @@
 		<div class="container">
 			<div class="">
 				<div class="col-md-12 text-center">
-					<p>&copy; Proyecto JUCO. Todos los derechos reservados <br>Created by Grupo de Proyecto - Universidad de la Empresa</p>
+					<p>&copy; Proyecto JUCO. Todos los derechos reservados <br>Grupo de Proyecto - Universidad de la Empresa</p>
 					
 				</div>
 			</div>
 		</div>
 	</footer>
 
-</div>
+
 @endsection
 
 

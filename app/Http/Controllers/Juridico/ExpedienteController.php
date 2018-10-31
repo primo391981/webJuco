@@ -197,8 +197,11 @@ class ExpedienteController extends Controller
 		//listado de transiciones a las cuales puede seguir el expediente
 		$transiciones = $expediente->tipo->transiciones->whereIn('id_paso_inicial',$pasosActuales)->whereNotIn('id_paso_siguiente',$pasos);
 		
-		$usuarios = User::All();
-		
+		//se listan solo los usuarios con rol invitado para acceso externo
+		$usuarios = User::whereHas('roles', function ($query) {
+			$query->where('nombre', 'invitado');
+		})->get();
+				
 		return view('juridico.expediente.verExpediente', ['expediente' => $expediente, 'transiciones' => $transiciones, 'usuarios' => $usuarios]);
 
     }

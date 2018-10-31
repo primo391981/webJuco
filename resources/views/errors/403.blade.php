@@ -16,10 +16,10 @@
 	
 </head>
 <body>    
-	<div class="jumbotron text-center">
+	<div style="margin-top:200px;" class="container text-center">
 		<h1>No tiene permiso para acceder a este contenido.</h1> 
 		<p>Si esto se debe a un error, contáctese con el administrador del sistema. Muchas gracias</p>
-		<a href="{{ URL::previous() }}">Volver</a>
+		<a class="btn btn-primary" href="{{route('home')}}">Sitio web</a> <a class="btn btn-default" href="{{ URL::previous() }}">Volver</a> 
     </div>
 </body>
 </html>

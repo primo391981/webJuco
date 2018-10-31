@@ -21,7 +21,8 @@ class CheckRole
 			}
 		}
 		
-		return redirect('/home');
+		return abort(403, 'Unauthorized action.');
+		//return redirect('/home');
 				//return redirect('/notAuthorized');
 				//hacer una vista que diga que no tiene los permisos correspondientes para acceder a esa ruta
 		

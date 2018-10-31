@@ -25,16 +25,6 @@ Route::get('/home', 'WebController@index')->name('home');
 
 Route::post('/contacto', 'WebController@contacto')->name('contacto');
 
-Route::get('notAuthorized', function (){
-	return view('notAuthorized');
-})->name('notAuthorized');
-
-//Webservice
-Route::get('webservice', 'Juridico\WebServiceController@index')->name('test');
-Route::post('webservice', 'Juridico\WebServiceController@test')->name('searchExpediente');
-
-
-
 //rutas para el funcionamiento del sistema de autenticación
 Auth::routes();
 

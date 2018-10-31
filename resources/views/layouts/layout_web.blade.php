@@ -51,7 +51,7 @@
 				<a class="nav-link" href="#contacto">Contacto</a>
 			</li>
 		</ul>
-		<ul class="navbar-nav navbar-right">
+		<ul  style="margin-right:50px;" class="navbar-nav navbar-right">
 		    @guest
 				<li><a class="nav-link" href="{{ route('login') }}" ><i class="fas fa-unlock-alt"></i> Ingreso</a></li>
 			   @else
@@ -61,13 +61,13 @@
 										</a>
 										<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 											<li>
-												<a href="{{ route('admin') }}">Administración</a>
+												<a class="dropdown-item" href="{{ route('admin') }}">Administración</a>
 											</li>
 											<li>
 												<a class="dropdown-item" href="{{ route('logout') }}"
 											   onclick="event.preventDefault();
 															 document.getElementById('logout-form').submit();">
-												Logout
+												salir
 											</a>
 
 											<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
