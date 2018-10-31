@@ -31,9 +31,9 @@
 					4- invitado: acceso al módulo de gestión jurídica con permisos de lectura y/o escritura.<br><br>
 					Cada usuario del sistema puede tener asigando uno o varios roles.<br><br>
 					<strong>Funcionalidades:</strong><br>
-					<a href="{{ route('user.index') }}"><i class="fas fa-list-ul"></i> Listado de usuarios Activos en el sistema.</a><br><br>
-					<a href="{{ route('user.create') }}"><i class="fas fa-user-plus"></i> Agregar nuevo usuario al sistema.</a><br><br>
-					<a href="{{ route('user.index.inactivos') }}"><i class="fas fa-list-ul"></i> Listado de usuarios Inactivos en el sistema.</a>
+					<p><i class="fas fa-list-ul"></i> Listado de usuarios Activos en el sistema.</p>
+					<p><i class="fas fa-user-plus"></i> Agregar nuevo usuario al sistema.</p>
+					<p><i class="fas fa-list-ul"></i> Listado de usuarios Inactivos en el sistema.</p>
 					</p>
 				  </div>
 				</div>

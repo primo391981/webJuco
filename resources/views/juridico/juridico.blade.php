@@ -64,15 +64,13 @@
 		<div class="panel panel-success">
 			  <div class="panel-heading text-center"><h1><i class="fas fa-users"></i> Clientes</h1></div>
 				  <div class="panel-body text-success">
-				  <p>Esta sección esta dirgida a la organización de los clientes, los cuales se representan mediante <i class="fas fa-user"></i> Persona Física o <i class="far fa-building"></i> Persona Jurídica.<br>
-				  <br><br><br></p>
-				  <strong>Funcionalidades</strong><br>
-				  <a href="{{ route('cliente.index') }}" role="button"><i class="fas fa-list-ul"></i> Listado de clientes activos</a><br><br>
-				  
-					<a>Agregar nuevo cliente</a><br>
-					&nbsp;&nbsp;&nbsp;&nbsp;<a name="juridico" href="{{ route('cliente.create.juridica')}}"><i class="far fa-building"></i> Persona Jurídica</a><br>
-					&nbsp;&nbsp;&nbsp;&nbsp;<a name="fisico" href="{{ route('cliente.create.fisica')}}"><i class="fas fa-user"></i> Persona Física</a><br><br>
-						<a href="{{ route('cliente.index.inactivos') }}"><i class="fas fa-list-ul"></i>Listado de clientes Inactivos</a>
+				  <p>Esta sección esta dirgida a la organización de los clientes, los cuales se representan mediante <i class="fas fa-user"></i> Persona Física o <i class="far fa-building"></i> Persona Jurídica.</p>
+					<p><strong>Funcionalidades:</strong></p>
+				  <p><i class="fas fa-list-ul"></i> Listado de clientes activos</p>
+				  <p>Agregar nuevo cliente</p>
+					<p><i class="far fa-building"></i> Persona Jurídica</p>
+					<p><i class="fas fa-user"></i> Persona Física</p>
+					<p><i class="fas fa-list-ul"></i>Listado de clientes Inactivos</p>
 				  </div>
 		</div>
 	@endif
@@ -88,11 +86,10 @@
 						Gestión y administración de expedientes judiciales desde el principo del proceso hasta su fin asociado al tipo de materia (Penal, Civil, Laboral y Familia).
 						<br>
 						Conexión con el sistema del Poder Judicial para el inicio de cada proceso en la creación de un expediente.
-						</p><br>
-						<strong>Funcionalidades</strong><br>
-						 <a href="{{ route('expediente.index') }}"><i class="fas fa-list-ul"></i> Listado de expedientes Activos</a><br><br>
-							<a href="{{ route('expediente.create') }}"><i class="fas fa-plus"></i> Agregar nuevo expediente</a>
-							<br><br><br><br><br>
+						</p>
+						<p><strong>Funcionalidades:</strong></p>
+						<p><i class="fas fa-list-ul"></i> Listado de expedientes Activos</p>
+						<p><i class="fas fa-plus"></i> Agregar nuevo expediente</p>
 				  </div>
 		</div>
 	@endif
@@ -106,13 +103,12 @@
 				  <div class="panel-body text-success">
 						<p>Es un resumen bien puntual del comportamiento de los diferentes expediente y gerenciamiento donde se pueden hacer comparativas en el tiempo por fechas de inicio y fin.<br>Estos informes se resumen en planificar, coordinar, dirigir desde un histórico y allí evaluar los comportamientos.<br><br>
 						</p>
-						<strong>Funcionalidades</strong><br>
-						 <a href="{{ route('reporte.index') }}"><i class="fas fa-list-ul"></i> Listado de reportes historicos</a><br><br>
-							<a href="#"> Agregar nuevo reporte</a><br>
-				
-							&nbsp;&nbsp;&nbsp;&nbsp;<a name="gerencial" href="{{ route('reporte.create')}}"><i class="far fa-building"></i> Gerencial</a><br>
-							&nbsp;&nbsp;&nbsp;&nbsp;<a name="expediente" href="#"><i class="fas fa-book"></i> de Expediente</a>
-							<br><br><br>
+						<p><strong>Funcionalidades:</strong></p>
+						 <p><i class="fas fa-list-ul"></i> Listado de reportes historicos</p>
+						<p> Agregar nuevo reporte</p>				
+						<p><i class="far fa-building"></i> Gerencial</p>
+						<p><i class="fas fa-book"></i> de Expediente</p>
+							
 				  </div>
 		</div>
 	@endif

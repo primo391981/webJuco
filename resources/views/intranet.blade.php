@@ -26,7 +26,9 @@
 				  <div class="panel-body text-info">
 				  <h4>Mantenimineto del sitio web.</h4>
 					<hr>
-					
+					<p><i class="fas fa-sitemap"></i> Items menú</p>
+					<p><i class="fas fa-th-large"></i> Contenedores</p>
+					<p><i class="fas fa-th"></i> Contenidos</p>
 				  </div>
 				  <div class="panel-footer"><a href="{{ route('cms') }}" class="btn btn-info btn-block" role="button"><i class="fas fa-sign-in-alt"></i> Ingresar</a></div>
 				</div>				
@@ -41,6 +43,9 @@
 					<hr>
 					<p><i class="fas fa-building"></i> Empresas</p>
 					<p><i class="fas fa-users"></i> Persona </p>
+					 <p><i class="fas fa-book"></i> Expedientes</p>
+					 <p><i class="fas fa-wrench"></i> Texto OCR</p>
+					 <p><i class="fas fa-clipboard-list"></i> Reportes</p>
 				  
 				  </div>
 				  <div class="panel-footer"><a href="{{ route('juridico') }}" class="btn btn-success btn-block" role="button"><i class="fas fa-sign-in-alt"></i> Ingresar</a></div>
@@ -60,6 +65,8 @@
 					<p><i class="fas fa-briefcase"></i> Cargos</p>
 					<p><i class="fas fa-money-bill-alt"></i> Pagos</p>
 					<p><i class="fas fa-hand-holding-usd"></i> Liquidación de Haberes</p>
+					<p><i class="fas fa-clipboard-list"></i> Reportes</p>
+				  
 				  </div>
 				  <div class="panel-footer"><a href="{{ route('contable') }}" class="btn btn-warning btn-block" role="button"><i class="fas fa-sign-in-alt"></i> Ingresar</a></div>
 				</div>				

@@ -101,12 +101,12 @@
 			  <div class="panel-heading text-center"><h1><i class="fas fa-building"></i> Empresas</h1></div>
 			  <div class="panel-body text-warning">
 					<p>Sección dedicada a la organización de las empresas, donde cada empresa sera identificada por su RUT, Grupo y Subgrupo de las categorias según el ministerio de trabajo y seguridad social.</p>
-					<br><br><br><strong>Funcionalidades:</strong><br>
-					<a href="{{ route('empresa.index') }}"><i class="fas fa-list-ul"></i> Listado de empresas Activas</a><br>
-					<a href="{{ route('empresa.create') }}"><i class="fas fa-plus"></i> Agregar nueva empresa</a><br>
-					<a><i class="fas fa-edit"></i> Modificar empresa</a><br>
-					<a><i class="fas fa-trash-alt"></i> Eliminar empresa</a><br>
-					<a href="{{ route('empresa.desactivada') }}"><i class="fas fa-list-ul"></i>Listado de empresas Inactivas</a><br>				
+					<p><strong>Funcionalidades:</strong></p>
+					<p><i class="fas fa-list-ul"></i> Listado de empresas Activas</p>
+					<p><i class="fas fa-plus"></i> Agregar nueva empresa</p>
+					<p><i class="fas fa-edit"></i> Modificar empresa</p>
+					<p><i class="fas fa-trash-alt"></i> Eliminar empresa</p>
+					<p><i class="fas fa-list-ul"></i>Listado de empresas Inactivas</p>				
 			  </div>
 		</div>
 	</div>
@@ -114,13 +114,13 @@
 		<div class="panel panel-warning">
 			  <div class="panel-heading text-center"><h1><i class="fas fa-users"></i> Empleados</h1></div>
 			  <div class="panel-body text-warning">
-					<p>Empleados es la sección para la adminsitación de cada empleado por <i class="fas fa-building"></i> empresa donde se le asigna un contrato de trabajo y la carga de <i class="fas fa-clock"></i> marcas reloj.</p><br><br>
-					<br><br><strong>Funcionalidades:</strong><br>
-					<a href="{{ route('persona.index') }}"><i class="fas fa-list-ul"></i> Listado de empelados activos</a></li><br>
-					<a href="{{ route('persona.create') }}"><i class="fas fa-plus"></i> Agregar nuevo empleado</a></li><br>
-					<a href="{{ route('persona.desactivado') }}"><i class="fas fa-list-ul"></i> Listado de empleados Inactivos</a></li><br>
-					<a><i class="fas fa-handshake"></i> Asociar empleado a una empresa</a>
-					<br><br>
+					<p>Empleados es la sección para la adminsitación de cada empleado por <i class="fas fa-building"></i> empresa donde se le asigna un contrato de trabajo y la carga de <i class="fas fa-clock"></i> marcas reloj.</p>
+					<p><strong>Funcionalidades:</strong></p>
+					<p><i class="fas fa-list-ul"></i> Listado de empelados activos</p>
+					<p><i class="fas fa-plus"></i> Agregar nuevo empleado</p>
+					<p><i class="fas fa-list-ul"></i> Listado de empleados Inactivos</p>
+					<p><i class="fas fa-handshake"></i> Asociar empleado a una empresa</p>
+					<br>
 			  </div>
 		</div>
 	</div>
@@ -129,10 +129,10 @@
 			  <div class="panel-heading text-center"><h1><i class="fas fa-clock"></i> Marcas Reloj</h1></div>
 			  <div class="panel-body text-warning">
 					<p>Las marcas reloj vienen asociadas a las cargar horaria realizada por un <i class="fas fa-user"></i> empleado en su jornada de trabajo. Dependiendo del tipo de contrato de trabajo (Mensual o Jornalero) que tenga el <i class="fas fa-user"></i> empleado es la forma en la cual se cargan las horas.</p>
-					<br><br><strong>Funcionalidades:</strong><br>
-					<a><i class="fas fa-info"></i> Ver las marcas reloj cumplidas por un empleado en un mes/año</a><br>
-					<a><i class="fas fa-plus"></i> Agregar marcas reloj a un empleado en un mes/año</a><br>
-					<a><i class="fas fa-edit"></i> Modificar las marcas reloj cumplidas por un empleado en un mes/año</a><br>
+					<p><strong>Funcionalidades:</strong></p>
+					<p><i class="fas fa-info"></i> Ver las marcas reloj cumplidas por un empleado en un mes/año</p>
+					<p><i class="fas fa-plus"></i> Agregar marcas reloj a un empleado en un mes/año</p>
+					<p><i class="fas fa-edit"></i> Modificar las marcas reloj cumplidas por un empleado en un mes/año</p>
 			  </div>
 		</div>
 	</div>
@@ -144,9 +144,9 @@
 			  <div class="panel-body text-warning">
 					<p>Los cargos/categorias vienen asociadas al puesto de trabajo que desempeña el <i class="fas fa-user"></i> empleado dentro de la <i class="fas fa-building"></i> empresa. Cada cargo esta asociado al salario minimo nacional que es fijado por ley.</p>
 					<br><br><strong>Funcionalidades:</strong><br>
-					<a href="{{ route('cargo.index') }}"><i class="fas fa-list-ul"></i> Listado de cargos Activos</a><br>
-					<a href="{{ route('cargo.create') }}"><i class="fas fa-plus"></i> Agregar nuevo cargo junto con su salario minimo nacional</a><br>
-					<a href="{{ route('cargo.index.inactivos') }}"><i class="fas fa-list-ul"></i> Listado de cargos Inactivos</a>
+					<p><i class="fas fa-list-ul"></i> Listado de cargos Activos</p>
+					<p><i class="fas fa-plus"></i> Agregar nuevo cargo junto con su salario minimo nacional</p>
+					<p><i class="fas fa-list-ul"></i> Listado de cargos Inactivos</p>
 			  </div>
 		</div>
 	</div>
@@ -156,10 +156,10 @@
 			  <div class="panel-heading text-center"><h1><i class="fas fa-money-bill-alt"></i> Pagos</h1></div>
 			  <div class="panel-body text-warning">
 					<p>La sección hace referencia al beneficio que se le otorga a cada <i class="fas fa-user"></i> empleado dentro de la <i class="fas fa-building"></i> empresa. Se manejan cuatro tipos de pago: Adelanto, Viáticos, Partidas extras y Fictos.</p>
-					<br><br><strong>Funcionalidades:</strong><br>
-					<a><i class="fas fa-list-ul"></i> Listado de pagos a los empleados</a><br>
-					<a><i class="fas fa-plus"></i> Agregar nuevo pago</a><br>
-					<a><i class="fas fa-list-ul"></i> Listado de pagos Inactivos</a>
+					<p><strong>Funcionalidades:</strong></p>
+					<p><i class="fas fa-list-ul"></i> Listado de pagos a los empleados</p>
+					<p><i class="fas fa-plus"></i> Agregar nuevo pago</p>
+					<p><i class="fas fa-list-ul"></i> Listado de pagos Inactivos</p>
 			  </div>
 		</div>
 	</div>
@@ -168,9 +168,9 @@
 			  <div class="panel-heading text-center"><h1><i class="fas fa-hand-holding-usd"></i> Liquidación de Haberes</h1></div>
 			  <div class="panel-body text-warning">
 					<p>Liquidación de haberes de los <i class="fas fa-user"></i> empleado por <i class="fas fa-building"></i> empresas. Cálculo de Sueldo, Aguinaldo, Salario Vacacional y Liquidación final.</p>
-					<br><strong>Funcionalidades:</strong><br>
-					<a>Creacion de recibo por empleado según del tipo de haber.</a>
-					<br><br><br>
+					<p><strong>Funcionalidades:</strong></p>
+					<p>Creacion de recibo por empleado según del tipo de haber.</p>
+					
 			  </div>
 		</div>
 	</div>
@@ -181,10 +181,10 @@
 			  <div class="panel-heading text-center"><h1><i class="fas fa-cogs"></i> Parametros Generales</h1></div>
 			  <div class="panel-body text-warning">
 					<p>Sección dedicada al mantenimiento de parámetros utilizados para el cálculo de <i class="fas fa-hand-holding-usd"></i> liquidación de haberes. Mantenimineto de fechas de vigencias, rangos, porcentajes.</p>
-					<br><br><strong>Funcionalidades:</strong><br>
-					<a href="{{ route('parametrogeneral.index') }}"><i class="fas fa-list-ul"></i> Activos</a><br>
-					<a href="{{ route('parametrogeneral.create') }}"><i class="fas fa-plus"></i> Agregar nuevo</a><br>
-					<a href="{{ route('parametrogeneral.index.inactivos') }}"><i class="fas fa-list-ul"></i> Inactivos</a>
+					<p><strong>Funcionalidades:</strong></p>
+					<p><i class="fas fa-list-ul"></i> Activos</p>
+					<p><i class="fas fa-plus"></i> Agregar nuevo</p>
+					<p><i class="fas fa-list-ul"></i> Inactivos</p>
 			  </div>
 		</div>
 	</div>
@@ -192,10 +192,10 @@
 		<div class="panel panel-warning">
 			  <div class="panel-heading text-center"><h1><i class="fas fa-clipboard-list"></i> Reportes</h1></div>
 			  <div class="panel-body text-warning">
-					<p>Reportes de información en forma de gráficos junto con la impresión de los recibos calculados en la <i class="fas fa-hand-holding-usd"></i> liquidación de Haberes</p><br><br>
-					<br><br><strong>Funcionalidades:</strong><br>
-					<a>Visualizar reportes gráficos</a><br>
-					<a>Impresión de recibos</a><br><br>
+					<p>Reportes de información en forma de gráficos junto con la impresión de los recibos calculados en la <i class="fas fa-hand-holding-usd"></i> liquidación de Haberes</p>
+					<p><strong>Funcionalidades:</strong></p>
+					<p>Visualizar reportes gráficos</p>
+					<p>Impresión de recibos</p>
 					
 			  </div>
 		</div>

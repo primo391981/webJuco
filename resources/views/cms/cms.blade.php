@@ -50,11 +50,11 @@
 				</p>
 				<br>
 				<p style="font-weight: bold;">Funcionalidades</p>
-				<a href="{{ route('menuitem.index') }}"><i class="fas fa-list-ul"></i> Listado de items menú Activos</a><br>
-				<a>&nbsp;&nbsp;&nbsp;&nbsp;<i class="far fa-edit"></i> Modificar datos de un item menú ya creado.</a><br>
-				<a>&nbsp;&nbsp;&nbsp;&nbsp;<i class="far fa-trash-alt"></i> Eliminar item menú ya creado.</a><br><br>
-				<a href="{{ route('menuitem.create') }}"><i class="fas fa-plus"></i> Agregar nuevo item menú</a><br><br>
-				<a href="{{ route('menuitem.index.inactivos') }}"><i class="fas fa-list-ul"></i> Listado de item menús Inactivos</a>
+				<p><i class="fas fa-list-ul"></i> Listado de items menú Activos</p>
+				<p>&nbsp;&nbsp;&nbsp;&nbsp;<i class="far fa-edit"></i> Modificar datos de un item menú ya creado.</p>
+				<p>&nbsp;&nbsp;&nbsp;&nbsp;<i class="far fa-trash-alt"></i> Eliminar item menú ya creado.</p>
+				<p><i class="fas fa-plus"></i> Agregar nuevo item menú</p>
+				<p><i class="fas fa-list-ul"></i> Listado de item menús Inactivos</p>
 			</div>
 		</div>
 	</div>
@@ -67,11 +67,11 @@
 				Cada contenedor cuenta con diferente información, como son título, tipo, item menú, color de fondo, ancho de pantalla e imagen de fondo.</p>
 				<br>
 				<p style="font-weight: bold;">Funcionalidades</p>
-				<a href="{{ route('contenedor.index') }}"><i class="fas fa-list-ul"></i> Listado de contenedores Activos</a><br>
-				<a>&nbsp;&nbsp;&nbsp;&nbsp;<i class="far fa-edit"></i> Modificar datos de un contenedor ya creado.</a><br>
-				<a>&nbsp;&nbsp;&nbsp;&nbsp;<i class="far fa-trash-alt"></i> Eliminar contenedor ya creado.</a><br><br>
-				<a href="{{ route('contenedor.create') }}"><i class="fas fa-plus"></i> Agregar nuevo contenedor</a><br><br>
-				<a href="{{ route('contenedor.index.inactivos') }}"><i class="fas fa-list-ul"></i> Listado de contenedores Inactivos</a>
+				<p><i class="fas fa-list-ul"></i> Listado de contenedores Activos</p>
+				<p>&nbsp;&nbsp;&nbsp;&nbsp;<i class="far fa-edit"></i> Modificar datos de un contenedor ya creado.</p>
+				<p>&nbsp;&nbsp;&nbsp;&nbsp;<i class="far fa-trash-alt"></i> Eliminar contenedor ya creado.</p>
+				<p><i class="fas fa-plus"></i> Agregar nuevo contenedor</p>
+				<p><i class="fas fa-list-ul"></i> Listado de contenedores Inactivos</p>
 			</div>
 		</div>
 	</div>
@@ -85,11 +85,11 @@
 				</p>
 				<br>
 				<p style="font-weight: bold;">Funcionalidades</p>
-				<a href="{{ route('contenido.index') }}"><i class="fas fa-list-ul"></i> Listado de contenidos Activos</a><br>
-				<a>&nbsp;&nbsp;&nbsp;&nbsp;<i class="far fa-edit"></i> Modificar datos de un contenido ya creado.</a><br>
-				<a>&nbsp;&nbsp;&nbsp;&nbsp;<i class="far fa-trash-alt"></i> Eliminar contenido ya creado.</a><br><br>
-				<a href="{{ route('contenido.create') }}"><i class="fas fa-plus"></i> Agregar nuevo contenido</a><br><br>
-				<a href="{{ route('contenido.index.inactivos') }}"><i class="fas fa-list-ul"></i> Listado de contenidos Inactivos</a>
+				<p><i class="fas fa-list-ul"></i> Listado de contenidos Activos</p>
+				<p>&nbsp;&nbsp;&nbsp;&nbsp;<i class="far fa-edit"></i> Modificar datos de un contenido ya creado.</p>
+				<p>&nbsp;&nbsp;&nbsp;&nbsp;<i class="far fa-trash-alt"></i> Eliminar contenido ya creado.</p>
+				<p><i class="fas fa-plus"></i> Agregar nuevo contenido</p>
+				<p><i class="fas fa-list-ul"></i> Listado de contenidos Inactivos</p>
 			</div>
 		</div>
 	</div>
