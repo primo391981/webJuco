@@ -48,7 +48,7 @@ class MailExpedientes extends Command
 			$fecha_inicio->subDays($recordatorio->cant_dias);
 			if($fecha_inicio < $hoy){
 				$mensaje = $recordatorio->fecha_vencimiento." ".$recordatorio->mensaje." - Recordatorio de JUCO.";
-				Mail::to('primo39@gmail.com')->send(new SendMailable($mensaje));
+				Mail::to($recordatorio->expediente->usuario->email)->send(new SendMailable($mensaje, "Aviso de vencimiento"));
 			}
 		}
 		

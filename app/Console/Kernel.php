@@ -26,10 +26,10 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
 		//Producción: una vez al día
-		//$schedule->command('mail:expedientes')->daily();
+		$schedule->command('mail:expedientes')->daily();
 		
 		//tests: cada cinco minutos
-		$schedule->command('mail:expedientes')->everyFiveMinutes();
+		//$schedule->command('mail:expedientes')->everyThirtyMinutes();
 		
 		$schedule->command('recordatorios:clean')->daily();
     }
