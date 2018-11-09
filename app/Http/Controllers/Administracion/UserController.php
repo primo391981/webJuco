@@ -167,10 +167,10 @@ class UserController extends Controller
 		
 		
 		//chequear email de usuario único
-		$usuario = User::where('email',$request->email)->get();
+		$usuario = User::where('email',$request->email)->first();
 		
-		if($usuario->count() > 0)
-			return redirect()->back()->with('error', 'El correo electrónico ya se encuentra registrado en el sistema. Ingrese un nuevo correo electrónico.')->withInput();
+		if($usuario->id != $user->id)
+			return redirect()->back()->with('error', 'El correo electrónico ya se encuentra registrado en el sistema para otro usuario. Ingrese un nuevo correo electrónico.')->withInput();
 		
 		//checkeo de verificación de password
 		if($request->password != $request->passwordRepeat){
