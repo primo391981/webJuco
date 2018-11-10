@@ -20,7 +20,7 @@
 				</h4>				
 			</div>
 			<div class="panel-body text-success">
-				<form method="POST" action="{{ route('cliente.update', ['persona' => $persona]) }}" class="form-horizontal" enctype="multipart/form-data">
+				<form method="POST" action="{{ route('cliente.update', ['persona' => $persona->cliente[0]->id]) }}" class="form-horizontal" enctype="multipart/form-data">
 				{{ method_field('PUT') }}
 				@if($tipo=='fisica')
 					@include('persona.formPersona', ['textoBoton' => 'Confirmar'])
